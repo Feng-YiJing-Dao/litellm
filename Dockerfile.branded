@@ -1,0 +1,37 @@
+# ==========================================
+# 阶段 1: 仅构建经过汉化和品牌定制的前端 UI
+# ==========================================
+FROM node:24-alpine AS ui-builder
+
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    npm_config_fund=false \
+    npm_config_audit=false
+
+WORKDIR /app
+
+# 优先利用 Docker 缓存层
+COPY ui/litellm-dashboard/package.json ui/litellm-dashboard/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --prefer-offline
+
+# 拷贝前端代码并打包出静态 out 目录
+COPY ui/litellm-dashboard/ ./
+RUN npm run build
+
+# ==========================================
+# 阶段 2: 注入官方已编译就绪的 Python 运行时
+# ==========================================
+FROM docker.litellm.ai/berriai/litellm:main-stable AS runtime
+
+USER root
+
+# 替换 Python 后端静态托管目录
+RUN rm -rf /app/.venv/lib/python3.13/site-packages/litellm/proxy/_experimental/out 2>/dev/null || true
+RUN mkdir -p /app/.venv/lib/python3.13/site-packages/litellm/proxy/_experimental/out
+COPY --from=ui-builder /app/out/. /app/.venv/lib/python3.13/site-packages/litellm/proxy/_experimental/out/
+
+EXPOSE 4000
+
+# 沿用官方原有 Entrypoint
+ENTRYPOINT ["docker/prod_entrypoint.sh"]
+CMD ["--port", "4000"]

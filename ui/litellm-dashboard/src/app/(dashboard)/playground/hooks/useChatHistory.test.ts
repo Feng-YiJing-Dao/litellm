@@ -510,7 +510,7 @@ describe("useChatHistory", () => {
     });
 
     it("should not write chatHistory to sessionStorage before the debounce wait elapses", () => {
-      const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
+      const setItemSpy = vi.spyOn(Object.getPrototypeOf(sessionStorage), "setItem");
       const { result } = renderHook(() => useChatHistory({ simplified: false }));
 
       act(() => {
@@ -526,7 +526,7 @@ describe("useChatHistory", () => {
     });
 
     it("should write chatHistory exactly once with the last value after the wait", () => {
-      const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
+      const setItemSpy = vi.spyOn(Object.getPrototypeOf(sessionStorage), "setItem");
       const { result } = renderHook(() => useChatHistory({ simplified: false }));
 
       act(() => {
@@ -556,7 +556,7 @@ describe("useChatHistory", () => {
     });
 
     it("should not write chatHistory when unmounted mid-wait", () => {
-      const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
+      const setItemSpy = vi.spyOn(Object.getPrototypeOf(sessionStorage), "setItem");
       const { result, unmount } = renderHook(() => useChatHistory({ simplified: false }));
 
       act(() => {

@@ -91,6 +91,7 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
   const disableShowNewBadge = useDisableShowNewBadge();
   const { t, i18n } = useTranslation();
   const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
+  const isWhiteLabeled = process.env.NEXT_PUBLIC_WHITE_LABEL === "true" || !!process.env.NEXT_PUBLIC_BRAND_NAME;
 
   const setFlag = (key: string, checked: boolean) => {
     if (checked) {
@@ -173,11 +174,11 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
       >
         <div className="flex items-center gap-2 border-b border-border px-3 py-3">
           <span className="text-[15px] font-bold tracking-tight text-foreground">{brandName}</span>
-          {!disableBouncingIcon && (
+          {!disableBouncingIcon && !isWhiteLabeled && (
             <span
               className="animate-bounce text-lg leading-none"
               style={{ animationDuration: "2s" }}
-              title="Thanks for using LiteLLM!"
+              title={`Thanks for using ${brandName}!`}
               aria-hidden
             >
               🌴
@@ -187,7 +188,11 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
           {version && (
             <Badge
               variant="outline"
-              render={<a href={RELEASE_NOTES_URL} target="_blank" rel="noopener noreferrer" />}
+              render={
+                !isWhiteLabeled || !!process.env.NEXT_PUBLIC_RELEASE_NOTES_URL ? (
+                  <a href={RELEASE_NOTES_URL} target="_blank" rel="noopener noreferrer" />
+                ) : undefined
+              }
               className="px-1.5 py-0 font-mono text-[10px] font-medium text-muted-foreground"
             >
               v{version}
@@ -250,9 +255,8 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
             onClick={() => {
               const next = i18n.language?.startsWith("zh") ? "en" : "zh-CN";
               i18n.changeLanguage(next);
-              if (typeof window !== "undefined") {
-                localStorage.setItem("litellm_ui_lang", next);
-              }
+              setLocalStorageItem("litellm_ui_lang", next);
+              emitLocalStorageChange("litellm_ui_lang");
             }}
           >
             {i18n.language?.startsWith("zh") ? "简体中文" : "English"}

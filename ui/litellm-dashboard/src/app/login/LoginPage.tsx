@@ -185,6 +185,7 @@ function LoginPageContent() {
   }
 
   const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
+  const isWhiteLabeled = process.env.NEXT_PUBLIC_WHITE_LABEL === "true" || !!process.env.NEXT_PUBLIC_BRAND_NAME;
   const docsUrl = process.env.NEXT_PUBLIC_DOCS_URL || "https://docs.litellm.ai/docs/proxy/ui";
 
   // Show disabled message if admin UI is disabled
@@ -245,9 +246,13 @@ function LoginPageContent() {
                     </p>
                     <p className="mt-2 text-sm">
                       Need to set UI credentials or SSO?{" "}
-                      <a href={docsUrl} target="_blank" rel="noopener noreferrer">
-                        Check the documentation
-                      </a>
+                      {!isWhiteLabeled || !!process.env.NEXT_PUBLIC_DOCS_URL ? (
+                        <a href={docsUrl} target="_blank" rel="noopener noreferrer">
+                          Check the documentation
+                        </a>
+                      ) : (
+                        <span>Please contact your administrator</span>
+                      )}
                       .
                     </p>
                   </AlertDescription>

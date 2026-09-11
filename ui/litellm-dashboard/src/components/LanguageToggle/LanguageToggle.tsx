@@ -5,6 +5,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 
+import { emitLocalStorageChange, setLocalStorageItem } from "@/utils/localStorageUtils";
+
 export const LanguageToggle: React.FC = () => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language?.startsWith("zh") ? "zh-CN" : "en";
@@ -13,9 +15,8 @@ export const LanguageToggle: React.FC = () => {
 
   const toggleLanguage = () => {
     i18n.changeLanguage(nextLang);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("litellm_ui_lang", nextLang);
-    }
+    setLocalStorageItem("litellm_ui_lang", nextLang);
+    emitLocalStorageChange("litellm_ui_lang");
   };
 
   return (

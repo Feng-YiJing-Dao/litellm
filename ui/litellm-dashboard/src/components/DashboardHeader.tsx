@@ -65,7 +65,7 @@ export function DashboardHeader() {
             <ToolbarSeparator />
           </>
         )}
-        <DocsLink />
+        {(!isWhiteLabeled || !!process.env.NEXT_PUBLIC_DOCS_URL) && <DocsLink />}
         {!isWhiteLabeled && <BlogDropdown />}
         {!hideCommunityLinks && !isWhiteLabeled && <CommunityEngagementButtons />}
         <ToolbarSeparator />

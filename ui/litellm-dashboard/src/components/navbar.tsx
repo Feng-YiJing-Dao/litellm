@@ -47,6 +47,8 @@ const Navbar: React.FC<NavbarProps> = ({
   const hideCommunityLinks = useDisableShowPrompts();
   const { isControlPlane, selectedWorker } = useWorker();
   const showWorkerSwitch = isControlPlane && selectedWorker !== null;
+  const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
+  const isWhiteLabeled = process.env.NEXT_PUBLIC_WHITE_LABEL === "true" || !!process.env.NEXT_PUBLIC_BRAND_NAME;
 
   const imageUrl = logoUrl || `${baseUrl}/get_image`;
   const darkImageUrl = logoUrl || `${baseUrl}/get_image?theme=dark`;
@@ -91,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <Link href={uiHref("")} className="flex items-center">
                 <div className="relative">
                   <div className="flex h-10 max-w-48 items-center justify-center overflow-hidden">
-                    <img src={imageUrl} alt="LiteLLM Brand" className={cn(NAV_LOGO_CLASS_NAME, "dark:hidden")} />
+                    <img src={imageUrl} alt={`${brandName} Brand`} className={cn(NAV_LOGO_CLASS_NAME, "dark:hidden")} />
                     <img
                       src={darkImageUrl}
                       alt=""
@@ -103,11 +105,11 @@ const Navbar: React.FC<NavbarProps> = ({
               </Link>
               {version && (
                 <div className="relative">
-                  {!disableBouncingIcon && (
+                  {!disableBouncingIcon && !isWhiteLabeled && (
                     <span
                       className="absolute -left-2 -top-1 animate-bounce text-lg"
                       style={{ animationDuration: "2s" }}
-                      title="Thanks for using LiteLLM!"
+                      title={`Thanks for using ${brandName}!`}
                     >
                       🌑
                     </span>
@@ -133,15 +135,17 @@ const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
 
-            <nav
-              aria-label="Product documentation"
-              className={`flex min-w-0 items-center gap-2 ${showWorkerSwitch ? "border-l border-border pl-4" : ""}`}
-            >
-              <DocsLink />
-              <BlogDropdown />
-            </nav>
+            {(!isWhiteLabeled || !!process.env.NEXT_PUBLIC_DOCS_URL) && (
+              <nav
+                aria-label="Product documentation"
+                className={`flex min-w-0 items-center gap-2 ${showWorkerSwitch ? "border-l border-border pl-4" : ""}`}
+              >
+                <DocsLink />
+                {!isWhiteLabeled && <BlogDropdown />}
+              </nav>
+            )}
 
-            {!hideCommunityLinks && (
+            {!hideCommunityLinks && !isWhiteLabeled && (
               <div className="flex shrink-0 items-center border-l border-border pl-4">
                 <CommunityEngagementButtons />
               </div>

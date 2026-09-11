@@ -1,42 +1,41 @@
 services:
   litellm:
-    build:
-      context: .
-      args:
-        target: runtime
     image: docker.litellm.ai/berriai/litellm:main-stable
-    #########################################
-    ## Uncomment these lines to start proxy with a config.yaml file ##
-    # volumes:
-    #  - ./config.yaml:/app/config.yaml
-    # command:
-    #  - "--config=/app/config.yaml"
-    ##############################################
+    container_name: litellm_proxy
+    restart: always
     ports:
-      - "4000:4000" # Map the container port to the host, change the host port if necessary
+      - "4000:4000"
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+      - ./ui/litellm-dashboard/out:/app/.venv/lib/python3.13/site-packages/litellm/proxy/_experimental/out:ro
+    command:
+      - "--config=/app/config.yaml"
+      - "--detailed_debug"
     environment:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/litellm"
-      # Optional: route read-only queries (find_*, count, group_by, query_raw/_first)
-      # to a separate reader endpoint, e.g. an Aurora reader. Leave unset for
-      # single-DB deployments. With IAM_TOKEN_DB_AUTH enabled, the reader URL
-      # is auto-refreshed alongside the writer.
-      # DATABASE_URL_READ_REPLICA: "postgresql://llmproxy:dbpassword9090@db-reader:5432/litellm"
-      STORE_MODEL_IN_DB: "True" # allows adding models to proxy via UI
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+      REDIS_URL: "redis://redis:6379"
+      STORE_MODEL_IN_DB: "True"
+      LITELLM_MASTER_KEY: "sk-1234"
     env_file:
-      - .env # Load local .env file
+      - .env
     depends_on:
-      - db  # Indicates that this service depends on the 'db' service, ensuring 'db' starts first
-    healthcheck:  # Defines the health check configuration for the container
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
       test:
         - CMD-SHELL
-        - python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')"  # Command to execute for health check
-      interval: 30s  # Perform health check every 30 seconds
-      timeout: 10s   # Health check command times out after 10 seconds
-      retries: 3     # Retry up to 3 times if health check fails
-      start_period: 40s  # Wait 40 seconds after container start before beginning health checks
+        - python3 -c "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/liveliness')"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 25s
 
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     restart: always
     container_name: litellm_db
     environment:
@@ -44,30 +43,31 @@ services:
       POSTGRES_USER: llmproxy
       POSTGRES_PASSWORD: dbpassword9090
     ports:
-      - "5432:5432"
+      - "5433:5432" # Host port 5433 to avoid collision with existing local PostgreSQL
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Persists Postgres data across container restarts
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d litellm -U llmproxy"]
-      interval: 1s
+      interval: 2s
       timeout: 5s
       retries: 10
 
-  prometheus:
-    image: prom/prometheus
-    volumes:
-      - prometheus_data:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.path=/prometheus"
-      - "--storage.tsdb.retention.time=15d"
+  redis:
+    image: valkey/valkey:9.0.6-alpine3.24
     restart: always
+    container_name: litellm_redis
+    ports:
+      - "6380:6379" # Host port 6380 to avoid collision with existing local Valkey/Redis
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
 
 volumes:
-  prometheus_data:
-    driver: local
   postgres_data:
-    name: litellm_postgres_data # Named volume for Postgres data persistence
+    name: litellm_postgres_data
+  redis_data:
+    name: litellm_redis_data

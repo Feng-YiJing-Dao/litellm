@@ -438,6 +438,7 @@ const Sidebar_: React.FC<SidebarProps> = ({
   const logout = useLogout(accessToken);
   const { t } = useTranslation();
   const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
+  const isWhiteLabeled = process.env.NEXT_PUBLIC_WHITE_LABEL === "true" || !!process.env.NEXT_PUBLIC_BRAND_NAME;
 
   const baseUrl = getProxyBaseUrl();
   const version = healthData?.litellm_version;
@@ -453,7 +454,7 @@ const Sidebar_: React.FC<SidebarProps> = ({
   // "adjust state during render" pattern rather than an effect (avoids a
   // setState-in-effect render cascade).
   const [prevRoute, setPrevRoute] = useState(currentRoute);
-  if (currentRoute !== prevRoute) {
+  if (prevRoute !== currentRoute) {
     setPrevRoute(currentRoute);
     const parent = findParentKey(currentRoute);
     if (parent && !openGroups.has(parent)) {
@@ -471,6 +472,7 @@ const Sidebar_: React.FC<SidebarProps> = ({
         // A parent whose children were all filtered out renders as a leaf link
         // to its own page id, which is not a real route. Drop it instead.
         if (item.children && item.children.length === 0) return false;
+        if (isWhiteLabeled && item.key === "learning-resources") return false;
         if (item.key === "llm-playground" && isViewOnly) return false;
         if (item.key === "organizations" || item.key === "users") {
           const hasRoleAccess = !item.roles || item.roles.includes(userRole) || isOrgAdmin;

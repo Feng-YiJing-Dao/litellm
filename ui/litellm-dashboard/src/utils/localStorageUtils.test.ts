@@ -32,13 +32,11 @@ describe("getLocalStorageItem", () => {
   });
 
   it("should return null when window is undefined", () => {
-    const originalWindow = global.window;
-    // @ts-ignore
-    delete global.window;
+    vi.stubGlobal("window", undefined);
 
     expect(getLocalStorageItem("test-key")).toBeNull();
 
-    global.window = originalWindow;
+    vi.unstubAllGlobals();
   });
 
   it("should return the stored value when it exists", () => {
@@ -74,9 +72,7 @@ describe("setLocalStorageItem", () => {
   });
 
   it("should do nothing when window is undefined", () => {
-    const originalWindow = global.window;
-    // @ts-ignore
-    delete global.window;
+    vi.stubGlobal("window", undefined);
 
     const setItemSpy = vi.spyOn(Storage.prototype, "setItem");
 
@@ -84,7 +80,7 @@ describe("setLocalStorageItem", () => {
 
     expect(setItemSpy).not.toHaveBeenCalled();
 
-    global.window = originalWindow;
+    vi.unstubAllGlobals();
     setItemSpy.mockRestore();
   });
 
@@ -119,9 +115,7 @@ describe("removeLocalStorageItem", () => {
   });
 
   it("should do nothing when window is undefined", () => {
-    const originalWindow = global.window;
-    // @ts-ignore
-    delete global.window;
+    vi.stubGlobal("window", undefined);
 
     const removeItemSpy = vi.spyOn(Storage.prototype, "removeItem");
 
@@ -129,7 +123,7 @@ describe("removeLocalStorageItem", () => {
 
     expect(removeItemSpy).not.toHaveBeenCalled();
 
-    global.window = originalWindow;
+    vi.unstubAllGlobals();
     removeItemSpy.mockRestore();
   });
 
