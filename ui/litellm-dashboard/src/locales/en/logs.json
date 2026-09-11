@@ -1,0 +1,18 @@
+{
+  "title": "Logs",
+  "description": "View and trace all API requests proxied through the gateway",
+  "request_id": "Request ID",
+  "model": "Model",
+  "user": "User",
+  "key_name": "Virtual Key",
+  "status": "Response Status",
+  "latency": "Latency",
+  "tokens": "Tokens",
+  "cost": "Estimated Cost",
+  "time": "Request Time",
+  "view_payload": "View Details",
+  "prompt": "Prompt",
+  "completion": "Completion",
+  "metadata": "Request Metadata",
+  "error_information": "Error Information"
+}

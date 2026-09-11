@@ -1,0 +1,18 @@
+{
+  "title": "请求日志",
+  "description": "查看与追踪所有通过网关代理的 API 请求明细",
+  "request_id": "请求 ID",
+  "model": "模型",
+  "user": "用户",
+  "key_name": "虚拟密钥",
+  "status": "响应状态",
+  "latency": "响应延迟",
+  "tokens": "Token 统计",
+  "cost": "预估成本",
+  "time": "请求时间",
+  "view_payload": "查看请求明细",
+  "prompt": "输入内容 (Prompt)",
+  "completion": "响应内容 (Completion)",
+  "metadata": "请求元数据",
+  "error_information": "错误信息"
+}

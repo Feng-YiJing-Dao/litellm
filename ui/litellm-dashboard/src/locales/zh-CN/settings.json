@@ -1,0 +1,15 @@
+{
+  "title": "系统设置",
+  "description": "管理网关路由、日志告警与全局外观设置",
+  "general": "通用设置",
+  "router": "路由设置",
+  "logging": "日志设置",
+  "alerts": "告警设置",
+  "admin": "管理员设置",
+  "theme": "主题设置",
+  "light": "浅色模式",
+  "dark": "深色模式",
+  "system": "跟随系统",
+  "save_settings": "保存设置",
+  "reset_settings": "重置设置"
+}

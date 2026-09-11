@@ -184,6 +184,9 @@ function LoginPageContent() {
     return <LoadingScreen />;
   }
 
+  const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
+  const docsUrl = process.env.NEXT_PUBLIC_DOCS_URL || "https://docs.litellm.ai/docs/proxy/ui";
+
   // Show disabled message if admin UI is disabled
   if (uiConfig && uiConfig.admin_ui_disabled) {
     return (
@@ -192,7 +195,7 @@ function LoginPageContent() {
           <CardContent>
             <div className="flex w-full flex-col gap-4">
               <div className="text-center">
-                <h2 className="text-3xl font-semibold text-foreground">🚅 LiteLLM</h2>
+                <h2 className="text-3xl font-semibold text-foreground">{brandName}</h2>
               </div>
 
               <Alert variant="warning">
@@ -222,12 +225,12 @@ function LoginPageContent() {
           <TooltipProvider>
             <div className="flex w-full flex-col gap-4">
               <div className="text-center">
-                <h2 className="text-3xl font-semibold text-foreground">🚅 LiteLLM</h2>
+                <h2 className="text-3xl font-semibold text-foreground">{brandName}</h2>
               </div>
 
               <div className="text-center">
                 <h3 className="text-2xl font-semibold text-foreground">Login</h3>
-                <p className="text-sm text-muted-foreground">Access your LiteLLM Admin UI.</p>
+                <p className="text-sm text-muted-foreground">Access your {brandName} Admin UI.</p>
               </div>
 
               {!uiConfig?.hide_default_credentials_hint && (
@@ -237,12 +240,12 @@ function LoginPageContent() {
                   <AlertDescription>
                     <p className="text-sm">
                       By default, Username is <code className="bg-muted px-1 py-0.5 rounded-sm text-xs">admin</code> and
-                      Password is your set LiteLLM Proxy
+                      Password is your set {brandName} Proxy
                       <code className="bg-muted px-1 py-0.5 rounded-sm text-xs">MASTER_KEY</code>.
                     </p>
                     <p className="mt-2 text-sm">
                       Need to set UI credentials or SSO?{" "}
-                      <a href="https://docs.litellm.ai/docs/proxy/ui" target="_blank" rel="noopener noreferrer">
+                      <a href={docsUrl} target="_blank" rel="noopener noreferrer">
                         Check the documentation
                       </a>
                       .

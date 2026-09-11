@@ -1,0 +1,13 @@
+{
+  "title": "Teams",
+  "description": "Manage team members, shared quotas, and permissions",
+  "create_team": "Create Team",
+  "team_name": "Team Name",
+  "team_id": "Team ID",
+  "team_alias": "Team Alias",
+  "members": "Members",
+  "team_budget": "Team Budget",
+  "add_member": "Add Member",
+  "delete_team": "Delete Team",
+  "edit_team": "Edit Team"
+}

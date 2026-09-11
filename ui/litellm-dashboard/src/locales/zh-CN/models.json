@@ -1,0 +1,18 @@
+{
+  "title": "模型与终端",
+  "description": "配置与管理大语言模型及其后端终端提供商",
+  "add_model": "添加模型",
+  "model_name": "模型名称",
+  "litellm_model_name": "LiteLLM 模型标识",
+  "api_base": "API 基础路径 (api_base)",
+  "api_key": "API 密钥 (api_key)",
+  "provider": "提供商",
+  "test_model": "测试模型连通性",
+  "delete_model": "删除模型",
+  "edit_model": "编辑模型",
+  "load_balancing": "负载均衡",
+  "routing_strategy": "路由策略",
+  "fallbacks": "容灾备用",
+  "timeout": "超时时间",
+  "max_retries": "最大重试次数"
+}

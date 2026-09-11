@@ -1,0 +1,16 @@
+{
+  "title": "Usage",
+  "description": "Real-time monitoring of token consumption and costs across models, keys, and teams",
+  "total_spend": "Total Spend",
+  "total_requests": "Total Requests",
+  "total_tokens": "Total Tokens",
+  "daily_spend": "Daily Spend Trend",
+  "spend_per_model": "Spend by Model",
+  "spend_per_key": "Spend by Key",
+  "spend_per_user": "Spend by User",
+  "time_range": "Time Range",
+  "last_24_hours": "Last 24 Hours",
+  "last_7_days": "Last 7 Days",
+  "last_30_days": "Last 30 Days",
+  "custom_range": "Custom Range"
+}

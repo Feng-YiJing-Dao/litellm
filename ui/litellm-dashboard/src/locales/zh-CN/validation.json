@@ -1,0 +1,12 @@
+{
+  "required_field": "此字段为必填项",
+  "invalid_type": "类型错误：应为 {{expected}}，实际收到 {{received}}",
+  "min_length": "长度不能少于 {{min}} 个字符",
+  "max_length": "长度不能超过 {{max}} 个字符",
+  "min_value": "数值不能小于 {{min}}",
+  "max_value": "数值不能大于 {{max}}",
+  "invalid_email": "请输入有效的电子邮箱地址",
+  "invalid_url": "请输入有效的 URL 地址",
+  "invalid_string": "输入格式不正确",
+  "invalid_number": "请输入有效的数字"
+}

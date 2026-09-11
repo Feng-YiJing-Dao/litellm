@@ -5,6 +5,7 @@ import { useHealthReadinessDetails } from "@/app/(dashboard)/hooks/healthReadine
 import { useLogout } from "@/app/(dashboard)/hooks/useLogout";
 import { getProxyBaseUrl } from "@/components/networking";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -435,6 +436,8 @@ const Sidebar_: React.FC<SidebarProps> = ({
   const [erroredDarkLogo, setErroredDarkLogo] = useState<string | null>(null);
   const { data: healthData } = useHealthReadinessDetails(accessToken);
   const logout = useLogout(accessToken);
+  const { t } = useTranslation();
+  const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
 
   const baseUrl = getProxyBaseUrl();
   const version = healthData?.litellm_version;
@@ -524,7 +527,19 @@ const Sidebar_: React.FC<SidebarProps> = ({
   const renderLeaf = (item: MenuItem, isChild: boolean) => {
     const active = selectedKey === item.key;
     const size = isChild ? "sub" : "default";
-    const label = <span className="flex-1 truncate group-data-[collapsed=true]/sidebar:hidden">{item.label}</span>;
+    const localizedText = t(`nav:items.${item.key}`, { defaultValue: labelText(item) });
+    const content =
+      typeof item.label === "string" ? (
+        localizedText
+      ) : item.key === "cost-optimization" || item.key === "projects" ? (
+        <span className="flex items-center gap-2">
+          {localizedText} <BetaBadge />
+        </span>
+      ) : (
+        item.label
+      );
+    const label = <span className="flex-1 truncate group-data-[collapsed=true]/sidebar:hidden">{content}</span>;
+    const titleText = collapsed ? t(`nav:items.${item.key}`, { defaultValue: labelText(item) }) : undefined;
 
     if (item.external_url) {
       return (
@@ -533,7 +548,7 @@ const Sidebar_: React.FC<SidebarProps> = ({
           href={item.external_url}
           target="_blank"
           rel="noopener noreferrer"
-          title={collapsed ? labelText(item) : undefined}
+          title={titleText}
           data-active={active || undefined}
           className={cn(sidebarMenuButtonVariants({ isActive: active, size }))}
         >
@@ -548,7 +563,7 @@ const Sidebar_: React.FC<SidebarProps> = ({
       <Link
         key={item.key}
         href={uiHref(routeOf(item))}
-        title={collapsed ? labelText(item) : undefined}
+        title={titleText}
         data-active={active || undefined}
         className={cn(sidebarMenuButtonVariants({ isActive: active, size }))}
       >
@@ -566,16 +581,20 @@ const Sidebar_: React.FC<SidebarProps> = ({
 
     const active = selectedKey === item.key;
     const open = openGroups.has(item.key);
+    const parentTitle = collapsed ? t(`nav:items.${item.key}`, { defaultValue: labelText(item) }) : undefined;
+    const localizedParentText =
+      typeof item.label === "string" ? t(`nav:items.${item.key}`, { defaultValue: item.label }) : item.label;
+
     return (
       <SidebarMenuItem key={item.key}>
         <SidebarMenuButton
           isActive={active}
           aria-expanded={open}
           onClick={() => toggleGroup(item.key)}
-          title={collapsed ? labelText(item) : undefined}
+          title={parentTitle}
         >
           {item.icon}
-          <span className="flex-1 truncate group-data-[collapsed=true]/sidebar:hidden">{item.label}</span>
+          <span className="flex-1 truncate group-data-[collapsed=true]/sidebar:hidden">{localizedParentText}</span>
           <ChevronRight
             className={cn(
               "size-4 shrink-0 transition-transform group-data-[collapsed=true]/sidebar:hidden",
@@ -603,8 +622,8 @@ const Sidebar_: React.FC<SidebarProps> = ({
       <SidebarHeader className="h-14 border-b border-border group-data-[collapsed=true]/sidebar:h-auto">
         <div className="flex items-center justify-between gap-2 group-data-[collapsed=true]/sidebar:flex-col">
           <div className="flex min-w-0 items-center gap-2">
-            <Link href={uiHref("")} className="flex min-w-0 items-center" aria-label="LiteLLM home">
-              <img src={logoSrc} alt="LiteLLM" className={cn(LOGO_CLASS_NAME, "dark:hidden")} />
+            <Link href={uiHref("")} className="flex min-w-0 items-center" aria-label={`${brandName} home`}>
+              <img src={logoSrc} alt={brandName} className={cn(LOGO_CLASS_NAME, "dark:hidden")} />
               <img
                 src={darkLogoSrc}
                 alt=""
@@ -616,7 +635,6 @@ const Sidebar_: React.FC<SidebarProps> = ({
             {version && (
               <Badge
                 variant="outline"
-                render={<a href="https://docs.litellm.ai/release_notes" target="_blank" rel="noopener noreferrer" />}
                 className="px-1.5 py-0 font-mono text-[10px] font-medium text-muted-foreground group-data-[collapsed=true]/sidebar:hidden"
               >
                 v{version}
@@ -642,7 +660,9 @@ const Sidebar_: React.FC<SidebarProps> = ({
           {visibleGroups.map((group, gi) => (
             <SidebarGroup key={group.groupLabel}>
               {gi > 0 && <SidebarSeparator className="hidden group-data-[collapsed=true]/sidebar:block" />}
-              <SidebarGroupLabel>{group.groupLabel}</SidebarGroupLabel>
+              <SidebarGroupLabel>
+                {t(`nav:groups.${group.groupLabel}`, { defaultValue: group.groupLabel })}
+              </SidebarGroupLabel>
               <SidebarMenu>{group.items.map((item) => renderItem(item))}</SidebarMenu>
             </SidebarGroup>
           ))}

@@ -22,13 +22,19 @@ import { clearTokenCookies } from "@/utils/cookieUtils";
 import { clearStoredReturnUrl, getLoginUrl } from "@/utils/returnUrlUtils";
 import { usePathname } from "next/navigation";
 
+import { useTranslation } from "react-i18next";
+import LanguageToggle from "@/components/LanguageToggle/LanguageToggle";
+
 // Top bar for the dashboard shell. Sits only over the content column (the brand
 // lives in the sidebar header); mirrors the design's breadcrumb-left / tools-right layout.
 export function DashboardHeader() {
   const { title } = getBreadcrumb(usePathname());
+  const { t } = useTranslation();
+  const displayTitle = t(`nav:breadcrumbs.${title}`, { defaultValue: title });
   const { isControlPlane, selectedWorker } = useWorker();
   const showWorkerSwitch = isControlPlane && selectedWorker !== null;
   const hideCommunityLinks = useDisableShowPrompts();
+  const isWhiteLabeled = process.env.NEXT_PUBLIC_WHITE_LABEL === "true" || !!process.env.NEXT_PUBLIC_BRAND_NAME;
 
   const handleWorkerSwitch = (workerId: string) => {
     clearTokenCookies();
@@ -47,7 +53,7 @@ export function DashboardHeader() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem className="min-w-0">
-            <BreadcrumbPage className="truncate">{title}</BreadcrumbPage>
+            <BreadcrumbPage className="truncate">{displayTitle}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -60,9 +66,10 @@ export function DashboardHeader() {
           </>
         )}
         <DocsLink />
-        <BlogDropdown />
-        {!hideCommunityLinks && <CommunityEngagementButtons />}
+        {!isWhiteLabeled && <BlogDropdown />}
+        {!hideCommunityLinks && !isWhiteLabeled && <CommunityEngagementButtons />}
         <ToolbarSeparator />
+        <LanguageToggle />
         <ThemeToggle />
         <NotificationsBell />
       </div>

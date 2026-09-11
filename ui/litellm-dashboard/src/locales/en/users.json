@@ -1,0 +1,11 @@
+{
+  "title": "Internal Users",
+  "description": "Manage internal user accounts, role permissions, and individual budgets",
+  "create_user": "Create User",
+  "user_id": "User ID",
+  "user_email": "Email",
+  "user_role": "Role",
+  "max_budget": "Max Budget",
+  "delete_user": "Delete User",
+  "edit_user": "Edit User"
+}

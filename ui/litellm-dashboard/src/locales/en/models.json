@@ -1,0 +1,18 @@
+{
+  "title": "Models + Endpoints",
+  "description": "Configure and manage LLM models and their backend endpoint providers",
+  "add_model": "Add Model",
+  "model_name": "Model Name",
+  "litellm_model_name": "LiteLLM Model Name",
+  "api_base": "API Base (api_base)",
+  "api_key": "API Key (api_key)",
+  "provider": "Provider",
+  "test_model": "Test Model Connection",
+  "delete_model": "Delete Model",
+  "edit_model": "Edit Model",
+  "load_balancing": "Load Balancing",
+  "routing_strategy": "Routing Strategy",
+  "fallbacks": "Fallbacks",
+  "timeout": "Timeout",
+  "max_retries": "Max Retries"
+}

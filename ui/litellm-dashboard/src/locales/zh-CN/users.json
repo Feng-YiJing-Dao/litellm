@@ -1,0 +1,11 @@
+{
+  "title": "内部用户",
+  "description": "管理系统内部用户账号、角色权限与独立预算",
+  "create_user": "创建用户",
+  "user_id": "用户 ID",
+  "user_email": "电子邮箱",
+  "user_role": "角色权限",
+  "max_budget": "最大预算",
+  "delete_user": "删除用户",
+  "edit_user": "编辑用户"
+}

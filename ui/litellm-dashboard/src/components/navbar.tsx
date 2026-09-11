@@ -19,6 +19,7 @@ import { cn } from "@/lib/cva.config";
 import { NotificationsBell } from "./Navbar/NotificationsBell/NotificationsBell";
 import UserDropdown from "./Navbar/UserDropdown/UserDropdown";
 import ThemeToggle from "./ThemeToggle/ThemeToggle";
+import LanguageToggle from "./LanguageToggle/LanguageToggle";
 import ViewSwitcher from "./Navbar/ViewSwitcher";
 import WorkerDropdown from "./Navbar/WorkerDropdown/WorkerDropdown";
 
@@ -111,15 +112,8 @@ const Navbar: React.FC<NavbarProps> = ({
                       🌑
                     </span>
                   )}
-                  <Badge variant="outline" className="relative z-raised cursor-pointer text-xs font-medium">
-                    <a
-                      href="https://docs.litellm.ai/release_notes"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="shrink-0"
-                    >
-                      v{version}
-                    </a>
+                  <Badge variant="outline" className="relative z-raised text-xs font-medium">
+                    v{version}
                   </Badge>
                 </div>
               )}
@@ -156,6 +150,8 @@ const Navbar: React.FC<NavbarProps> = ({
             {!isPublicPage && (
               <div className="flex shrink-0 items-center border-l border-border pl-4">
                 <div className="flex items-center gap-0.5 rounded-lg bg-muted px-1 py-0 transition-colors hover:bg-accent">
+                  <LanguageToggle />
+                  <span className="mx-0.5 h-6 w-px shrink-0 bg-border" aria-hidden />
                   <ThemeToggle />
                   <span className="mx-0.5 h-6 w-px shrink-0 bg-border" aria-hidden />
                   <NotificationsBell />

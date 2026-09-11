@@ -1,0 +1,15 @@
+{
+  "title": "Settings",
+  "description": "Configure gateway routing, logging alerts, and overall appearance",
+  "general": "General Settings",
+  "router": "Router Settings",
+  "logging": "Logging Settings",
+  "alerts": "Alert Settings",
+  "admin": "Admin Settings",
+  "theme": "Theme Settings",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "save_settings": "Save Settings",
+  "reset_settings": "Reset Settings"
+}

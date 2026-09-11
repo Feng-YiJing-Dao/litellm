@@ -14,10 +14,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/cva.config";
-import { ChevronsUpDown, Crown, IdCard, LogOut, Mail, ShieldCheck } from "lucide-react";
+import { ChevronsUpDown, Crown, IdCard, LogOut, Mail, ShieldCheck, Languages } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
-const RELEASE_NOTES_URL = "https://docs.litellm.ai/release_notes";
+const RELEASE_NOTES_URL = process.env.NEXT_PUBLIC_RELEASE_NOTES_URL || "https://docs.litellm.ai/release_notes";
 
 function hueFromString(seed: string): number {
   let h = 0;
@@ -88,6 +89,8 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
   const disableBlogPosts = useDisableBlogPosts();
   const disableBouncingIcon = useDisableBouncingIcon();
   const disableShowNewBadge = useDisableShowNewBadge();
+  const { t, i18n } = useTranslation();
+  const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
 
   const setFlag = (key: string, checked: boolean) => {
     if (checked) {
@@ -169,7 +172,7 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
         data-testid="sidebar-account-menu-panel"
       >
         <div className="flex items-center gap-2 border-b border-border px-3 py-3">
-          <span className="text-[15px] font-bold tracking-tight text-foreground">LiteLLM</span>
+          <span className="text-[15px] font-bold tracking-tight text-foreground">{brandName}</span>
           {!disableBouncingIcon && (
             <span
               className="animate-bounce text-lg leading-none"
@@ -235,13 +238,36 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
 
         <Separator />
 
+        <div className="flex h-[38px] items-center justify-between gap-3 px-3">
+          <span className="flex items-center gap-2 text-[13px] text-foreground">
+            <Languages className="size-4 text-muted-foreground" />
+            {t("common:language", "Language")}
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 px-2 text-xs font-medium text-muted-foreground hover:text-foreground"
+            onClick={() => {
+              const next = i18n.language?.startsWith("zh") ? "en" : "zh-CN";
+              i18n.changeLanguage(next);
+              if (typeof window !== "undefined") {
+                localStorage.setItem("litellm_ui_lang", next);
+              }
+            }}
+          >
+            {i18n.language?.startsWith("zh") ? "简体中文" : "English"}
+          </Button>
+        </div>
+
+        <Separator />
+
         <Button
           variant="ghost"
           onClick={onLogout}
           className="h-[42px] w-full justify-start gap-2.5 rounded-none px-3 text-sm font-medium text-foreground"
         >
           <LogOut className="size-[19px] text-muted-foreground" />
-          Logout
+          {t("common:logout", "Logout")}
         </Button>
       </PopoverContent>
     </Popover>
