@@ -1,5 +1,6 @@
 import { parseAsString, useQueryState } from "nuqs";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import BulkEditUserModal from "./BulkEditUsers";
 import BulkCreateUsersButton from "@/components/bulk_create_users_button";
@@ -58,6 +59,7 @@ const ViewUserDashboard: React.FC<ViewUserDashboardProps> = ({
   teams,
   orgAdminOrgIds,
 }) => {
+  const { t } = useTranslation(["users", "common"]);
   const isProxyAdmin = userRole ? isProxyAdminRole(userRole) : false;
   const queryClient = useQueryClient();
 
@@ -343,7 +345,9 @@ const ViewUserDashboard: React.FC<ViewUserDashboardProps> = ({
                   variant={selectionMode ? "default" : "outline"}
                   data-testid="toggle-user-selection"
                 >
-                  {selectionMode ? "Cancel Selection" : "Select Users"}
+                  {selectionMode
+                    ? t("users:cancel_selection", { defaultValue: "Cancel Selection" })
+                    : t("users:select_users", { defaultValue: "Select Users" })}
                 </Button>
               )}
 
@@ -354,7 +358,10 @@ const ViewUserDashboard: React.FC<ViewUserDashboardProps> = ({
                   disabled={selectedUsers.length === 0}
                   data-testid="bulk-edit-users"
                 >
-                  Bulk Edit ({selectedUsers.length} selected)
+                  {t("users:bulk_edit_count", {
+                    defaultValue: `Bulk Edit (${selectedUsers.length} selected)`,
+                    count: selectedUsers.length,
+                  })}
                 </Button>
               )}
             </>
@@ -366,10 +373,10 @@ const ViewUserDashboard: React.FC<ViewUserDashboardProps> = ({
         <Tabs defaultValue="users" className="gap-0">
           <TabsList variant="line" className="mb-4">
             <TabsTrigger value="users" className="flex-none data-active:text-primary after:bg-primary">
-              Users
+              {t("users:tab_users", { defaultValue: "Users" })}
             </TabsTrigger>
             <TabsTrigger value="default-settings" className="flex-none data-active:text-primary after:bg-primary">
-              Default User Settings
+              {t("users:tab_default_settings", { defaultValue: "Default User Settings" })}
             </TabsTrigger>
           </TabsList>
 
@@ -403,18 +410,18 @@ const ViewUserDashboard: React.FC<ViewUserDashboardProps> = ({
       {/* Existing Modals */}
       <DeleteResourceModal
         isOpen={isDeleteModalOpen}
-        title="Delete User?"
-        message="Are you sure you want to delete this user? This action cannot be undone."
-        resourceInformationTitle="User Information"
+        title={t("users:delete_user_confirm_title", { defaultValue: "Delete User?" })}
+        message={t("users:delete_user_confirm_msg", { defaultValue: "Are you sure you want to delete this user? This action cannot be undone." })}
+        resourceInformationTitle={t("users:user_info_title", { defaultValue: "User Information" })}
         resourceInformation={[
-          { label: "Email", value: userToDelete?.user_email },
-          { label: "User ID", value: userToDelete?.user_id, code: true },
+          { label: t("users:col_email", { defaultValue: "Email" }), value: userToDelete?.user_email },
+          { label: t("users:col_user_id", { defaultValue: "User ID" }), value: userToDelete?.user_id, code: true },
           {
-            label: "Global Proxy Role",
+            label: t("users:global_proxy_role", { defaultValue: "Global Proxy Role" }),
             value:
               (userToDelete && possibleUIRoles?.[userToDelete.user_role]?.ui_label) || userToDelete?.user_role || "-",
           },
-          { label: "Total Spend (USD)", value: userToDelete?.spend?.toFixed(2) },
+          { label: t("users:total_spend_usd", { defaultValue: "Total Spend (USD)" }), value: userToDelete?.spend?.toFixed(2) },
         ]}
         onCancel={cancelDelete}
         onOk={confirmDelete}

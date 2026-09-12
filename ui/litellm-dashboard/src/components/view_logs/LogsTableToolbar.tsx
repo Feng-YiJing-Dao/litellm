@@ -62,10 +62,33 @@ export function LogsTableToolbar({
     setQuickSelectOpen(false);
   };
 
+  const getOptionLabel = (option: { label: string; value: number; unit: string }) => {
+    switch (option.label) {
+      case "Last Minute":
+        return t("logs:quick_last_minute", { defaultValue: "Last Minute" });
+      case "Last 15 Minutes":
+        return t("logs:quick_last_15_minutes", { defaultValue: "Last 15 Minutes" });
+      case "Last Hour":
+        return t("logs:quick_last_hour", { defaultValue: "Last Hour" });
+      case "Last 4 Hours":
+        return t("logs:quick_last_4_hours", { defaultValue: "Last 4 Hours" });
+      case "Last 24 Hours":
+        return t("logs:quick_last_24_hours", { defaultValue: "Last 24 Hours" });
+      case "Last 7 Days":
+        return t("logs:quick_last_7_days", { defaultValue: "Last 7 Days" });
+      default:
+        return option.label;
+    }
+  };
+
   const selectedOption = QUICK_SELECT_OPTIONS.find(
     (option) => option.value === selectedTimeInterval.value && option.unit === selectedTimeInterval.unit,
   );
-  const displayLabel = isCustomDate ? getTimeRangeDisplay(isCustomDate, startTime, endTime) : selectedOption?.label;
+  const displayLabel = isCustomDate
+    ? getTimeRangeDisplay(isCustomDate, startTime, endTime)
+    : selectedOption
+      ? getOptionLabel(selectedOption)
+      : undefined;
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -87,7 +110,7 @@ export function LogsTableToolbar({
                 className="w-full justify-start font-normal"
                 onClick={() => applyQuickSelect(option)}
               >
-                {option.label}
+                {getOptionLabel(option)}
               </Button>
             ))}
             <div className="my-2 border-t" />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { RefreshCw } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import useAuthorized from "@/app/(dashboard)/hooks/useAuthorized";
@@ -80,6 +81,7 @@ const renderPanel = (key: string) => {
 };
 
 export default function ModelsAndEndpointsPage() {
+  const { t } = useTranslation(["models", "common"]);
   const { accessToken, userRole, userId: userID, premiumUser, isViewOnly } = useAuthorized();
   const { data: teams } = useTeams();
   const { data: uiSettings } = useUISettings();
@@ -89,6 +91,18 @@ export default function ModelsAndEndpointsPage() {
 
   const [activeKey, setActiveKey] = useState<string>(BASE_TAB_KEY);
   const [lastRefreshed, setLastRefreshed] = useState("");
+
+  const tabLabels: Record<ModelTabSlug, string> = {
+    add: t("models:tab_add_model", { defaultValue: "Add Model" }),
+    "auto-routers": t("models:tab_auto_routers", { defaultValue: "Auto-Routers" }),
+    "llm-credentials": t("models:tab_llm_credentials", { defaultValue: "LLM Credentials" }),
+    "pass-through": t("models:tab_pass_through", { defaultValue: "Pass-Through Endpoints" }),
+    health: t("models:tab_health", { defaultValue: "Health Status" }),
+    "retry-settings": t("models:tab_retry_settings", { defaultValue: "Model Retry Settings" }),
+    "model-group-alias": t("models:tab_model_group_alias", { defaultValue: "Model Group Alias" }),
+    "access-group-budgets": t("models:tab_access_group_budgets", { defaultValue: "Model Access Group Budgets" }),
+    "price-data": t("models:tab_price_data", { defaultValue: "Price Data Reload" }),
+  };
 
   const isInternalUser = userRole && internalUserRoles.includes(userRole);
   const canCreate = canCreateModels(
@@ -121,17 +135,19 @@ export default function ModelsAndEndpointsPage() {
     [canCreate, isAdmin],
   );
 
-  const allModelsLabel = isAdmin ? "All Models" : "Your Models";
+  const allModelsLabel = isAdmin
+    ? t("models:all_models", { defaultValue: "All Models" })
+    : t("models:your_models", { defaultValue: "Your Models" });
   const tabLabel = (slug: "" | ModelTabSlug): React.ReactNode => {
     if (!slug) return allModelsLabel;
     if (slug === "auto-routers" || slug === "access-group-budgets") {
       return (
         <span className="flex items-center gap-2">
-          {TAB_LABELS[slug]} <BetaBadge />
+          {tabLabels[slug]} <BetaBadge />
         </span>
       );
     }
-    return TAB_LABELS[slug];
+    return tabLabels[slug];
   };
 
   const handleRefreshClick = () => {
@@ -164,11 +180,11 @@ export default function ModelsAndEndpointsPage() {
       <div className="mt-2 flex w-full flex-col gap-2 p-8">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold">Model Management</h2>
+            <h2 className="text-lg font-semibold">{t("models:model_management", { defaultValue: "Model Management" })}</h2>
             {isAdmin ? (
-              <p className="text-sm text-muted-foreground">Add and manage models for the proxy</p>
+              <p className="text-sm text-muted-foreground">{t("models:model_management_desc", { defaultValue: "Add and manage models for the proxy" })}</p>
             ) : (
-              <p className="text-sm text-muted-foreground">Add models for teams you are an admin for.</p>
+              <p className="text-sm text-muted-foreground">{t("models:model_management_desc_user", { defaultValue: "Add models for teams you are an admin for." })}</p>
             )}
           </div>
         </div>
@@ -203,9 +219,11 @@ export default function ModelsAndEndpointsPage() {
               </div>
               <div className="flex shrink-0 items-center gap-2 pb-1">
                 {lastRefreshed && (
-                  <span className="text-xs text-muted-foreground">Last Refreshed: {lastRefreshed}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {t("models:last_refreshed", { defaultValue: "Last Refreshed" })}: {lastRefreshed}
+                  </span>
                 )}
-                <Button variant="ghost" size="icon-sm" onClick={handleRefreshClick} aria-label="Refresh models">
+                <Button variant="ghost" size="icon-sm" onClick={handleRefreshClick} aria-label={t("models:refresh_models", { defaultValue: "Refresh models" })}>
                   <RefreshCw />
                 </Button>
               </div>

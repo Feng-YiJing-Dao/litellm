@@ -62,5 +62,12 @@
   "desc_user_usage": "按单个用户查看使用情况",
   "desc_user_agent_activity": "查看详细的用户智能体活动日志",
   "usage_view_title": "使用情况视图",
-  "usage_view_description": "选择您要查看的使用数据维度"
+  "usage_view_description": "选择您要查看的使用数据维度",
+  "limit": "上限",
+  "no_limit": "无限制",
+  "max_budget": "最高预算",
+  "gateway_requests_by_endpoint": "网关各端点请求数",
+  "top_virtual_keys": "消耗最高虚拟密钥",
+  "top_public_model_names": "最常用公共模型名称",
+  "top_litellm_models": "最常用 LiteLLM 模型"
 }

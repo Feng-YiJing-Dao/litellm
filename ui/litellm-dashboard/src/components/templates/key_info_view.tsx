@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 import { EntityLink } from "@/components/shared/EntityLink";
 import { modelGroupHref, teamDetailHref } from "@/utils/entityLinks";
 import { BadgeLink } from "@/components/shared/BadgeLink";
@@ -85,8 +86,10 @@ export default function KeyInfoView({
   teams,
   onKeyDataUpdate,
   onDelete,
-  backButtonText = "Back to Keys",
+  backButtonText,
 }: KeyInfoViewProps) {
+  const { t } = useTranslation(["keys", "common"]);
+  const resolvedBackButtonText = backButtonText ?? t("keys:back_to_keys", "Back to Keys");
   const { accessToken, userId: userID, userRole, premiumUser } = useAuthorized();
   const activityDateRange = useActivityDateRange();
   const queryClient = useQueryClient();
@@ -173,9 +176,9 @@ export default function KeyInfoView({
       <div className="p-4">
         <Button variant="ghost" onClick={onClose} className="mb-4">
           <ArrowLeft className="size-4" />
-          {backButtonText}
+          {resolvedBackButtonText}
         </Button>
-        <p className="text-sm">Key not found</p>
+        <p className="text-sm">{t("keys:key_not_found", "Key not found")}</p>
       </div>
     );
   }
@@ -505,7 +508,7 @@ export default function KeyInfoView({
   const parentOrg = orgId ? organizations?.find((org) => org.organization_id === orgId) : null;
 
   const hasOwnBudget = currentKeyData.max_budget !== null;
-  const budgetDisplay = hasOwnBudget ? `$${formatNumberWithCommas(currentKeyData.max_budget, 2)}` : "Unlimited";
+  const budgetDisplay = hasOwnBudget ? `$${formatNumberWithCommas(currentKeyData.max_budget, 2)}` : t("keys:unlimited", "Unlimited");
   const inheritedGates = hasOwnBudget ? [] : inheritedBudgetGates(parentTeam, parentOrg);
 
   return (
@@ -539,7 +542,7 @@ export default function KeyInfoView({
         onToggleBlocked={canBlockKey ? () => setIsBlockModalOpen(true) : undefined}
         isBlocked={isBlocked}
         canModifyKey={canModifyKey}
-        backButtonText={backButtonText}
+        backButtonText={resolvedBackButtonText}
         regenerateDisabled={!premiumUser}
         regenerateTooltip={
           !premiumUser ? "This is a LiteLLM Enterprise feature, and requires a valid key to use." : undefined
@@ -557,27 +560,30 @@ export default function KeyInfoView({
       {/* Delete Confirmation Modal */}
       <DeleteResourceModal
         isOpen={isDeleteModalOpen}
-        title="Delete Key"
-        alertMessage="This action is irreversible and will immediately revoke access for any applications using this key."
-        message="Are you sure you want to delete this Virtual Key?"
-        resourceInformationTitle="Key Information"
+        title={t("keys:delete_key_confirm_title", "Delete Key")}
+        alertMessage={t(
+          "keys:delete_key_confirm_alert",
+          "This action is irreversible and will immediately revoke access for any applications using this key.",
+        )}
+        message={t("keys:delete_key_confirm_msg", "Are you sure you want to delete this Virtual Key?")}
+        resourceInformationTitle={t("keys:key_info_title", "Key Information")}
         resourceInformation={[
           {
-            label: "Key Alias",
+            label: t("keys:key_alias", "Key Alias"),
             value: currentKeyData?.key_alias || "-",
           },
           {
-            label: "Key ID",
+            label: t("keys:key_id", "Key ID"),
             value: currentKeyData?.token_id || currentKeyData?.token || "-",
             code: true,
           },
           {
-            label: "Team ID",
+            label: t("keys:team_id", "Team ID"),
             value: currentKeyData?.team_id || "-",
             code: true,
           },
           {
-            label: "Spend",
+            label: t("keys:spend", "Spend"),
             value: currentKeyData?.spend ? `$${formatNumberWithCommas(currentKeyData.spend, 4)}` : "$0.0000",
           },
         ]}
@@ -593,22 +599,26 @@ export default function KeyInfoView({
       <Dialog open={isResetSpendModalOpen} onOpenChange={(open) => setIsResetSpendModalOpen(open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Reset Key Spend</DialogTitle>
+            <DialogTitle>{t("keys:reset_spend_confirm_title", "Reset Key Spend")}</DialogTitle>
           </DialogHeader>
           <p>
-            Reset spend for <strong>{currentKeyData?.key_alias || currentKeyData?.token_id || "this key"}</strong> to{" "}
-            <strong>$0</strong>?
+            {t("keys:reset_spend_confirm_text", "Reset spend for {{name}} to $0?", {
+              name: currentKeyData?.key_alias || currentKeyData?.token_id || "this key",
+            })}
           </p>
           <p style={{ color: "#666", fontSize: "0.875rem", marginTop: 8 }}>
-            Current spend: <strong>${formatNumberWithCommas(currentKeyData.spend, 4)}</strong>. Spend history is
-            preserved in logs. This resets the current period spend counter, the same as an automatic budget reset.
+            {t(
+              "keys:reset_spend_history_hint",
+              "Current spend: ${{spend}}. Spend history is preserved in logs. This resets the current period spend counter, the same as an automatic budget reset.",
+              { spend: formatNumberWithCommas(currentKeyData.spend, 4) },
+            )}
           </p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsResetSpendModalOpen(false)}>
-              Cancel
+              {t("common:cancel", "Cancel")}
             </Button>
             <Button variant="destructive" onClick={handleResetSpend} disabled={resetSpendLoading}>
-              Reset
+              {t("common:reset", "Reset")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -617,27 +627,37 @@ export default function KeyInfoView({
       <Dialog open={isBlockModalOpen} onOpenChange={(open) => setIsBlockModalOpen(open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{isBlocked ? "Unblock Key" : "Block Key"}</DialogTitle>
+            <DialogTitle>
+              {isBlocked ? t("keys:unblock_key_confirm_title", "Unblock Key") : t("keys:block_key_confirm_title", "Block Key")}
+            </DialogTitle>
           </DialogHeader>
           <p>
-            {isBlocked ? "Unblock" : "Block"}{" "}
-            <strong>{currentKeyData?.key_alias || currentKeyData?.token_id || "this key"}</strong>?
+            {isBlocked
+              ? t("keys:unblock_key_confirm_text", "Unblock {{name}}?", {
+                  name: currentKeyData?.key_alias || currentKeyData?.token_id || "this key",
+                })
+              : t("keys:block_key_confirm_text", "Block {{name}}?", {
+                  name: currentKeyData?.key_alias || currentKeyData?.token_id || "this key",
+                })}
           </p>
           <p style={{ color: "#666", fontSize: "0.875rem", marginTop: 8 }}>
             {isBlocked
-              ? "Requests using this key will be accepted again."
-              : "Requests using this key will be rejected with a 401 error until it is unblocked. The key is not deleted and can be unblocked at any time."}
+              ? t("keys:unblock_key_desc", "Requests using this key will be accepted again.")
+              : t(
+                  "keys:block_key_desc",
+                  "Requests using this key will be rejected with a 401 error until it is unblocked. The key is not deleted and can be unblocked at any time.",
+                )}
           </p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsBlockModalOpen(false)}>
-              Cancel
+              {t("common:cancel", "Cancel")}
             </Button>
             <Button
               variant={isBlocked ? "default" : "destructive"}
               onClick={handleToggleBlocked}
               disabled={blockLoading}
             >
-              {isBlocked ? "Unblock" : "Block"}
+              {isBlocked ? t("keys:unblock_key", "Unblock") : t("keys:block_key", "Block")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -646,18 +666,18 @@ export default function KeyInfoView({
       <Tabs defaultValue="overview">
         <TabsList variant="line" className="mb-4 h-auto w-full justify-start rounded-none border-b p-0">
           <TabsTrigger value="overview" className="flex-none rounded-none px-4 py-2">
-            Overview
+            {t("keys:tab_overview", "Overview")}
           </TabsTrigger>
           <TabsTrigger value="savings" className="flex-none rounded-none px-4 py-2">
-            Savings
+            {t("keys:tab_savings", "Savings")}
           </TabsTrigger>
           {hasProxyWideSpendView(userRole) && (
             <TabsTrigger value="auto-router-usage" className="flex-none rounded-none px-4 py-2">
-              Auto-router usage
+              {t("keys:tab_auto_router_usage", "Auto-router usage")}
             </TabsTrigger>
           )}
           <TabsTrigger value="settings" className="flex-none rounded-none px-4 py-2">
-            Settings
+            {t("keys:tab_settings", "Settings")}
           </TabsTrigger>
         </TabsList>
 
@@ -666,36 +686,36 @@ export default function KeyInfoView({
           <TabsContent value="overview" keepMounted>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="block p-6">
-                <p className="text-sm">Spend</p>
+                <p className="text-sm">{t("keys:card_spend", "Spend")}</p>
                 <div className="mt-2">
                   <h3 className="text-lg font-medium">${formatNumberWithCommas(currentKeyData.spend, 4)}</h3>
                   <p className="text-sm">
-                    of {budgetDisplay}
+                    {t("keys:of", "of")} {budgetDisplay}
                     <InheritedBudgetHint gates={inheritedGates} />
                   </p>
                   {currentKeyData.budget_reset_at && (
-                    <p className="text-sm">Resets {formatTimestamp(currentKeyData.budget_reset_at)}</p>
+                    <p className="text-sm">{t("keys:resets", "Resets")} {formatTimestamp(currentKeyData.budget_reset_at)}</p>
                   )}
                 </div>
               </Card>
 
               <Card className="block p-6">
-                <p className="text-sm">Rate Limits</p>
+                <p className="text-sm">{t("keys:card_rate_limits", "Rate Limits")}</p>
                 <div className="mt-2">
                   <p className="text-sm">
-                    TPM: {currentKeyData.tpm_limit !== null ? currentKeyData.tpm_limit : "Unlimited"}
+                    TPM: {currentKeyData.tpm_limit !== null ? currentKeyData.tpm_limit : t("keys:unlimited", "Unlimited")}
                   </p>
                   <p className="text-sm">
-                    RPM: {currentKeyData.rpm_limit !== null ? currentKeyData.rpm_limit : "Unlimited"}
+                    RPM: {currentKeyData.rpm_limit !== null ? currentKeyData.rpm_limit : t("keys:unlimited", "Unlimited")}
                   </p>
                   {Boolean(currentKeyData.metadata?.throttle_on_budget_exceeded) && (
-                    <p className="text-sm">Throttle on budget exceeded: Yes</p>
+                    <p className="text-sm">{t("keys:throttle_exceeded_yes", "Throttle on budget exceeded: Yes")}</p>
                   )}
                 </div>
               </Card>
 
               <Card className="block p-6">
-                <p className="text-sm">Models</p>
+                <p className="text-sm">{t("keys:card_models", "Models")}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {currentKeyData.models && currentKeyData.models.length > 0 ? (
                     currentKeyData.models.map((model, index) => (
@@ -704,7 +724,7 @@ export default function KeyInfoView({
                       </BadgeLink>
                     ))
                   ) : (
-                    <p className="text-sm">No models specified</p>
+                    <p className="text-sm">{t("keys:no_models_specified", "No models specified")}</p>
                   )}
                 </div>
               </Card>
@@ -718,7 +738,7 @@ export default function KeyInfoView({
               </Card>
 
               <Card className="block p-6">
-                <p className="text-sm font-medium mb-3">Guardrails</p>
+                <p className="text-sm font-medium mb-3">{t("keys:guardrails", "Guardrails")}</p>
                 {Array.isArray(currentKeyData.metadata?.guardrails) && currentKeyData.metadata.guardrails.length > 0 ? (
                   <div className="flex flex-wrap gap-2">
                     {currentKeyData.metadata.guardrails.map((guardrail: string, index: number) => (
@@ -728,18 +748,18 @@ export default function KeyInfoView({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No guardrails configured</p>
+                  <p className="text-sm text-muted-foreground">{t("keys:no_guardrails_configured", "No guardrails configured")}</p>
                 )}
                 {typeof currentKeyData.metadata?.disable_global_guardrails === "boolean" &&
                   currentKeyData.metadata.disable_global_guardrails === true && (
                     <div className="mt-3 pt-3 border-t border-border">
-                      <Badge variant="destructive">Global Guardrails Disabled</Badge>
+                      <Badge variant="destructive">{t("keys:global_guardrails_disabled", "Global Guardrails Disabled")}</Badge>
                     </div>
                   )}
               </Card>
 
               <Card className="block p-6">
-                <p className="text-sm font-medium mb-3">Policies</p>
+                <p className="text-sm font-medium mb-3">{t("keys:policies", "Policies")}</p>
                 {Array.isArray(currentKeyData.metadata?.policies) && currentKeyData.metadata.policies.length > 0 ? (
                   <div className="space-y-4">
                     {currentKeyData.metadata.policies.map((policy: string, index: number) => (
@@ -748,11 +768,11 @@ export default function KeyInfoView({
                           <Badge variant="secondary" className="min-w-0 break-words">
                             {policy}
                           </Badge>
-                          {loadingPolicies && <p className="text-xs text-muted-foreground">Loading guardrails...</p>}
+                          {loadingPolicies && <p className="text-xs text-muted-foreground">{t("keys:loading_guardrails", "Loading guardrails...")}</p>}
                         </div>
                         {!loadingPolicies && policyGuardrails[policy] && policyGuardrails[policy].length > 0 && (
                           <div className="ml-4 pl-3 border-l-2 border-border">
-                            <p className="text-xs text-muted-foreground mb-1">Resolved Guardrails:</p>
+                            <p className="text-xs text-muted-foreground mb-1">{t("keys:resolved_guardrails", "Resolved Guardrails:")}</p>
                             <div className="flex flex-wrap gap-1">
                               {policyGuardrails[policy].map((guardrail: string, gIndex: number) => (
                                 <Badge key={gIndex} variant="secondary" className="min-w-0 break-words">
@@ -766,7 +786,7 @@ export default function KeyInfoView({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No policies configured</p>
+                  <p className="text-sm text-muted-foreground">{t("keys:no_policies_configured", "No policies configured")}</p>
                 )}
               </Card>
 
@@ -817,10 +837,10 @@ export default function KeyInfoView({
           <TabsContent value="settings" keepMounted>
             <Card className="block p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium">Key Settings</h3>
+                <h3 className="text-lg font-medium">{t("keys:key_settings", "Key Settings")}</h3>
                 {!isEditing && canModifyKey && (
                   <Button variant="outline" onClick={() => setIsEditing(true)}>
-                    Edit Settings
+                    {t("keys:edit_settings", "Edit Settings")}
                   </Button>
                 )}
               </div>
@@ -839,36 +859,36 @@ export default function KeyInfoView({
               ) : (
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium">Key ID</p>
+                    <p className="text-sm font-medium">{t("keys:key_id", "Key ID")}</p>
                     <p className="text-sm font-mono">{currentKeyData.token_id || currentKeyData.token}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Key Alias</p>
-                    <p className="text-sm">{currentKeyData.key_alias || "Not Set"}</p>
+                    <p className="text-sm font-medium">{t("keys:key_alias", "Key Alias")}</p>
+                    <p className="text-sm">{currentKeyData.key_alias || t("keys:not_set", "Not Set")}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Secret Key</p>
+                    <p className="text-sm font-medium">{t("keys:secret_key", "Secret Key")}</p>
                     <p className="text-sm font-mono">{currentKeyData.key_name}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Team ID</p>
+                    <p className="text-sm font-medium">{t("keys:team_id", "Team ID")}</p>
                     <p className="text-sm">
                       {currentKeyData.team_id ? (
                         <EntityLink href={teamDetailHref(currentKeyData.team_id)} className="font-normal">
                           {currentKeyData.team_id}
                         </EntityLink>
                       ) : (
-                        "Not Set"
+                        t("keys:not_set", "Not Set")
                       )}
                     </p>
                   </div>
 
                   {enableProjectsUI && (
                     <div>
-                      <p className="text-sm font-medium">Project</p>
+                      <p className="text-sm font-medium">{t("keys:project", "Project")}</p>
                       <p className="text-sm">
                         {currentKeyData.project_id
                           ? (() => {
@@ -877,43 +897,43 @@ export default function KeyInfoView({
                                 ? `${project.project_alias} (${currentKeyData.project_id})`
                                 : currentKeyData.project_id;
                             })()
-                          : "Not Set"}
+                          : t("keys:not_set", "Not Set")}
                       </p>
                     </div>
                   )}
 
                   <div>
-                    <p className="text-sm font-medium">Organization</p>
-                    <p className="text-sm">{(currentKeyData.organization_id ?? currentKeyData.org_id) || "Not Set"}</p>
+                    <p className="text-sm font-medium">{t("keys:organization", "Organization")}</p>
+                    <p className="text-sm">{(currentKeyData.organization_id ?? currentKeyData.org_id) || t("keys:not_set", "Not Set")}</p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Created</p>
+                    <p className="text-sm font-medium">{t("keys:created", "Created")}</p>
                     <p className="text-sm">{formatTimestamp(currentKeyData.created_at)}</p>
                   </div>
 
                   {lastRegeneratedAt && (
                     <div>
-                      <p className="text-sm font-medium">Last Regenerated</p>
+                      <p className="text-sm font-medium">{t("keys:last_regenerated", "Last Regenerated")}</p>
                       <div className="flex items-center gap-2">
                         <p className="text-sm">{formatTimestamp(lastRegeneratedAt)}</p>
-                        <Badge variant="secondary">Recent</Badge>
+                        <Badge variant="secondary">{t("keys:recent", "Recent")}</Badge>
                       </div>
                     </div>
                   )}
 
                   <div>
-                    <p className="text-sm font-medium">Expires</p>
+                    <p className="text-sm font-medium">{t("keys:expires", "Expires")}</p>
                     <p className="text-sm">
-                      {currentKeyData.expires ? formatTimestamp(currentKeyData.expires) : "Never"}
+                      {currentKeyData.expires ? formatTimestamp(currentKeyData.expires) : t("keys:never", "Never")}
                     </p>
                   </div>
 
                   {Boolean(currentKeyData.metadata?.enable_prompt_caching) && (
                     <div>
-                      <p className="text-sm font-medium">Prompt Caching</p>
+                      <p className="text-sm font-medium">{t("keys:prompt_caching", "Prompt Caching")}</p>
                       <p className="text-sm">
-                        Enabled (auto-injects cache_control markers on Anthropic and Bedrock Claude requests)
+                        {t("keys:prompt_caching_description", "Enabled (auto-injects cache_control markers on Anthropic and Bedrock Claude requests)")}
                       </p>
                     </div>
                   )}
@@ -929,25 +949,25 @@ export default function KeyInfoView({
                   />
 
                   <div>
-                    <p className="text-sm font-medium">Spend</p>
+                    <p className="text-sm font-medium">{t("keys:spend", "Spend")}</p>
                     <p className="text-sm">${formatNumberWithCommas(currentKeyData.spend, 4)} USD</p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Budget</p>
+                    <p className="text-sm font-medium">{t("keys:budget", "Budget")}</p>
                     <p className="text-sm">
                       {currentKeyData.max_budget !== null
                         ? `$${formatNumberWithCommas(currentKeyData.max_budget, 2)}`
-                        : "Unlimited"}
+                        : t("keys:unlimited", "Unlimited")}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Budget Reset</p>
+                    <p className="text-sm font-medium">{t("keys:budget_reset", "Budget Reset")}</p>
                     <p data-testid="budget-reset-value" className="text-sm">
                       {currentKeyData.budget_reset_at
-                        ? `${currentKeyData.budget_duration ? `Every ${currentKeyData.budget_duration}, next ` : ""}${formatTimestamp(currentKeyData.budget_reset_at)}`
-                        : "Never"}
+                        ? `${currentKeyData.budget_duration ? `${t("keys:every", "Every")} ${currentKeyData.budget_duration}, ${t("keys:next", "next")} ` : ""}${formatTimestamp(currentKeyData.budget_reset_at)}`
+                        : t("keys:never", "Never")}
                     </p>
                   </div>
 

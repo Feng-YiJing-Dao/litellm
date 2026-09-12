@@ -74,5 +74,17 @@
   "team_member_rate_limits_tooltip": "Rate limits for this member's usage within this team.",
   "team_role": "Team Role",
   "team_role_tooltip": "This role applies only to this team and is independent from the user's proxy-level role.",
-  "no_data": "No data"
+  "no_data": "No data",
+  "subtitle": "Manage teams, members, and their access to models and budgets",
+  "tab_your_teams": "Your Teams",
+  "tab_available_teams": "Available Teams",
+  "tab_default_settings": "Default Team Settings",
+  "export_csv": "Export CSV",
+  "exporting": "Exporting...",
+  "filters_title": "Filters",
+  "filters_description": "Narrow down your teams",
+  "select_org_placeholder": "Select an organization…",
+  "no_orgs_found": "No organizations found",
+  "enter_team_alias_placeholder": "Enter team alias…",
+  "enter_team_id_placeholder": "Enter team ID…"
 }

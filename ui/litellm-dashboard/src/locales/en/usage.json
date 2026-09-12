@@ -62,5 +62,12 @@
   "desc_user_usage": "View usage by individual users",
   "desc_user_agent_activity": "View detailed user agent activity logs",
   "usage_view_title": "Usage View",
-  "usage_view_description": "Select the usage data you want to view"
+  "usage_view_description": "Select the usage data you want to view",
+  "limit": "limit",
+  "no_limit": "No limit",
+  "max_budget": "Max Budget",
+  "gateway_requests_by_endpoint": "Gateway Requests by Endpoint",
+  "top_virtual_keys": "Top Virtual Keys",
+  "top_public_model_names": "Top Public Model Names",
+  "top_litellm_models": "Top Litellm Models"
 }

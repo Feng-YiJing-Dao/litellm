@@ -279,6 +279,26 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
   const [routerSettingsKey, setRouterSettingsKey] = useState<number>(0);
   const [agentsList, setAgentsList] = useState<{ agent_id: string; agent_name: string }[]>([]);
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const keyTypeOptions = useMemo(
+    () => [
+      {
+        value: "llm_api",
+        label: t("keys:ai_apis", { defaultValue: "AI APIs" }),
+        hint: t("keys:ai_apis_hint", { defaultValue: "Can call only AI API routes (chat/completions, embeddings, etc.)" }),
+      },
+      {
+        value: "management",
+        label: t("keys:management", { defaultValue: "Management" }),
+        hint: t("keys:management_hint", { defaultValue: "Can call only management routes (user/team/key management)" }),
+      },
+      {
+        value: "default",
+        label: t("keys:full_access", { defaultValue: "Full Access" }),
+        hint: t("keys:full_access_hint", { defaultValue: "Can call all routes (AI APIs, Management, and read-only)" }),
+      },
+    ],
+    [t],
+  );
   const selectedModels: string[] = (useWatch({ control: form.control, name: "models" }) as string[] | undefined) ?? [];
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -676,7 +696,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <FieldLabel>
                     <span>
                       {t("keys:owned_by", { defaultValue: "Owned By" })}{" "}
-                      <SimpleTooltip content="Select who will own this Virtual Key">
+                      <SimpleTooltip content={t("keys:tooltip_owned_by", { defaultValue: "Select who will own this Virtual Key" })}>
                         <Info className="ml-1 inline size-3.5 align-text-bottom" />
                       </SimpleTooltip>
                     </span>
@@ -711,8 +731,8 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <MountedFormField
                     label={
                       <span>
-                        User ID{" "}
-                        <SimpleTooltip content="The user who will own this key and be responsible for its usage">
+                        {t("keys:user", { defaultValue: "User ID" })}{" "}
+                        <SimpleTooltip content={t("keys:tooltip_user_id", { defaultValue: "The user who will own this key and be responsible for its usage" })}>
                           <Info className="ml-1 inline size-3.5 align-text-bottom" />
                         </SimpleTooltip>
                       </span>
@@ -734,19 +754,19 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                             onValueChange={control.onChange}
                             onSearchChange={fetchUsers}
                             isLoading={userSearchLoading}
-                            placeholder="Type email to search for users"
-                            emptyText="No users found"
-                            loadingText="Searching..."
+                            placeholder={t("keys:search_users_placeholder", { defaultValue: "Type email to search for users" })}
+                            emptyText={t("keys:no_users_found", { defaultValue: "No users found" })}
+                            loadingText={t("keys:searching", { defaultValue: "Searching..." })}
                             inputId={control.id}
                             aria-required={control["aria-required"] === "true" ? true : undefined}
                             aria-invalid={control["aria-invalid"] === "true" ? true : undefined}
                             aria-describedby={control["aria-describedby"]}
                           />
                           <Button variant="outline" className="ml-2" onClick={() => setIsCreateUserModalVisible(true)}>
-                            Create User
+                            {t("keys:create_new_user", { defaultValue: "Create User" })}
                           </Button>
                         </div>
-                        <div className="text-xs text-muted-foreground">Search by email to find users</div>
+                        <div className="text-xs text-muted-foreground">{t("keys:search_by_email_hint", { defaultValue: "Search by email to find users" })}</div>
                       </div>
                     )}
                   </MountedFormField>
@@ -755,13 +775,13 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-md dark:bg-purple-950 dark:border-purple-800">
                     <div className="mb-3">
                       <label htmlFor="create-key-agent" className="text-sm font-medium text-foreground">
-                        Select Agent <span className="text-destructive">*</span>
+                        {t("keys:select_agent", { defaultValue: "Select Agent" })} <span className="text-destructive">*</span>
                       </label>
                     </div>
                     <SearchSelect
                       inputId="create-key-agent"
-                      placeholder="Select an agent"
-                      emptyText="No agents found"
+                      placeholder={t("keys:select_agent_placeholder", { defaultValue: "Select an agent" })}
+                      emptyText={t("keys:no_agents_found", { defaultValue: "No agents found" })}
                       value={selectedAgentId ?? undefined}
                       onValueChange={(value) => setSelectedAgentId(value === "" ? null : value)}
                       options={agentsList.map((a) => ({
@@ -770,15 +790,15 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       }))}
                     />
                     <div className="text-xs text-muted-foreground mt-2">
-                      This key will be used by the selected agent to make requests to LiteLLM
+                      {t("keys:agent_key_description", { defaultValue: "This key will be used by the selected agent to make requests to LiteLLM" })}
                     </div>
                   </div>
                 )}
                 <MountedFormField
                   label={
                     <span>
-                      Organization{" "}
-                      <SimpleTooltip content="The organization this key belongs to. Selecting an organization filters the available teams.">
+                      {t("keys:organization", { defaultValue: "Organization" })}{" "}
+                      <SimpleTooltip content={t("keys:tooltip_org", { defaultValue: "The organization this key belongs to. Selecting an organization filters the available teams." })}>
                         <Info className="ml-1 inline size-3.5 align-text-bottom" />
                       </SimpleTooltip>
                     </span>
@@ -800,8 +820,8 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                 <MountedFormField
                   label={
                     <span>
-                      Team{" "}
-                      <SimpleTooltip content="The team this key belongs to, which determines available models and budget limits">
+                      {t("keys:team", { defaultValue: "Team" })}{" "}
+                      <SimpleTooltip content={t("keys:tooltip_team", { defaultValue: "The team this key belongs to, which determines available models and budget limits" })}>
                         <Info className="ml-1 inline size-3.5 align-text-bottom" />
                       </SimpleTooltip>
                     </span>
@@ -827,8 +847,8 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <MountedFormField
                     label={
                       <span>
-                        Project{" "}
-                        <SimpleTooltip content="Assign this key to a project. Selecting a project will lock the team to the project's team.">
+                        {t("keys:project", { defaultValue: "Project" })}{" "}
+                        <SimpleTooltip content={t("keys:tooltip_project", { defaultValue: "Assign this key to a project. Selecting a project will lock the team to the project's team." })}>
                           <Info className="ml-1 inline size-3.5 align-text-bottom" />
                         </SimpleTooltip>
                       </span>
@@ -854,8 +874,9 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
               {isFormDisabled && (
                 <div className="mb-8 p-4 bg-info/10 border border-info/20 rounded-md">
                   <p className="text-info text-sm">
-                    Please select a team to continue configuring your Virtual Key. If you do not see any teams, please
-                    contact your Proxy Admin to either provide you with access to models or to add you to a team.
+                    {t("keys:team_selection_required_notice", {
+                      defaultValue: "Please select a team to continue configuring your Virtual Key. If you do not see any teams, please contact your Proxy Admin to either provide you with access to models or to add you to a team.",
+                    })}
                   </p>
                 </div>
               )}
@@ -944,7 +965,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   >
                     {(control) => (
                       <Select
-                        items={KEY_TYPE_OPTIONS}
+                        items={keyTypeOptions}
                         value={control.value as string | undefined}
                         onValueChange={(value: string | null) =>
                           value != null && changeKeyType(control.onChange)(value)
@@ -956,10 +977,10 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                           aria-invalid={control["aria-invalid"]}
                           aria-describedby={control["aria-describedby"]}
                         >
-                          <SelectValue placeholder="Select key type" />
+                          <SelectValue placeholder={t("keys:select_key_type_placeholder", { defaultValue: "Select key type" })} />
                         </SelectTrigger>
                         <SelectContent>
-                          {KEY_TYPE_OPTIONS.map((option) => (
+                          {keyTypeOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               <div className="py-1">
                                 <div className="font-medium">{option.label}</div>

@@ -3,6 +3,7 @@
 import type { ColumnFiltersState, OnChangeFn, PaginationState, SortingState } from "@tanstack/react-table";
 import { ScrollText } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import { DataTable, DataTableFilterDrawer, DataTableToolbar } from "@/components/shared/DataTable";
 
@@ -35,16 +36,21 @@ interface RequestLogsTableProps {
 }
 
 function RequestLogsEmptyState({ filtered }: { filtered: boolean }) {
+  const { t } = useTranslation(["logs", "common"]);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <ScrollText className="size-5 text-muted-foreground" />
       </div>
-      <div className="text-sm font-medium text-foreground">{filtered ? "No matching requests" : "No requests yet"}</div>
+      <div className="text-sm font-medium text-foreground">
+        {filtered
+          ? t("logs:empty_matching_requests", { defaultValue: "No matching requests" })
+          : t("logs:empty_no_requests_yet", { defaultValue: "No requests yet" })}
+      </div>
       <div className="max-w-xs text-center text-sm text-muted-foreground">
         {filtered
-          ? "No requests match your filters for this time range."
-          : "Requests proxied through LiteLLM will appear here."}
+          ? t("logs:empty_filter_hint", { defaultValue: "No requests match your filters for this time range." })
+          : t("logs:empty_appear_hint", { defaultValue: "Requests proxied through LiteLLM will appear here." })}
       </div>
     </div>
   );
@@ -71,6 +77,7 @@ export function RequestLogsTable({
   logsWindow,
   toolbarChildren,
 }: RequestLogsTableProps) {
+  const { t } = useTranslation(["logs", "common"]);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const columns = useMemo(() => {
@@ -97,7 +104,7 @@ export function RequestLogsTable({
       columnFilters={columnFilters}
       onColumnFiltersChange={onColumnFiltersChange}
       isLoading={isLoading}
-      loadingMessage="Loading request logs…"
+      loadingMessage={t("logs:loading_request_logs", { defaultValue: "Loading request logs…" })}
       noDataMessage={<RequestLogsEmptyState filtered={isFiltered} />}
       size="compact"
       onRowClick={onRowClick}
@@ -107,7 +114,7 @@ export function RequestLogsTable({
             table={table}
             searchValue={searchValue}
             onSearchChange={onSearchChange}
-            searchPlaceholder="Search logs by ID…"
+            searchPlaceholder={t("logs:search_placeholder", { defaultValue: "Search logs by ID…" })}
             onRefresh={onRefresh}
             isRefreshing={isRefreshing}
             onOpenFilters={() => setFiltersOpen(true)}
@@ -120,8 +127,8 @@ export function RequestLogsTable({
             table={table}
             open={filtersOpen}
             onOpenChange={setFiltersOpen}
-            title="Filters"
-            description="Narrow down request logs"
+            title={t("logs:filters_title", { defaultValue: "Filters" })}
+            description={t("logs:filters_description", { defaultValue: "Narrow down request logs" })}
           >
             {({ get, set }) => <RequestLogsFilters get={get} set={set} teams={teams} logsWindow={logsWindow} />}
           </DataTableFilterDrawer>

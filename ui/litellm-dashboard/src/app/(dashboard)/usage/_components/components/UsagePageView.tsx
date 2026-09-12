@@ -704,7 +704,7 @@ const UsagePage: React.FC<UsagePageProps> = ({ teams, organizations }) => {
                     <div className="col-span-2">
                       <ShadcnCard>
                         <CardHeader>
-                          <CardTitle className="text-base font-semibold">Daily Spend</CardTitle>
+                          <CardTitle className="text-base font-semibold">{t("usage:daily_spend", { defaultValue: "Daily Spend" })}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           {loading ? (
@@ -745,7 +745,7 @@ const UsagePage: React.FC<UsagePageProps> = ({ teams, organizations }) => {
                         <ShadcnCard data-testid="gateway-requests-by-endpoint">
                           <CardHeader>
                             <CardTitle className="text-base font-semibold">
-                              Gateway Requests by Endpoint
+                              {t("usage:gateway_requests_by_endpoint", { defaultValue: "Gateway Requests by Endpoint" })}
                               <Tooltip>
                                 <TooltipTrigger
                                   render={
@@ -777,7 +777,7 @@ const UsagePage: React.FC<UsagePageProps> = ({ teams, organizations }) => {
                     <div>
                       <ShadcnCard className="h-full">
                         <CardContent>
-                          <h3 className="text-lg font-medium text-foreground">Top Virtual Keys</h3>
+                          <h3 className="text-lg font-medium text-foreground">{t("usage:top_virtual_keys", { defaultValue: "Top Virtual Keys" })}</h3>
                           <TopKeyView
                             topKeys={topKeys}
                             teams={null}
@@ -793,7 +793,9 @@ const UsagePage: React.FC<UsagePageProps> = ({ teams, organizations }) => {
                       <ShadcnCard className="h-full">
                         <CardContent>
                           <h3 className="text-lg font-medium text-foreground">
-                            {modelViewType === "groups" ? "Top Public Model Names" : "Top Litellm Models"}
+                            {modelViewType === "groups"
+                              ? t("usage:top_public_model_names", { defaultValue: "Top Public Model Names" })
+                              : t("usage:top_litellm_models", { defaultValue: "Top Litellm Models" })}
                           </h3>
                           <div className="flex justify-between items-center mb-4">
                             <Tabs

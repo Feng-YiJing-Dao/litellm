@@ -578,7 +578,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
   const tabItems = [
     {
       key: "your-teams",
-      label: "Your Teams",
+      label: t("teams:tab_your_teams", { defaultValue: "Your Teams" }),
       className: "flex min-h-0 flex-1 flex-col",
       children: (
         <>
@@ -628,7 +628,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
     },
     {
       key: "available-teams",
-      label: "Available Teams",
+      label: t("teams:tab_available_teams", { defaultValue: "Available Teams" }),
       className: "min-h-0 flex-1 overflow-y-auto",
       children: <AvailableTeamsPanel accessToken={accessToken} userID={userID} />,
     },
@@ -636,7 +636,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
       ? [
           {
             key: "default-settings",
-            label: "Default Team Settings",
+            label: t("teams:tab_default_settings", { defaultValue: "Default Team Settings" }),
             className: "min-h-0 flex-1 overflow-y-auto",
             children: <TeamSSOSettings accessToken={accessToken} userID={userID || ""} userRole={userRole || ""} />,
           },
@@ -668,8 +668,8 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
         <Tabs defaultValue={tabItems[0].key} className="min-h-0 flex-1 gap-6">
           <PageHeader
             icon={<Users />}
-            title="Teams"
-            subtitle="Manage teams, members, and their access to models and budgets"
+            title={t("teams:title", { defaultValue: "Teams" })}
+            subtitle={t("teams:subtitle", { defaultValue: "Manage teams, members, and their access to models and budgets" })}
             primaryAction={
               canCreateOrManageTeams(userRole, userID, organizations) ? (
                 <UIButton onClick={openCreateTeamModal} data-testid="create-team-button">

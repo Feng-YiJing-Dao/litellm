@@ -272,7 +272,7 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
       <PageHeader
         icon={<KeyRound />}
         title={t("keys:title", { defaultValue: "Virtual Keys" })}
-        subtitle={t("keys:subtitle", { defaultValue: "Every key that authenticates requests to the gateway." })}
+        subtitle={t("keys:subtitle", { defaultValue: "Every key that authenticates requests to the gateway" })}
         primaryAction={headerActions}
       />
       <DataTable
@@ -324,8 +324,8 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
                       options={teamOptions}
                       value={(get("team_id") as string) || undefined}
                       onValueChange={(value) => set("team_id", value)}
-                      placeholder="Select a team…"
-                      emptyText="No teams found"
+                      placeholder={t("keys:select_team_placeholder", { defaultValue: "Select a team…" })}
+                      emptyText={t("keys:no_teams_found", { defaultValue: "No teams found" })}
                     />
                   </DataTableFilterField>
                   <DataTableFilterField label={t("keys:filter_org", { defaultValue: "Organization" })}>
@@ -333,22 +333,22 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
                       options={orgOptions}
                       value={(get("org_id") as string) || undefined}
                       onValueChange={(value) => set("org_id", value)}
-                      placeholder="Select an organization…"
-                      emptyText="No organizations found"
+                      placeholder={t("keys:select_org_placeholder", { defaultValue: "Select an organization…" })}
+                      emptyText={t("keys:no_orgs_found", { defaultValue: "No organizations found" })}
                     />
                   </DataTableFilterField>
                   <DataTableFilterField label={t("keys:filter_user", { defaultValue: "User ID" })}>
                     <Input
                       value={(get("user_id") as string) ?? ""}
                       onChange={(event) => set("user_id", event.target.value)}
-                      placeholder="Enter User ID…"
+                      placeholder={t("keys:enter_user_id_placeholder", { defaultValue: "Enter User ID…" })}
                     />
                   </DataTableFilterField>
                   <DataTableFilterField label={t("keys:filter_key_id", { defaultValue: "Key ID" })}>
                     <Input
                       value={(get("key_hash") as string) ?? ""}
                       onChange={(event) => set("key_hash", event.target.value)}
-                      placeholder="Enter Key ID…"
+                      placeholder={t("keys:enter_key_id_placeholder", { defaultValue: "Enter Key ID…" })}
                     />
                   </DataTableFilterField>
                 </>

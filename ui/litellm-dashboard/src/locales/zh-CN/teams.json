@@ -74,5 +74,17 @@
   "team_member_rate_limits_tooltip": "该成员在当前团队内的请求速率上限限制。",
   "team_role": "团队角色",
   "team_role_tooltip": "此角色仅适用于当前团队，独立于用户的网关级全局角色。",
-  "no_data": "暂无数据"
+  "no_data": "暂无数据",
+  "subtitle": "管理团队、成员及其对模型和预算的访问权限",
+  "tab_your_teams": "我的团队",
+  "tab_available_teams": "可用团队",
+  "tab_default_settings": "默认团队设置",
+  "export_csv": "导出 CSV",
+  "exporting": "正在导出...",
+  "filters_title": "筛选条件",
+  "filters_description": "精确筛选您的团队",
+  "select_org_placeholder": "选择组织…",
+  "no_orgs_found": "未找到组织",
+  "enter_team_alias_placeholder": "输入团队别名…",
+  "enter_team_id_placeholder": "输入团队 ID…"
 }
