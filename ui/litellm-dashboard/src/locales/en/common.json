@@ -54,5 +54,32 @@
   "logout": "Logout",
   "language": "Language",
   "zh_cn": "简体中文",
-  "en": "English"
+  "en": "English",
+  "login": {
+    "title": "Login",
+    "subtitle": "Access your {{brandName}} Admin UI.",
+    "default_credentials_title": "Default Credentials",
+    "default_credentials_desc": "By default, Username is <code1>admin</code1> and Password is your set {{brandName}} Proxy <code2>MASTER_KEY</code2>.",
+    "need_credentials_or_sso": "Need to set UI credentials or SSO?",
+    "see_documentation": "Check the documentation",
+    "contact_admin": "Please contact your administrator",
+    "worker": "Worker",
+    "choose_worker": "Choose a worker to connect to",
+    "username": "Username",
+    "password": "Password",
+    "enter_username": "Enter your username",
+    "enter_password": "Enter your password",
+    "username_required": "Please enter your username",
+    "password_required": "Please enter your password",
+    "sign_in": "Login",
+    "logging_in": "Logging in...",
+    "login_with_sso": "Login with SSO",
+    "configure_sso_tooltip": "Please configure SSO to log in with SSO.",
+    "or_continue_with_username": "Or continue with username",
+    "sso_notice_domain": "SSO is enabled for your domain. You can sign in using your corporate credentials.",
+    "sso_enabled_notice": "Single Sign-On (SSO) is enabled. LiteLLM no longer automatically redirects to the SSO login flow upon loading this page. To re-enable auto-redirect-to-SSO, set <code1>AUTO_REDIRECT_UI_LOGIN_TO_SSO=true</code1> in your environment configuration.",
+    "login_failed": "Login Failed",
+    "admin_ui_disabled_title": "Admin UI Disabled",
+    "admin_ui_disabled_desc": "The Admin UI has been disabled by the administrator. To re-enable it, please update the following environment variable:"
+  }
 }

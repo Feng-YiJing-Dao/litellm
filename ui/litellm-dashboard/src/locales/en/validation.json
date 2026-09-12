@@ -8,5 +8,7 @@
   "invalid_email": "Please enter a valid email address",
   "invalid_url": "Please enter a valid URL",
   "invalid_string": "Invalid format",
-  "invalid_number": "Please enter a valid number"
+  "invalid_number": "Please enter a valid number",
+  "username_required": "Please enter your username",
+  "password_required": "Please enter your password"
 }
