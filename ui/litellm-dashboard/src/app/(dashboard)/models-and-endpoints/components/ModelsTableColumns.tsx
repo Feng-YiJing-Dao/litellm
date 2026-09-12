@@ -13,6 +13,9 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { Switch } from "@/components/ui/switch";
 import { getDisplayModelName } from "@/components/view_model/model_name_display";
 import { copyToClipboard } from "@/utils/dataUtils";
+import i18n from "@/locales";
+
+const t = (key: string, defaultValue: string) => i18n.t(key, { defaultValue });
 
 export const MODEL_ID_COLUMN_ID = "model_info_id";
 export const MODEL_NAME_COLUMN_ID = "model_name";
@@ -359,8 +362,8 @@ export const getModelsTableColumns = ({
   {
     id: MODEL_ID_COLUMN_ID,
     accessorFn: (row) => row.model_info.id,
-    meta: { title: "Model ID" },
-    header: "Model ID",
+    meta: { title: t("models:model_id", "Model ID") },
+    header: t("models:model_id", "Model ID"),
     enableSorting: false,
     size: 140,
     minSize: 90,
@@ -375,8 +378,8 @@ export const getModelsTableColumns = ({
   {
     id: MODEL_NAME_COLUMN_ID,
     accessorFn: (row) => row.model_name ?? "",
-    meta: { title: "Model Information", skeleton: "twoLine" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Model Information" />,
+    meta: { title: t("models:model_information", "Model Information"), skeleton: "twoLine" },
+    header: ({ column }) => <DataTableSortHeader column={column} title={t("models:model_information", "Model Information")} />,
     enableSorting: true,
     size: 280,
     minSize: 160,
@@ -387,7 +390,7 @@ export const getModelsTableColumns = ({
   {
     id: CREDENTIALS_COLUMN_ID,
     accessorFn: (row) => row.litellm_params?.litellm_credential_name ?? "",
-    meta: { title: "Credentials" },
+    meta: { title: t("models:credentials", "Credentials") },
     header: () => <CredentialsHeader />,
     enableSorting: false,
     size: 180,
@@ -397,8 +400,8 @@ export const getModelsTableColumns = ({
   {
     id: CREATED_BY_COLUMN_ID,
     accessorFn: (row) => row.model_info.created_by ?? "",
-    meta: { title: "Created By", skeleton: "twoLine" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created By" />,
+    meta: { title: t("models:created_by", "Created By"), skeleton: "twoLine" },
+    header: ({ column }) => <DataTableSortHeader column={column} title={t("models:created_by", "Created By")} />,
     enableSorting: true,
     size: 180,
     minSize: 110,
@@ -407,8 +410,8 @@ export const getModelsTableColumns = ({
   {
     id: UPDATED_AT_COLUMN_ID,
     accessorFn: (row) => row.model_info.updated_at ?? "",
-    meta: { title: "Updated At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Updated At" />,
+    meta: { title: t("models:updated_at", "Updated At") },
+    header: ({ column }) => <DataTableSortHeader column={column} title={t("models:updated_at", "Updated At")} />,
     enableSorting: true,
     size: 140,
     minSize: 100,
@@ -417,8 +420,8 @@ export const getModelsTableColumns = ({
   {
     id: COSTS_COLUMN_ID,
     accessorFn: (row) => row.input_cost,
-    meta: { title: "Costs" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Costs" />,
+    meta: { title: t("models:costs", "Costs") },
+    header: ({ column }) => <DataTableSortHeader column={column} title={t("models:costs", "Costs")} />,
     enableSorting: true,
     size: 130,
     minSize: 90,
@@ -427,8 +430,8 @@ export const getModelsTableColumns = ({
   {
     id: TEAM_ID_COLUMN_ID,
     accessorFn: (row) => row.model_info.team_id ?? "",
-    meta: { title: "Team ID" },
-    header: "Team ID",
+    meta: { title: t("models:team_id", "Team ID") },
+    header: t("models:team_id", "Team ID"),
     enableSorting: false,
     size: 140,
     minSize: 90,
@@ -443,8 +446,8 @@ export const getModelsTableColumns = ({
   {
     id: ACCESS_GROUPS_COLUMN_ID,
     accessorFn: (row) => row.model_info.access_groups ?? [],
-    meta: { title: "Model Access Group", skeleton: "chips" },
-    header: "Model Access Group",
+    meta: { title: t("models:access_groups", "Model Access Group"), skeleton: "chips" },
+    header: t("models:access_groups", "Model Access Group"),
     enableSorting: false,
     size: 200,
     minSize: 120,
@@ -453,22 +456,22 @@ export const getModelsTableColumns = ({
   {
     id: STATUS_COLUMN_ID,
     accessorFn: (row) => row.model_info.db_model,
-    meta: { title: "Source", skeleton: "badge" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Source" />,
+    meta: { title: t("models:source", "Source"), skeleton: "badge" },
+    header: ({ column }) => <DataTableSortHeader column={column} title={t("models:source", "Source")} />,
     enableSorting: true,
     size: 140,
     minSize: 100,
     cell: ({ row }) =>
       row.original.model_info.db_model ? (
-        <StatusBadge tone="info" label="DB Model" />
+        <StatusBadge tone="info" label={t("models:db_model", "DB Model")} />
       ) : (
-        <StatusBadge tone="neutral" label="Config Model" />
+        <StatusBadge tone="neutral" label={t("models:config_model", "Config Model")} />
       ),
   },
   {
     id: "actions",
-    meta: { title: "Actions", className: "text-right", headerClassName: "text-right" },
-    header: "Actions",
+    meta: { title: t("models:actions", "Actions"), className: "text-right", headerClassName: "text-right" },
+    header: t("models:actions", "Actions"),
     enableSorting: false,
     enableHiding: false,
     enableResizing: false,

@@ -15,6 +15,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/shared/Alert";
 import { ChevronRight, CircleHelp, Info, UserPlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import TeamDropdown from "./common_components/team_dropdown";
 import { getModelDisplayName } from "./key_team_helpers/fetch_available_models_team_key";
 import { toast } from "@/lib/toast";
@@ -134,18 +135,23 @@ const labelWithHint = (label: string, hint: string): React.ReactNode => (
   </>
 );
 
-const EmailInvitationsNotice: React.FC = () => (
-  <Alert variant="info" className="mb-4">
-    <Info />
-    <AlertTitle>Email invitations</AlertTitle>
-    <AlertDescription>
-      New users receive an email invite only when an email integration (SMTP, Resend, or SendGrid) is configured.{" "}
-      <a href="https://docs.litellm.ai/docs/proxy/email" target="_blank" rel="noreferrer">
-        Learn how to set up email notifications
-      </a>
-    </AlertDescription>
-  </Alert>
-);
+const EmailInvitationsNotice: React.FC = () => {
+  const { t } = useTranslation(["users"]);
+  return (
+    <Alert variant="info" className="mb-4">
+      <Info />
+      <AlertTitle>{t("users:email_invitations", { defaultValue: "Email invitations" })}</AlertTitle>
+      <AlertDescription>
+        {t("users:email_invitations_desc", {
+          defaultValue: "New users receive an email invite only when an email integration (SMTP, Resend, or SendGrid) is configured. ",
+        })}
+        <a href="https://docs.litellm.ai/docs/proxy/email" target="_blank" rel="noreferrer">
+          {t("users:email_invitations_link", { defaultValue: "Learn how to set up email notifications" })}
+        </a>
+      </AlertDescription>
+    </Alert>
+  );
+};
 
 export const CreateUserButton: React.FC<CreateuserProps> = ({
   userID,
@@ -154,6 +160,7 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
   onUserCreated,
   isEmbedded = false,
 }) => {
+  const { t } = useTranslation(["users", "common", "teams", "models"]);
   const queryClient = useQueryClient();
   const [uiSettings, setUISettings] = useState<UISettings | null>(null);
   const defaultValues = isEmbedded ? EMBEDDED_DEFAULTS : STANDALONE_DEFAULTS;
@@ -245,7 +252,7 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
   }));
 
   const userEmailField = (
-    <FormField control={form.control} name="user_email" label="User Email">
+    <FormField control={form.control} name="user_email" label={t("users:form_user_email", { defaultValue: "User Email" })}>
       {({ ref, value, ...control }) => <Input {...control} ref={ref} value={value ?? ""} />}
     </FormField>
   );
@@ -254,23 +261,34 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
     <FormField
       control={form.control}
       name="team_id"
-      label="Team"
-      description="If selected, user will be added as a 'user' role to the team."
+      label={t("users:team", { defaultValue: "Team" })}
+      description={t("users:team_hint", { defaultValue: "If selected, user will be added as a 'user' role to the team." })}
     >
       {({ id, value, onChange }) => <TeamDropdown id={id} value={value} onChange={onChange} />}
     </FormField>
   );
 
   const metadataField = (
-    <FormField control={form.control} name="metadata" label="Metadata">
+    <FormField control={form.control} name="metadata" label={t("users:metadata", { defaultValue: "Metadata" })}>
       {({ ref, value, ...control }) => (
-        <Textarea {...control} ref={ref} value={value ?? ""} rows={4} placeholder="Enter metadata as JSON" />
+        <Textarea
+          {...control}
+          ref={ref}
+          value={value ?? ""}
+          rows={4}
+          placeholder={t("users:placeholder_metadata", { defaultValue: "Enter metadata as JSON" })}
+        />
       )}
     </FormField>
   );
 
   const sendInviteEmailField = (
-    <FormField control={form.control} name="send_invite_email" label="Send invitation email" orientation="horizontal">
+    <FormField
+      control={form.control}
+      name="send_invite_email"
+      label={t("users:send_invite_email", { defaultValue: "Send invitation email" })}
+      orientation="horizontal"
+    >
       {({ id, value, onChange, onBlur }) => (
         <Checkbox id={id} checked={value} onCheckedChange={onChange} onBlur={onBlur} />
       )}
@@ -309,13 +327,13 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
           <EmailInvitationsNotice />
           <FieldGroup>
             {userEmailField}
-            {roleField("User Role")}
+            {roleField(t("users:user_role_label", { defaultValue: "User Role" }))}
             {teamField}
             {metadataField}
             {sendInviteEmailField}
           </FieldGroup>
           <div className="mt-4 text-right">
-            <Button type="submit">Create User</Button>
+            <Button type="submit">{t("users:create_user", { defaultValue: "Create User" })}</Button>
           </div>
         </form>
       </TooltipProvider>
@@ -326,15 +344,17 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
   return (
     <>
       <Button type="button" onClick={() => setIsModalVisible(true)}>
-        + Invite User
+        {t("users:invite_user", { defaultValue: "+ Invite User" })}
       </Button>
       <Dialog open={isModalVisible} onOpenChange={(open) => !open && handleCancel()}>
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[800px]">
           <DialogHeader>
-            <DialogTitle>Invite User</DialogTitle>
+            <DialogTitle>{t("users:invite_user_title", { defaultValue: "Invite User" })}</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-3">
-            <p className="mb-1 text-sm text-foreground">Create a User who can own keys</p>
+            <p className="mb-1 text-sm text-foreground">
+              {t("users:create_user_desc", { defaultValue: "Create a User who can own keys" })}
+            </p>
             <EmailInvitationsNotice />
           </div>
           <TooltipProvider>
@@ -343,8 +363,11 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
                 {userEmailField}
                 {roleField(
                   labelWithHint(
-                    "Global Proxy Role",
-                    "This role is independent of any team/org specific roles. Configure Team / Organization Admins in the Settings",
+                    t("users:user_role", { defaultValue: "Global Proxy Role" }),
+                    t("users:global_role_hint", {
+                      defaultValue:
+                        "This role is independent of any team/org specific roles. Configure Team / Organization Admins in the Settings",
+                    }),
                   ),
                 )}
                 {teamField}
@@ -352,8 +375,8 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
                 <FormField
                   control={form.control}
                   name="organization_ids"
-                  label="Organization"
-                  description="The user will be added to the selected organization(s)."
+                  label={t("teams:organization", { defaultValue: "Organization" })}
+                  description={t("users:org_hint", { defaultValue: "The user will be added to the selected organization(s)." })}
                 >
                   {({ id, value, onChange }) => (
                     <Select
@@ -363,10 +386,10 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
                       onValueChange={(selected: string[]) => onChange(selected.length === 0 ? undefined : selected)}
                     >
                       <SelectTrigger id={id} className="w-full">
-                        <SelectValue placeholder="Select Organization">
+                        <SelectValue placeholder={t("users:select_organization", { defaultValue: "Select Organization" })}>
                           {(selected: string[]) =>
                             selected.length === 0
-                              ? "Select Organization"
+                              ? t("users:select_organization", { defaultValue: "Select Organization" })
                               : organizationOptions
                                   .filter((option) => selected.includes(option.value))
                                   .map((option) => option.label)
@@ -394,25 +417,34 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
                       className={`size-4 transition-transform ${isPersonalKeyOpen ? "rotate-90" : ""}`}
                       aria-hidden
                     />
-                    Personal Key Creation
+                    {t("users:personal_key_creation", { defaultValue: "Personal Key Creation" })}
                   </CollapsibleTrigger>
                   <CollapsibleContent className="pt-4">
                     <FormField
                       control={form.control}
                       name="models"
-                      label={labelWithHint("Models", "Models user has access to, outside of team scope.")}
-                      description="Models user has access to, outside of team scope."
+                      label={labelWithHint(
+                        t("users:models", { defaultValue: "Models" }),
+                        t("users:models_hint", { defaultValue: "Models user has access to, outside of team scope." }),
+                      )}
+                      description={t("users:models_hint", { defaultValue: "Models user has access to, outside of team scope." })}
                     >
                       {({ value, onChange }) => (
                         <MultiSelect
                           options={[
-                            { label: "All Proxy Models", value: "all-proxy-models" },
-                            { label: "No Default Models", value: "no-default-models" },
+                            {
+                              label: t("users:all_proxy_models", { defaultValue: "All Proxy Models" }),
+                              value: "all-proxy-models",
+                            },
+                            {
+                              label: t("users:no_default_models", { defaultValue: "No Default Models" }),
+                              value: "no-default-models",
+                            },
                             ...userModels.map((model) => ({ label: getModelDisplayName(model), value: model })),
                           ]}
                           value={value ?? []}
                           onValueChange={onChange}
-                          placeholder="Select models"
+                          placeholder={t("users:select_models", { defaultValue: "Select models" })}
                         />
                       )}
                     </FormField>
@@ -423,7 +455,7 @@ export const CreateUserButton: React.FC<CreateuserProps> = ({
               <div className="mt-4 text-right">
                 <Button type="submit">
                   <UserPlus />
-                  Invite User
+                  {t("users:invite_user_btn", { defaultValue: "Invite User" })}
                 </Button>
               </div>
             </form>

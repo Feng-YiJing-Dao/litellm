@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/cva.config";
 import { copyToClipboard } from "@/utils/dataUtils";
+import i18n from "@/locales";
+
+const t = (key: string, defaultValue: string) => i18n.t(key, { defaultValue });
 
 function CredentialProviderCell({ provider }: { provider: string | undefined }) {
   if (!provider) {
@@ -59,14 +62,14 @@ function CredentialRowActions({ credential, onEdit, onDelete }: CredentialRowAct
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuItem data-testid="credential-action-edit" onClick={() => onEdit(credential)}>
           <Pencil />
-          Edit
+          {t("common:edit", "Edit")}
         </DropdownMenuItem>
         <DropdownMenuItem
           data-testid="credential-action-copy"
           onClick={() => void copyToClipboard(credential.credential_name, "Credential name copied")}
         >
           <Copy />
-          Copy credential name
+          {t("models:copy_credential_name", "Copy credential name")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -75,7 +78,7 @@ function CredentialRowActions({ credential, onEdit, onDelete }: CredentialRowAct
           onClick={() => onDelete(credential)}
         >
           <Trash2 />
-          Delete
+          {t("common:delete", "Delete")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -97,8 +100,8 @@ export const getCredentialsTableColumns = ({
     {
       id: "credential_name",
       accessorKey: "credential_name",
-      meta: { title: "Credential Name" },
-      header: ({ column }) => <DataTableSortHeader column={column} title="Credential Name" />,
+      meta: { title: t("models:credential_name", "Credential Name") },
+      header: ({ column }) => <DataTableSortHeader column={column} title={t("models:credential_name", "Credential Name")} />,
       size: 260,
       enableSorting: true,
       cell: ({ row }) => (
@@ -108,8 +111,8 @@ export const getCredentialsTableColumns = ({
     {
       id: "provider",
       accessorKey: "credential_info.custom_llm_provider",
-      meta: { title: "Provider" },
-      header: "Provider",
+      meta: { title: t("models:provider", "Provider") },
+      header: t("models:provider", "Provider"),
       size: 200,
       enableSorting: false,
       cell: ({ row }) => <CredentialProviderCell provider={row.original.credential_info?.custom_llm_provider} />,

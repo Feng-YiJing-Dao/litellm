@@ -19,6 +19,7 @@ import { ColumnFiltersState, functionalUpdate, OnChangeFn, PaginationState, Sort
 import { KeyRound } from "lucide-react";
 import { createParser, parseAsInteger, parseAsString, parseAsStringLiteral, useQueryState, useQueryStates } from "nuqs";
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { KeyResponse, Team } from "../key_team_helpers/key_list";
 import KeyInfoView from "../templates/key_info_view";
@@ -75,10 +76,21 @@ const filterValue = (filters: ColumnFiltersState, column: FilterColumn): string 
 };
 
 export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
+  const { t } = useTranslation(["keys", "common"]);
   const { data: fetchedOrganizations } = useOrganizations();
   const organizations = useMemo(() => fetchedOrganizations ?? [], [fetchedOrganizations]);
   const { data: fetchedTeams } = useAllTeams();
   const allTeams = useMemo<Team[]>(() => fetchedTeams ?? [], [fetchedTeams]);
+
+  const filterLabels: Record<FilterColumn, string> = useMemo(
+    () => ({
+      team_id: t("keys:filter_team", { defaultValue: "Team" }),
+      org_id: t("keys:filter_org", { defaultValue: "Organization" }),
+      user_id: t("keys:filter_user", { defaultValue: "User ID" }),
+      key_hash: t("keys:filter_key_id", { defaultValue: "Key ID" }),
+    }),
+    [t],
+  );
 
   const [selectedKeyId, setSelectedKeyId] = useQueryState("key", parseAsString.withOptions({ history: "push" }));
   const [tableState, setTableState] = useQueryStates(TABLE_STATE);
@@ -239,7 +251,7 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
 
   if (selectedKeyId) {
     if (!selectedKey && !selectedKeyLoadFailed) {
-      return <div className="p-4 text-sm text-muted-foreground">Loading key...</div>;
+      return <div className="p-4 text-sm text-muted-foreground">{t("keys:loading_key", { defaultValue: "Loading key..." })}</div>;
     }
     return (
       <div className="w-full h-full overflow-hidden">
@@ -259,8 +271,8 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
     <div className="flex min-h-0 flex-1 flex-col gap-6">
       <PageHeader
         icon={<KeyRound />}
-        title="Virtual Keys"
-        subtitle="Every key that authenticates requests to the gateway."
+        title={t("keys:title", { defaultValue: "Virtual Keys" })}
+        subtitle={t("keys:subtitle", { defaultValue: "Every key that authenticates requests to the gateway." })}
         primaryAction={headerActions}
       />
       <DataTable
@@ -281,8 +293,8 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
         enableColumnResizing
         columnResizeMode="onChange"
         isLoading={isLoading}
-        loadingMessage="Loading keys..."
-        noDataMessage="No keys found"
+        loadingMessage={t("keys:loading_keys", { defaultValue: "Loading keys..." })}
+        noDataMessage={t("keys:no_keys_found", { defaultValue: "No keys found" })}
         fillHeight
         size="compact"
         toolbar={(table) => (
@@ -291,23 +303,23 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
               table={table}
               searchValue={searchInput}
               onSearchChange={handleSearchChange}
-              searchPlaceholder="Search by key alias or ID…"
+              searchPlaceholder={t("keys:search_placeholder", { defaultValue: "Search by key alias or ID…" })}
               onRefresh={() => refetch?.()}
               isRefreshing={isFetching}
               onOpenFilters={() => setFiltersOpen(true)}
-              filterLabels={FILTER_LABELS}
+              filterLabels={filterLabels}
               formatFilterValue={formatFilterValue}
             />
             <DataTableFilterDrawer
               table={table}
               open={filtersOpen}
               onOpenChange={setFiltersOpen}
-              title="Filters"
-              description="Narrow down virtual keys"
+              title={t("keys:filters_title", { defaultValue: "Filters" })}
+              description={t("keys:filters_description", { defaultValue: "Narrow down virtual keys" })}
             >
               {({ get, set }) => (
                 <>
-                  <DataTableFilterField label="Team">
+                  <DataTableFilterField label={t("keys:filter_team", { defaultValue: "Team" })}>
                     <SearchSelect
                       options={teamOptions}
                       value={(get("team_id") as string) || undefined}
@@ -316,7 +328,7 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
                       emptyText="No teams found"
                     />
                   </DataTableFilterField>
-                  <DataTableFilterField label="Organization">
+                  <DataTableFilterField label={t("keys:filter_org", { defaultValue: "Organization" })}>
                     <SearchSelect
                       options={orgOptions}
                       value={(get("org_id") as string) || undefined}
@@ -325,14 +337,14 @@ export function VirtualKeysTable({ headerActions }: VirtualKeysTableProps) {
                       emptyText="No organizations found"
                     />
                   </DataTableFilterField>
-                  <DataTableFilterField label="User ID">
+                  <DataTableFilterField label={t("keys:filter_user", { defaultValue: "User ID" })}>
                     <Input
                       value={(get("user_id") as string) ?? ""}
                       onChange={(event) => set("user_id", event.target.value)}
                       placeholder="Enter User ID…"
                     />
                   </DataTableFilterField>
-                  <DataTableFilterField label="Key ID">
+                  <DataTableFilterField label={t("keys:filter_key_id", { defaultValue: "Key ID" })}>
                     <Input
                       value={(get("key_hash") as string) ?? ""}
                       onChange={(event) => set("key_hash", event.target.value)}

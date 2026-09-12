@@ -13,6 +13,7 @@ import { UiLoadingSpinner } from "@/components/ui/ui-loading-spinner";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { FormField } from "@/components/shared/form/FormField";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { hasCapability } from "../../utils/capabilities";
 import { isProxyAdminRole, rolesWithWriteAccess } from "../../utils/roles";
 import AccessGroupSelector from "../common_components/AccessGroupSelector";
@@ -85,6 +86,7 @@ export function KeyEditView({
   userRole,
   premiumUser = false,
 }: KeyEditViewProps) {
+  const { t } = useTranslation(["keys", "common"]);
   const canEditGuardrails = premiumUser || (userRole != null && rolesWithWriteAccess.includes(userRole));
   const canViewPolicies = hasCapability(userRole, "viewPolicies");
   const canViewPrompts = hasCapability(userRole, "viewPrompts");
@@ -346,14 +348,14 @@ export function KeyEditView({
         )}
       >
         <FieldGroup>
-          <FormField control={form.control} name="key_alias" label="Key Alias">
+          <FormField control={form.control} name="key_alias" label={t("keys:key_alias", { defaultValue: "Key Alias" })}>
             {(field) => <Input {...field} value={(field.value as string | undefined) ?? ""} />}
           </FormField>
 
           <FormField
             control={form.control}
             name="models"
-            label="Models"
+            label={t("keys:models", { defaultValue: "Models" })}
             description={isModelsDisabled ? "Models field is disabled for this key type" : undefined}
           >
             {({ value, onChange, id }) => (
@@ -377,7 +379,7 @@ export function KeyEditView({
           </FormField>
 
           <Field>
-            <FieldLabel htmlFor={keyTypeFieldId}>Key Type</FieldLabel>
+            <FieldLabel htmlFor={keyTypeFieldId}>{t("keys:key_type", { defaultValue: "Key Type" })}</FieldLabel>
             <KeyTypeSelect
               id={keyTypeFieldId}
               value={keyTypeFromRoutes(allowedRoutes)}
@@ -402,7 +404,7 @@ export function KeyEditView({
             control={form.control}
             name="allowed_routes"
             label={labelWithHint(
-              "Allowed Routes",
+              t("keys:allowed_routes", { defaultValue: "Allowed Routes" }),
               "List of allowed routes for the key (comma-separated). Can be specific routes (e.g., '/chat/completions') or route patterns (e.g., 'llm_api_routes', 'management_routes', '/keys/*'). Leave empty to allow all routes.",
             )}
           >
@@ -867,11 +869,11 @@ export function KeyEditView({
         <div className="sticky z-chrome bg-background p-4 border-t border-border -bottom-6 -inset-x-6">
           <div className="flex justify-end items-center gap-2">
             <Button type="button" variant="secondary" onClick={onCancel} disabled={isKeySaving}>
-              Cancel
+              {t("keys:cancel", { defaultValue: "Cancel" })}
             </Button>
             <Button type="submit" disabled={isKeySaving} aria-busy={isKeySaving}>
               {isKeySaving && <UiLoadingSpinner className="size-4" />}
-              Save Changes
+              {t("keys:save_changes", { defaultValue: "Save Changes" })}
             </Button>
           </div>
         </div>

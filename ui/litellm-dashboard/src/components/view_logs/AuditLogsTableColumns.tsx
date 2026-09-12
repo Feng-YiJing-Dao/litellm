@@ -5,6 +5,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DateCell, IdCell, IdentityCell, StatusBadge, type StatusTone } from "@/components/shared/table_cells";
 
 import DefaultProxyAdminTag from "../common_components/DefaultProxyAdminTag";
+import i18n from "@/locales";
+
+const t = (key: string, defaultValue: string) => i18n.t(key, { defaultValue });
 
 export type AuditLogEntry = {
   id: string;
@@ -43,7 +46,7 @@ export const getAuditLogsTableColumns = ({ onViewLog }: AuditLogsTableColumnsDep
   {
     id: "updated_at",
     accessorKey: "updated_at",
-    header: "Timestamp",
+    header: t("logs:col_timestamp", "Timestamp"),
     size: 200,
     enableSorting: false,
     cell: ({ row }) => <DateCell value={row.original.updated_at} />,
@@ -51,7 +54,7 @@ export const getAuditLogsTableColumns = ({ onViewLog }: AuditLogsTableColumnsDep
   {
     id: "action",
     accessorKey: "action",
-    header: "Action",
+    header: t("logs:col_action", "Action"),
     size: 110,
     enableSorting: false,
     cell: ({ row }) => (
@@ -61,7 +64,7 @@ export const getAuditLogsTableColumns = ({ onViewLog }: AuditLogsTableColumnsDep
   {
     id: "table_name",
     accessorKey: "table_name",
-    header: "Table",
+    header: t("logs:col_table", "Table"),
     size: 130,
     enableSorting: false,
     cell: ({ row }) => (
@@ -71,7 +74,7 @@ export const getAuditLogsTableColumns = ({ onViewLog }: AuditLogsTableColumnsDep
   {
     id: "object_id",
     accessorKey: "object_id",
-    header: "Object ID",
+    header: t("logs:col_object_id", "Object ID"),
     minSize: 220,
     enableSorting: false,
     cell: ({ row }) => (
@@ -86,7 +89,7 @@ export const getAuditLogsTableColumns = ({ onViewLog }: AuditLogsTableColumnsDep
   {
     id: "changed_by",
     accessorKey: "changed_by",
-    header: "Changed By",
+    header: t("logs:col_changed_by", "Changed By"),
     size: 200,
     enableSorting: false,
     cell: ({ row }) => <DefaultProxyAdminTag userId={row.original.changed_by} />,
@@ -94,7 +97,7 @@ export const getAuditLogsTableColumns = ({ onViewLog }: AuditLogsTableColumnsDep
   {
     id: "changed_by_api_key",
     accessorKey: "changed_by_api_key",
-    header: "API Key (Hash)",
+    header: t("logs:col_api_key_hash", "API Key (Hash)"),
     size: 160,
     enableSorting: false,
     cell: ({ row }) => <IdCell value={row.original.changed_by_api_key} variant="plain" />,

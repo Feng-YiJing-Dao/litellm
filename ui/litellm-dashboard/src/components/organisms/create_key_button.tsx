@@ -24,6 +24,7 @@ import { SearchSelect, type SearchSelectOption } from "@/components/shared/Searc
 import { TagsInput } from "@/app/(dashboard)/guardrails/_components/content_filter/TagsInput";
 import { ChevronDown, Info } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { type Control, useForm, useWatch, type UseFormSetValue } from "react-hook-form";
 import { rolesWithWriteAccess } from "../../utils/roles";
 import AgentSelector from "../agent_management/AgentSelector";
@@ -216,6 +217,7 @@ export const fetchUserModels = async (
  * ─────────────────────────────────────────────────────────────────────────
  */
 const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOpenCreate, prefillData }) => {
+  const { t } = useTranslation(["keys", "common"]);
   const { accessToken, userId: userID, userRole, premiumUser } = useAuthorized();
   const canEditGuardrails = premiumUser || (userRole != null && rolesWithWriteAccess.includes(userRole));
   const canViewPolicies = useCan("viewPolicies");
@@ -653,23 +655,27 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
     <div>
       {userRole && rolesWithWriteAccess.includes(userRole) && (
         <Button className="mx-auto" onClick={() => setIsModalVisible(true)} data-testid="create-key-button">
-          + Create New Key
+          {t("keys:create_key_button", { defaultValue: "+ Create New Key" })}
         </Button>
       )}
       <Dialog open={isModalVisible} onOpenChange={(open) => !open && handleCancel()}>
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[1000px]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-foreground">Create New Key</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-foreground">
+              {t("keys:create_key_modal_title", { defaultValue: "Create New Key" })}
+            </DialogTitle>
           </DialogHeader>
           <MountedFormProvider value={mountedForm}>
             <form onSubmit={handleSubmit}>
               {/* Section 1: Key Ownership */}
               <div className="mb-8">
-                <h3 className="text-lg font-medium text-foreground mb-4">Key Ownership</h3>
+                <h3 className="text-lg font-medium text-foreground mb-4">
+                  {t("keys:key_ownership", { defaultValue: "Key Ownership" })}
+                </h3>
                 <Field className="mb-4">
                   <FieldLabel>
                     <span>
-                      Owned By{" "}
+                      {t("keys:owned_by", { defaultValue: "Owned By" })}{" "}
                       <SimpleTooltip content="Select who will own this Virtual Key">
                         <Info className="ml-1 inline size-3.5 align-text-bottom" />
                       </SimpleTooltip>
@@ -682,21 +688,21 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   >
                     <label className={KEY_OWNER_LABEL_CLASS}>
                       <RadioGroupItem value="you" />
-                      You
+                      {t("keys:you", { defaultValue: "You" })}
                     </label>
                     <label className={KEY_OWNER_LABEL_CLASS}>
                       <RadioGroupItem value="service_account" />
-                      Service Account
+                      {t("keys:service_account", { defaultValue: "Service Account" })}
                     </label>
                     {userRole === "Admin" && (
                       <label className={KEY_OWNER_LABEL_CLASS}>
                         <RadioGroupItem value="another_user" />
-                        Another User
+                        {t("keys:another_user", { defaultValue: "Another User" })}
                       </label>
                     )}
                     <label className={KEY_OWNER_LABEL_CLASS}>
                       <RadioGroupItem value="agent" />
-                      Agent <Badge>New</Badge>
+                      {t("keys:agent", { defaultValue: "Agent" })} <Badge>New</Badge>
                     </label>
                   </RadioGroup>
                 </Field>
