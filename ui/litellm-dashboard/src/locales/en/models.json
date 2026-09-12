@@ -106,5 +106,22 @@
   "model_not_found": "Model not found",
   "only_db_models_editable": "Only DB models can be edited. You must be an admin or the creator of the model to edit it.",
   "using_existing_credential": "Using Existing Credential",
-  "close": "Close"
+  "close": "Close",
+  "copy_litellm_model_name": "Copy LiteLLM model name",
+  "copied_litellm_model_name": "LiteLLM model name copied",
+  "about_credential_types": "About credential types",
+  "credential_types": "Credential types",
+  "reusable_credentials_desc": "Credentials saved in LiteLLM that can be added to models repeatedly.",
+  "manual_credentials_desc": "Credentials added directly during model creation or defined in the config file.",
+  "pause_tooltip_config": "Config models cannot be paused from the dashboard. Pause is DB-backed.",
+  "pause_tooltip_admin_only": "Only proxy admins can pause or resume a model.",
+  "pause_tooltip_resume": "Resume model — restore normal routing.",
+  "pause_tooltip_pause": "Pause model — stop routing requests until resumed.",
+  "delete_tooltip_config": "Config model cannot be deleted on the dashboard. Please delete it from the config file.",
+  "delete_auto_router_confirm_msg": "Are you sure you want to delete this auto-router? This action cannot be undone.",
+  "delete_model_confirm_msg": "Are you sure you want to delete this model? This action cannot be undone.",
+  "testing_connection": "Testing connection...",
+  "failed_delete_model": "Failed to delete model",
+  "model_updated_success": "Model settings updated successfully",
+  "model_update_failed": "Failed to update model settings"
 }

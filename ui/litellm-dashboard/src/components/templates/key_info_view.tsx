@@ -532,8 +532,8 @@ export default function KeyInfoView({
           createdById: currentKeyData.created_by_user?.user_id || currentKeyData.created_by || "",
           createdAt: currentKeyData.created_at ? formatTimestamp(currentKeyData.created_at) : "",
           lastUpdated: lastConfiguredAt ? formatTimestamp(lastConfiguredAt) : "",
-          lastActive: currentKeyData.last_active ? formatTimestamp(currentKeyData.last_active) : "Never",
-          expires: currentKeyData.expires ? formatTimestamp(currentKeyData.expires) : "Never",
+          lastActive: currentKeyData.last_active ? formatTimestamp(currentKeyData.last_active) : t("keys:never", { defaultValue: "Never" }),
+          expires: currentKeyData.expires ? formatTimestamp(currentKeyData.expires) : t("keys:never", { defaultValue: "Never" }),
         }}
         onBack={onClose}
         onRegenerate={() => setIsRegenerateModalOpen(true)}
@@ -545,7 +545,7 @@ export default function KeyInfoView({
         backButtonText={resolvedBackButtonText}
         regenerateDisabled={!premiumUser}
         regenerateTooltip={
-          !premiumUser ? "This is a LiteLLM Enterprise feature, and requires a valid key to use." : undefined
+          !premiumUser ? t("common:enterprise_feature_tooltip", { defaultValue: "This is a LiteLLM Enterprise feature, and requires a valid key to use." }) : undefined
         }
       />
 
@@ -973,7 +973,7 @@ export default function KeyInfoView({
 
                   {currentKeyData.budget_fallbacks && Object.keys(currentKeyData.budget_fallbacks).length > 0 && (
                     <div>
-                      <p className="text-sm font-medium">Budget Fallbacks</p>
+                      <p className="text-sm font-medium">{t("keys:budget_fallbacks", { defaultValue: "Budget Fallbacks" })}</p>
                       <div className="mt-1 space-y-1">
                         {Object.entries(currentKeyData.budget_fallbacks).map(([model, fallbacks]) => (
                           <div key={model} className="text-xs text-muted-foreground">
@@ -988,7 +988,7 @@ export default function KeyInfoView({
 
                   {hasRouterSettings(currentKeyData.router_settings) && (
                     <div>
-                      <p className="text-sm font-medium">Router Settings</p>
+                      <p className="text-sm font-medium">{t("keys:router_settings", { defaultValue: "Router Settings" })}</p>
                       <div className="mt-1">
                         <RouterSettingsSummary routerSettings={currentKeyData.router_settings} />
                       </div>
@@ -996,7 +996,7 @@ export default function KeyInfoView({
                   )}
 
                   <div>
-                    <p className="text-sm font-medium">Tags</p>
+                    <p className="text-sm font-medium">{t("keys:tags", { defaultValue: "Tags" })}</p>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {Array.isArray(currentKeyData.metadata?.tags) && currentKeyData.metadata.tags.length > 0
                         ? currentKeyData.metadata.tags.map((tag, index) => (
@@ -1004,12 +1004,12 @@ export default function KeyInfoView({
                               {tag}
                             </span>
                           ))
-                        : "No tags specified"}
+                        : t("keys:no_tags_specified", { defaultValue: "No tags specified" })}
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Prompts</p>
+                    <p className="text-sm font-medium">{t("keys:prompts", { defaultValue: "Prompts" })}</p>
                     <p className="text-sm">
                       {Array.isArray(currentKeyData.metadata?.prompts) && currentKeyData.metadata.prompts.length > 0
                         ? currentKeyData.metadata.prompts.map((prompt, index) => (
@@ -1017,12 +1017,12 @@ export default function KeyInfoView({
                               {prompt}
                             </span>
                           ))
-                        : "No prompts specified"}
+                        : t("keys:no_prompts_specified", { defaultValue: "No prompts specified" })}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Allowed Routes</p>
+                    <p className="text-sm font-medium">{t("keys:allowed_routes", { defaultValue: "Allowed Routes" })}</p>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {Array.isArray(currentKeyData.allowed_routes) && currentKeyData.allowed_routes.length > 0 ? (
                         currentKeyData.allowed_routes.map((route, index) => (
@@ -1031,13 +1031,13 @@ export default function KeyInfoView({
                           </span>
                         ))
                       ) : (
-                        <Badge variant="secondary">All routes allowed</Badge>
+                        <Badge variant="secondary">{t("keys:all_routes_allowed", { defaultValue: "All routes allowed" })}</Badge>
                       )}
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Allowed Pass Through Routes</p>
+                    <p className="text-sm font-medium">{t("keys:allowed_passthrough_routes", { defaultValue: "Allowed Pass Through Routes" })}</p>
                     <p className="text-sm">
                       {Array.isArray(currentKeyData.metadata?.allowed_passthrough_routes) &&
                       currentKeyData.metadata.allowed_passthrough_routes.length > 0
@@ -1046,23 +1046,23 @@ export default function KeyInfoView({
                               {route}
                             </span>
                           ))
-                        : "No pass through routes specified"}
+                        : t("keys:no_passthrough_routes_specified", { defaultValue: "No pass through routes specified" })}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Disable Global Guardrails</p>
+                    <p className="text-sm font-medium">{t("keys:disable_global_guardrails", { defaultValue: "Disable Global Guardrails" })}</p>
                     <p className="text-sm">
                       {currentKeyData.metadata?.disable_global_guardrails === true ? (
-                        <Badge variant="destructive">Enabled - Global guardrails bypassed</Badge>
+                        <Badge variant="destructive">{t("keys:guardrails_bypassed", { defaultValue: "Enabled - Global guardrails bypassed" })}</Badge>
                       ) : (
-                        <Badge variant="secondary">Disabled - Global guardrails active</Badge>
+                        <Badge variant="secondary">{t("keys:guardrails_active", { defaultValue: "Disabled - Global guardrails active" })}</Badge>
                       )}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Models</p>
+                    <p className="text-sm font-medium">{t("keys:models", { defaultValue: "Models" })}</p>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {currentKeyData.models && currentKeyData.models.length > 0 ? (
                         currentKeyData.models.map((model, index) => (
@@ -1071,60 +1071,60 @@ export default function KeyInfoView({
                           </BadgeLink>
                         ))
                       ) : (
-                        <p className="text-sm">No models specified</p>
+                        <p className="text-sm">{t("keys:no_models_specified", { defaultValue: "No models specified" })}</p>
                       )}
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Rate Limits</p>
+                    <p className="text-sm font-medium">{t("keys:rate_limits", { defaultValue: "Rate Limits" })}</p>
                     <p className="text-sm">
-                      TPM: {currentKeyData.tpm_limit !== null ? currentKeyData.tpm_limit : "Unlimited"}
+                      TPM: {currentKeyData.tpm_limit !== null ? currentKeyData.tpm_limit : t("keys:unlimited", { defaultValue: "Unlimited" })}
                     </p>
                     <p className="text-sm">
-                      RPM: {currentKeyData.rpm_limit !== null ? currentKeyData.rpm_limit : "Unlimited"}
+                      RPM: {currentKeyData.rpm_limit !== null ? currentKeyData.rpm_limit : t("keys:unlimited", { defaultValue: "Unlimited" })}
                     </p>
                     <p className="text-sm">
-                      Max Parallel Requests:{" "}
+                      {t("keys:max_parallel_requests", { defaultValue: "Max Parallel Requests" })}:{" "}
                       {currentKeyData.max_parallel_requests !== null
                         ? currentKeyData.max_parallel_requests
-                        : "Unlimited"}
+                        : t("keys:unlimited", { defaultValue: "Unlimited" })}
                     </p>
                     <p className="text-sm">
-                      Model TPM Limits:{" "}
+                      {t("keys:model_tpm_limits", { defaultValue: "Model TPM Limits" })}:{" "}
                       {currentKeyData.metadata?.model_tpm_limit
                         ? JSON.stringify(currentKeyData.metadata.model_tpm_limit)
-                        : "Unlimited"}
+                        : t("keys:unlimited", { defaultValue: "Unlimited" })}
                     </p>
                     <p className="text-sm">
-                      Model RPM Limits:{" "}
+                      {t("keys:model_rpm_limits", { defaultValue: "Model RPM Limits" })}:{" "}
                       {currentKeyData.metadata?.model_rpm_limit
                         ? JSON.stringify(currentKeyData.metadata.model_rpm_limit)
-                        : "Unlimited"}
+                        : t("keys:unlimited", { defaultValue: "Unlimited" })}
                     </p>
                     <p className="text-sm">
-                      Tag RPM Limits:{" "}
+                      {t("keys:tag_rpm_limits", { defaultValue: "Tag RPM Limits" })}:{" "}
                       {currentKeyData.metadata?.tag_rpm_limit &&
                       Object.keys(currentKeyData.metadata.tag_rpm_limit).length > 0
                         ? JSON.stringify(currentKeyData.metadata.tag_rpm_limit)
-                        : "Unlimited"}
+                        : t("keys:unlimited", { defaultValue: "Unlimited" })}
                     </p>
                     <p className="text-sm">
-                      Estimated Output Tokens:{" "}
+                      {t("keys:estimated_output_tokens", { defaultValue: "Estimated Output Tokens" })}:{" "}
                       {currentKeyData.metadata?.default_estimated_output_tokens != null
                         ? String(currentKeyData.metadata.default_estimated_output_tokens)
-                        : "Default"}
+                        : t("keys:default", { defaultValue: "Default" })}
                     </p>
                     <p className="text-sm">
-                      Estimated Output Tokens Per Model:{" "}
+                      {t("keys:estimated_output_tokens_per_model", { defaultValue: "Estimated Output Tokens Per Model" })}:{" "}
                       {currentKeyData.metadata?.default_estimated_output_tokens_per_model
                         ? JSON.stringify(currentKeyData.metadata.default_estimated_output_tokens_per_model)
-                        : "Default"}
+                        : t("keys:default", { defaultValue: "Default" })}
                     </p>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium">Metadata</p>
+                    <p className="text-sm font-medium">{t("keys:metadata", { defaultValue: "Metadata" })}</p>
                     <pre className="bg-muted p-2 rounded-sm text-xs overflow-auto mt-1">
                       {formatMetadataForDisplay(stripTagsFromMetadata(currentKeyData.metadata))}
                     </pre>

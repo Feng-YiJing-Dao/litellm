@@ -154,7 +154,7 @@ export function LogsTableToolbar({
 
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium">{t("logs:live_tail", { defaultValue: "Live Tail" })}</span>
-        <Switch checked={isLiveTail} onCheckedChange={onIsLiveTailChange} aria-label="Live Tail" />
+        <Switch checked={isLiveTail} onCheckedChange={onIsLiveTailChange} aria-label={t("logs:live_tail", { defaultValue: "Live Tail" })} />
       </div>
 
       <div className="flex items-center gap-2">
@@ -162,7 +162,7 @@ export function LogsTableToolbar({
         <Switch
           checked={excludeInternalHealthChecks}
           onCheckedChange={onExcludeInternalHealthChecksChange}
-          aria-label="Hide Health Checks"
+          aria-label={t("logs:hide_health_checks", { defaultValue: "Hide Health Checks" })}
         />
       </div>
 

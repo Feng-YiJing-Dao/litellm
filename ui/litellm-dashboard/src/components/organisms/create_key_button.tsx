@@ -1011,7 +1011,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         label={
                           <span>
                             {t("keys:max_budget_usd", { defaultValue: "Max Budget (USD)" })}{" "}
-                            <SimpleTooltip content="Maximum amount in USD this key can spend. When reached, the key will be blocked from making further requests">
+                            <SimpleTooltip content={t("keys:tooltip_max_budget", { defaultValue: "Maximum amount in USD this key can spend. When reached, the key will be blocked from making further requests" })}>
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
                           </span>
@@ -1038,7 +1038,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         label={
                           <span>
                             {t("keys:reset_budget", { defaultValue: "Reset Budget" })}{" "}
-                            <SimpleTooltip content="How often the budget should reset. For example, setting 'daily' will reset the budget every 24 hours">
+                            <SimpleTooltip content={t("keys:tooltip_reset_budget", { defaultValue: "How often the budget should reset. For example, setting 'daily' will reset the budget every 24 hours" })}>
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
                           </span>
@@ -1518,7 +1518,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       </MountedFormField>
                       <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                          <b>MCP Settings</b>
+                          <b>{t("keys:mcp_settings", { defaultValue: "MCP Settings" })}</b>
                           <ChevronDown className={SECTION_CHEVRON_CLASS} />
                         </CollapsibleTrigger>
                         <CollapsibleContent className="px-4 pb-3">
@@ -1561,7 +1561,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
 
                       <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                          <b>Agent Settings</b>
+                          <b>{t("keys:agent_settings", { defaultValue: "Agent Settings" })}</b>
                           <ChevronDown className={SECTION_CHEVRON_CLASS} />
                         </CollapsibleTrigger>
                         <CollapsibleContent className="px-4 pb-3">
@@ -1591,7 +1591,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
 
                       <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                          <b>Skill Settings</b>
+                          <b>{t("keys:skill_settings", { defaultValue: "Skill Settings" })}</b>
                           <ChevronDown className={SECTION_CHEVRON_CLASS} />
                         </CollapsibleTrigger>
                         <CollapsibleContent className="px-4 pb-3">
@@ -1622,7 +1622,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       {premiumUser ? (
                         <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                           <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                            <b>Logging Settings</b>
+                            <b>{t("keys:logging_settings", { defaultValue: "Logging Settings" })}</b>
                             <ChevronDown className={SECTION_CHEVRON_CLASS} />
                           </CollapsibleTrigger>
                           <CollapsibleContent className="px-4 pb-3">
@@ -1654,7 +1654,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                             <div style={{ opacity: 0.5 }}>
                               <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                                 <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                                  <b>Logging Settings</b>
+                                  <b>{t("keys:logging_settings", { defaultValue: "Logging Settings" })}</b>
                                   <ChevronDown className={SECTION_CHEVRON_CLASS} />
                                 </CollapsibleTrigger>
                                 <CollapsibleContent className="px-4 pb-3">
@@ -1680,7 +1680,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4 mb-4 overflow-hidden rounded-lg border"
                       >
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                          <b>Router Settings</b>
+                          <b>{t("keys:router_settings", { defaultValue: "Router Settings" })}</b>
                           <ChevronDown className={SECTION_CHEVRON_CLASS} />
                         </CollapsibleTrigger>
                         <CollapsibleContent className="px-4 pb-3">
@@ -1703,14 +1703,13 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
 
                       <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                          <b>Model Aliases</b>
+                          <b>{t("keys:model_aliases", { defaultValue: "Model Aliases" })}</b>
                           <ChevronDown className={SECTION_CHEVRON_CLASS} />
                         </CollapsibleTrigger>
                         <CollapsibleContent className="px-4 pb-3">
                           <div className="mt-4">
                             <p className="text-sm text-muted-foreground mb-4">
-                              Create custom aliases for models that can be used in API calls. This allows you to create
-                              shortcuts for specific models.
+                              {t("keys:model_aliases_desc", { defaultValue: "Create custom aliases for models that can be used in API calls. This allows you to create shortcuts for specific models." })}
                             </p>
                             <ModelAliasManager
                               accessToken={accessToken}

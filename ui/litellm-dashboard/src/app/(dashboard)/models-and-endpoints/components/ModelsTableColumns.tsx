@@ -77,23 +77,23 @@ function ModelInformationCell({ model, displayName }: { model: ModelData; displa
             <span className="truncate text-xs text-muted-foreground">{model.provider || "Unknown provider"}</span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-xs text-muted-foreground">Public Model Name</span>
+            <span className="text-xs text-muted-foreground">{t("models:public_model_name", "Public Model Name")}</span>
             <span className="truncate text-sm font-medium text-foreground" title={displayName}>
               {displayName}
             </span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-xs text-muted-foreground">LiteLLM Model Name</span>
+            <span className="text-xs text-muted-foreground">{t("models:litellm_model_name", "LiteLLM Model Name")}</span>
             <span className="flex min-w-0 items-center gap-1.5">
               <span className="truncate font-mono text-sm text-foreground" title={litellmModelName}>
                 {litellmModelName}
               </span>
               <button
                 type="button"
-                aria-label="Copy LiteLLM model name"
+                aria-label={t("models:copy_litellm_model_name", "Copy LiteLLM model name")}
                 data-testid={`copy-litellm-model-name-${model.model_info.id}`}
                 className="shrink-0 cursor-pointer text-muted-foreground hover:text-foreground"
-                onClick={() => void copyToClipboard(litellmModelName, "LiteLLM model name copied")}
+                onClick={() => void copyToClipboard(litellmModelName, t("models:copied_litellm_model_name", "LiteLLM model name copied"))}
               >
                 <Copy className="size-3.5" />
               </button>
@@ -108,13 +108,13 @@ function ModelInformationCell({ model, displayName }: { model: ModelData; displa
 function CredentialsHeader() {
   return (
     <span className="flex items-center gap-1">
-      Credentials
+      {t("models:credentials", "Credentials")}
       <HoverCard>
         <HoverCardTrigger
           render={
             <button
               type="button"
-              aria-label="About credential types"
+              aria-label={t("models:about_credential_types", "About credential types")}
               data-testid="credentials-header-info"
               className="cursor-pointer text-muted-foreground hover:text-foreground"
             />
@@ -124,23 +124,23 @@ function CredentialsHeader() {
         </HoverCardTrigger>
         <HoverCardContent align="start" className="w-80">
           <div className="flex flex-col gap-3">
-            <span className="text-sm font-medium text-foreground">Credential types</span>
+            <span className="text-sm font-medium text-foreground">{t("models:credential_types", "Credential types")}</span>
             <div className="flex flex-col gap-1">
               <span className="flex items-center gap-1.5 text-sm font-medium text-info">
                 <RefreshCw className="size-3.5" />
-                Reusable
+                {t("models:reusable", "Reusable")}
               </span>
               <span className="text-xs text-muted-foreground">
-                Credentials saved in LiteLLM that can be added to models repeatedly.
+                {t("models:reusable_credentials_desc", "Credentials saved in LiteLLM that can be added to models repeatedly.")}
               </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
                 <Pencil className="size-3.5" />
-                Manual
+                {t("models:manual", "Manual")}
               </span>
               <span className="text-xs text-muted-foreground">
-                Credentials added directly during model creation or defined in the config file.
+                {t("models:manual_credentials_desc", "Credentials added directly during model creation or defined in the config file.")}
               </span>
             </div>
           </div>
@@ -155,7 +155,7 @@ function CredentialsCell({ credentialName }: { credentialName: string | undefine
     return (
       <Badge variant="outline" className="gap-1 font-normal text-muted-foreground">
         <Pencil className="size-3" />
-        Manual
+        {t("models:manual", "Manual")}
       </Badge>
     );
   }
@@ -171,8 +171,8 @@ function CredentialsCell({ credentialName }: { credentialName: string | undefine
 function CreatedByCell({ model }: { model: ModelData }) {
   const isConfigModel = !model.model_info?.db_model;
   const createdAt = formatShortDate(model.model_info.created_at);
-  const primary = isConfigModel ? "Defined in config" : model.model_info.created_by || "Unknown";
-  const secondaryForDbModel = createdAt ?? "Unknown date";
+  const primary = isConfigModel ? t("models:defined_in_config", "Defined in config") : model.model_info.created_by || t("common:unknown", "Unknown");
+  const secondaryForDbModel = createdAt ?? t("common:unknown_date", "Unknown date");
 
   return (
     <div className="flex min-w-0 flex-col gap-0.5">
@@ -193,7 +193,7 @@ function CostsCell({ model }: { model: ModelData }) {
 
   return (
     <CellTooltip
-      content="Cost per 1M tokens"
+      content={t("models:cost_per_1m", "Cost per 1M tokens")}
       trigger={
         <div className="flex flex-col gap-0.5 whitespace-nowrap">
           {inputCost != null && (
@@ -237,7 +237,7 @@ function AccessGroupsCell({ accessGroups }: { accessGroups: string[] | null }) {
           }
           trigger={
             <Badge variant="outline" className="shrink-0 cursor-default font-normal">
-              +{overflow.length} more
+              +{overflow.length} {t("common:more", "more")}
             </Badge>
           }
         />
@@ -272,17 +272,19 @@ function ModelRowActions({
 
   const resolvePauseTooltip = (): string => {
     if (isConfigModel) {
-      return "Config models cannot be paused from the dashboard. Pause is DB-backed.";
+      return t("models:pause_tooltip_config", "Config models cannot be paused from the dashboard. Pause is DB-backed.");
     }
     if (!isAdmin) {
-      return "Only proxy admins can pause or resume a model.";
+      return t("models:pause_tooltip_admin_only", "Only proxy admins can pause or resume a model.");
     }
-    return isBlocked ? "Resume model — restore normal routing." : "Pause model — stop routing requests until resumed.";
+    return isBlocked
+      ? t("models:pause_tooltip_resume", "Resume model — restore normal routing.")
+      : t("models:pause_tooltip_pause", "Pause model — stop routing requests until resumed.");
   };
 
   const deleteTooltip = isConfigModel
-    ? "Config model cannot be deleted on the dashboard. Please delete it from the config file."
-    : "Delete model";
+    ? t("models:delete_tooltip_config", "Config model cannot be deleted on the dashboard. Please delete it from the config file.")
+    : t("models:delete_model", "Delete model");
 
   return (
     <div className="flex items-center justify-end gap-1.5">
@@ -301,7 +303,7 @@ function ModelRowActions({
                   size="sm"
                   checked={!isBlocked}
                   disabled={!isPauseToggleable}
-                  aria-label={isBlocked ? "Resume model" : "Pause model"}
+                  aria-label={isBlocked ? t("models:resume_model", "Resume model") : t("models:pause_model", "Pause model")}
                   data-testid={`model-pause-toggle-${modelId}`}
                   onCheckedChange={(nextChecked) => {
                     if (isPauseToggleable && onTogglePauseClick && modelId) {
@@ -321,7 +323,7 @@ function ModelRowActions({
             <Button
               variant="ghost"
               size="icon-sm"
-              aria-label="Delete model"
+              aria-label={t("models:delete_model", "Delete model")}
               data-testid={`model-delete-${modelId}`}
               disabled={isConfigModel || !canEditModel}
               className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive"

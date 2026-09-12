@@ -32,9 +32,9 @@ interface KeyStatus {
   tooltip?: string;
 }
 
-const SPEND_BUDGET_SORT_FIELDS: DataTableSortField[] = [
-  { id: "spend", label: "Spend" },
-  { id: "max_budget", label: "Budget" },
+const getSpendBudgetSortFields = (): DataTableSortField[] => [
+  { id: "spend", label: t("keys:spend", "Spend") },
+  { id: "max_budget", label: t("keys:budget", "Budget") },
 ];
 
 export const KEY_TABLE_SORT_FIELDS: readonly string[] = [
@@ -42,7 +42,8 @@ export const KEY_TABLE_SORT_FIELDS: readonly string[] = [
   "token",
   "created_at",
   "updated_at",
-  ...SPEND_BUDGET_SORT_FIELDS.map((field) => field.id),
+  "spend",
+  "max_budget",
 ];
 
 const getKeyStatus = (key: KeyResponse): KeyStatus => {
@@ -52,18 +53,22 @@ const getKeyStatus = (key: KeyResponse): KeyStatus => {
       tone: "error",
       label: t("keys:status_blocked", "Blocked"),
       tooltip: isScimBlocked
-        ? "Blocked by SCIM (external identity provider deactivated or deleted the owning user)."
-        : "Blocked. Requests using this key will be rejected with 401.",
+        ? t("keys:blocked_by_scim", "Blocked by SCIM (external identity provider deactivated or deleted the owning user).")
+        : t("keys:blocked_desc", "Blocked. Requests using this key will be rejected with 401."),
     };
   }
   const expiresAt = key.expires ? Date.parse(key.expires) : Number.NaN;
   if (!Number.isNaN(expiresAt) && expiresAt < Date.now()) {
-    return { tone: "warning", label: t("keys:status_expired", "Expired"), tooltip: "This key has passed its expiry date." };
+    return {
+      tone: "warning",
+      label: t("keys:status_expired", "Expired"),
+      tooltip: t("keys:expired_desc", "This key has passed its expiry date."),
+    };
   }
   return {
     tone: "success",
     label: t("keys:status_active", "Active"),
-    tooltip: "This key is not blocked and has not expired.",
+    tooltip: t("keys:active_desc", "This key is not blocked and has not expired."),
   };
 };
 
@@ -179,7 +184,10 @@ export const getKeyTableColumns = ({
     accessorKey: "user",
     meta: { title: t("keys:col_user", "User") },
     header: () => (
-      <InfoHeader label={t("keys:col_user", "User")} tooltip="Displays the first available value: User Alias, User Email, or User ID." />
+      <InfoHeader
+        label={t("keys:col_user", "User")}
+        tooltip={t("keys:tooltip_col_user", "Displays the first available value: User Alias, User Email, or User ID.")}
+      />
     ),
     size: 160,
     enableSorting: false,
@@ -241,7 +249,7 @@ export const getKeyTableColumns = ({
     header: () => (
       <InfoHeader
         label={t("keys:col_last_active", "Last Active")}
-        tooltip="This is a new field and is not backfilled. Only new key usage will update this value."
+        tooltip={t("keys:tooltip_col_last_active", "This is a new field and is not backfilled. Only new key usage will update this value.")}
       />
     ),
     size: 130,
@@ -261,7 +269,7 @@ export const getKeyTableColumns = ({
     id: "spend",
     accessorKey: "spend",
     meta: { title: t("keys:col_spend_budget", "Spend / Budget"), skeleton: "meter" },
-    header: ({ table }) => <DataTableMultiSortHeader table={table} fields={SPEND_BUDGET_SORT_FIELDS} />,
+    header: ({ table }) => <DataTableMultiSortHeader table={table} fields={getSpendBudgetSortFields()} />,
     size: 180,
     enableSorting: true,
     cell: ({ row }) => {

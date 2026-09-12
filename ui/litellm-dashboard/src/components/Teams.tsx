@@ -600,23 +600,29 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
 
           <DeleteResourceModal
             isOpen={isDeleteModalOpen}
-            title="Delete Team?"
+            title={t("teams:delete_team_confirm_title", { defaultValue: "Delete Team?" })}
             alertMessage={(() => {
               const deleteKeyCount = teamToDelete?.keys_count ?? teamToDelete?.keys?.length ?? 0;
               return deleteKeyCount === 0
                 ? undefined
-                : `Warning: This team has ${deleteKeyCount} keys associated with it. Deleting the team will also delete all associated keys, along with any models created for this team. This action is irreversible.`;
+                : t("teams:delete_team_keys_warning", {
+                    count: deleteKeyCount,
+                    defaultValue: `Warning: This team has ${deleteKeyCount} keys associated with it. Deleting the team will also delete all associated keys, along with any models created for this team. This action is irreversible.`,
+                  });
             })()}
-            message="Are you sure you want to delete this team, all its keys, and any models created for it? This action cannot be undone."
-            resourceInformationTitle="Team Information"
+            message={t("teams:delete_team_confirm_msg", {
+              defaultValue:
+                "Are you sure you want to delete this team, all its keys, and any models created for it? This action cannot be undone.",
+            })}
+            resourceInformationTitle={t("teams:team_information", { defaultValue: "Team Information" })}
             resourceInformation={[
-              { label: "Team ID", value: teamToDelete?.team_id, code: true },
-              { label: "Team Name", value: teamToDelete?.team_alias },
+              { label: t("teams:team_id", { defaultValue: "Team ID" }), value: teamToDelete?.team_id, code: true },
+              { label: t("teams:team_alias", { defaultValue: "Team Name" }), value: teamToDelete?.team_alias },
               {
-                label: "Keys",
+                label: t("teams:keys", { defaultValue: "Keys" }),
                 value: teamToDelete?.keys_count ?? teamToDelete?.keys?.length ?? 0,
               },
-              { label: "Members", value: teamToDelete?.members_with_roles?.length },
+              { label: t("teams:members", { defaultValue: "Members" }), value: teamToDelete?.members_with_roles?.length },
             ]}
             requiredConfirmation={teamToDelete?.team_alias}
             onCancel={cancelDelete}
@@ -730,15 +736,17 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                           name="organization_id"
                           className="mt-8"
                           label={labelWithDocsHint(
-                            "Organization",
-                            "Organizations can have multiple teams. Learn more about the user management hierarchy",
+                            t("teams:organization", { defaultValue: "Organization" }),
+                            t("teams:org_hint_hierarchy", {
+                              defaultValue: "Organizations can have multiple teams. Learn more about the user management hierarchy",
+                            }),
                             "https://docs.litellm.ai/docs/proxy/user_management_heirarchy",
                           )}
                           description={
                             isOrgAdmin && isSingleOrg
-                              ? "You can only create teams within this organization"
+                              ? t("teams:only_create_teams_within_org", { defaultValue: "You can only create teams within this organization" })
                               : isOrgAdmin
-                                ? "required"
+                                ? t("teams:required", { defaultValue: "required" })
                                 : undefined
                           }
                         >
@@ -754,9 +762,11 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                               disabled={isOrgAdmin && soleOrganizationId !== null && value === soleOrganizationId}
                               allowClear={!isOrgAdmin}
                               placeholder={
-                                hasNoOrgs ? "No organizations available" : "Search or select an Organization"
+                                hasNoOrgs
+                                  ? t("teams:no_orgs_available", { defaultValue: "No organizations available" })
+                                  : t("teams:search_select_org", { defaultValue: "Search or select an Organization" })
                               }
-                              emptyText="No organizations available"
+                              emptyText={t("teams:no_orgs_available", { defaultValue: "No organizations available" })}
                               onValueChange={(next) => selectCreateTeamOrganization(next, value ?? null, onChange)}
                             />
                           )}
@@ -943,11 +953,11 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                           name="guardrails"
                           className="mt-8"
                           label={labelWithDocsHint(
-                            "Guardrails",
-                            "Setup your first guardrail",
+                            t("teams:guardrails", { defaultValue: "Guardrails" }),
+                            t("teams:guardrails_hint", { defaultValue: "Setup your first guardrail" }),
                             "https://docs.litellm.ai/docs/proxy/guardrails/quick_start",
                           )}
-                          description="Select existing guardrails or enter new ones"
+                          description={t("teams:select_enter_guardrails", { defaultValue: "Select existing guardrails or enter new ones" })}
                         >
                           {({ id, value, onChange }) => (
                             <TagsInput
@@ -955,7 +965,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                               value={value ?? []}
                               onValueChange={onChange}
                               options={guardrailsList.map((name) => ({ value: name, label: name }))}
-                              placeholder="Select or enter guardrails"
+                              placeholder={t("teams:placeholder_guardrails", { defaultValue: "Select or enter guardrails" })}
                             />
                           )}
                         </FormField>
@@ -964,13 +974,15 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                           name="disable_global_guardrails"
                           className="mt-4"
                           label={labelWithHint(
-                            "Disable Global Guardrails",
-                            "When enabled, this team will bypass any guardrails configured to run on every request (global guardrails)",
+                            t("teams:disable_global_guardrails", { defaultValue: "Disable Global Guardrails" }),
+                            t("teams:disable_global_guardrails_hint", {
+                              defaultValue: "When enabled, this team will bypass any guardrails configured to run on every request (global guardrails)",
+                            }),
                           )}
                           description={
                             premiumUser
-                              ? "Bypass global guardrails for this team"
-                              : "Premium feature - Upgrade to disable global guardrails by team"
+                              ? t("teams:bypass_global_guardrails_desc", { defaultValue: "Bypass global guardrails for this team" })
+                              : t("teams:premium_bypass_guardrails_desc", { defaultValue: "Premium feature - Upgrade to disable global guardrails by team" })
                           }
                         >
                           {({ id, value, onChange }) => (
@@ -988,11 +1000,13 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                             name="policies"
                             className="mt-8"
                             label={labelWithDocsHint(
-                              "Policies",
-                              "Apply policies to this team to control guardrails and other settings",
+                              t("teams:policies", { defaultValue: "Policies" }),
+                              t("teams:policies_hint", {
+                                defaultValue: "Apply policies to this team to control guardrails and other settings",
+                              }),
                               "https://docs.litellm.ai/docs/proxy/guardrails/guardrail_policies",
                             )}
-                            description="Select existing policies or enter new ones"
+                            description={t("teams:select_enter_policies", { defaultValue: "Select existing policies or enter new ones" })}
                           >
                             {({ id, value, onChange }) => (
                               <TagsInput
@@ -1000,7 +1014,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                                 value={value ?? []}
                                 onValueChange={onChange}
                                 options={policiesList.map((name) => ({ value: name, label: name }))}
-                                placeholder="Select or enter policies"
+                                placeholder={t("teams:placeholder_policies", { defaultValue: "Select or enter policies" })}
                               />
                             )}
                           </FormField>
@@ -1010,10 +1024,12 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                           name="access_group_ids"
                           className="mt-8"
                           label={labelWithHint(
-                            "Access Groups",
-                            "Assign access groups to this team. Access groups control which models, MCP servers, and agents this team can use",
+                            t("teams:access_groups", { defaultValue: "Access Groups" }),
+                            t("teams:access_groups_hint", {
+                              defaultValue: "Assign access groups to this team. Access groups control which models, MCP servers, and agents this team can use",
+                            }),
                           )}
-                          description="Select access groups to assign to this team"
+                          description={t("teams:select_access_groups_desc", { defaultValue: "Select access groups to assign to this team" })}
                         >
                           {({ value, onChange }) => (
                             <AccessGroupSelector

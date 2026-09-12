@@ -106,5 +106,22 @@
   "model_not_found": "未找到模型",
   "only_db_models_editable": "仅数据库模型可编辑。您必须是管理员或模型的创建者才能编辑。",
   "using_existing_credential": "使用已有凭据",
-  "close": "关闭"
+  "close": "关闭",
+  "copy_litellm_model_name": "复制 LiteLLM 模型名称",
+  "copied_litellm_model_name": "LiteLLM 模型名称已复制",
+  "about_credential_types": "关于凭证类型",
+  "credential_types": "凭证类型",
+  "reusable_credentials_desc": "保存于 LiteLLM 中的凭据，可供多个模型反复复用。",
+  "manual_credentials_desc": "在创建模型时直接录入或在配置文件中指定的凭据。",
+  "pause_tooltip_config": "配置文件中定义的模型无法在控制台暂停，暂停操作仅支持数据库模型。",
+  "pause_tooltip_admin_only": "仅代理管理员可以暂停或恢复模型。",
+  "pause_tooltip_resume": "恢复模型 — 恢复正常的路由请求。",
+  "pause_tooltip_pause": "暂停模型 — 停止将请求路由到此模型直至恢复。",
+  "delete_tooltip_config": "配置文件模型无法在控制台删除，请在配置文件中移除。",
+  "delete_auto_router_confirm_msg": "您确定要删除此自动路由器吗？此操作无法撤销。",
+  "delete_model_confirm_msg": "您确定要删除此模型吗？此操作无法撤销。",
+  "testing_connection": "正在测试连接…",
+  "failed_delete_model": "删除模型失败",
+  "model_updated_success": "模型设置更新成功",
+  "model_update_failed": "更新模型设置失败"
 }

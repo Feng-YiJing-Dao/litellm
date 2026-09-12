@@ -458,11 +458,11 @@ export default function ModelInfoView({
         onModelUpdate(updatedModelData);
       }
 
-      toast.success("Model settings updated successfully");
+      toast.success(t("models:model_updated_success", { defaultValue: "Model settings updated successfully" }));
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating model:", error);
-      toast.fromError("Failed to update model settings");
+      toast.fromError(t("models:model_update_failed", { defaultValue: "Failed to update model settings" }));
     } finally {
       setIsSaving(false);
     }
@@ -508,7 +508,7 @@ export default function ModelInfoView({
       return;
     }
     try {
-      toast.info("Testing connection...");
+      toast.info(t("models:testing_connection", { defaultValue: "Testing connection..." }));
       const response = await testConnectionRequest(
         accessToken,
         {
@@ -559,7 +559,7 @@ export default function ModelInfoView({
       onClose();
     } catch (error) {
       console.error("Error deleting the model:", error);
-      toast.fromError("Failed to delete model");
+      toast.fromError(t("models:failed_delete_model", { defaultValue: "Failed to delete model" }));
     } finally {
       setDeleteLoading(false);
       setIsDeleteModalOpen(false);
@@ -785,7 +785,7 @@ export default function ModelInfoView({
                   healthCheckModelOptions={healthCheckModelOptions}
                 />
               ) : (
-                <p className="text-sm">Loading...</p>
+                <p className="text-sm">{t("common:loading", { defaultValue: "Loading..." })}</p>
               )}
             </Card>
           </TabsContent>
@@ -801,25 +801,29 @@ export default function ModelInfoView({
       <DeleteResourceModal
         isOpen={isDeleteModalOpen}
         title={deleteLabel}
-        alertMessage="This action cannot be undone."
-        message={`Are you sure you want to delete this ${isAnyAutoRouter ? "auto-router" : "model"}?`}
-        resourceInformationTitle="Model Information"
+        alertMessage={t("common:action_cannot_be_undone", { defaultValue: "This action cannot be undone." })}
+        message={
+          isAnyAutoRouter
+            ? t("models:delete_auto_router_confirm_msg", { defaultValue: "Are you sure you want to delete this auto-router? This action cannot be undone." })
+            : t("models:delete_model_confirm_msg", { defaultValue: "Are you sure you want to delete this model? This action cannot be undone." })
+        }
+        resourceInformationTitle={t("models:model_information", { defaultValue: "Model Information" })}
         resourceInformation={[
           {
-            label: "Model Name",
-            value: modelData?.model_name || "Not Set",
+            label: t("models:model_name", { defaultValue: "Model Name" }),
+            value: modelData?.model_name || t("models:not_set", { defaultValue: "Not Set" }),
           },
           {
-            label: "LiteLLM Model Name",
-            value: modelData?.litellm_model_name || "Not Set",
+            label: t("models:litellm_model_name", { defaultValue: "LiteLLM Model Name" }),
+            value: modelData?.litellm_model_name || t("models:not_set", { defaultValue: "Not Set" }),
           },
           {
-            label: "Provider",
-            value: modelData?.provider || "Not Set",
+            label: t("models:provider", { defaultValue: "Provider" }),
+            value: modelData?.provider || t("models:not_set", { defaultValue: "Not Set" }),
           },
           {
-            label: "Created By",
-            value: modelData?.model_info?.created_by || "Not Set",
+            label: t("models:created_by", { defaultValue: "Created By" }),
+            value: modelData?.model_info?.created_by || t("models:not_set", { defaultValue: "Not Set" }),
           },
         ]}
         onCancel={() => setIsDeleteModalOpen(false)}
