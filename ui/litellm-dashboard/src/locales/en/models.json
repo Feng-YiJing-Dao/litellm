@@ -40,5 +40,21 @@
   "search_placeholder": "Search models…",
   "loading_models": "Loading models...",
   "no_models_found": "No models found",
-  "all_models": "All Models"
+  "all_models": "All Models",
+  "select_team": "Select Team",
+  "select_provider_placeholder": "Select a provider",
+  "loading_providers": "Loading providers...",
+  "mode": "Mode",
+  "model_access_group": "Model Access Group",
+  "test_connect": "Test Connect",
+  "add_model_btn": "Add Model",
+  "connection_test_results": "Connection Test Results",
+  "configure_fallbacks": "Configure Model Fallbacks",
+  "manage_fallback_chains_desc": "Manage multiple fallback chains for different models (up to 5 groups at a time)",
+  "primary_model": "Primary Model",
+  "select_primary_model": "Select primary model",
+  "if_fails_try": "IF FAILS, TRY...",
+  "fallback_chain": "Fallback Chain",
+  "no_fallback_models_selected": "No fallback models selected",
+  "add_models_from_dropdown": "Add models from the dropdown above"
 }

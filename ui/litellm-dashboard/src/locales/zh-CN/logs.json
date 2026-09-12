@@ -72,8 +72,19 @@
   "no_key_aliases_found": "未找到密钥别名",
   "no_end_users_found": "此时间范围内未找到终端用户",
   "col_timestamp": "时间戳",
-  "col_table": "数据表",
+  "col_table": "变更数据表",
   "col_object_id": "对象 ID",
-  "col_changed_by": "操作人",
-  "col_api_key_hash": "API 密钥 (哈希)"
+  "col_changed_by": "操作人员",
+  "col_api_key_hash": "API 密钥 (哈希)",
+  "tab_request_logs": "请求日志",
+  "tab_audit_logs": "审计日志",
+  "tab_deleted_keys": "已删除密钥",
+  "tab_deleted_teams": "已删除团队",
+  "custom_range": "自定义时间范围",
+  "live_tail": "实时滚动追踪",
+  "hide_health_checks": "隐藏健康检查请求",
+  "reset_filters": "重置筛选条件",
+  "auto_refreshing": "每 15 秒自动刷新",
+  "stop": "停止",
+  "to": "至"
 }

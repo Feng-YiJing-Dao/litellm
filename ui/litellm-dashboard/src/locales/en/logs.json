@@ -75,5 +75,16 @@
   "col_table": "Table",
   "col_object_id": "Object ID",
   "col_changed_by": "Changed By",
-  "col_api_key_hash": "API Key (Hash)"
+  "col_api_key_hash": "API Key (Hash)",
+  "tab_request_logs": "Request Logs",
+  "tab_audit_logs": "Audit Logs",
+  "tab_deleted_keys": "Deleted Keys",
+  "tab_deleted_teams": "Deleted Teams",
+  "custom_range": "Custom Range",
+  "live_tail": "Live Tail",
+  "hide_health_checks": "Hide Health Checks",
+  "reset_filters": "Reset Filters",
+  "auto_refreshing": "Auto-refreshing every 15 seconds",
+  "stop": "Stop",
+  "to": "to"
 }

@@ -40,5 +40,21 @@
   "search_placeholder": "搜索模型名称或提供商…",
   "loading_models": "正在加载模型列表...",
   "no_models_found": "未找到匹配的模型",
-  "all_models": "全部模型"
+  "all_models": "全部模型",
+  "select_team": "选择团队",
+  "select_provider_placeholder": "选择供应商",
+  "loading_providers": "正在加载供应商...",
+  "mode": "模式",
+  "model_access_group": "模型访问控制组",
+  "test_connect": "测试连接",
+  "add_model_btn": "添加模型",
+  "connection_test_results": "连接测试结果",
+  "configure_fallbacks": "配置模型降级策略",
+  "manage_fallback_chains_desc": "管理不同模型的多级故障转移降级链（每次最多 5 组）",
+  "primary_model": "首选主模型",
+  "select_primary_model": "选择首选主模型",
+  "if_fails_try": "如果失败，重试...",
+  "fallback_chain": "降级模型链",
+  "no_fallback_models_selected": "未选择任何降级模型",
+  "add_models_from_dropdown": "请从上方下拉框选择要添加的降级模型"
 }

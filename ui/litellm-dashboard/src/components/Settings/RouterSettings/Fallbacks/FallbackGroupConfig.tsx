@@ -7,6 +7,7 @@ import { MultiSelect } from "@/components/shared/MultiSelect";
 import { SearchSelect } from "@/components/shared/SearchSelect";
 import { AlertCircle, ArrowDown, X } from "lucide-react";
 import React, { useId } from "react";
+import { useTranslation } from "react-i18next";
 
 export interface FallbackGroup {
   id: string;
@@ -29,6 +30,7 @@ export function FallbackGroupConfig({
   maxFallbacks,
   disablePrimaryModel = false,
 }: FallbackGroupConfigProps) {
+  const { t } = useTranslation(["models", "common"]);
   // Filter available options for fallbacks (exclude primary only, allow already selected to be shown for deselection)
   const availableFallbackOptions = availableModels.filter((m) => m !== group.primaryModel);
 
@@ -71,14 +73,14 @@ export function FallbackGroupConfig({
       {/* Primary Model Section */}
       <div className="relative">
         <label htmlFor={primaryModelInputId} className="block text-sm font-semibold text-foreground mb-2">
-          Primary Model <span className="text-destructive">*</span>
+          {t("models:primary_model", { defaultValue: "Primary Model" })} <span className="text-destructive">*</span>
         </label>
         <SearchSelect
           inputId={primaryModelInputId}
           options={availableModels.map((m) => ({ label: m, value: m }))}
           value={group.primaryModel ?? ""}
           onValueChange={handlePrimaryChange}
-          placeholder="Select primary model"
+          placeholder={t("models:select_primary_model", { defaultValue: "Select primary model" })}
           emptyText="No models found"
           disabled={disablePrimaryModel}
           className="h-12"
@@ -95,7 +97,7 @@ export function FallbackGroupConfig({
       <div className="flex items-center justify-center -my-4 z-raised">
         <div className="bg-indigo-50 text-indigo-500 px-4 py-1 rounded-full text-xs font-bold border border-indigo-100 flex items-center gap-2 shadow-xs dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-900">
           <ArrowDown className="w-4 h-4" />
-          IF FAILS, TRY...
+          {t("models:if_fails_try", { defaultValue: "IF FAILS, TRY..." })}
         </div>
       </div>
 
@@ -104,7 +106,7 @@ export function FallbackGroupConfig({
         className={`transition-opacity duration-300 ${!group.primaryModel ? "opacity-50 pointer-events-none" : "opacity-100"}`}
       >
         <label className="block text-sm font-semibold text-foreground mb-2">
-          Fallback Chain <span className="text-destructive">*</span>
+          {t("models:fallback_chain", { defaultValue: "Fallback Chain" })} <span className="text-destructive">*</span>
           <span className="text-xs text-muted-foreground font-normal ml-2">
             (Max {maxFallbacks} fallbacks at a time)
           </span>
@@ -135,8 +137,8 @@ export function FallbackGroupConfig({
           <div className="space-y-2 min-h-[100px]">
             {group.fallbackModels.length === 0 ? (
               <div className="h-32 border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center text-muted-foreground">
-                <span className="text-sm">No fallback models selected</span>
-                <span className="text-xs mt-1">Add models from the dropdown above</span>
+                <span className="text-sm">{t("models:no_fallback_models_selected", { defaultValue: "No fallback models selected" })}</span>
+                <span className="text-xs mt-1">{t("models:add_models_from_dropdown", { defaultValue: "Add models from the dropdown above" })}</span>
               </div>
             ) : (
               <ol aria-label="Fallback chain" className="space-y-2">

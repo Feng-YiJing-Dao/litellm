@@ -19,6 +19,7 @@ import {
   type MemberFormValues,
 } from "./memberFormValues";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useTranslation } from "react-i18next";
 
 interface BaseMember {
   user_email?: string;
@@ -64,6 +65,7 @@ const MemberModal = <T extends BaseMember>({
   mode,
   config,
 }: MemberModalProps<T>) => {
+  const { t } = useTranslation(["teams", "common"]);
   const schema = useMemo(() => buildMemberSchema(config), [config]);
   const form = useZodForm(schema, { defaultValues: emptyMemberFormValues(config) });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -171,12 +173,14 @@ const MemberModal = <T extends BaseMember>({
     <Dialog open={visible} onOpenChange={(open) => !open && onCancel()}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[1000px]">
         <DialogHeader>
-          <DialogTitle>{config.title || (mode === "add" ? "Add Member" : "Edit Member")}</DialogTitle>
+          <DialogTitle>
+            {config.title || (mode === "add" ? t("teams:add_member", { defaultValue: "Add Member" }) : t("teams:edit_member", { defaultValue: "Edit Member" }))}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FieldGroup>
             {config.showEmail && (
-              <FormField control={form.control} name="user_email" label="Email">
+              <FormField control={form.control} name="user_email" label={t("teams:email", { defaultValue: "Email" })}>
                 {({ ref, value, onChange, ...rest }) => (
                   <Input
                     {...rest}
@@ -194,7 +198,7 @@ const MemberModal = <T extends BaseMember>({
             )}
 
             {config.showUserId && (
-              <FormField control={form.control} name="user_id" label="User ID">
+              <FormField control={form.control} name="user_id" label={t("teams:user_id", { defaultValue: "User ID" })}>
                 {({ ref, value, onChange, ...rest }) => (
                   <Input
                     {...rest}
@@ -212,7 +216,7 @@ const MemberModal = <T extends BaseMember>({
               name="role"
               label={
                 <span className="flex items-center gap-2">
-                  <span>Role</span>
+                  <span>{t("teams:role", { defaultValue: "Role" })}</span>
                   {mode === "edit" && initialData && (
                     <span className="text-sm text-muted-foreground">(Current: {getRoleLabel(initialData.role)})</span>
                   )}
@@ -244,17 +248,17 @@ const MemberModal = <T extends BaseMember>({
 
           <div className="mt-6 text-right">
             <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting} className="mr-2">
-              Cancel
+              {t("teams:cancel", { defaultValue: "Cancel" })}
             </Button>
             <Button type="submit" variant="outline" disabled={isSubmitting}>
               {isSubmitting && <UiLoadingSpinner className="size-4" />}
               {mode === "add"
                 ? isSubmitting
-                  ? "Adding..."
-                  : "Add Member"
+                  ? t("teams:adding", { defaultValue: "Adding..." })
+                  : t("teams:add_member", { defaultValue: "Add Member" })
                 : isSubmitting
-                  ? "Saving..."
-                  : "Save Changes"}
+                  ? t("teams:saving", { defaultValue: "Saving..." })
+                  : t("teams:save_changes", { defaultValue: "Save Changes" })}
             </Button>
           </div>
         </form>

@@ -863,11 +863,15 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
               {/* Section 2: Key Details */}
               {!isFormDisabled && (
                 <div className="mb-8">
-                  <h3 className="text-lg font-medium text-foreground mb-4">Key Details</h3>
+                  <h3 className="text-lg font-medium text-foreground mb-4">
+                    {t("keys:key_details", { defaultValue: "Key Details" })}
+                  </h3>
                   <MountedFormField
                     label={
                       <span>
-                        {keyOwner === "you" || keyOwner === "another_user" ? "Key Name" : "Service Account ID"}{" "}
+                        {keyOwner === "you" || keyOwner === "another_user"
+                          ? t("keys:key_name", { defaultValue: "Key Name" })
+                          : t("keys:service_account_id", { defaultValue: "Service Account ID" })}{" "}
                         <SimpleTooltip
                           content={
                             keyOwner === "you" || keyOwner === "another_user"
@@ -893,7 +897,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <MountedFormField
                     label={
                       <span>
-                        Models{" "}
+                        {t("keys:models", { defaultValue: "Models" })}{" "}
                         <SimpleTooltip content="Select which models this key can access. Choose 'All Team Models' to grant access to all models available to the team. Leave empty to allow access to all models.">
                           <Info className="ml-1 inline size-3.5 align-text-bottom" />
                         </SimpleTooltip>
@@ -929,7 +933,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <MountedFormField
                     label={
                       <span>
-                        Key Type{" "}
+                        {t("keys:key_type", { defaultValue: "Key Type" })}{" "}
                         <SimpleTooltip content="Select the type of key to determine what routes and operations this key can access">
                           <Info className="ml-1 inline size-3.5 align-text-bottom" />
                         </SimpleTooltip>
@@ -976,7 +980,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                   <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                     <h3 className="m-0 text-lg font-medium text-foreground">
                       <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                        Optional Settings
+                        {t("keys:optional_settings", { defaultValue: "Optional Settings" })}
                         <ChevronDown className={SECTION_CHEVRON_CLASS} />
                       </CollapsibleTrigger>
                     </h3>
@@ -985,7 +989,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4"
                         label={
                           <span>
-                            Max Budget (USD){" "}
+                            {t("keys:max_budget_usd", { defaultValue: "Max Budget (USD)" })}{" "}
                             <SimpleTooltip content="Maximum amount in USD this key can spend. When reached, the key will be blocked from making further requests">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1012,7 +1016,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4"
                         label={
                           <span>
-                            Reset Budget{" "}
+                            {t("keys:reset_budget", { defaultValue: "Reset Budget" })}{" "}
                             <SimpleTooltip content="How often the budget should reset. For example, setting 'daily' will reset the budget every 24 hours">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1034,7 +1038,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       <Field className="mt-4">
                         <FieldLabel>
                           <span>
-                            Budget Windows{" "}
+                            {t("keys:budget_windows", { defaultValue: "Budget Windows" })}{" "}
                             <SimpleTooltip content="Set multiple independent budget windows (e.g., hourly $10 AND monthly $200). Each window tracks spend separately and resets on its own schedule.">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1045,7 +1049,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       <Field className="mt-4">
                         <FieldLabel>
                           <span>
-                            Per-Model Budgets{" "}
+                            {t("keys:per_model_budgets", { defaultValue: "Per-Model Budgets" })}{" "}
                             <SimpleTooltip content="Cap spend on individual models, each with its own reset window. Enforced across every request this key makes; usage is reported on the key's info page.">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1061,7 +1065,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       <Field className="mt-4">
                         <FieldLabel>
                           <span>
-                            Budget Fallbacks{" "}
+                            {t("keys:budget_fallbacks", { defaultValue: "Budget Fallbacks" })}{" "}
                             <SimpleTooltip content="When a model exceeds its per-model budget (model_max_budget), requests automatically reroute to fallback models instead of failing. Configure per-model budgets in Advanced Settings.">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1078,7 +1082,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4"
                         label={
                           <span>
-                            Tokens per minute Limit (TPM){" "}
+                            {t("keys:tpm_label", { defaultValue: "Tokens per minute Limit (TPM)" })}{" "}
                             <SimpleTooltip content="Maximum number of tokens this key can process per minute. Helps control usage and costs">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1119,7 +1123,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4"
                         label={
                           <span>
-                            Requests per minute Limit (RPM){" "}
+                            {t("keys:rpm_label", { defaultValue: "Requests per minute Limit (RPM)" })}{" "}
                             <SimpleTooltip content="Maximum number of API requests this key can make per minute. Helps prevent abuse and manage load">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1159,7 +1163,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       <Field className="mt-4">
                         <FieldLabel>
                           <span>
-                            Per-Tag Rate Limits{" "}
+                            {t("keys:per_tag_rate_limits", { defaultValue: "Per-Tag Rate Limits" })}{" "}
                             <SimpleTooltip content="Scope rate limits to a request tag so each tag (e.g. a cell or group) gets its own RPM counter. Requests without a matching tag fall back to the key-level limit.">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1171,7 +1175,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4"
                         label={
                           <span>
-                            Throttle on budget exceeded{" "}
+                            {t("keys:throttle_on_budget_exceeded", { defaultValue: "Throttle on budget exceeded" })}{" "}
                             <SimpleTooltip content="When this key exceeds its max budget, throttle its TPM/RPM to the globally configured percentage instead of blocking access entirely. Requires budget_exceeded_throttle_percentage in litellm_settings and a TPM/RPM limit on the key.">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1192,7 +1196,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                         className="mt-4"
                         label={
                           <span>
-                            Enable Prompt Caching{" "}
+                            {t("keys:enable_prompt_caching", { defaultValue: "Enable Prompt Caching" })}{" "}
                             <SimpleTooltip content="Automatically add prompt caching breakpoints (cache_control markers) to requests made with this key, cutting input cost on repeated prompts. Applies to Anthropic and Bedrock Claude models; requests that already set their own cache_control markers are left untouched.">
                               <Info className="ml-1 inline size-3.5 align-text-bottom" />
                             </SimpleTooltip>
@@ -1212,7 +1216,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       <MountedFormField
                         label={
                           <span>
-                            Guardrails{" "}
+                            {t("keys:guardrails", { defaultValue: "Guardrails" })}{" "}
                             <SimpleTooltip content="Apply safety guardrails to this key to filter content or enforce policies">
                               <a
                                 href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start"
@@ -1699,7 +1703,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
 
                       <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
-                          <b>Key Lifecycle</b>
+                          <b>{t("keys:key_lifecycle", { defaultValue: "Key Lifecycle" })}</b>
                           <ChevronDown className={SECTION_CHEVRON_CLASS} />
                         </CollapsibleTrigger>
                         <CollapsibleContent className="px-4 pb-3">
@@ -1724,7 +1728,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
                       <Collapsible className="mt-4 mb-4 overflow-hidden rounded-lg border">
                         <CollapsibleTrigger className={SECTION_HEADER_CLASS}>
                           <div className="flex items-center gap-2">
-                            <b>Advanced Settings</b>
+                            <b>{t("keys:advanced_settings", { defaultValue: "Advanced Settings" })}</b>
                             <SimpleTooltip
                               content={
                                 <span>
@@ -1778,7 +1782,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
 
               <div style={{ textAlign: "right", marginTop: "10px" }}>
                 <Button type="submit" disabled={isFormDisabled}>
-                  Create Key
+                  {t("keys:create_key_submit", { defaultValue: "Create Key" })}
                 </Button>
               </div>
             </form>
@@ -1791,7 +1795,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
         <Dialog open={isCreateUserModalVisible} onOpenChange={(open) => !open && setIsCreateUserModalVisible(false)}>
           <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[800px]">
             <DialogHeader>
-              <DialogTitle>Create New User</DialogTitle>
+              <DialogTitle>{t("keys:create_new_user", { defaultValue: "Create New User" })}</DialogTitle>
             </DialogHeader>
             <CreateUserButton
               userID={userID}
@@ -1808,7 +1812,9 @@ const CreateKey: React.FC<CreateKeyProps> = ({ team, teams, data, addKey, autoOp
         <Dialog open={isModalVisible} onOpenChange={(open) => !open && handleCancel()}>
           <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
             <div className="grid grid-cols-1 gap-2 w-full">
-              <DialogTitle className="text-lg font-medium text-foreground">Save your Key</DialogTitle>
+              <DialogTitle className="text-lg font-medium text-foreground">
+                {t("keys:save_your_key", { defaultValue: "Save your Key" })}
+              </DialogTitle>
               {apiKey != null ? (
                 <CreatedKeyDisplay apiKey={apiKey} />
               ) : (

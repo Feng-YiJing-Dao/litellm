@@ -13,6 +13,7 @@ import { Info } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/shared/Alert";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FormProvider, useWatch, type UseFormReturn } from "react-hook-form";
 import TeamDropdown from "../common_components/team_dropdown";
 import { requiredRule } from "../common_components/formRules";
@@ -76,6 +77,7 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
   teams,
   credentials,
 }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [testMode, setTestMode] = useState<string>("chat");
   const [isResultModalVisible, setIsResultModalVisible] = useState<boolean>(false);
   const [isTestingConnection, setIsTestingConnection] = useState<boolean>(false);
@@ -165,7 +167,9 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
 
   return (
     <>
-      <h2 className="mb-4 text-2xl font-semibold text-foreground">Add Model</h2>
+      <h2 className="mb-4 text-2xl font-semibold text-foreground">
+        {t("models:add_model", { defaultValue: "Add Model" })}
+      </h2>
 
       <Card>
         <CardContent>
@@ -185,7 +189,10 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                   {requiresTeamScope && (
                     <>
                       <MountedFormField
-                        label={labelWithHint("Select Team", "Select the team for which you want to add this model")}
+                        label={labelWithHint(
+                          t("models:select_team", { defaultValue: "Select Team" }),
+                          "Select the team for which you want to add this model",
+                        )}
                         name="team_id"
                         required
                         rules={{ validate: { required: requiredRule("Please select a team to continue") } }}
@@ -215,7 +222,10 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                   {(isAdmin || (isTeamAdmin && teamAdminSelectedTeam)) && (
                     <>
                       <MountedFormField
-                        label={labelWithHint("Provider", "E.g. OpenAI, Azure OpenAI, Anthropic, Bedrock, etc.")}
+                        label={labelWithHint(
+                          t("models:provider", { defaultValue: "Provider" }),
+                          "E.g. OpenAI, Azure OpenAI, Anthropic, Bedrock, etc.",
+                        )}
                         name="custom_llm_provider"
                         required
                         rules={{ validate: { required: requiredRule("Required") } }}
@@ -226,7 +236,11 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                             inputId={control.id}
                             options={providerOptions}
                             emptyText={providerMetadataErrorText ?? "No providers found"}
-                            placeholder={isProviderMetadataLoading ? "Loading providers..." : "Select a provider"}
+                            placeholder={
+                              isProviderMetadataLoading
+                                ? t("models:loading_providers", { defaultValue: "Loading providers..." })
+                                : t("models:select_provider_placeholder", { defaultValue: "Select a provider" })
+                            }
                             value={(control.value as string | undefined) ?? ""}
                             onValueChange={(value) => {
                               control.onChange(value);
@@ -245,7 +259,7 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       <ConditionalPublicModelName />
 
                       {/* Select Mode */}
-                      <MountedFormField label="Mode" name="mode" className="mb-1">
+                      <MountedFormField label={t("models:mode", { defaultValue: "Mode" })} name="mode" className="mb-1">
                         {(control) => (
                           <Select
                             items={TEST_MODES}
@@ -388,7 +402,7 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                         <>
                           <MountedFormField
                             label={labelWithHint(
-                              "Model Access Group",
+                              t("models:model_access_group", { defaultValue: "Model Access Group" }),
                               "Use model access groups to give users access to select models, and add new ones to the group over time.",
                             )}
                             name="model_access_group"
@@ -434,10 +448,10 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                         disabled={isTestingConnection}
                         aria-busy={isTestingConnection}
                       >
-                        Test Connect
+                        {t("models:test_connect", { defaultValue: "Test Connect" })}
                       </Button>
                       <Button data-testid="add-model-btn" type="submit">
-                        Add Model
+                        {t("models:add_model_btn", { defaultValue: "Add Model" })}
                       </Button>
                     </div>
                   </div>
@@ -460,7 +474,9 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
       >
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[700px]">
           <DialogHeader>
-            <DialogTitle>Connection Test Results</DialogTitle>
+            <DialogTitle>
+              {t("models:connection_test_results", { defaultValue: "Connection Test Results" })}
+            </DialogTitle>
           </DialogHeader>
           {/* Only render the ConnectionErrorDisplay when modal is visible and we have a test ID */}
           {isResultModalVisible && (
@@ -486,7 +502,7 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                 setIsTestingConnection(false);
               }}
             >
-              Close
+              {t("common:close", { defaultValue: "Close" })}
             </Button>
           </DialogFooter>
         </DialogContent>

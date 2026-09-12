@@ -3,6 +3,7 @@
 import moment from "moment";
 import { CalendarDays } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,7 @@ export function LogsTableToolbar({
   onResetToFirstPage,
   onResetFilters,
 }: LogsTableToolbarProps) {
+  const { t } = useTranslation(["logs", "common"]);
   const [quickSelectOpen, setQuickSelectOpen] = useState(false);
 
   const applyQuickSelect = (option: { label: string; value: number; unit: string }) => {
@@ -97,7 +99,7 @@ export function LogsTableToolbar({
                 onResetToFirstPage();
               }}
             >
-              Custom Range
+              {t("logs:custom_range", { defaultValue: "Custom Range" })}
             </Button>
           </div>
         </PopoverContent>
@@ -114,7 +116,7 @@ export function LogsTableToolbar({
               onResetToFirstPage();
             }}
           />
-          <span className="text-sm text-muted-foreground">to</span>
+          <span className="text-sm text-muted-foreground">{t("logs:to", { defaultValue: "to" })}</span>
           <Input
             type="datetime-local"
             className="w-auto"
@@ -128,12 +130,12 @@ export function LogsTableToolbar({
       )}
 
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">Live Tail</span>
+        <span className="text-sm font-medium">{t("logs:live_tail", { defaultValue: "Live Tail" })}</span>
         <Switch checked={isLiveTail} onCheckedChange={onIsLiveTailChange} aria-label="Live Tail" />
       </div>
 
       <div className="flex items-center gap-2">
-        <span className="text-sm font-medium">Hide Health Checks</span>
+        <span className="text-sm font-medium">{t("logs:hide_health_checks", { defaultValue: "Hide Health Checks" })}</span>
         <Switch
           checked={excludeInternalHealthChecks}
           onCheckedChange={onExcludeInternalHealthChecksChange}
@@ -142,18 +144,19 @@ export function LogsTableToolbar({
       </div>
 
       <Button variant="outline" size="sm" onClick={onResetFilters}>
-        Reset Filters
+        {t("logs:reset_filters", { defaultValue: "Reset Filters" })}
       </Button>
     </div>
   );
 }
 
 export function LiveTailBanner({ onStop }: { onStop: () => void }) {
+  const { t } = useTranslation(["logs", "common"]);
   return (
     <div className="mb-4 flex items-center justify-between rounded-md border border-success/20 bg-success/10 px-4 py-2">
-      <span className="text-sm text-success">Auto-refreshing every 15 seconds</span>
+      <span className="text-sm text-success">{t("logs:auto_refreshing", { defaultValue: "Auto-refreshing every 15 seconds" })}</span>
       <button type="button" onClick={onStop} className="text-sm text-success hover:text-success/80">
-        Stop
+        {t("logs:stop", { defaultValue: "Stop" })}
       </button>
     </div>
   );

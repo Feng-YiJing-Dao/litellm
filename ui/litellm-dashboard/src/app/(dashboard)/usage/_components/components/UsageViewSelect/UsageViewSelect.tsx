@@ -1,5 +1,6 @@
 import { BarChart3, Bot, Building2, Globe, LineChart, ShoppingCart, Tags, User, Users } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { hasCapability, type Capability } from "@/utils/capabilities";
@@ -27,7 +28,9 @@ export interface UsageViewSelectProps {
 interface OptionConfig {
   value: UsageOption;
   label: string;
+  labelKey: string;
   description: string;
+  descKey: string;
   icon: React.ReactNode;
   capability?: Capability;
   adminOnly?: boolean;
@@ -41,9 +44,11 @@ const OPTIONS: OptionConfig[] = [
   {
     value: "global",
     label: "Global Usage",
+    labelKey: "view_global_usage",
     showForAdmin: "Global Usage",
     showForNonAdmin: "Your Usage",
     description: "View usage across all resources",
+    descKey: "desc_global_usage",
     descriptionForAdmin: "View usage across all resources",
     descriptionForNonAdmin: "View your usage",
     icon: <Globe className="size-4" />,
@@ -51,55 +56,71 @@ const OPTIONS: OptionConfig[] = [
   {
     value: "my-usage",
     label: "Your Usage",
+    labelKey: "view_your_usage",
     description: "View your own usage",
+    descKey: "desc_your_usage",
     icon: <User className="size-4" />,
     adminOnly: true,
   },
   {
     value: "organization",
     label: "Organization Usage",
+    labelKey: "view_org_usage",
     description: "View usage across all organizations",
+    descKey: "desc_org_usage",
     icon: <Building2 className="size-4" />,
     capability: "viewOrganizationUsage",
   },
   {
     value: "team",
     label: "Team Usage",
+    labelKey: "view_team_usage",
     description: "View usage by team",
+    descKey: "desc_team_usage",
     icon: <Users className="size-4" />,
   },
   {
     value: "customer",
     label: "Customer Usage",
+    labelKey: "view_customer_usage",
     description: "View usage by customer accounts",
+    descKey: "desc_customer_usage",
     icon: <ShoppingCart className="size-4" />,
     adminOnly: true,
   },
   {
     value: "tag",
     label: "Tag Usage",
+    labelKey: "view_tag_usage",
     description: "View usage grouped by tags",
+    descKey: "desc_tag_usage",
     icon: <Tags className="size-4" />,
     adminOnly: true,
   },
   {
     value: "agent",
     label: "Agent Usage (A2A)",
+    labelKey: "view_agent_usage",
     description: "View usage by AI agents",
+    descKey: "desc_agent_usage",
     icon: <Bot className="size-4" />,
     capability: "viewAgentUsage",
   },
   {
     value: "user",
     label: "User Usage",
+    labelKey: "view_user_usage",
     description: "View usage by individual users",
+    descKey: "desc_user_usage",
     icon: <User className="size-4" />,
     adminOnly: true,
   },
   {
     value: "user-agent-activity",
     label: "User Agent Activity",
+    labelKey: "view_user_agent_activity",
     description: "View detailed user agent activity logs",
+    descKey: "desc_user_agent_activity",
     icon: <LineChart className="size-4" />,
     adminOnly: true,
   },
@@ -110,10 +131,13 @@ export const UsageViewSelect: React.FC<UsageViewSelectProps> = ({
   userRole,
   canViewTagUsage = false,
   isOrgAdmin = false,
-  title = "Usage View",
-  description = "Select the usage data you want to view",
+  title: customTitle,
+  description: customDescription,
   "data-id": dataId,
 }) => {
+  const { t } = useTranslation(["usage", "common"]);
+  const title = customTitle ?? t("usage:usage_view_title", { defaultValue: "Usage View" });
+  const description = customDescription ?? t("usage:usage_view_description", { defaultValue: "Select the usage data you want to view" });
   const isAdmin = all_admin_roles.includes(userRole ?? "");
   const getFilteredOptions = () => {
     return OPTIONS.filter((option) => {
@@ -128,13 +152,17 @@ export const UsageViewSelect: React.FC<UsageViewSelectProps> = ({
       }
       return true;
     }).map((option) => {
-      let label = option.label;
-      let desc = option.description;
+      let label = t(`usage:${option.labelKey}`, { defaultValue: option.label });
+      let desc = t(`usage:${option.descKey}`, { defaultValue: option.description });
       if (option.showForAdmin && option.showForNonAdmin) {
-        label = isAdmin ? option.showForAdmin : option.showForNonAdmin;
+        label = isAdmin
+          ? t(`usage:${option.labelKey}`, { defaultValue: option.showForAdmin })
+          : t("usage:view_your_usage", { defaultValue: option.showForNonAdmin });
       }
       if (option.descriptionForAdmin && option.descriptionForNonAdmin) {
-        desc = isAdmin ? option.descriptionForAdmin : option.descriptionForNonAdmin;
+        desc = isAdmin
+          ? t(`usage:${option.descKey}`, { defaultValue: option.descriptionForAdmin })
+          : t("usage:desc_your_usage", { defaultValue: option.descriptionForNonAdmin });
       }
       return {
         value: option.value,
