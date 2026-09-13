@@ -90,7 +90,11 @@ export function AccessGroupsPage() {
           />
           {searchText && (
             <InputGroupAddon align="inline-end">
-              <InputGroupButton size="icon-xs" aria-label="Clear search" onClick={() => setSearchText("")}>
+              <InputGroupButton
+                size="icon-xs"
+                aria-label={t("accessGroups:clear_search", { defaultValue: "Clear search" })}
+                onClick={() => setSearchText("")}
+              >
                 <X />
               </InputGroupButton>
             </InputGroupAddon>
@@ -111,13 +115,20 @@ export function AccessGroupsPage() {
 
       <DeleteResourceModal
         isOpen={!!groupToDelete}
-        title="Delete Access Group"
-        message="Are you sure you want to delete this access group? This action cannot be undone."
-        resourceInformationTitle="Access Group Information"
+        title={t("accessGroups:delete_modal.title", { defaultValue: "Delete Access Group" })}
+        message={t("accessGroups:delete_modal.confirm", {
+          defaultValue: "Are you sure you want to delete this access group? This action cannot be undone.",
+        })}
+        resourceInformationTitle={t("accessGroups:delete_modal.info_title", {
+          defaultValue: "Access Group Information",
+        })}
         resourceInformation={[
-          { label: "ID", value: groupToDelete?.id, code: true },
-          { label: "Name", value: groupToDelete?.name },
-          { label: "Description", value: groupToDelete?.description || "—" },
+          { label: t("accessGroups:columns.id", { defaultValue: "ID" }), value: groupToDelete?.id, code: true },
+          { label: t("accessGroups:columns.name", { defaultValue: "Name" }), value: groupToDelete?.name },
+          {
+            label: t("accessGroups:columns.description", { defaultValue: "Description" }),
+            value: groupToDelete?.description || "—",
+          },
         ]}
         onCancel={() => setGroupToDelete(null)}
         onOk={() => {

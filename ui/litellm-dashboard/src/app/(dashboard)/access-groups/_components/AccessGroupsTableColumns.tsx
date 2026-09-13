@@ -31,11 +31,12 @@ const RESOURCE_TONES: Record<"models" | "mcpServers" | "agents", ResourceTone> =
   },
 };
 
-function ResourcesCell({ group }: { group: AccessGroup }) {
+function ResourcesCell({ group, t }: { group: AccessGroup; t?: (key: any, options?: any) => any }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   const items = [
-    { key: "models" as const, label: "Models", count: group.modelIds.length },
-    { key: "mcpServers" as const, label: "MCP Servers", count: group.mcpServerIds.length },
-    { key: "agents" as const, label: "Agents", count: group.agentIds.length },
+    { key: "models" as const, label: tr("accessGroups:columns.models", { defaultValue: "Models" }), count: group.modelIds.length },
+    { key: "mcpServers" as const, label: tr("accessGroups:columns.mcpServers", { defaultValue: "MCP Servers" }), count: group.mcpServerIds.length },
+    { key: "agents" as const, label: tr("accessGroups:columns.agents", { defaultValue: "Agents" }), count: group.agentIds.length },
   ];
 
   return (
@@ -74,7 +75,7 @@ function AccessGroupRowActions({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open access group actions"
+        aria-label={tr("accessGroups:actions_label", { defaultValue: "Open access group actions" })}
         data-testid={`access-group-actions-${group.id}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >
@@ -148,7 +149,7 @@ export const getAccessGroupsTableColumns = ({
       header: tr("accessGroups:columns.resources", { defaultValue: "Resources" }),
       size: 220,
       enableSorting: false,
-      cell: ({ row }) => <ResourcesCell group={row.original} />,
+      cell: ({ row }) => <ResourcesCell group={row.original} t={tr} />,
     },
     {
       id: "createdAt",
@@ -182,7 +183,7 @@ export const getAccessGroupsTableColumns = ({
     {
       id: "actions",
       meta: { className: "text-right", headerClassName: "text-right" },
-      header: () => <span className="sr-only">Actions</span>,
+      header: () => <span className="sr-only">{tr("accessGroups:columns.actions", { defaultValue: "Actions" })}</span>,
       size: 64,
       enableSorting: false,
       enableHiding: false,
