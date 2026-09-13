@@ -40,7 +40,7 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
 
   const handleSearch = async () => {
     if (!query.trim()) {
-      toast.warning(t("tools:search_tools.tester.please_enter_query"));
+      toast.warning(t("tools:search_tools.tester.please_enter_query", { defaultValue: "Please enter a search query" }));
       return;
     }
 
@@ -62,7 +62,7 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
       setSearchHistory((prev) => [historyEntry, ...prev]);
     } catch (error) {
       console.error("Error querying search tool:", error);
-      toast.fromError(t("tools:search_tools.tester.query_failed"));
+      toast.fromError(t("tools:search_tools.tester.query_failed", { defaultValue: "Failed to query search tool" }));
     } finally {
       setIsLoading(false);
     }
@@ -75,7 +75,7 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
   const clearHistory = () => {
     setSearchHistory([]);
     setExpandedResults({});
-    toast.success(t("tools:search_tools.tester.history_cleared"));
+    toast.success(t("tools:search_tools.tester.history_cleared", { defaultValue: "Search history cleared" }));
   };
 
   const toggleResultExpansion = (historyIndex: number, resultIndex: number) => {
@@ -91,7 +91,7 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
   return (
     <Card className={`mt-6 ${className}`}>
       <div className="px-6">
-        <h2 className="text-lg font-semibold text-foreground">{t("tools:search_tools.tester.title")}</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("tools:search_tools.tester.title", { defaultValue: "Test Search Tool" })}</h2>
       </div>
 
       <div className="flex min-h-[600px] flex-col px-6">
@@ -108,14 +108,14 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                     handleSearch();
                   }
                 }}
-                placeholder={t("tools:search_tools.tester.query_placeholder")}
+                placeholder={t("tools:search_tools.tester.query_placeholder", { defaultValue: "Enter your search query..." })}
                 disabled={isLoading}
                 className="h-12 pl-11 text-[15px]"
               />
             </div>
             <Button onClick={handleSearch} disabled={isLoading || !query.trim()} className="h-12 px-6 text-[15px]">
               {isLoading ? <UiLoadingSpinner className="size-4" /> : <Search className="size-4" />}
-              {t("tools:search_tools.tester.search_btn")}
+              {t("tools:search_tools.tester.search_btn", { defaultValue: "Search" })}
             </Button>
           </div>
         </div>
@@ -126,15 +126,15 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
               <div className="mb-6 flex size-24 items-center justify-center rounded-full bg-muted">
                 <Search className="size-12 text-muted-foreground" />
               </div>
-              <p className="text-lg font-medium text-foreground">{t("tools:search_tools.tester.empty_title")}</p>
-              <p className="mt-2 text-sm text-muted-foreground">{t("tools:search_tools.tester.empty_desc")}</p>
+              <p className="text-lg font-medium text-foreground">{t("tools:search_tools.tester.empty_title", { defaultValue: "Test your search tool" })}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{t("tools:search_tools.tester.empty_desc", { defaultValue: "Enter a query above to see search results" })}</p>
             </div>
           ) : (
             <div>
               {isLoading && (
                 <div className="flex flex-col items-center justify-center py-16">
                   <UiLoadingSpinner className="size-8 text-primary" />
-                  <p className="mt-4 font-medium text-muted-foreground">{t("tools:search_tools.tester.searching")}</p>
+                  <p className="mt-4 font-medium text-muted-foreground">{t("tools:search_tools.tester.searching", { defaultValue: "Searching..." })}</p>
                 </div>
               )}
 
@@ -144,7 +144,7 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-                          {t("tools:search_tools.tester.search_query")}
+                          {t("tools:search_tools.tester.search_query", { defaultValue: "Search Query" })}
                         </p>
                         <div className="mt-1.5 text-base font-semibold text-foreground">{latestResults.query}</div>
                       </div>
@@ -153,9 +153,10 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                         <div className="mt-1 flex items-center gap-3">
                           <div className="text-sm font-semibold text-primary">
                             {latestResults.response?.results?.length === 1
-                              ? t("tools:search_tools.tester.result_one", { count: 1 })
+                              ? t("tools:search_tools.tester.result_one", { count: 1, defaultValue: "1 result" })
                               : t("tools:search_tools.tester.result_other", {
                                   count: latestResults.response?.results?.length || 0,
+                                  defaultValue: `${latestResults.response?.results?.length || 0} results`,
                                 })}
                           </div>
                           {latestResults.latency !== undefined && (
@@ -194,7 +195,7 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                                 <Button
                                   variant="ghost"
                                   size="icon-sm"
-                                  aria-label={t("tools:search_tools.tester.open_new_tab")}
+                                  aria-label={t("tools:search_tools.tester.open_new_tab", { defaultValue: "Open result in new tab" })}
                                   className="shrink-0 text-muted-foreground"
                                   onClick={() => window.open(result.url, "_blank")}
                                 >
@@ -218,8 +219,8 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                                   onClick={() => toggleResultExpansion(0, resultIndex)}
                                 >
                                   {isResultExpanded
-                                    ? t("tools:search_tools.tester.show_less")
-                                    : t("tools:search_tools.tester.show_more")}
+                                    ? t("tools:search_tools.tester.show_less", { defaultValue: "Show less" })
+                                    : t("tools:search_tools.tester.show_more", { defaultValue: "Show more" })}
                                 </Button>
                               )}
                             </div>
@@ -232,8 +233,8 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                       <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-muted">
                         <Search className="size-6 text-muted-foreground" />
                       </div>
-                      <p className="font-medium text-foreground">{t("tools:search_tools.tester.no_results")}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{t("tools:search_tools.tester.no_results_desc")}</p>
+                      <p className="font-medium text-foreground">{t("tools:search_tools.tester.no_results", { defaultValue: "No results found" })}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{t("tools:search_tools.tester.no_results_desc", { defaultValue: "Try a different search query" })}</p>
                     </div>
                   )}
                 </>
@@ -242,9 +243,9 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
               {searchHistory.length > 1 && (
                 <div className="mt-8 border-t border-border pt-6">
                   <div className="mb-4 flex items-center justify-between">
-                    <p className="text-sm font-semibold text-foreground">{t("tools:search_tools.tester.previous_searches")}</p>
+                    <p className="text-sm font-semibold text-foreground">{t("tools:search_tools.tester.previous_searches", { defaultValue: "Previous Searches" })}</p>
                     <Button variant="link" size="sm" className="h-auto p-0" onClick={clearHistory}>
-                      {t("tools:search_tools.tester.clear_all")}
+                      {t("tools:search_tools.tester.clear_all", { defaultValue: "Clear All" })}
                     </Button>
                   </div>
                   <div className="space-y-2">
@@ -260,9 +261,10 @@ export const SearchToolTester: React.FC<SearchToolTesterProps> = ({ searchToolNa
                         <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
                           <span className="font-medium text-primary">
                             {entry.response?.results?.length === 1
-                              ? t("tools:search_tools.tester.result_one", { count: 1 })
+                              ? t("tools:search_tools.tester.result_one", { count: 1, defaultValue: "1 result" })
                               : t("tools:search_tools.tester.result_other", {
                                   count: entry.response?.results?.length || 0,
+                                  defaultValue: `${entry.response?.results?.length || 0} results`,
                                 })}
                           </span>
                           {entry.latency !== undefined && (

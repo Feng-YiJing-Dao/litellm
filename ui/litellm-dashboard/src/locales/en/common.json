@@ -99,5 +99,20 @@
     "enter_new_password": "Enter your new password",
     "create_password_desc": "Create a password for your account",
     "password_required": "password required to sign up"
+  },
+  "account_menu": {
+    "tier": "Tier",
+    "premium": "Premium",
+    "standard": "Standard",
+    "upgrade_tooltip": "Upgrade to Premium for advanced features",
+    "role": "Role",
+    "email": "Email",
+    "user_id": "User ID",
+    "copy_email": "Copy email",
+    "copy_user_id": "Copy user ID",
+    "hide_new_feature_indicators": "Hide New Feature Indicators",
+    "hide_all_prompts": "Hide All Prompts",
+    "hide_blog_posts": "Hide Blog Posts",
+    "hide_bouncing_icon": "Hide Bouncing Icon"
   }
 }

@@ -94,11 +94,11 @@ export function EvaluationSettingsModal({
     <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[640px]">
         <DialogHeader>
-          <DialogTitle>{t("guardrails:monitor.eval_modal.title")}</DialogTitle>
+          <DialogTitle>{t("guardrails:monitor.eval_modal.title", { defaultValue: "Evaluation Settings" })}</DialogTitle>
           <DialogDescription>
             {guardrailName
-              ? t("guardrails:monitor.eval_modal.desc_for", { name: guardrailName })
-              : t("guardrails:monitor.eval_modal.desc_general")}
+              ? t("guardrails:monitor.eval_modal.desc_for", { name: guardrailName, defaultValue: `Configure AI evaluation for ${guardrailName}` })
+              : t("guardrails:monitor.eval_modal.desc_general", { defaultValue: "Configure AI evaluation for re-running on logs" })}
           </DialogDescription>
         </DialogHeader>
 
@@ -106,10 +106,10 @@ export function EvaluationSettingsModal({
           <div>
             <div className="mb-1.5 flex items-center justify-between">
               <label htmlFor="evaluation-prompt" className="text-sm font-medium text-foreground">
-                {t("guardrails:monitor.eval_modal.prompt_label")}
+                {t("guardrails:monitor.eval_modal.prompt_label", { defaultValue: "Evaluation Prompt" })}
               </label>
               <Button variant="link" size="xs" onClick={handleResetPrompt}>
-                {t("guardrails:monitor.eval_modal.reset_default")}
+                {t("guardrails:monitor.eval_modal.reset_default", { defaultValue: "Reset to default" })}
               </Button>
             </div>
             <Textarea
@@ -120,13 +120,13 @@ export function EvaluationSettingsModal({
               className="field-sizing-fixed font-mono text-sm"
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              {t("guardrails:monitor.eval_modal.prompt_hint")}
+              {t("guardrails:monitor.eval_modal.prompt_hint", { defaultValue: "Instruct the model on what criteria to evaluate." })}
             </p>
           </div>
 
           <div>
             <label htmlFor="evaluation-schema" className="mb-1.5 block text-sm font-medium text-foreground">
-              {t("guardrails:monitor.eval_modal.schema_label")}
+              {t("guardrails:monitor.eval_modal.schema_label", { defaultValue: "Response Schema" })}
             </label>
             <p className="mb-1 text-xs text-muted-foreground">response_format: json_schema</p>
             <Textarea
@@ -139,24 +139,24 @@ export function EvaluationSettingsModal({
           </div>
 
           <div>
-            <p className="mb-1.5 text-sm font-medium text-foreground">{t("guardrails:monitor.eval_modal.model_label")}</p>
+            <p className="mb-1.5 text-sm font-medium text-foreground">{t("guardrails:monitor.eval_modal.model_label", { defaultValue: "Evaluation Model" })}</p>
             <SearchSelect
               options={modelSelectOptions}
               value={model ?? undefined}
               onValueChange={(value) => setModel(value || null)}
-              placeholder={loadingModels ? t("guardrails:monitor.eval_modal.loading_models") : t("guardrails:monitor.eval_modal.select_model")}
-              emptyText={!accessToken ? t("guardrails:monitor.eval_modal.signin_to_see") : t("guardrails:monitor.eval_modal.no_models")}
+              placeholder={loadingModels ? t("guardrails:monitor.eval_modal.loading_models", { defaultValue: "Loading models..." }) : t("guardrails:monitor.eval_modal.select_model", { defaultValue: "Select a model" })}
+              emptyText={!accessToken ? t("guardrails:monitor.eval_modal.signin_to_see", { defaultValue: "Sign in to see models" }) : t("guardrails:monitor.eval_modal.no_models", { defaultValue: "No models available" })}
             />
           </div>
         </div>
 
         <DialogFooter className="border-t border-border pt-4">
           <Button variant="outline" onClick={onClose}>
-            {t("common:cancel")}
+            {t("common:cancel", { defaultValue: "Cancel" })}
           </Button>
           <Button onClick={handleRun} disabled={!model}>
             <Play className="size-4" />
-            {t("guardrails:monitor.eval_modal.run_eval")}
+            {t("guardrails:monitor.eval_modal.run_eval", { defaultValue: "Run Evaluation" })}
           </Button>
         </DialogFooter>
       </DialogContent>

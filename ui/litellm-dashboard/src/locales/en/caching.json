@@ -8,6 +8,7 @@
   },
   "last_refreshed": "Last Refreshed: {{time}}",
   "analytics_desc": "Analytics for LiteLLM's response cache (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side prompt caching (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see \"Prompt Caching Metrics\" on the Usage page or individual requests in the Logs page.",
+  "analytics_desc_with_links": "Analytics for LiteLLM's <1>response cache</1> (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side <2>prompt caching</2> (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see \"Prompt Caching Metrics\" on the Usage page or individual requests in the Logs page.",
   "select_keys": "Select Virtual Keys",
   "no_keys_found": "No virtual keys found",
   "select_models": "Select Models",

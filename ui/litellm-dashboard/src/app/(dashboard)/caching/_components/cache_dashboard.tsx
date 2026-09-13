@@ -18,7 +18,7 @@ import {
   useComboboxAnchor,
 } from "@/components/ui/combobox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import { RefreshCw } from "lucide-react";
 import { cachingHealthCheckCall } from "@/components/networking";
@@ -178,10 +178,28 @@ const CacheDashboard: React.FC<CachePageProps> = ({ accessToken, token, userRole
         <Card>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              {t("caching:analytics_desc", {
-                defaultValue:
-                  "Analytics for LiteLLM's response cache (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side prompt caching (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see \"Prompt Caching Metrics\" on the Usage page or individual requests in the Logs page.",
-              })}
+              <Trans i18nKey="caching:analytics_desc_with_links">
+                Analytics for LiteLLM&apos;s{" "}
+                <a
+                  href="https://docs.litellm.ai/docs/proxy/caching"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  response cache
+                </a>{" "}
+                (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side{" "}
+                <a
+                  href="https://docs.litellm.ai/docs/completion/prompt_caching"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  prompt caching
+                </a>{" "}
+                (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see &quot;Prompt Caching
+                Metrics&quot; on the Usage page or individual requests in the Logs page.
+              </Trans>
             </p>
 
             <div className="mt-4 grid grid-cols-1 items-center gap-4 md:grid-cols-[1fr_1fr_auto]">

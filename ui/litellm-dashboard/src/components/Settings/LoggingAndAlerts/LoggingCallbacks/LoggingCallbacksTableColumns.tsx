@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/cva.config";
+import { useTranslation } from "react-i18next";
 
 import { AlertingObject } from "./types";
 
@@ -50,20 +51,23 @@ interface CallbackRowActionsProps {
 }
 
 function CallbackRowActions({ callback, onTest, onEdit, onDelete }: CallbackRowActionsProps) {
+  const { t } = useTranslation(["settings"]);
   if (callback.read_only) {
     return (
       <span
         className="text-xs text-muted-foreground"
-        title="Active callback that was not added through the dashboard. Edit it where it was configured."
+        title={t("callbacks.read_only_title", {
+          defaultValue: "Active callback that was not added through the dashboard. Edit it where it was configured.",
+        })}
       >
-        Read only
+        {t("callbacks.read_only", { defaultValue: "Read only" })}
       </span>
     );
   }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open callback actions"
+        aria-label={t("callbacks.open_actions_aria", { defaultValue: "Open callback actions" })}
         data-testid={`callback-actions-${callback.name}-${callbackRowMode(callback)}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >
@@ -72,20 +76,37 @@ function CallbackRowActions({ callback, onTest, onEdit, onDelete }: CallbackRowA
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuItem data-testid="callback-action-test" onClick={() => void onTest(callback)}>
           <Play />
-          Test
+          {t("callbacks.test", { defaultValue: "Test" })}
         </DropdownMenuItem>
         <DropdownMenuItem data-testid="callback-action-edit" onClick={() => onEdit(callback)}>
           <Pencil />
-          Edit
+          {t("callbacks.edit", { defaultValue: "Edit" })}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" data-testid="callback-action-delete" onClick={() => onDelete(callback)}>
           <Trash2 />
-          Delete
+          {t("callbacks.delete", { defaultValue: "Delete" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
+}
+
+function CallbackNameHeader() {
+  const { t } = useTranslation(["settings"]);
+  return <>{t("callbacks.col_name", { defaultValue: "Callback Name" })}</>;
+}
+
+function ModeHeader() {
+  const { t } = useTranslation(["settings"]);
+  return <>{t("callbacks.col_mode", { defaultValue: "Mode" })}</>;
+}
+
+function ModeCell({ row }: { row: { original: CallbackRow } }) {
+  const { t } = useTranslation(["settings"]);
+  const mode = callbackRowMode(row.original);
+  const label = t(`callbacks.mode_${mode}`, { defaultValue: CALLBACK_MODE_LABELS[mode] || mode });
+  return <StatusBadge tone={callbackModeTone(mode)} label={label} />;
 }
 
 interface LoggingCallbacksTableColumnsDeps {
@@ -105,7 +126,7 @@ export const getLoggingCallbacksTableColumns = ({
     id: "name",
     accessorKey: "name",
     meta: { title: "Callback Name" },
-    header: "Callback Name",
+    header: () => <CallbackNameHeader />,
     enableSorting: false,
     cell: ({ row }) => {
       const id = row.original.name;
@@ -120,13 +141,10 @@ export const getLoggingCallbacksTableColumns = ({
   {
     id: "mode",
     meta: { title: "Mode", skeleton: "badge" },
-    header: "Mode",
+    header: () => <ModeHeader />,
     size: 240,
     enableSorting: false,
-    cell: ({ row }) => {
-      const mode = callbackRowMode(row.original);
-      return <StatusBadge tone={callbackModeTone(mode)} label={CALLBACK_MODE_LABELS[mode] || mode} />;
-    },
+    cell: ({ row }) => <ModeCell row={row} />,
   },
   {
     id: "actions",

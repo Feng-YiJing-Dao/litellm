@@ -89,7 +89,7 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
   const disableBlogPosts = useDisableBlogPosts();
   const disableBouncingIcon = useDisableBouncingIcon();
   const disableShowNewBadge = useDisableShowNewBadge();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(["common"]);
   const brandName = process.env.NEXT_PUBLIC_BRAND_NAME || "LiteLLM";
   const isWhiteLabeled = process.env.NEXT_PUBLIC_WHITE_LABEL === "true" || !!process.env.NEXT_PUBLIC_BRAND_NAME;
 
@@ -105,28 +105,28 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
   const toggles = [
     {
       key: "disableShowNewBadge",
-      label: "Hide New Feature Indicators",
+      label: t("account_menu.hide_new_feature_indicators", { defaultValue: "Hide New Feature Indicators" }),
       ariaLabel: "Toggle hide new feature indicators",
       checked: disableShowNewBadge,
       onCheckedChange: (checked: boolean) => setFlag("disableShowNewBadge", checked),
     },
     {
       key: "disableShowPrompts",
-      label: "Hide All Prompts",
+      label: t("account_menu.hide_all_prompts", { defaultValue: "Hide All Prompts" }),
       ariaLabel: "Toggle hide all prompts",
       checked: disableShowPrompts,
       onCheckedChange: (checked: boolean) => setFlag("disableShowPrompts", checked),
     },
     {
       key: "disableBlogPosts",
-      label: "Hide Blog Posts",
+      label: t("account_menu.hide_blog_posts", { defaultValue: "Hide Blog Posts" }),
       ariaLabel: "Toggle hide blog posts",
       checked: disableBlogPosts,
       onCheckedChange: (checked: boolean) => setFlag("disableBlogPosts", checked),
     },
     {
       key: "disableBouncingIcon",
-      label: "Hide Bouncing Icon",
+      label: t("account_menu.hide_bouncing_icon", { defaultValue: "Hide Bouncing Icon" }),
       ariaLabel: "Toggle hide bouncing icon",
       checked: disableBouncingIcon,
       onCheckedChange: (checked: boolean) => setFlag("disableBouncingIcon", checked),
@@ -201,27 +201,31 @@ const SidebarAccountMenu: React.FC<SidebarAccountMenuProps> = ({ onLogout, colla
         </div>
 
         <div className="flex flex-col px-3 py-2">
-          <InfoRow icon={<Crown className="size-[17px]" />} label="Tier">
+          <InfoRow icon={<Crown className="size-[17px]" />} label={t("account_menu.tier", { defaultValue: "Tier" })}>
             {premiumUser ? (
               <Badge variant="outline" className="gap-1 border-warning/30 bg-warning/10 text-warning">
                 <Crown />
-                Premium
+                {t("account_menu.premium", { defaultValue: "Premium" })}
               </Badge>
             ) : (
-              <Badge variant="secondary" className="gap-1" title="Upgrade to Premium for advanced features">
+              <Badge
+                variant="secondary"
+                className="gap-1"
+                title={t("account_menu.upgrade_tooltip", { defaultValue: "Upgrade to Premium for advanced features" })}
+              >
                 <Crown />
-                Standard
+                {t("account_menu.standard", { defaultValue: "Standard" })}
               </Badge>
             )}
           </InfoRow>
-          <InfoRow icon={<ShieldCheck className="size-[17px]" />} label="Role">
+          <InfoRow icon={<ShieldCheck className="size-[17px]" />} label={t("account_menu.role", { defaultValue: "Role" })}>
             <Badge variant="secondary">{userRole}</Badge>
           </InfoRow>
-          <InfoRow icon={<Mail className="size-[17px]" />} label="Email">
-            <MonoValue value={userEmail} copyLabel="Copy email" />
+          <InfoRow icon={<Mail className="size-[17px]" />} label={t("account_menu.email", { defaultValue: "Email" })}>
+            <MonoValue value={userEmail} copyLabel={t("account_menu.copy_email", { defaultValue: "Copy email" })} />
           </InfoRow>
-          <InfoRow icon={<IdCard className="size-[17px]" />} label="User ID">
-            <MonoValue value={userId} copyLabel="Copy user ID" />
+          <InfoRow icon={<IdCard className="size-[17px]" />} label={t("account_menu.user_id", { defaultValue: "User ID" })}>
+            <MonoValue value={userId} copyLabel={t("account_menu.copy_user_id", { defaultValue: "Copy user ID" })} />
           </InfoRow>
         </div>
 

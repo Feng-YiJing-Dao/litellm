@@ -8,6 +8,7 @@
   },
   "last_refreshed": "上次刷新时间：{{time}}",
   "analytics_desc": "LiteLLM 响应缓存（如 Redis / 内存）分析：由缓存直接返回而未调用 LLM 供应商的请求。供应商侧的 Prompt 缓存（来自 Anthropic、OpenAI 等的缓存输入 Token）不在此展示，请查看使用情况页面的“Prompt 缓存指标”或日志页面的单条请求详情。",
+  "analytics_desc_with_links": "LiteLLM 的 <1>响应缓存</1>（如 Redis / 内存）分析：由缓存直接返回而未调用 LLM 供应商的请求。供应商侧的 <2>Prompt 缓存</2>（来自 Anthropic、OpenAI 等的缓存输入 Token）不在此展示，请查看使用情况页面的“Prompt 缓存指标”或日志页面的单条请求详情。",
   "select_keys": "选择虚拟密钥",
   "no_keys_found": "未找到虚拟密钥",
   "select_models": "选择模型",

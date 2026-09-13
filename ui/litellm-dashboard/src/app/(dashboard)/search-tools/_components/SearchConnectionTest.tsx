@@ -1,9 +1,10 @@
-import { AlertTriangle, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Info } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/lib/toast";
 import { testSearchToolConnection } from "@/components/networking";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { UiLoadingSpinner } from "@/components/ui/ui-loading-spinner";
 
 interface SearchConnectionTestProps {
@@ -32,8 +33,8 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
         setTestResult(result);
         if (result.status === "success") {
           toast.success(
-            t("tools:search_tools.connection_test.success", {
-              provider: litellmParams.search_provider || "search provider",
+            t("tools:search_tools.connection_test.success_toast", {
+              defaultValue: "Connection test successful!",
             }),
           );
         }
@@ -52,7 +53,7 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
     };
 
     runTest();
-  }, [accessToken, litellmParams, onTestComplete, t]);
+  }, [accessToken, litellmParams, onTestComplete]);
 
   const getCleanErrorMessage = (errorMsg: string) => {
     if (!errorMsg) return "Unknown error";
@@ -91,6 +92,7 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
           <p className="text-base text-foreground">
             {t("tools:search_tools.connection_test.testing", {
               provider: litellmParams.search_provider || "search provider",
+              defaultValue: `Testing connection to ${litellmParams.search_provider || "search provider"}...`,
             })}
           </p>
         </div>
@@ -111,17 +113,21 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
             <p className="text-lg font-medium text-success">
               {t("tools:search_tools.connection_test.success", {
                 provider: litellmParams.search_provider,
+                defaultValue: `Connection to ${litellmParams.search_provider} successful!`,
               })}
             </p>
             {testResult.test_query && (
               <p className="mt-2 text-sm text-muted-foreground">
-                {t("tools:search_tools.connection_test.test_query")}{" "}
+                {t("tools:search_tools.connection_test.test_query", { defaultValue: "Test query:" })}{" "}
                 <code className="rounded bg-muted px-1.5 py-0.5">{testResult.test_query}</code>
               </p>
             )}
             {testResult.results_count !== undefined && (
               <p className="text-sm text-muted-foreground">
-                {t("tools:search_tools.connection_test.results_retrieved", { count: testResult.results_count })}
+                {t("tools:search_tools.connection_test.results_retrieved", {
+                  count: testResult.results_count,
+                  defaultValue: `Results retrieved: ${testResult.results_count}`,
+                })}
               </p>
             )}
           </div>
@@ -133,18 +139,21 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
             <p className="text-lg font-medium text-destructive">
               {t("tools:search_tools.connection_test.failed", {
                 provider: litellmParams.search_provider || "search provider",
+                defaultValue: `Connection to ${litellmParams.search_provider || "search provider"} failed`,
               })}
             </p>
           </div>
 
           <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
-            <p className="mb-2 font-semibold text-foreground">{t("tools:search_tools.connection_test.error")}</p>
+            <p className="mb-2 font-semibold text-foreground">
+              {t("tools:search_tools.connection_test.error", { defaultValue: "Error: " })}
+            </p>
             <p className="text-sm leading-relaxed text-destructive">{errorMessage}</p>
 
             {testResult.error_type && (
               <div className="mt-2">
                 <p className="text-[13px] text-muted-foreground">
-                  {t("tools:search_tools.connection_test.error_type")}
+                  {t("tools:search_tools.connection_test.error_type", { defaultValue: "Error type: " })}
                   <code className="rounded bg-destructive/10 px-1.5 py-0.5 text-destructive">
                     {testResult.error_type}
                   </code>
@@ -156,8 +165,8 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
               <div className="mt-3">
                 <Button variant="link" size="sm" className="h-auto p-0" onClick={() => setShowDetails(!showDetails)}>
                   {showDetails
-                    ? t("tools:search_tools.connection_test.hide_details")
-                    : t("tools:search_tools.connection_test.show_details")}
+                    ? t("tools:search_tools.connection_test.hide_details", { defaultValue: "Hide Details" })
+                    : t("tools:search_tools.connection_test.show_details", { defaultValue: "Show Details" })}
                 </Button>
               </div>
             )}
@@ -166,7 +175,7 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
           {showDetails && (
             <div className="mb-5">
               <p className="mb-2 text-[15px] font-semibold text-foreground">
-                {t("tools:search_tools.connection_test.full_error_details")}
+                {t("tools:search_tools.connection_test.full_error_details", { defaultValue: "Full Error Details" })}
               </p>
               <pre className="max-h-52 overflow-auto rounded-lg border border-border bg-muted p-4 text-[13px] leading-relaxed break-words whitespace-pre-wrap">
                 {testResult.message}
@@ -176,17 +185,45 @@ const SearchConnectionTest: React.FC<SearchConnectionTestProps> = ({ litellmPara
 
           <div className="rounded-lg border border-warning/20 border-l-4 border-l-amber-500 bg-warning/10 p-4">
             <p className="mb-2 font-semibold text-warning">
-              {t("tools:search_tools.connection_test.troubleshooting_tips")}
+              {t("tools:search_tools.connection_test.troubleshooting_tips", { defaultValue: "Troubleshooting tips:" })}
             </p>
             <ul className="my-2 list-disc pl-5 text-warning">
-              <li className="mb-1.5">{t("tools:search_tools.connection_test.tip_verify_key")}</li>
-              <li className="mb-1.5">{t("tools:search_tools.connection_test.tip_check_operational")}</li>
-              <li className="mb-1.5">{t("tools:search_tools.connection_test.tip_ensure_credits")}</li>
-              <li className="mb-1.5">{t("tools:search_tools.connection_test.tip_review_docs")}</li>
+              <li className="mb-1.5">
+                {t("tools:search_tools.connection_test.tip_verify_key", {
+                  defaultValue: "Verify your API key is correct and active",
+                })}
+              </li>
+              <li className="mb-1.5">
+                {t("tools:search_tools.connection_test.tip_check_operational", {
+                  defaultValue: "Check if the search provider service is operational",
+                })}
+              </li>
+              <li className="mb-1.5">
+                {t("tools:search_tools.connection_test.tip_ensure_credits", {
+                  defaultValue: "Ensure you have sufficient credits/quota with the provider",
+                })}
+              </li>
+              <li className="mb-1.5">
+                {t("tools:search_tools.connection_test.tip_review_docs", {
+                  defaultValue: "Review the provider's documentation for any additional requirements",
+                })}
+              </li>
             </ul>
           </div>
         </div>
       )}
+      <Separator className="mt-6 mb-4" />
+      <div className="flex items-center justify-between">
+        <a
+          href="https://docs.litellm.ai/docs/search"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          <Info className="size-4" />
+          {t("tools:search_tools.connection_test.view_docs", { defaultValue: "View Search Documentation" })}
+        </a>
+      </div>
     </div>
   );
 };

@@ -89,7 +89,7 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
         <Button variant="ghost" size="icon" aria-label={t("common:back", { defaultValue: "Back" })} onClick={onBack} className="mb-4">
           <ArrowLeftIcon className="size-4" />
         </Button>
-        <p className="py-8 text-center text-sm text-muted-foreground">{t("accessGroups:details.not_found")}</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">{t("accessGroups:details.not_found", { defaultValue: "Access group not found" })}</p>
       </div>
     );
   }
@@ -114,40 +114,40 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
             <h1 className="text-xl font-semibold tracking-tight text-foreground">{accessGroup.access_group_name}</h1>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <span>ID: {accessGroup.access_group_id}</span>
-              <CopyButton value={accessGroup.access_group_id} label={t("accessGroups:details.copy_id")} />
+              <CopyButton value={accessGroup.access_group_id} label={t("accessGroups:details.copy_id", { defaultValue: "Copy access group ID" })} />
             </div>
           </div>
         </div>
         <Button onClick={() => setIsEditModalVisible(true)}>
           <EditIcon className="size-4" />
-          {t("accessGroups:details.edit_btn")}
+          {t("accessGroups:details.edit_btn", { defaultValue: "Edit Access Group" })}
         </Button>
       </div>
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>{t("accessGroups:details.group_details")}</CardTitle>
+          <CardTitle>{t("accessGroups:details.group_details", { defaultValue: "Group Details" })}</CardTitle>
         </CardHeader>
         <CardContent>
           <dl className="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2 text-sm">
-            <dt className="text-muted-foreground">{t("accessGroups:details.description")}</dt>
+            <dt className="text-muted-foreground">{t("accessGroups:details.description", { defaultValue: "Description" })}</dt>
             <dd className="text-foreground">{accessGroup.description || "—"}</dd>
-            <dt className="text-muted-foreground">{t("accessGroups:details.created")}</dt>
+            <dt className="text-muted-foreground">{t("accessGroups:details.created", { defaultValue: "Created" })}</dt>
             <dd className="flex items-center gap-1 text-foreground">
               {new Date(accessGroup.created_at).toLocaleString()}
               {accessGroup.created_by && (
                 <>
-                  <span>{t("accessGroups:details.by")}</span>
+                  <span>{t("accessGroups:details.by", { defaultValue: "by" })}</span>
                   <DefaultProxyAdminTag userId={accessGroup.created_by} />
                 </>
               )}
             </dd>
-            <dt className="text-muted-foreground">{t("accessGroups:details.last_updated")}</dt>
+            <dt className="text-muted-foreground">{t("accessGroups:details.last_updated", { defaultValue: "Last Updated" })}</dt>
             <dd className="flex items-center gap-1 text-foreground">
               {new Date(accessGroup.updated_at).toLocaleString()}
               {accessGroup.updated_by && (
                 <>
-                  <span>{t("accessGroups:details.by")}</span>
+                  <span>{t("accessGroups:details.by", { defaultValue: "by" })}</span>
                   <DefaultProxyAdminTag userId={accessGroup.updated_by} />
                 </>
               )}
@@ -161,13 +161,13 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <KeyIcon className="size-4" />
-              {t("accessGroups:details.attached_keys")}
+              {t("accessGroups:details.attached_keys", { defaultValue: "Attached Keys" })}
               <Badge variant="secondary">{keys.length}</Badge>
             </CardTitle>
             {keys.length > MAX_PREVIEW && (
               <CardAction>
                 <Button variant="link" size="sm" onClick={() => setShowAllKeys(!showAllKeys)}>
-                  {showAllKeys ? t("accessGroups:details.show_less") : t("accessGroups:details.view_all", { count: keys.length })}
+                  {showAllKeys ? t("accessGroups:details.show_less", { defaultValue: "Show Less" }) : t("accessGroups:details.view_all", { count: keys.length, defaultValue: `View All (${keys.length})` })}
                 </Button>
               </CardAction>
             )}
@@ -180,7 +180,7 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">{t("accessGroups:details.no_keys")}</p>
+              <p className="text-sm text-muted-foreground">{t("accessGroups:details.no_keys", { defaultValue: "No keys attached" })}</p>
             )}
           </CardContent>
         </Card>
@@ -189,13 +189,13 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <UsersIcon className="size-4" />
-              {t("accessGroups:details.attached_teams")}
+              {t("accessGroups:details.attached_teams", { defaultValue: "Attached Teams" })}
               <Badge variant="secondary">{teams.length}</Badge>
             </CardTitle>
             {teams.length > MAX_PREVIEW && (
               <CardAction>
                 <Button variant="link" size="sm" onClick={() => setShowAllTeams(!showAllTeams)}>
-                  {showAllTeams ? t("accessGroups:details.show_less") : t("accessGroups:details.view_all", { count: teams.length })}
+                  {showAllTeams ? t("accessGroups:details.show_less", { defaultValue: "Show Less" }) : t("accessGroups:details.view_all", { count: teams.length, defaultValue: `View All (${teams.length})` })}
                 </Button>
               </CardAction>
             )}
@@ -208,7 +208,7 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">{t("accessGroups:details.no_teams")}</p>
+              <p className="text-sm text-muted-foreground">{t("accessGroups:details.no_teams", { defaultValue: "No teams attached" })}</p>
             )}
           </CardContent>
         </Card>
@@ -220,28 +220,28 @@ export function AccessGroupDetail({ accessGroupId, onBack }: AccessGroupDetailPr
             <TabsList variant="line" className="h-auto w-full justify-start rounded-none border-b p-0">
               <TabsTrigger value="models" className="flex-none gap-2 rounded-none px-4 py-2">
                 <LayersIcon className="size-4" />
-                {t("accessGroups:details.tabs.models")}
+                {t("accessGroups:details.tabs.models", { defaultValue: "Models" })}
                 <Badge variant="secondary">{models.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="mcp" className="flex-none gap-2 rounded-none px-4 py-2">
                 <ServerIcon className="size-4" />
-                {t("accessGroups:details.tabs.mcp")}
+                {t("accessGroups:details.tabs.mcp", { defaultValue: "MCP Servers" })}
                 <Badge variant="secondary">{mcpServers.length}</Badge>
               </TabsTrigger>
               <TabsTrigger value="agents" className="flex-none gap-2 rounded-none px-4 py-2">
                 <BotIcon className="size-4" />
-                {t("accessGroups:details.tabs.agents")}
+                {t("accessGroups:details.tabs.agents", { defaultValue: "Agents" })}
                 <Badge variant="secondary">{agents.length}</Badge>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="models" className="pt-4">
-              <ResourceList items={models} emptyMessage={t("accessGroups:details.no_models")} />
+              <ResourceList items={models} emptyMessage={t("accessGroups:details.no_models", { defaultValue: "No models assigned to this group" })} />
             </TabsContent>
             <TabsContent value="mcp" className="pt-4">
-              <ResourceList items={mcpServers} emptyMessage={t("accessGroups:details.no_mcp")} />
+              <ResourceList items={mcpServers} emptyMessage={t("accessGroups:details.no_mcp", { defaultValue: "No MCP servers assigned to this group" })} />
             </TabsContent>
             <TabsContent value="agents" className="pt-4">
-              <ResourceList items={agents} emptyMessage={t("accessGroups:details.no_agents")} />
+              <ResourceList items={agents} emptyMessage={t("accessGroups:details.no_agents", { defaultValue: "No agents assigned to this group" })} />
             </TabsContent>
           </Tabs>
         </CardContent>

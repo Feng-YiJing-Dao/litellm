@@ -808,7 +808,7 @@ export default function AgentBuilderView({
             </AlertDialogTitle>
             <AlertDialogDescription>
               {t("playground:agent_builder.delete_agent_confirm", {
-                defaultValue: 'Are you sure you want to delete "{{name}}"? This cannot be undone.',
+                defaultValue: `Are you sure you want to delete "${selectedAgent?.model_name}"? This cannot be undone.`,
                 name: selectedAgent?.model_name || "",
               })}
             </AlertDialogDescription>

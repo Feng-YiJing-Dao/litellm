@@ -83,8 +83,8 @@
     "sso_notice_domain": "您的域名已启用 SSO 单点登录，可使用企业账号登录。",
     "sso_enabled_notice": "已启用单点登录 (SSO)。LiteLLM 在加载此页面时不再自动重定向到 SSO 登录流程。如需重新启用自动重定向，请在环境配置中设置 <code1>AUTO_REDIRECT_UI_LOGIN_TO_SSO=true</code1>。",
     "login_failed": "登录失败",
-    "admin_ui_disabled_title": "管理面板已禁用",
-    "admin_ui_disabled_desc": "管理员已禁用该管理面板。如需重新启用，请更新以下环境变量配置："
+    "admin_ui_disabled_title": "管理控制台已禁用",
+    "admin_ui_disabled_desc": "管理员已禁用管理控制台。如需重新启用，请更新以下环境变量："
   },
   "onboarding": {
     "sign_up": "注册",
@@ -99,5 +99,20 @@
     "enter_new_password": "输入您的新密码",
     "create_password_desc": "为您的账户创建密码",
     "password_required": "注册需要设置密码"
+  },
+  "account_menu": {
+    "tier": "版本层级",
+    "premium": "高级版",
+    "standard": "标准版",
+    "upgrade_tooltip": "升级到高级版以解锁更多高阶功能",
+    "role": "系统角色",
+    "email": "电子邮箱",
+    "user_id": "用户 ID",
+    "copy_email": "复制邮箱",
+    "copy_user_id": "复制用户 ID",
+    "hide_new_feature_indicators": "隐藏新功能指示器",
+    "hide_all_prompts": "隐藏所有提示信息",
+    "hide_blog_posts": "隐藏博客推荐",
+    "hide_bouncing_icon": "隐藏动态小图标"
   }
 }

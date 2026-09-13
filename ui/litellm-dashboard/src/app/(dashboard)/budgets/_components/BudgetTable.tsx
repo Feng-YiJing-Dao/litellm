@@ -227,7 +227,7 @@ const BudgetTable: React.FC<BudgetTableProps> = ({ list, canModify, onEditClick,
 
   const columns = useMemo(
     () => getBudgetTableColumns({ canModify, onEditClick, onDeleteClick, t }),
-    [canModify, onEditClick, onDeleteClick, t],
+    [canModify, onEditClick, onDeleteClick],
   );
 
   const filterLabels = useMemo<Record<string, string>>(

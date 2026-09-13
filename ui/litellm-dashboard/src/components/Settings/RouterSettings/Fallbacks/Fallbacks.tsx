@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import openai from "openai";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import DeleteResourceModal from "../../../common_components/DeleteResourceModal";
 import { ProviderLogo } from "../../../molecules/models/ProviderLogo";
 import { toast } from "@/lib/toast";
@@ -104,14 +105,7 @@ async function testFallbackModelResponse(selectedModel: string, accessToken: str
     toast.success(
       <span>
         Test model=<strong>{selectedModel}</strong>, received model=
-        <strong>{response.model}</strong>. See{" "}
-        <a
-          href="#"
-          onClick={() => window.open("https://docs.litellm.ai/docs/proxy/reliability", "_blank")}
-          style={{ textDecoration: "underline", color: "blue" }}
-        >
-          curl
-        </a>
+        <strong>{response.model}</strong>.
       </span>,
     );
   } catch (error) {
@@ -120,6 +114,7 @@ async function testFallbackModelResponse(selectedModel: string, accessToken: str
 }
 
 const Fallbacks: React.FC<FallbacksProps> = ({ accessToken, userRole, userID }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [routerSettings, setRouterSettings] = useState<{ [key: string]: any }>({});
   const [isDeleting, setIsDeleting] = useState(false);
   const [fallbackToDelete, setFallbackToDelete] = useState<FallbackEntry | null>(null);
@@ -263,16 +258,19 @@ const Fallbacks: React.FC<FallbacksProps> = ({ accessToken, userRole, userID }) 
       {!hasFallbacks ? (
         <div className="rounded-lg border border-border bg-muted px-4 py-6 text-center">
           <span className="text-muted-foreground">
-            No fallbacks configured. Add fallbacks to automatically try another model when the primary fails.
+            {t("models:no_fallbacks_configured", {
+              defaultValue:
+                "No fallbacks configured. Add fallbacks to automatically try another model when the primary fails.",
+            })}
           </span>
         </div>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Model Name</TableHead>
-              <TableHead>Fallbacks</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>{t("models:model_name", { defaultValue: "Model Name" })}</TableHead>
+              <TableHead>{t("models:fallbacks", { defaultValue: "Fallbacks" })}</TableHead>
+              <TableHead>{t("models:actions", { defaultValue: "Actions" })}</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -300,7 +298,7 @@ const Fallbacks: React.FC<FallbacksProps> = ({ accessToken, userRole, userID }) 
                           >
                             <Play className="h-5 w-5 shrink-0" />
                           </TooltipTrigger>
-                          <TooltipContent>Test fallback</TooltipContent>
+                          <TooltipContent>{t("models:test_fallback", { defaultValue: "Test fallback" })}</TooltipContent>
                         </Tooltip>
                         <Tooltip>
                           <TooltipTrigger
@@ -317,7 +315,7 @@ const Fallbacks: React.FC<FallbacksProps> = ({ accessToken, userRole, userID }) 
                           >
                             <Pencil className="h-5 w-5 shrink-0" />
                           </TooltipTrigger>
-                          <TooltipContent>Edit fallback</TooltipContent>
+                          <TooltipContent>{t("models:edit_fallback", { defaultValue: "Edit fallback" })}</TooltipContent>
                         </Tooltip>
                         <Tooltip>
                           <TooltipTrigger
@@ -334,7 +332,7 @@ const Fallbacks: React.FC<FallbacksProps> = ({ accessToken, userRole, userID }) 
                           >
                             <Trash2 className="h-5 w-5 shrink-0" />
                           </TooltipTrigger>
-                          <TooltipContent>Delete fallback</TooltipContent>
+                          <TooltipContent>{t("models:delete_fallback", { defaultValue: "Delete fallback" })}</TooltipContent>
                         </Tooltip>
                       </>
                     )}
@@ -357,12 +355,14 @@ const Fallbacks: React.FC<FallbacksProps> = ({ accessToken, userRole, userID }) 
       )}
       <DeleteResourceModal
         isOpen={isDeleteModalOpen}
-        title="Delete Fallback?"
-        message="Are you sure you want to delete this fallback? This action cannot be undone."
-        resourceInformationTitle="Fallback Information"
+        title={t("models:delete_fallback_title", { defaultValue: "Delete Fallback?" })}
+        message={t("models:delete_fallback_confirm", {
+          defaultValue: "Are you sure you want to delete this fallback? This action cannot be undone.",
+        })}
+        resourceInformationTitle={t("models:fallback_info", { defaultValue: "Fallback Information" })}
         resourceInformation={[
           {
-            label: "Model Name",
+            label: t("models:model_name", { defaultValue: "Model Name" }),
             value: fallbackToDelete ? Object.keys(fallbackToDelete)[0] : "",
             code: true,
           },

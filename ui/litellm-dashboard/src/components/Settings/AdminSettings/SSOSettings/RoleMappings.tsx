@@ -1,5 +1,6 @@
 import type { RoleMappings as RoleMappingsType } from "@/app/(dashboard)/hooks/sso/useSSOSettings";
 import type { ColumnDef } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/shared/DataTable";
 import { StatusBadge } from "@/components/shared/table_cells/status_badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +16,8 @@ interface RoleMappingRow {
 }
 
 export default function RoleMappings({ roleMappings }: { roleMappings: RoleMappingsType | undefined }) {
+  const { t } = useTranslation(["settings", "common"]);
+
   if (!roleMappings) {
     return null;
   }
@@ -23,13 +26,13 @@ export default function RoleMappings({ roleMappings }: { roleMappings: RoleMappi
     {
       id: "role",
       accessorKey: "role",
-      header: "Role",
+      header: t("settings:sso.role_column", { defaultValue: "Role" }),
       cell: ({ row }) => <strong className="font-semibold">{defaultRoleDisplayNames[row.original.role]}</strong>,
     },
     {
       id: "groups",
       accessorKey: "groups",
-      header: "Mapped Groups",
+      header: t("settings:sso.mapped_groups_column", { defaultValue: "Mapped Groups" }),
       cell: ({ row }) =>
         row.original.groups.length > 0 ? (
           <div className="flex flex-wrap gap-1">
@@ -38,7 +41,9 @@ export default function RoleMappings({ roleMappings }: { roleMappings: RoleMappi
             ))}
           </div>
         ) : (
-          <span className="text-muted-foreground italic">No groups mapped</span>
+          <span className="text-muted-foreground italic">
+            {t("settings:sso.no_groups_mapped", { defaultValue: "No groups mapped" })}
+          </span>
         ),
     },
   ];
@@ -47,18 +52,24 @@ export default function RoleMappings({ roleMappings }: { roleMappings: RoleMappi
       <CardContent>
         <div className="flex items-center gap-3">
           <Users className="w-6 h-6 text-muted-foreground mb-2" />
-          <h3 className="mb-2 text-2xl font-semibold text-foreground">Role Mappings</h3>
+          <h3 className="mb-2 text-2xl font-semibold text-foreground">
+            {t("settings:sso.role_mappings_title", { defaultValue: "Role Mappings" })}
+          </h3>
         </div>
         <div className="space-y-8">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <h5 className="mb-2 text-base font-semibold text-foreground">Group Claim</h5>
+              <h5 className="mb-2 text-base font-semibold text-foreground">
+                {t("settings:sso.group_claim", { defaultValue: "Group Claim" })}
+              </h5>
               <div>
                 <code className={inlineCodeClass}>{roleMappings.group_claim}</code>
               </div>
             </div>
             <div>
-              <h5 className="mb-2 text-base font-semibold text-foreground">Default Role</h5>
+              <h5 className="mb-2 text-base font-semibold text-foreground">
+                {t("settings:sso.default_role", { defaultValue: "Default Role" })}
+              </h5>
               <div>
                 <strong className="font-semibold">{defaultRoleDisplayNames[roleMappings.default_role]}</strong>
               </div>
