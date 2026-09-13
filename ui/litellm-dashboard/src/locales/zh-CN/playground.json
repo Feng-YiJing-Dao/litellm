@@ -61,5 +61,20 @@
   "tags": "标签",
   "vector_stores": "向量存储",
   "guardrails": "安全防护栏",
-  "use_advanced_params": "启用高级参数"
+  "use_advanced_params": "启用高级参数",
+  "transform": {
+    "title": "Playground",
+    "subtitle": "查看网关如何将您的请求转换为指定提供商的原生格式。",
+    "original_request": "Original Request",
+    "original_desc": "发送到网关 /chat/completions 接口的请求。",
+    "placeholder_shortcut": "按 Cmd/Ctrl + Enter 快速转换",
+    "transform_button": "Transform",
+    "transformed_request": "Transformed Request",
+    "transformed_desc": "网关转换为指定提供商的原生请求内容。",
+    "sensitive_note": "注意：敏感请求头已隐藏。",
+    "copied": "已复制到剪贴板",
+    "invalid_json": "请求体中的 JSON 格式无效",
+    "success": "请求转换成功",
+    "error": "请求转换失败"
+  }
 }

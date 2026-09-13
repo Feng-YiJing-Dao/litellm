@@ -82,5 +82,39 @@
       "no_stores": "暂无向量存储",
       "no_stores_desc": "连接向量存储以启用检索增强生成（RAG）。"
     }
+  },
+  "policies": {
+    "title": "工具策略管理",
+    "metrics": {
+      "new_today": "今日新增",
+      "total_tools": "发现工具总数",
+      "blocked_tools": "已阻断工具",
+      "active_teams": "活跃团队",
+      "trend_up": "较昨日 +{{diff}}",
+      "trend_down": "较昨日 {{diff}}"
+    },
+    "needs_review": {
+      "title": "需要审核",
+      "desc": "发现 {{count}} 个新工具需要进行策略裁决。",
+      "review_btn": "审核"
+    },
+    "status": {
+      "untrusted": "未受信",
+      "trusted": "受信",
+      "blocked": "已阻断"
+    },
+    "table": {
+      "discovered": "首次发现",
+      "tool_name": "工具名称",
+      "input_policy": "输入策略",
+      "output_policy": "输出策略",
+      "calls": "调用次数",
+      "team_name": "团队名称",
+      "key_hash": "密钥哈希",
+      "key_name": "密钥名称",
+      "user_agent": "用户代理",
+      "no_tools": "未发现工具",
+      "loading": "正在加载工具策略…"
+    }
   }
 }

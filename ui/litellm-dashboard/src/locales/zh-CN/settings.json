@@ -38,5 +38,29 @@
     "get_webhook_url": "点此获取 Slack Webhook 地址",
     "test_alerts": "测试告警",
     "save_changes": "保存修改"
+  },
+  "ui_theme": {
+    "title": "界面外观定制",
+    "subtitle": "自定义您的管理控制台 Logo 与网站图标 (Favicon)。",
+    "logo_url": "自定义 Logo 地址",
+    "logo_placeholder": "https://example.com/logo.png",
+    "logo_hint": "输入自定义 Logo 图片链接，留空则使用系统默认",
+    "logo_dark_url": "自定义 Logo 地址 (深色模式)",
+    "logo_dark_placeholder": "https://example.com/logo-dark.png",
+    "logo_dark_hint": "输入适用于深色背景的 Logo 图片链接，留空则使用上方 Logo",
+    "favicon_url": "自定义 Favicon 地址",
+    "favicon_placeholder": "https://example.com/favicon.ico",
+    "favicon_hint": "输入自定义网站图标链接 (.ico、.png 或 .svg)，留空则使用系统默认",
+    "save": "保存修改",
+    "reset": "恢复默认",
+    "saved": "外观设置更新成功！",
+    "reset_success": "外观设置已恢复为默认！",
+    "save_error": "更新外观设置失败",
+    "reset_error": "重置外观设置失败"
+  },
+  "api_ref": {
+    "title": "OpenAI 兼容代理：接口参考",
+    "desc": "本网关完全兼容 OpenAI API 规范。这意味着您的 API 密钥可以直接搭配 OpenAI 官方 SDK 使用。只需将 base_url 替换为您的代理地址即可。下方附参考示例：",
+    "docs_link": "接口参考文档"
   }
 }

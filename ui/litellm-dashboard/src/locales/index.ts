@@ -29,6 +29,7 @@ import zhPolicies from "./zh-CN/policies.json";
 import zhTools from "./zh-CN/tools.json";
 import zhCosts from "./zh-CN/costs.json";
 import zhAdmin from "./zh-CN/admin.json";
+import zhPrompts from "./zh-CN/prompts.json";
 
 import enCommon from "./en/common.json";
 import enNav from "./en/nav.json";
@@ -57,6 +58,7 @@ import enPolicies from "./en/policies.json";
 import enTools from "./en/tools.json";
 import enCosts from "./en/costs.json";
 import enAdmin from "./en/admin.json";
+import enPrompts from "./en/prompts.json";
 
 export const defaultNS = "common";
 export const resources = {
@@ -88,6 +90,7 @@ export const resources = {
     tools: zhTools,
     costs: zhCosts,
     admin: zhAdmin,
+    prompts: zhPrompts,
   },
   en: {
     common: enCommon,
@@ -117,6 +120,7 @@ export const resources = {
     tools: enTools,
     costs: enCosts,
     admin: enAdmin,
+    prompts: enPrompts,
   },
 } as const;
 

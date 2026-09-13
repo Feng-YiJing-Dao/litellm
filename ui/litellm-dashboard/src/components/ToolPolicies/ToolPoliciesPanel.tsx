@@ -2,6 +2,7 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import useCan from "@/app/(dashboard)/hooks/useCan";
 import { MetricCard } from "@/components/GuardrailsMonitor/MetricCard";
@@ -49,6 +50,7 @@ interface ToolPoliciesPanelProps {
 }
 
 export const ToolPoliciesPanel: React.FC<ToolPoliciesPanelProps> = ({ accessToken, onSelectTool }) => {
+  const { t } = useTranslation("tools");
   const queryClient = useQueryClient();
   const canViewToolPolicies = useCan("viewToolPolicies");
   const [savingInput, setSavingInput] = useState<ReadonlySet<string>>(() => new Set());
@@ -131,11 +133,13 @@ export const ToolPoliciesPanel: React.FC<ToolPoliciesPanelProps> = ({ accessToke
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold text-foreground mb-6">Tool Policies</h1>
+      <h1 className="text-2xl font-semibold text-foreground mb-6">
+        {t("policies.title", { defaultValue: "Tool Policies" })}
+      </h1>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <MetricCard
-          label="New Today"
+          label={t("policies.metrics.new_today", { defaultValue: "New Today" })}
           value={newToday}
           valueColor="text-success"
           subtitle={trendSubtitle}
@@ -145,18 +149,26 @@ export const ToolPoliciesPanel: React.FC<ToolPoliciesPanelProps> = ({ accessToke
             </svg>
           }
         />
-        <MetricCard label="Total Tools Discovered" value={totalTools} />
         <MetricCard
-          label="Blocked Tools"
+          label={t("policies.metrics.total_tools", { defaultValue: "Total Tools Discovered" })}
+          value={totalTools}
+        />
+        <MetricCard
+          label={t("policies.metrics.blocked_tools", { defaultValue: "Blocked Tools" })}
           value={blockedCount}
           valueColor={blockedCount > 0 ? "text-destructive" : undefined}
         />
-        <MetricCard label="Active Teams" value={activeTeamsCount > 0 ? activeTeamsCount : "—"} />
+        <MetricCard
+          label={t("policies.metrics.active_teams", { defaultValue: "Active Teams" })}
+          value={activeTeamsCount > 0 ? activeTeamsCount : "—"}
+        />
       </div>
 
       {needsReviewTools.length > 0 && (
         <div className="bg-warning/10 border border-warning/20 rounded-lg p-4 mb-6">
-          <h2 className="text-sm font-semibold text-warning mb-1">Needs Review</h2>
+          <h2 className="text-sm font-semibold text-warning mb-1">
+            {t("policies.needs_review.title", { defaultValue: "Needs Review" })}
+          </h2>
           <p className="text-sm text-warning mb-3">
             {needsReviewTools.length} new tool{needsReviewTools.length !== 1 ? "s" : ""} discovered that require policy
             decisions.
@@ -175,7 +187,7 @@ export const ToolPoliciesPanel: React.FC<ToolPoliciesPanelProps> = ({ accessToke
                   onClick={() => scrollToToolRow(tool.tool_id)}
                   className="text-warning hover:text-warning/80 font-medium text-xs whitespace-nowrap"
                 >
-                  Review
+                  {t("policies.needs_review.review_btn", { defaultValue: "Review" })}
                 </button>
               </span>
             ))}

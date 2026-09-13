@@ -65,9 +65,11 @@ interface PromptRowActionsProps {
   prompt: PromptSpec;
   isAdmin: boolean;
   onDeleteClick?: (id: string, name: string, environment: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-function PromptRowActions({ prompt, isAdmin, onDeleteClick }: PromptRowActionsProps) {
+function PromptRowActions({ prompt, isAdmin, onDeleteClick, t }: PromptRowActionsProps) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -83,7 +85,7 @@ function PromptRowActions({ prompt, isAdmin, onDeleteClick }: PromptRowActionsPr
           onClick={() => void copyToClipboard(prompt.prompt_id, "Prompt ID copied")}
         >
           <Copy />
-          Copy prompt ID
+          {tr("prompts.buttons.copy_id", { defaultValue: "Copy prompt ID" })}
         </DropdownMenuItem>
         {isAdmin && (
           <>
@@ -100,7 +102,7 @@ function PromptRowActions({ prompt, isAdmin, onDeleteClick }: PromptRowActionsPr
               }
             >
               <Trash2 />
-              Delete
+              {tr("prompts.buttons.delete", { defaultValue: "Delete" })}
             </DropdownMenuItem>
           </>
         )}
@@ -114,6 +116,7 @@ interface PromptTableColumnsDeps {
   isAdmin: boolean;
   onPromptClick?: (id: string, environment: string) => void;
   onDeleteClick?: (id: string, name: string, environment: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getPromptTableColumns = ({
@@ -121,110 +124,120 @@ export const getPromptTableColumns = ({
   isAdmin,
   onPromptClick,
   onDeleteClick,
-}: PromptTableColumnsDeps): ColumnDef<PromptSpec>[] => [
-  {
-    id: "prompt_id",
-    accessorKey: "prompt_id",
-    meta: { title: "Prompt ID" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Prompt ID" />,
-    size: 220,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <IdentityCell
-        title={row.original.prompt_id}
-        titleClassName="font-mono text-xs font-normal"
-        className="max-w-60"
-        onClick={
-          onPromptClick
-            ? () => onPromptClick(row.original.prompt_id, row.original.environment || "development")
-            : undefined
-        }
-      />
-    ),
-  },
-  {
-    id: "model",
-    meta: { title: "Model" },
-    header: "Model",
-    size: 200,
-    enableSorting: false,
-    cell: ({ row }) => <PromptModelCell prompt={row.original} modelHubData={modelHubData} />,
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    sortingFn: "datetime",
-    meta: { title: "Created At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created At" />,
-    size: 160,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} />,
-  },
-  {
-    id: "updated_at",
-    accessorKey: "updated_at",
-    sortingFn: "datetime",
-    meta: { title: "Updated At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Updated At" />,
-    size: 160,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.updated_at} />,
-  },
-  {
-    id: "environment",
-    accessorKey: "environment",
-    meta: { title: "Environment", skeleton: "badge" },
-    header: "Environment",
-    size: 130,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const environment = row.original.environment || "development";
-      return <StatusBadge tone={ENVIRONMENT_TONE[environment] ?? "neutral"} label={environment} />;
+  t,
+}: PromptTableColumnsDeps): ColumnDef<PromptSpec>[] => {
+  const tr = t ?? ((key: string, options?: any) => options?.defaultValue ?? key);
+  return [
+    {
+      id: "prompt_id",
+      accessorKey: "prompt_id",
+      meta: { title: "Prompt ID" },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("prompts.table.prompt_id", { defaultValue: "Prompt ID" })} />
+      ),
+      size: 220,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <IdentityCell
+          title={row.original.prompt_id}
+          titleClassName="font-mono text-xs font-normal"
+          className="max-w-60"
+          onClick={
+            onPromptClick
+              ? () => onPromptClick(row.original.prompt_id, row.original.environment || "development")
+              : undefined
+          }
+        />
+      ),
     },
-  },
-  {
-    id: "created_by",
-    accessorKey: "created_by",
-    meta: { title: "Created By" },
-    header: "Created By",
-    size: 160,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const createdBy = row.original.created_by;
-      return (
-        <span className="block max-w-60 truncate text-sm text-muted-foreground" title={createdBy}>
-          {createdBy || "-"}
-        </span>
-      );
+    {
+      id: "model",
+      meta: { title: "Model" },
+      header: tr("prompts.table.model", { defaultValue: "Model" }),
+      size: 200,
+      enableSorting: false,
+      cell: ({ row }) => <PromptModelCell prompt={row.original} modelHubData={modelHubData} />,
     },
-  },
-  {
-    id: "prompt_type",
-    accessorKey: "prompt_info.prompt_type",
-    meta: { title: "Type" },
-    header: "Type",
-    size: 140,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const promptType = row.original.prompt_info.prompt_type;
-      return (
-        <span className="block max-w-40 truncate text-sm" title={promptType}>
-          {promptType}
-        </span>
-      );
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      sortingFn: "datetime",
+      meta: { title: "Created At" },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("prompts.table.created_at", { defaultValue: "Created At" })} />
+      ),
+      size: 160,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} />,
     },
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <PromptRowActions prompt={row.original} isAdmin={isAdmin} onDeleteClick={onDeleteClick} />
-      </div>
-    ),
-  },
-];
+    {
+      id: "updated_at",
+      accessorKey: "updated_at",
+      sortingFn: "datetime",
+      meta: { title: "Updated At" },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("prompts.table.updated_at", { defaultValue: "Updated At" })} />
+      ),
+      size: 160,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.updated_at} />,
+    },
+    {
+      id: "environment",
+      accessorKey: "environment",
+      meta: { title: "Environment", skeleton: "badge" },
+      header: tr("prompts.table.environment", { defaultValue: "Environment" }),
+      size: 130,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const environment = row.original.environment || "development";
+        return <StatusBadge tone={ENVIRONMENT_TONE[environment] ?? "neutral"} label={environment} />;
+      },
+    },
+    {
+      id: "created_by",
+      accessorKey: "created_by",
+      meta: { title: "Created By" },
+      header: tr("prompts.table.created_by", { defaultValue: "Created By" }),
+      size: 160,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const createdBy = row.original.created_by;
+        return (
+          <span className="block max-w-60 truncate text-sm text-muted-foreground" title={createdBy}>
+            {createdBy || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      id: "prompt_type",
+      accessorKey: "prompt_info.prompt_type",
+      meta: { title: "Type" },
+      header: tr("prompts.table.type", { defaultValue: "Type" }),
+      size: 140,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const promptType = row.original.prompt_info.prompt_type;
+        return (
+          <span className="block max-w-40 truncate text-sm" title={promptType}>
+            {promptType}
+          </span>
+        );
+      },
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">Actions</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          <PromptRowActions prompt={row.original} isAdmin={isAdmin} onDeleteClick={onDeleteClick} t={t} />
+        </div>
+      ),
+    },
+  ];
+};

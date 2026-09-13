@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ExternalLink } from "lucide-react";
 
 import { cn } from "@/lib/cva.config";
@@ -9,6 +10,7 @@ export type DocLinkProps = {
 };
 
 const DocLink = ({ href, className }: DocLinkProps) => {
+  const { t } = useTranslation("settings");
   return (
     <a
       href={href}
@@ -21,7 +23,7 @@ const DocLink = ({ href, className }: DocLinkProps) => {
         className,
       )}
     >
-      <span>API Reference Docs</span>
+      <span>{t("api_ref.docs_link", { defaultValue: "API Reference Docs" })}</span>
       <ExternalLink aria-hidden className="h-4 w-4 opacity-80" />
       <span className="sr-only">(opens in a new tab)</span>
     </a>

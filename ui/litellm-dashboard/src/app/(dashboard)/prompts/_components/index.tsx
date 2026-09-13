@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Plus, Upload } from "lucide-react";
 import { getPromptsList, PromptSpec, ListPromptsResponse, deletePromptCall } from "@/components/networking";
@@ -37,6 +38,7 @@ interface PromptsProps {
 }
 
 const PromptsPanel: React.FC<PromptsProps> = ({ accessToken, userRole }) => {
+  const { t } = useTranslation("prompts");
   const [promptsList, setPromptsList] = useState<PromptSpec[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | undefined>(undefined);
@@ -165,11 +167,11 @@ const PromptsPanel: React.FC<PromptsProps> = ({ accessToken, userRole }) => {
                 <>
                   <Button onClick={handleAddPrompt} disabled={!accessToken}>
                     <Plus />
-                    Add New Prompt
+                    {t("prompts.buttons.add_new", { defaultValue: "Add New Prompt" })}
                   </Button>
                   <Button onClick={handleAddPromptFromFile} disabled={!accessToken} variant="secondary">
                     <Upload />
-                    Upload .prompt File
+                    {t("prompts.buttons.upload_file", { defaultValue: "Upload .prompt File" })}
                   </Button>
                 </>
               )}
@@ -220,16 +222,21 @@ const PromptsPanel: React.FC<PromptsProps> = ({ accessToken, userRole }) => {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete Prompt</AlertDialogTitle>
+              <AlertDialogTitle>{t("prompts.delete_modal.title", { defaultValue: "Delete Prompt" })}</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to delete the {promptToDelete.environment} copy of prompt: {promptToDelete.name}?
-                This action cannot be undone.
+                {t("prompts.delete_modal.description", {
+                  environment: promptToDelete.environment,
+                  name: promptToDelete.name,
+                  defaultValue: `Are you sure you want to delete the ${promptToDelete.environment} copy of prompt: ${promptToDelete.name}? This action cannot be undone.`,
+                })}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+              <AlertDialogCancel disabled={isDeleting}>
+                {t("prompts.buttons.cancel", { defaultValue: "Cancel" })}
+              </AlertDialogCancel>
               <Button variant="destructive" onClick={handleDeleteConfirm} disabled={isDeleting}>
-                Delete
+                {t("prompts.buttons.delete", { defaultValue: "Delete" })}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

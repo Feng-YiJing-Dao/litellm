@@ -61,5 +61,20 @@
   "tags": "Tags",
   "vector_stores": "Vector Stores",
   "guardrails": "Guardrails",
-  "use_advanced_params": "Use Advanced Parameters"
+  "use_advanced_params": "Use Advanced Parameters",
+  "transform": {
+    "title": "Playground",
+    "subtitle": "See how LiteLLM transforms your request for the specified provider.",
+    "original_request": "Original Request",
+    "original_desc": "The request you would send to LiteLLM /chat/completions endpoint.",
+    "placeholder_shortcut": "Press Cmd/Ctrl + Enter to transform",
+    "transform_button": "Transform",
+    "transformed_request": "Transformed Request",
+    "transformed_desc": "How LiteLLM transforms your request for the specified provider.",
+    "sensitive_note": "Note: Sensitive headers are not shown.",
+    "copied": "Copied to clipboard",
+    "invalid_json": "Invalid JSON in request body",
+    "success": "Request transformed successfully",
+    "error": "Failed to transform request"
+  }
 }

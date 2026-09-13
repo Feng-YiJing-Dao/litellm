@@ -3,6 +3,7 @@
 import { SortingState } from "@tanstack/react-table";
 import { Inbox } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { DataTable } from "@/components/shared/DataTable";
 import { modelHubCall, PromptSpec } from "@/components/networking";
@@ -21,14 +22,21 @@ interface PromptTableProps {
 
 const DEFAULT_SORTING: SortingState = [{ id: "created_at", desc: true }];
 
-function EmptyState() {
+function EmptyState({ t }: { t?: (key: any, options?: any) => any }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <Inbox className="size-5 text-muted-foreground" />
       </div>
-      <div className="text-sm font-medium text-foreground">No prompts yet</div>
-      <div className="text-sm text-muted-foreground">Add a prompt to start managing reusable templates.</div>
+      <div className="text-sm font-medium text-foreground">
+        {tr("prompts.table.no_prompts", { defaultValue: "No prompts yet" })}
+      </div>
+      <div className="text-sm text-muted-foreground">
+        {tr("prompts.table.no_prompts_desc", {
+          defaultValue: "Add a prompt to start managing reusable templates.",
+        })}
+      </div>
     </div>
   );
 }
@@ -41,6 +49,7 @@ const PromptTable: React.FC<PromptTableProps> = ({
   accessToken,
   isAdmin,
 }) => {
+  const { t } = useTranslation("prompts");
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING);
   const [modelHubData, setModelHubData] = useState<Map<string, ModelGroupInfo>>(new Map());
 
@@ -66,8 +75,8 @@ const PromptTable: React.FC<PromptTableProps> = ({
   }, [accessToken]);
 
   const columns = useMemo(
-    () => getPromptTableColumns({ modelHubData, isAdmin, onPromptClick, onDeleteClick }),
-    [modelHubData, isAdmin, onPromptClick, onDeleteClick],
+    () => getPromptTableColumns({ modelHubData, isAdmin, onPromptClick, onDeleteClick, t }),
+    [modelHubData, isAdmin, onPromptClick, onDeleteClick, t],
   );
 
   return (
@@ -82,8 +91,8 @@ const PromptTable: React.FC<PromptTableProps> = ({
       sorting={sorting}
       onSortingChange={setSorting}
       isLoading={isLoading}
-      loadingMessage="Loading prompts…"
-      noDataMessage={<EmptyState />}
+      loadingMessage={t("prompts.table.loading", { defaultValue: "Loading prompts…" })}
+      noDataMessage={<EmptyState t={t} />}
       size="compact"
     />
   );

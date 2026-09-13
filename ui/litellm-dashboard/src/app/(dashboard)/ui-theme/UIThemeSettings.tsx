@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ interface UIThemeSettingsProps {
 }
 
 const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, accessToken }) => {
+  const { t } = useTranslation("settings");
   const { setLogoUrl, setLogoUrlDark, setFaviconUrl } = useTheme();
   const [logoUrlInput, setLogoUrlInput] = useState<string>("");
   const [logoUrlDarkInput, setLogoUrlDarkInput] = useState<string>("");
@@ -70,7 +72,7 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
         }),
       });
       if (response.ok) {
-        toast.success("Theme settings updated successfully!");
+        toast.success(t("ui_theme.saved", { defaultValue: "Theme settings updated successfully!" }));
         setLogoUrl(logoUrlInput || null);
         setLogoUrlDark(logoUrlDarkInput || null);
         setFaviconUrl(faviconUrlInput || null);
@@ -79,7 +81,7 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
       }
     } catch (error) {
       console.error("Error updating theme settings:", error);
-      toast.fromError("Failed to update theme settings");
+      toast.fromError(t("ui_theme.save_error", { defaultValue: "Failed to update theme settings" }));
     } finally {
       setLoading(false);
     }
@@ -105,13 +107,13 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
         body: JSON.stringify({ logo_url: null, logo_url_dark: null, favicon_url: null }),
       });
       if (response.ok) {
-        toast.success("Theme settings reset to default!");
+        toast.success(t("ui_theme.reset_success", { defaultValue: "Theme settings reset to default!" }));
       } else {
         throw new Error("Failed to reset");
       }
     } catch (error) {
       console.error("Error resetting theme settings:", error);
-      toast.fromError("Failed to reset theme settings");
+      toast.fromError(t("ui_theme.reset_error", { defaultValue: "Failed to reset theme settings" }));
     } finally {
       setLoading(false);
     }
@@ -124,20 +126,24 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
   return (
     <div className="w-full mx-auto max-w-4xl px-6 py-8">
       <div className="mb-8">
-        <h1 className="mb-2 text-2xl font-bold">UI Theme Customization</h1>
+        <h1 className="mb-2 text-2xl font-bold">
+          {t("ui_theme.title", { defaultValue: "UI Theme Customization" })}
+        </h1>
         <p className="text-sm text-muted-foreground">
-          Customize your LiteLLM admin dashboard with a custom logo and favicon.
+          {t("ui_theme.subtitle", {
+            defaultValue: "Customize your LiteLLM admin dashboard with a custom logo and favicon.",
+          })}
         </p>
       </div>
       <Card>
         <CardContent className="space-y-6">
           <div>
             <Label htmlFor="ui-theme-logo-url" className="mb-2">
-              Custom Logo URL
+              {t("ui_theme.logo_url", { defaultValue: "Custom Logo URL" })}
             </Label>
             <Input
               id="ui-theme-logo-url"
-              placeholder="https://example.com/logo.png"
+              placeholder={t("ui_theme.logo_placeholder", { defaultValue: "https://example.com/logo.png" })}
               value={logoUrlInput}
               onChange={(event) => {
                 setLogoUrlInput(event.target.value);
@@ -145,16 +151,20 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
               }}
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              Enter a URL for your custom logo or leave empty for default
+              {t("ui_theme.logo_hint", {
+                defaultValue: "Enter a URL for your custom logo or leave empty for default",
+              })}
             </p>
           </div>
           <div>
             <Label htmlFor="ui-theme-logo-url-dark" className="mb-2">
-              Custom Logo URL (dark mode)
+              {t("ui_theme.logo_dark_url", { defaultValue: "Custom Logo URL (dark mode)" })}
             </Label>
             <Input
               id="ui-theme-logo-url-dark"
-              placeholder="https://example.com/logo-dark.png"
+              placeholder={t("ui_theme.logo_dark_placeholder", {
+                defaultValue: "https://example.com/logo-dark.png",
+              })}
               value={logoUrlDarkInput}
               onChange={(event) => {
                 setLogoUrlDarkInput(event.target.value);
@@ -162,16 +172,21 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
               }}
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              Enter a URL for a logo suited to dark backgrounds, or leave empty to reuse the logo above
+              {t("ui_theme.logo_dark_hint", {
+                defaultValue:
+                  "Enter a URL for a logo suited to dark backgrounds, or leave empty to reuse the logo above",
+              })}
             </p>
           </div>
           <div>
             <Label htmlFor="ui-theme-favicon-url" className="mb-2">
-              Custom Favicon URL
+              {t("ui_theme.favicon_url", { defaultValue: "Custom Favicon URL" })}
             </Label>
             <Input
               id="ui-theme-favicon-url"
-              placeholder="https://example.com/favicon.ico"
+              placeholder={t("ui_theme.favicon_placeholder", {
+                defaultValue: "https://example.com/favicon.ico",
+              })}
               value={faviconUrlInput}
               onChange={(event) => {
                 setFaviconUrlInput(event.target.value);
@@ -179,17 +194,20 @@ const UIThemeSettings: React.FC<UIThemeSettingsProps> = ({ userID, userRole, acc
               }}
             />
             <p className="mt-1 text-xs text-muted-foreground">
-              Enter a URL for your custom favicon (.ico, .png, or .svg) or leave empty for default
+              {t("ui_theme.favicon_hint", {
+                defaultValue:
+                  "Enter a URL for your custom favicon (.ico, .png, or .svg) or leave empty for default",
+              })}
             </p>
           </div>
           <div className="flex gap-3 pt-4">
             <Button onClick={handleSave} disabled={loading}>
               {loading && <UiLoadingSpinner className="size-4" />}
-              Save Changes
+              {t("ui_theme.save", { defaultValue: "Save Changes" })}
             </Button>
             <Button variant="outline" onClick={handleReset} disabled={loading}>
               {loading && <UiLoadingSpinner className="size-4" />}
-              Reset to Default
+              {t("ui_theme.reset", { defaultValue: "Reset to Default" })}
             </Button>
           </div>
         </CardContent>

@@ -82,5 +82,39 @@
       "no_stores": "No vector stores",
       "no_stores_desc": "Connect a vector store to enable retrieval-augmented generation."
     }
+  },
+  "policies": {
+    "title": "Tool Policies",
+    "metrics": {
+      "new_today": "New Today",
+      "total_tools": "Total Tools Discovered",
+      "blocked_tools": "Blocked Tools",
+      "active_teams": "Active Teams",
+      "trend_up": "+{{diff}} since yesterday",
+      "trend_down": "{{diff}} since yesterday"
+    },
+    "needs_review": {
+      "title": "Needs Review",
+      "desc": "{{count}} new tool discovered that require policy decisions.",
+      "review_btn": "Review"
+    },
+    "status": {
+      "untrusted": "untrusted",
+      "trusted": "trusted",
+      "blocked": "blocked"
+    },
+    "table": {
+      "discovered": "Discovered",
+      "tool_name": "Tool Name",
+      "input_policy": "Input Policy",
+      "output_policy": "Output Policy",
+      "calls": "# Calls",
+      "team_name": "Team Name",
+      "key_hash": "Key Hash",
+      "key_name": "Key Name",
+      "user_agent": "User Agent",
+      "no_tools": "No tools discovered",
+      "loading": "Loading tool policies…"
+    }
   }
 }

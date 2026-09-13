@@ -3,6 +3,7 @@
 import { ColumnFiltersState } from "@tanstack/react-table";
 import { Wrench } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { ToolRow } from "@/components/networking";
 import {
@@ -43,19 +44,24 @@ interface ToolPoliciesTableProps {
   onOutputPolicyChange: (toolName: string, policy: string) => void;
 }
 
-function ToolPoliciesEmptyState({ filtered }: { filtered: boolean }) {
+function ToolPoliciesEmptyState({ filtered, t }: { filtered: boolean; t?: (key: any, options?: any) => any }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <Wrench className="size-5 text-muted-foreground" />
       </div>
       <div className="text-sm font-medium text-foreground">
-        {filtered ? "No matching tools" : "No tools discovered"}
+        {filtered
+          ? tr("policies.table.no_matching", { defaultValue: "No matching tools" })
+          : tr("policies.table.no_tools", { defaultValue: "No tools discovered" })}
       </div>
       <div className="max-w-xs text-center text-sm text-muted-foreground">
         {filtered
-          ? "No tools match your search or filters."
-          : "Make a chat completion that returns tool_calls to start auto-discovery."}
+          ? tr("policies.table.no_matching_desc", { defaultValue: "No tools match your search or filters." })
+          : tr("policies.table.no_tools_desc", {
+              defaultValue: "Make a chat completion that returns tool_calls to start auto-discovery.",
+            })}
       </div>
     </div>
   );
@@ -76,14 +82,15 @@ export function ToolPoliciesTable({
   onInputPolicyChange,
   onOutputPolicyChange,
 }: ToolPoliciesTableProps) {
+  const { t } = useTranslation("tools");
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const columns = useMemo(() => {
-    const deps = { onSelectTool, savingInput, savingOutput, onInputPolicyChange, onOutputPolicyChange };
+    const deps = { onSelectTool, savingInput, savingOutput, onInputPolicyChange, onOutputPolicyChange, t };
     return getToolPoliciesTableColumns(deps);
-  }, [onSelectTool, savingInput, savingOutput, onInputPolicyChange, onOutputPolicyChange]);
+  }, [onSelectTool, savingInput, savingOutput, onInputPolicyChange, onOutputPolicyChange, t]);
 
   const teamOptions = useMemo(() => uniqueValues(data, (row) => row.team_id), [data]);
   const keyAliasOptions = useMemo(() => uniqueValues(data, (row) => row.key_alias), [data]);
@@ -117,8 +124,8 @@ export function ToolPoliciesTable({
       globalFilter={globalFilter}
       onGlobalFilterChange={setGlobalFilter}
       isLoading={isLoading}
-      loadingMessage="Loading tools…"
-      noDataMessage={<ToolPoliciesEmptyState filtered={columnFilters.length > 0 || globalFilter !== ""} />}
+      loadingMessage={t("policies.table.loading", { defaultValue: "Loading tools…" })}
+      noDataMessage={<ToolPoliciesEmptyState filtered={columnFilters.length > 0 || globalFilter !== ""} t={t} />}
       size="compact"
       toolbar={(table) => (
         <>
@@ -126,7 +133,7 @@ export function ToolPoliciesTable({
             table={table}
             searchValue={globalFilter}
             onSearchChange={setGlobalFilter}
-            searchPlaceholder="Search by Tool Name"
+            searchPlaceholder={t("policies.table.search_placeholder", { defaultValue: "Search by Tool Name" })}
             onRefresh={onRefresh}
             isRefreshing={isRefreshing}
             onOpenFilters={() => setFiltersOpen(true)}
@@ -136,8 +143,8 @@ export function ToolPoliciesTable({
             table={table}
             open={filtersOpen}
             onOpenChange={setFiltersOpen}
-            title="Filters"
-            description="Narrow down discovered tools"
+            title={t("policies.table.filters_title", { defaultValue: "Filters" })}
+            description={t("policies.table.filters_desc", { defaultValue: "Narrow down discovered tools" })}
           >
             {({ get, set }) => (
               <>
