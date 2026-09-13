@@ -1,0 +1,62 @@
+{
+  "title": "预算管理",
+  "subtitle": "为客户或应用分配的金额消费、TPM 及 RPM 阈值限额。",
+  "create_budget": "创建预算",
+  "tabs": {
+    "budgets": "预算列表",
+    "examples": "接入示例"
+  },
+  "search_placeholder": "搜索预算…",
+  "empty_state": {
+    "no_matching": "未找到匹配的预算",
+    "adjust_search": "没有预算符合您的搜索或筛选条件。",
+    "no_budgets_yet": "暂无预算配置",
+    "cta": "创建预算以设置针对客户的金额消费、TPM 及 RPM 限制。"
+  },
+  "columns": {
+    "budget_id": "预算 ID",
+    "max_budget": "最大预算 (USD)",
+    "budget_reset": "预算重置周期",
+    "tpm_limit": "TPM 限制",
+    "rpm_limit": "RPM 限制",
+    "created_at": "创建时间",
+    "actions": "操作"
+  },
+  "actions": {
+    "edit": "编辑预算",
+    "delete": "删除预算",
+    "not_set": "未设置"
+  },
+  "delete_modal": {
+    "title": "确认删除预算？",
+    "confirm": "确定要删除此预算吗？此操作无法撤销。",
+    "info_title": "预算信息"
+  },
+  "examples_tab": {
+    "title": "如何使用预算 ID",
+    "assign_budget": "分配预算给终端用户",
+    "test_curl": "接口测试 (Curl)",
+    "test_openai": "代码测试 (OpenAI SDK)"
+  },
+  "modal": {
+    "create_title": "创建预算",
+    "edit_title": "编辑预算",
+    "budget_id": "预算 ID",
+    "budget_id_desc": "预算的可读名称或标识",
+    "tpm_desc": "该预算每分钟最大 Token 消耗数",
+    "rpm_desc": "该预算每分钟最大请求次数",
+    "optional_settings": "高级选填项",
+    "optional_desc": "预算消费额度及重置周期",
+    "max_budget": "最大预算 (USD)",
+    "max_budget_desc": "该预算允许的最大消费金额。",
+    "reset_budget": "重置周期",
+    "reset_desc": "预算限额的自动刷新周期。",
+    "durations": {
+      "daily": "每日",
+      "weekly": "每周",
+      "monthly": "每月"
+    },
+    "created_success": "预算创建成功",
+    "updated_success": "预算更新成功"
+  }
+}

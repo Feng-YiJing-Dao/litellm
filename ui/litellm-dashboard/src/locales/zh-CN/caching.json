@@ -1,0 +1,46 @@
+{
+  "title": "响应缓存",
+  "tabs": {
+    "analytics": "缓存分析",
+    "health": "健康诊断",
+    "settings": "缓存配置",
+    "coordination": "协同协调 Redis"
+  },
+  "last_refreshed": "上次刷新时间：{{time}}",
+  "analytics_desc": "LiteLLM 响应缓存（如 Redis / 内存）分析：由缓存直接返回而未调用 LLM 供应商的请求。供应商侧的 Prompt 缓存（来自 Anthropic、OpenAI 等的缓存输入 Token）不在此展示，请查看使用情况页面的“Prompt 缓存指标”或日志页面的单条请求详情。",
+  "select_keys": "选择虚拟密钥",
+  "no_keys_found": "未找到虚拟密钥",
+  "select_models": "选择模型",
+  "no_models_found": "未找到模型",
+  "stats": {
+    "hit_ratio": "缓存命中率",
+    "cache_hits": "缓存命中次数",
+    "cached_tokens": "缓存补全 Token"
+  },
+  "charts": {
+    "hits_vs_requests": "缓存命中 vs API 请求",
+    "hits_desc": "点击红色的失败请求分段可查看具体的错误码原因。",
+    "tokens_title": "缓存补全 Token vs 生成补全 Token"
+  },
+  "series": {
+    "api_requests": "LLM 接口请求",
+    "cache_hits": "缓存命中",
+    "failed_requests": "失败请求"
+  },
+  "health": {
+    "run_check": "运行健康检查",
+    "running_check": "正在执行健康检查...",
+    "response_time": "响应时间",
+    "tabs": {
+      "formatted": "格式化信息",
+      "raw": "原始响应"
+    }
+  },
+  "settings": {
+    "test_connection": "测试连接",
+    "testing": "测试中...",
+    "save": "保存缓存配置",
+    "saving": "保存中...",
+    "advanced": "高级配置"
+  }
+}

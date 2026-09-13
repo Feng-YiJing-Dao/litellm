@@ -3,6 +3,7 @@
 import { SortingState } from "@tanstack/react-table";
 import { Bot, CircleCheck, Search as SearchIcon, X } from "lucide-react";
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Agent } from "@/components/agents/types";
 import { DataTable } from "@/components/shared/DataTable";
@@ -27,16 +28,21 @@ interface AgentsTableProps {
 const DEFAULT_SORTING: SortingState = [{ id: "created_at", desc: true }];
 
 function EmptyState({ isFiltered }: { isFiltered: boolean }) {
+  const { t } = useTranslation(["agents"]);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <Bot className="size-5 text-muted-foreground" />
       </div>
-      <div className="text-sm font-medium text-foreground">{isFiltered ? "No matching agents" : "No agents yet"}</div>
+      <div className="text-sm font-medium text-foreground">
+        {isFiltered
+          ? t("agents:no_matching", { defaultValue: "No matching agents" })
+          : t("agents:no_agents_yet", { defaultValue: "No agents yet" })}
+      </div>
       <div className="text-sm text-muted-foreground">
         {isFiltered
-          ? "Adjust the search to see more agents."
-          : "Add an agent to make it available in your organization."}
+          ? t("agents:adjust_search", { defaultValue: "Adjust the search to see more agents." })
+          : t("agents:add_agent_cta", { defaultValue: "Add an agent to make it available in your organization." })}
       </div>
     </div>
   );
@@ -52,6 +58,7 @@ const AgentsTable: React.FC<AgentsTableProps> = ({
   onAgentClick,
   onDeleteClick,
 }) => {
+  const { t } = useTranslation(["agents", "common"]);
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING);
   const [searchTerm, setSearchTerm] = useState("");
   const filteredAgents = useMemo(
@@ -65,8 +72,8 @@ const AgentsTable: React.FC<AgentsTableProps> = ({
   );
 
   const columns = useMemo(
-    () => getAgentsTableColumns({ isAdmin, onAgentClick, onDeleteClick }),
-    [isAdmin, onAgentClick, onDeleteClick],
+    () => getAgentsTableColumns({ isAdmin, onAgentClick, onDeleteClick, t }),
+    [isAdmin, onAgentClick, onDeleteClick, t],
   );
 
   return (
@@ -79,7 +86,7 @@ const AgentsTable: React.FC<AgentsTableProps> = ({
       sorting={sorting}
       onSortingChange={setSorting}
       isLoading={isLoading}
-      loadingMessage="Loading agents…"
+      loadingMessage={t("agents:loading_agents", { defaultValue: "Loading agents…" })}
       noDataMessage={<EmptyState isFiltered={agents.length > 0} />}
       size="compact"
       toolbar={() => (
@@ -89,7 +96,9 @@ const AgentsTable: React.FC<AgentsTableProps> = ({
               <SearchIcon className="size-4 text-muted-foreground" />
             </InputGroupAddon>
             <InputGroupInput
-              placeholder="Search agents by name, ID, or description..."
+              placeholder={t("agents:search_placeholder", {
+                defaultValue: "Search agents by name, ID, or description...",
+              })}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -109,7 +118,9 @@ const AgentsTable: React.FC<AgentsTableProps> = ({
                     <CircleCheck
                       className={healthCheckEnabled ? "size-4 text-success" : "size-4 text-muted-foreground"}
                     />
-                    <span className="text-sm text-muted-foreground">Health Check</span>
+                    <span className="text-sm text-muted-foreground">
+                      {t("agents:health_check", { defaultValue: "Health Check" })}
+                    </span>
                     <Switch
                       size="sm"
                       checked={healthCheckEnabled}

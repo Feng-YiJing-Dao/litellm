@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 import EmailSettings from "./email_settings";
 import MSTeamsSettings from "./MSTeamsSettings";
 import { Logo } from "@/components/molecules/logo/Logo";
@@ -250,6 +251,7 @@ const buildCallbackPayload = (formValues: Record<string, any>, callbackName: str
 };
 
 const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, premiumUser }) => {
+  const { t } = useTranslation(["settings", "common"]);
   const [callbacks, setCallbacks] = useState<AlertingObject[]>([]);
   const [isLoadingCallbacks, setIsLoadingCallbacks] = useState(true);
   const [alerts, setAlerts] = useState<any[]>([]);
@@ -522,12 +524,12 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
       <div className="grid grid-cols-1 gap-2 p-8 w-full mt-2">
         <Tabs defaultValue="logging-callbacks">
           <TabsList variant="line">
-            <TabsTrigger value="logging-callbacks">Logging Callbacks</TabsTrigger>
-            <TabsTrigger value="cloudzero-cost-tracking">CloudZero Cost Tracking</TabsTrigger>
-            <TabsTrigger value="alerting-types">Alerting Types</TabsTrigger>
-            <TabsTrigger value="alerting-settings">Alerting Settings</TabsTrigger>
-            <TabsTrigger value="email-alerts">Email Alerts</TabsTrigger>
-            <TabsTrigger value="ms-teams-alerts">MS Teams Alerts</TabsTrigger>
+            <TabsTrigger value="logging-callbacks">{t("settings:tabs.logging_callbacks", { defaultValue: "Logging Callbacks" })}</TabsTrigger>
+            <TabsTrigger value="cloudzero-cost-tracking">{t("settings:tabs.cloudzero", { defaultValue: "CloudZero Cost Tracking" })}</TabsTrigger>
+            <TabsTrigger value="alerting-types">{t("settings:tabs.alerting_types", { defaultValue: "Alerting Types" })}</TabsTrigger>
+            <TabsTrigger value="alerting-settings">{t("settings:tabs.alerting_settings", { defaultValue: "Alerting Settings" })}</TabsTrigger>
+            <TabsTrigger value="email-alerts">{t("settings:tabs.email_alerts", { defaultValue: "Email Alerts" })}</TabsTrigger>
+            <TabsTrigger value="ms-teams-alerts">{t("settings:tabs.ms_teams_alerts", { defaultValue: "MS Teams Alerts" })}</TabsTrigger>
           </TabsList>
           <TabsContent value="logging-callbacks" keepMounted>
             <LoggingCallbacksTable

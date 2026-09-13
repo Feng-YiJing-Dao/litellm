@@ -1,15 +1,42 @@
 {
   "title": "系统设置",
-  "description": "管理网关路由、日志告警与全局外观设置",
+  "description": "配置网关路由策略、日志监控告警以及全局外观界面",
   "general": "通用设置",
   "router": "路由设置",
-  "logging": "日志设置",
-  "alerts": "告警设置",
+  "logging": "日志配置",
+  "alerts": "告警配置",
   "admin": "管理员设置",
-  "theme": "主题设置",
+  "theme": "主题偏好",
   "light": "浅色模式",
   "dark": "深色模式",
   "system": "跟随系统",
   "save_settings": "保存设置",
-  "reset_settings": "重置设置"
+  "reset_settings": "重置设置",
+  "tabs": {
+    "logging_callbacks": "日志记录回调",
+    "cloudzero": "CloudZero 成本跟踪",
+    "alerting_types": "告警类型",
+    "alerting_settings": "告警配置",
+    "email_alerts": "邮件告警",
+    "ms_teams_alerts": "MS Teams 告警"
+  },
+  "callbacks": {
+    "title": "生效中的日志回调",
+    "add": "添加回调",
+    "empty_title": "暂未配置日志回调",
+    "empty_desc": "添加您的第一个回调以开始向外部系统发送日志数据。",
+    "loading": "正在加载回调…",
+    "columns": {
+      "name": "回调名称",
+      "type": "类型",
+      "status": "状态",
+      "actions": "操作"
+    }
+  },
+  "alerts_panel": {
+    "webhook_notice": "告警将推送至任何兼容 Slack Webhook 的服务（如 Slack、Rocket.Chat、Mattermost 等）。",
+    "get_webhook_url": "点此获取 Slack Webhook 地址",
+    "test_alerts": "测试告警",
+    "save_changes": "保存修改"
+  }
 }

@@ -1,0 +1,42 @@
+{
+  "title": "工作流运行记录",
+  "search_placeholder": "搜索运行记录…",
+  "no_runs_yet": "暂无工作流运行记录",
+  "loading_runs": "正在加载工作流运行记录…",
+  "filters": "筛选条件",
+  "filters_desc": "按条件精确筛选工作流运行",
+  "status": "运行状态",
+  "all_statuses": "所有状态",
+  "type": "工作流类型",
+  "filter_by_type": "按类型筛选…",
+  "columns": {
+    "run_id": "运行 ID",
+    "type": "类型",
+    "status": "状态",
+    "title_state": "标题 / 状态",
+    "created": "创建时间"
+  },
+  "statuses": {
+    "pending": "等待中",
+    "running": "运行中",
+    "paused": "已暂停",
+    "completed": "已完成",
+    "failed": "已失败"
+  },
+  "drawer": {
+    "title": "工作流运行详情",
+    "description": "所选工作流运行的元数据、时间线与消息记录",
+    "close": "关闭",
+    "refresh": "刷新",
+    "details_card": "工作流详情",
+    "session_id": "会话 ID",
+    "plan": "执行计划",
+    "pull_request": "合并请求 (PR)",
+    "worktree": "工作目录",
+    "execution_events": "执行事件列表",
+    "timeline": "时间线",
+    "messages": "消息记录",
+    "no_messages": "暂无消息记录",
+    "no_events": "暂无事件记录"
+  }
+}

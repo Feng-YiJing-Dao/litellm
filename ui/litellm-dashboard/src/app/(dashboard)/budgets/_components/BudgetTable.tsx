@@ -2,6 +2,7 @@
 
 import { Inbox, ShieldAlert } from "lucide-react";
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   BUDGET_DURATION_FILTER_OPTIONS,
@@ -80,17 +81,22 @@ const normalizeCreatedAt = (draft: CreatedAtFilterValue): CreatedAtFilterValue |
   return { ...(from === "" ? {} : { from }), ...(to === "" ? {} : { to }) };
 };
 
-function EmptyState({ hasQuery }: { hasQuery: boolean }) {
+function EmptyState({ hasQuery, t }: { hasQuery: boolean; t?: any }) {
+  const translate = t || ((_k: string, opts?: { defaultValue?: string }) => opts?.defaultValue || _k);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <Inbox className="size-5 text-muted-foreground" />
       </div>
-      <div className="text-sm font-medium text-foreground">{hasQuery ? "No matching budgets" : "No budgets yet"}</div>
+      <div className="text-sm font-medium text-foreground">
+        {hasQuery
+          ? translate("budgets:empty_state.no_matching", { defaultValue: "No matching budgets" })
+          : translate("budgets:empty_state.no_budgets_yet", { defaultValue: "No budgets yet" })}
+      </div>
       <div className="text-sm text-muted-foreground">
         {hasQuery
-          ? "No budget matches your search or filters."
-          : "Create a budget to set spend, TPM and RPM limits for customers."}
+          ? translate("budgets:empty_state.adjust_search", { defaultValue: "No budget matches your search or filters." })
+          : translate("budgets:empty_state.cta", { defaultValue: "Create a budget to set spend, TPM and RPM limits for customers." })}
       </div>
     </div>
   );
@@ -210,6 +216,7 @@ function BudgetFilterFields({ get, set }: FilterDraft) {
 }
 
 const BudgetTable: React.FC<BudgetTableProps> = ({ list, canModify, onEditClick, onDeleteClick }) => {
+  const { t } = useTranslation(["budgets", "common"]);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const columns = useMemo(
@@ -218,7 +225,7 @@ const BudgetTable: React.FC<BudgetTableProps> = ({ list, canModify, onEditClick,
   );
 
   const hasQuery = list.searchValue.trim() !== "" || list.columnFilters.length > 0;
-  const emptyMessage = list.error === null ? <EmptyState hasQuery={hasQuery} /> : <ErrorState error={list.error} />;
+  const emptyMessage = list.error === null ? <EmptyState hasQuery={hasQuery} t={t} /> : <ErrorState error={list.error} />;
 
   return (
     <DataTable
@@ -239,7 +246,7 @@ const BudgetTable: React.FC<BudgetTableProps> = ({ list, canModify, onEditClick,
       columnFilters={list.columnFilters}
       onColumnFiltersChange={list.onColumnFiltersChange}
       isLoading={list.isLoading}
-      loadingMessage="Loading budgets…"
+      loadingMessage={t("budgets:loading", { defaultValue: "Loading budgets…" })}
       noDataMessage={emptyMessage}
       size="compact"
       toolbar={(table) => (
@@ -248,7 +255,7 @@ const BudgetTable: React.FC<BudgetTableProps> = ({ list, canModify, onEditClick,
             table={table}
             searchValue={list.searchValue}
             onSearchChange={list.onSearchChange}
-            searchPlaceholder="Search by budget ID…"
+            searchPlaceholder={t("budgets:search_placeholder", { defaultValue: "Search by budget ID…" })}
             onOpenFilters={() => setFiltersOpen(true)}
             onRefresh={list.refetch}
             isRefreshing={list.isFetching}

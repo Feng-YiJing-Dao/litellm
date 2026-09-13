@@ -1,0 +1,46 @@
+{
+  "title": "Response Cache",
+  "tabs": {
+    "analytics": "Cache Analytics",
+    "health": "Cache Health",
+    "settings": "Cache Settings",
+    "coordination": "Coordination Redis"
+  },
+  "last_refreshed": "Last Refreshed: {{time}}",
+  "analytics_desc": "Analytics for LiteLLM's response cache (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side prompt caching (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see \"Prompt Caching Metrics\" on the Usage page or individual requests in the Logs page.",
+  "select_keys": "Select Virtual Keys",
+  "no_keys_found": "No virtual keys found",
+  "select_models": "Select Models",
+  "no_models_found": "No models found",
+  "stats": {
+    "hit_ratio": "Cache Hit Ratio",
+    "cache_hits": "Cache Hits",
+    "cached_tokens": "Cached Completion Tokens"
+  },
+  "charts": {
+    "hits_vs_requests": "Cache Hits vs API Requests",
+    "hits_desc": "Click a red failed-requests segment to see which error codes caused those failures.",
+    "tokens_title": "Cached Completion Tokens vs Generated Completion Tokens"
+  },
+  "series": {
+    "api_requests": "LLM API requests",
+    "cache_hits": "Cache hit",
+    "failed_requests": "Failed requests"
+  },
+  "health": {
+    "run_check": "Run Health Check",
+    "running_check": "Running Health Check...",
+    "response_time": "Response Time",
+    "tabs": {
+      "formatted": "Formatted",
+      "raw": "Raw Response"
+    }
+  },
+  "settings": {
+    "test_connection": "Test Connection",
+    "testing": "Testing...",
+    "save": "Save Cache Settings",
+    "saving": "Saving...",
+    "advanced": "Advanced Settings"
+  }
+}

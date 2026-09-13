@@ -1,5 +1,6 @@
 import { Settings, X } from "lucide-react";
 import { useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ComparisonInstance } from "../CompareUI";
 import { MessageDisplay } from "./MessageDisplay";
 import { UnifiedSelector } from "./UnifiedSelector";
@@ -35,6 +36,7 @@ export function ComparisonPanel({
   endpointConfig,
   apiKey,
 }: ComparisonPanelProps) {
+  const { t } = useTranslation(["playground", "common"]);
   const isA2AMode = isAgentEndpoint(endpointConfig.id);
   const currentSelection = getComparisonSelection(comparison, endpointConfig.id);
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -112,10 +114,10 @@ export function ComparisonPanel({
             id={syncId}
             checked={comparison.applyAcrossModels}
             onCheckedChange={handleSyncChange}
-            aria-label="Sync Settings Across Models"
+            aria-label={t("playground:sync_settings_across_models", { defaultValue: "Sync Settings Across Models" })}
           />
           <label htmlFor={syncId} className="cursor-pointer text-xs font-medium">
-            Sync Settings Across Models
+            {t("playground:sync_settings_across_models", { defaultValue: "Sync Settings Across Models" })}
           </label>
         </div>
 
@@ -123,10 +125,14 @@ export function ComparisonPanel({
 
         {/* General Settings */}
         <div>
-          <h4 className="text-xs font-semibold text-foreground mb-1.5 uppercase tracking-wide">General Settings</h4>
+          <h4 className="text-xs font-semibold text-foreground mb-1.5 uppercase tracking-wide">
+            {t("playground:general_settings", { defaultValue: "General Settings" })}
+          </h4>
           <div className="space-y-2">
             <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-0.5">Tags</label>
+              <label className="text-xs font-medium text-muted-foreground block mb-0.5">
+                {t("playground:tags", { defaultValue: "Tags" })}
+              </label>
               <TagSelector
                 value={comparison.tags}
                 onChange={(value) => handleSettingChange("tags", value)}
@@ -134,7 +140,9 @@ export function ComparisonPanel({
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-0.5">Vector Stores</label>
+              <label className="text-xs font-medium text-muted-foreground block mb-0.5">
+                {t("playground:vector_stores", { defaultValue: "Vector Stores" })}
+              </label>
               <VectorStoreSelector
                 value={comparison.vectorStores}
                 onChange={(value) => handleSettingChange("vectorStores", value)}
@@ -142,7 +150,9 @@ export function ComparisonPanel({
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-0.5">Guardrails</label>
+              <label className="text-xs font-medium text-muted-foreground block mb-0.5">
+                {t("playground:guardrails", { defaultValue: "Guardrails" })}
+              </label>
               <GuardrailSelector
                 value={comparison.guardrails}
                 onChange={(value) => handleSettingChange("guardrails", value)}
@@ -153,23 +163,27 @@ export function ComparisonPanel({
         </div>
         {/* Advanced Settings */}
         <div>
-          <h4 className="text-xs font-semibold text-foreground mb-1.5 uppercase tracking-wide">Advanced Settings</h4>
+          <h4 className="text-xs font-semibold text-foreground mb-1.5 uppercase tracking-wide">
+            {t("playground:advanced_params", { defaultValue: "Advanced Settings" })}
+          </h4>
           <div className="space-y-2">
             <div className="flex items-center gap-2 pb-1">
               <Checkbox
                 id={advancedParamsId}
                 checked={comparison.useAdvancedParams}
                 onCheckedChange={handleAdvancedParamsChange}
-                aria-label="Use Advanced Parameters"
+                aria-label={t("playground:use_advanced_params", { defaultValue: "Use Advanced Parameters" })}
               />
               <label htmlFor={advancedParamsId} className="cursor-pointer text-sm font-medium">
-                Use Advanced Parameters
+                {t("playground:use_advanced_params", { defaultValue: "Use Advanced Parameters" })}
               </label>
             </div>
             <div className="space-y-2 transition-opacity duration-200" style={{ opacity: disabledOpacity }}>
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className={`text-xs font-medium ${disabledTextColor}`}>Temperature</label>
+                  <label className={`text-xs font-medium ${disabledTextColor}`}>
+                    {t("playground:temperature", { defaultValue: "Temperature" })}
+                  </label>
                   <span className={`text-xs ${disabledTextColor}`}>{comparison.temperature.toFixed(2)}</span>
                 </div>
                 <Slider
@@ -187,7 +201,9 @@ export function ComparisonPanel({
               </div>
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className={`text-xs font-medium ${disabledTextColor}`}>Max Tokens</label>
+                  <label className={`text-xs font-medium ${disabledTextColor}`}>
+                    {t("playground:max_tokens", { defaultValue: "Max Tokens" })}
+                  </label>
                   <span className={`text-xs ${disabledTextColor}`}>{comparison.maxTokens}</span>
                 </div>
                 <Slider

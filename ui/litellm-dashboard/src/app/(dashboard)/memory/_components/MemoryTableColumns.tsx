@@ -22,7 +22,19 @@ interface MemoryRowActionsProps {
   onDeleteClick: (row: MemoryRow) => void;
 }
 
-function MemoryRowActions({ row, onViewClick, onEditClick, onDeleteClick }: MemoryRowActionsProps) {
+interface MemoryRowActionsProps {
+  row: MemoryRow;
+  onViewClick: (row: MemoryRow) => void;
+  onEditClick: (row: MemoryRow) => void;
+  onDeleteClick: (row: MemoryRow) => void;
+  translate?: (key: string, options?: any) => string;
+}
+
+function MemoryRowActions({ row, onViewClick, onEditClick, onDeleteClick, translate }: MemoryRowActionsProps) {
+  const viewLabel = translate ? translate("common:view", { defaultValue: "View" }) : "View";
+  const editLabel = translate ? translate("common:edit", { defaultValue: "Edit" }) : "Edit";
+  const deleteLabel = translate ? translate("common:delete", { defaultValue: "Delete" }) : "Delete";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -35,16 +47,16 @@ function MemoryRowActions({ row, onViewClick, onEditClick, onDeleteClick }: Memo
       <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuItem data-testid="memory-action-view" onClick={() => onViewClick(row)}>
           <Eye />
-          View
+          {viewLabel}
         </DropdownMenuItem>
         <DropdownMenuItem data-testid="memory-action-edit" onClick={() => onEditClick(row)}>
           <Pencil />
-          Edit
+          {editLabel}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" data-testid="memory-action-delete" onClick={() => onDeleteClick(row)}>
           <Trash2 />
-          Delete
+          {deleteLabel}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -55,18 +67,22 @@ export interface MemoryTableColumnsDeps {
   onViewClick: (row: MemoryRow) => void;
   onEditClick: (row: MemoryRow) => void;
   onDeleteClick: (row: MemoryRow) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getMemoryTableColumns = ({
   onViewClick,
   onEditClick,
   onDeleteClick,
-}: MemoryTableColumnsDeps): ColumnDef<MemoryRow>[] => [
+  t,
+}: MemoryTableColumnsDeps): ColumnDef<MemoryRow>[] => {
+  const translate = t || ((_k: string, opts?: any) => (typeof opts === "string" ? opts : opts?.defaultValue || _k));
+  return [
   {
     id: "memory_id",
     accessorKey: "memory_id",
-    meta: { title: "ID" },
-    header: "ID",
+    meta: { title: translate("memory:columns.id", { defaultValue: "ID" }) },
+    header: translate("memory:columns.id", { defaultValue: "ID" }),
     size: 180,
     enableSorting: false,
     cell: ({ row }) => (
@@ -80,8 +96,8 @@ export const getMemoryTableColumns = ({
   {
     id: "key",
     accessorKey: "key",
-    meta: { title: "Name" },
-    header: "Name",
+    meta: { title: translate("memory:columns.name", { defaultValue: "Name" }) },
+    header: translate("memory:columns.name", { defaultValue: "Name" }),
     size: 200,
     enableSorting: false,
     cell: ({ row }) => (
@@ -93,8 +109,8 @@ export const getMemoryTableColumns = ({
   {
     id: "value",
     accessorKey: "value",
-    meta: { title: "Preview" },
-    header: "Preview",
+    meta: { title: translate("memory:columns.preview", { defaultValue: "Preview" }) },
+    header: translate("memory:columns.preview", { defaultValue: "Preview" }),
     enableSorting: false,
     cell: ({ row }) => (
       <span className="block max-w-72 truncate text-sm text-muted-foreground" title={row.original.value}>
@@ -105,8 +121,8 @@ export const getMemoryTableColumns = ({
   {
     id: "user_id",
     accessorKey: "user_id",
-    meta: { title: "User ID" },
-    header: "User ID",
+    meta: { title: translate("memory:columns.user_id", { defaultValue: "User ID" }) },
+    header: translate("memory:columns.user_id", { defaultValue: "User ID" }),
     size: 160,
     enableSorting: false,
     cell: ({ row }) => <IdCell value={row.original.user_id} />,
@@ -114,8 +130,8 @@ export const getMemoryTableColumns = ({
   {
     id: "team_id",
     accessorKey: "team_id",
-    meta: { title: "Team ID" },
-    header: "Team ID",
+    meta: { title: translate("memory:columns.team_id", { defaultValue: "Team ID" }) },
+    header: translate("memory:columns.team_id", { defaultValue: "Team ID" }),
     size: 160,
     enableSorting: false,
     cell: ({ row }) => <IdCell value={row.original.team_id} />,
@@ -123,8 +139,8 @@ export const getMemoryTableColumns = ({
   {
     id: "updated_at",
     accessorKey: "updated_at",
-    meta: { title: "Updated" },
-    header: "Updated",
+    meta: { title: translate("memory:columns.updated", { defaultValue: "Updated" }) },
+    header: translate("memory:columns.updated", { defaultValue: "Updated" }),
     size: 170,
     enableSorting: false,
     cell: ({ row }) => <DateCell value={row.original.updated_at} />,
@@ -132,7 +148,11 @@ export const getMemoryTableColumns = ({
   {
     id: "actions",
     meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
+    header: () => (
+      <span className="sr-only">
+        {translate("common:actions", { defaultValue: "Actions" })}
+      </span>
+    ),
     size: 64,
     enableSorting: false,
     enableHiding: false,
@@ -143,8 +163,10 @@ export const getMemoryTableColumns = ({
           onViewClick={onViewClick}
           onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
+          translate={translate}
         />
       </div>
     ),
   },
 ];
+};

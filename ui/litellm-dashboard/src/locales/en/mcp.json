@@ -1,0 +1,40 @@
+{
+  "title": "MCP Servers",
+  "subtitle": "Configure and manage your MCP servers",
+  "import_json": "Import from JSON",
+  "add_new_server": "+ Add New MCP Server",
+  "submit_server": "+ Submit MCP Server",
+  "tabs": {
+    "servers": "All Servers",
+    "toolsets": "Toolsets",
+    "connect": "Connect",
+    "semantic_filter": "Semantic Filter",
+    "tool_search": "Tool Search",
+    "network_settings": "Network Settings",
+    "submitted": "Submitted MCPs"
+  },
+  "team": "Team",
+  "all_available_servers": "All Available Servers",
+  "personal": "Personal",
+  "access_group": "Access Group",
+  "all_access_groups": "All Access Groups",
+  "sort": {
+    "label": "Sort",
+    "created_desc": "Recently created",
+    "updated_desc": "Recently updated",
+    "name_asc": "Name (A→Z)",
+    "health": "Health (unhealthy first)"
+  },
+  "search_placeholder": "Search by name, alias, URL, or ID",
+  "loading_servers": "Loading MCP servers...",
+  "no_servers_configured": "No MCP servers configured. Click '+ Add New MCP Server' to get started.",
+  "no_servers_match": "No servers match the current filters or search.",
+  "servers_count": "{{displayed}} of {{total}} servers",
+  "delete_modal": {
+    "title": "Delete MCP Server?",
+    "desc": "This action is permanent and cannot be undone. All associated configurations will be removed.",
+    "name": "Name",
+    "id": "ID",
+    "url": "URL"
+  }
+}

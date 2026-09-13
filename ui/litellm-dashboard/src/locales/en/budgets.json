@@ -1,0 +1,62 @@
+{
+  "title": "Budgets",
+  "subtitle": "Spend, TPM and RPM limits you can assign to customers.",
+  "create_budget": "Create Budget",
+  "tabs": {
+    "budgets": "Budgets",
+    "examples": "Examples"
+  },
+  "search_placeholder": "Search budgets…",
+  "empty_state": {
+    "no_matching": "No matching budgets",
+    "adjust_search": "No budget matches your search or filters.",
+    "no_budgets_yet": "No budgets yet",
+    "cta": "Create a budget to set spend, TPM and RPM limits for customers."
+  },
+  "columns": {
+    "budget_id": "Budget ID",
+    "max_budget": "Max Budget (USD)",
+    "budget_reset": "Budget Reset",
+    "tpm_limit": "TPM Limit",
+    "rpm_limit": "RPM Limit",
+    "created_at": "Created At",
+    "actions": "Actions"
+  },
+  "actions": {
+    "edit": "Edit budget",
+    "delete": "Delete budget",
+    "not_set": "Not set"
+  },
+  "delete_modal": {
+    "title": "Delete Budget?",
+    "confirm": "Are you sure you want to delete this budget? This action cannot be undone.",
+    "info_title": "Budget Information"
+  },
+  "examples_tab": {
+    "title": "How to use budget id",
+    "assign_budget": "Assign Budget to Customer",
+    "test_curl": "Test it (Curl)",
+    "test_openai": "Test it (OpenAI SDK)"
+  },
+  "modal": {
+    "create_title": "Create Budget",
+    "edit_title": "Edit Budget",
+    "budget_id": "Budget ID",
+    "budget_id_desc": "A human-friendly name for the budget",
+    "tpm_desc": "Max Tokens per minute for this budget",
+    "rpm_desc": "Max Requests per minute for this budget",
+    "optional_settings": "Optional Settings",
+    "optional_desc": "Budget limit and duration",
+    "max_budget": "Max Budget (USD)",
+    "max_budget_desc": "The maximum spend allowed for this budget.",
+    "reset_budget": "Reset Budget",
+    "reset_desc": "How often the budget limit resets.",
+    "durations": {
+      "daily": "daily",
+      "weekly": "weekly",
+      "monthly": "monthly"
+    },
+    "created_success": "Budget Created",
+    "updated_success": "Budget Updated"
+  }
+}

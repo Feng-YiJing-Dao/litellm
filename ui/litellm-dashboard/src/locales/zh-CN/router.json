@@ -1,0 +1,28 @@
+{
+  "title": "路由设置",
+  "routing_settings": "路由设置",
+  "routing_settings_desc": "配置请求分发至不同模型部署的路由规则",
+  "reliability_retries": "可靠性与重试机制",
+  "reliability_retries_desc": "配置接口重试逻辑与异常降级处理",
+  "tabs": {
+    "loadbalancing": "负载均衡",
+    "routing_groups": "路由分组",
+    "fallbacks": "故障回退",
+    "prompt_caching": "Prompt 缓存",
+    "general": "通用设置"
+  },
+  "general_table": {
+    "setting": "配置项",
+    "value": "当前值",
+    "status": "状态",
+    "action": "操作",
+    "reset": "重置",
+    "save": "保存"
+  },
+  "status": {
+    "in_db": "数据库存储",
+    "in_config": "配置文件",
+    "not_set": "未设置"
+  },
+  "update": "更新"
+}

@@ -1,0 +1,42 @@
+{
+  "title": "Workflow Runs",
+  "search_placeholder": "Search runs…",
+  "no_runs_yet": "No workflow runs yet",
+  "loading_runs": "Loading workflow runs…",
+  "filters": "Filters",
+  "filters_desc": "Narrow down workflow runs",
+  "status": "Status",
+  "all_statuses": "All statuses",
+  "type": "Type",
+  "filter_by_type": "Filter by type…",
+  "columns": {
+    "run_id": "Run ID",
+    "type": "Type",
+    "status": "Status",
+    "title_state": "Title / State",
+    "created": "Created"
+  },
+  "statuses": {
+    "pending": "Pending",
+    "running": "Running",
+    "paused": "Paused",
+    "completed": "Completed",
+    "failed": "Failed"
+  },
+  "drawer": {
+    "title": "Workflow run details",
+    "description": "Metadata, timeline and messages for the selected workflow run",
+    "close": "Close",
+    "refresh": "Refresh",
+    "details_card": "Workflow Details",
+    "session_id": "Session ID",
+    "plan": "Plan",
+    "pull_request": "Pull Request",
+    "worktree": "Worktree",
+    "execution_events": "Execution Events",
+    "timeline": "Timeline",
+    "messages": "Messages",
+    "no_messages": "No messages",
+    "no_events": "No events recorded"
+  }
+}

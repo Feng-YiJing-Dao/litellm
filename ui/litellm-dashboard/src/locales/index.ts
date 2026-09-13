@@ -12,6 +12,15 @@ import zhTeams from "./zh-CN/teams.json";
 import zhUsers from "./zh-CN/users.json";
 import zhSettings from "./zh-CN/settings.json";
 import zhValidation from "./zh-CN/validation.json";
+import zhPlayground from "./zh-CN/playground.json";
+import zhAgents from "./zh-CN/agents.json";
+import zhWorkflows from "./zh-CN/workflows.json";
+import zhMemory from "./zh-CN/memory.json";
+import zhMcp from "./zh-CN/mcp.json";
+import zhGuardrails from "./zh-CN/guardrails.json";
+import zhCaching from "./zh-CN/caching.json";
+import zhBudgets from "./zh-CN/budgets.json";
+import zhRouter from "./zh-CN/router.json";
 
 import enCommon from "./en/common.json";
 import enNav from "./en/nav.json";
@@ -23,6 +32,15 @@ import enTeams from "./en/teams.json";
 import enUsers from "./en/users.json";
 import enSettings from "./en/settings.json";
 import enValidation from "./en/validation.json";
+import enPlayground from "./en/playground.json";
+import enAgents from "./en/agents.json";
+import enWorkflows from "./en/workflows.json";
+import enMemory from "./en/memory.json";
+import enMcp from "./en/mcp.json";
+import enGuardrails from "./en/guardrails.json";
+import enCaching from "./en/caching.json";
+import enBudgets from "./en/budgets.json";
+import enRouter from "./en/router.json";
 
 export const defaultNS = "common";
 export const resources = {
@@ -37,6 +55,15 @@ export const resources = {
     users: zhUsers,
     settings: zhSettings,
     validation: zhValidation,
+    playground: zhPlayground,
+    agents: zhAgents,
+    workflows: zhWorkflows,
+    memory: zhMemory,
+    mcp: zhMcp,
+    guardrails: zhGuardrails,
+    caching: zhCaching,
+    budgets: zhBudgets,
+    router: zhRouter,
   },
   en: {
     common: enCommon,
@@ -49,6 +76,15 @@ export const resources = {
     users: enUsers,
     settings: enSettings,
     validation: enValidation,
+    playground: enPlayground,
+    agents: enAgents,
+    workflows: enWorkflows,
+    memory: enMemory,
+    mcp: enMcp,
+    guardrails: enGuardrails,
+    caching: enCaching,
+    budgets: enBudgets,
+    router: enRouter,
   },
 } as const;
 

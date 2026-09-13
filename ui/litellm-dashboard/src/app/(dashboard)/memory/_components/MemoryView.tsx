@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { PaginationState } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { MemoryRow, createMemory, deleteMemory, fetchMemoryList, updateMemory } from "@/components/networking";
 import DeleteResourceModal from "@/components/common_components/DeleteResourceModal";
@@ -25,6 +26,7 @@ interface MemoryViewProps {
 const DEFAULT_PAGE_SIZE = 50;
 
 export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
+  const { t } = useTranslation(["memory", "common"]);
   const [searchInput, setSearchInput] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchInput, { wait: DEBOUNCE_WAIT_MS });
   const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: DEFAULT_PAGE_SIZE });
@@ -178,7 +180,9 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
       <div className="flex flex-col gap-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-foreground">Memory</h1>
+            <h1 className="text-2xl font-semibold text-foreground">
+              {t("memory:title", { defaultValue: "Memory" })}
+            </h1>
             <p className="mt-1 text-sm text-muted-foreground">
               Inspect what your agents have stored under{" "}
               <code className="rounded-sm border border-border bg-muted px-1 py-0.5 font-mono text-xs text-foreground">
@@ -189,7 +193,7 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
           </div>
           <Button onClick={() => setIsCreateOpen(true)}>
             <Plus />
-            New memory
+            {t("memory:new_memory", { defaultValue: "New memory" })}
           </Button>
         </div>
 
@@ -228,16 +232,32 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
       {/* Delete confirmation modal */}
       <DeleteResourceModal
         isOpen={!!deleteRow}
-        title="Delete memory"
-        message="This action cannot be undone."
-        resourceInformationTitle="Memory"
+        title={t("memory:delete_modal.title", { defaultValue: "Delete memory" })}
+        message={t("memory:delete_modal.confirm_desc", { defaultValue: "This action cannot be undone." })}
+        resourceInformationTitle={t("memory:delete_modal.resource_title", { defaultValue: "Memory" })}
         resourceInformation={
           deleteRow
             ? [
-                { label: "Key", value: deleteRow.key, code: true },
-                { label: "Memory ID", value: deleteRow.memory_id, code: true },
-                { label: "User ID", value: deleteRow.user_id ?? "-", code: true },
-                { label: "Team ID", value: deleteRow.team_id ?? "-", code: true },
+                {
+                  label: t("memory:delete_modal.key", { defaultValue: "Key" }),
+                  value: deleteRow.key,
+                  code: true,
+                },
+                {
+                  label: t("memory:delete_modal.memory_id", { defaultValue: "Memory ID" }),
+                  value: deleteRow.memory_id,
+                  code: true,
+                },
+                {
+                  label: t("memory:delete_modal.user_id", { defaultValue: "User ID" }),
+                  value: deleteRow.user_id ?? "-",
+                  code: true,
+                },
+                {
+                  label: t("memory:delete_modal.team_id", { defaultValue: "Team ID" }),
+                  value: deleteRow.team_id ?? "-",
+                  code: true,
+                },
               ]
             : []
         }

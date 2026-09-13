@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { cx } from "@/lib/cva.config";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,7 @@ const DetailItem: React.FC<{ label: React.ReactNode; children: React.ReactNode }
 );
 
 const AgentInfoView: React.FC<AgentInfoViewProps> = ({ agentId, onClose, accessToken, isAdmin }) => {
+  const { t } = useTranslation(["agents", "common"]);
   const [agent, setAgent] = useState<Agent | null>(null);
   const [selectedKey, setSelectedKey] = useState<KeyResponse | null>(null);
   const { data: keysData, isLoading: keysLoading, refetch: refetchAgentKeys } = useKeys(1, 100, { agentID: agentId });
@@ -297,7 +299,7 @@ const AgentInfoView: React.FC<AgentInfoViewProps> = ({ agentId, onClose, accessT
       <div>
         <Button variant="ghost" onClick={onClose} className="mb-4">
           <ArrowLeft className="size-4" />
-          Back to Agents
+          {t("agents:details.back_to_agents", { defaultValue: "Back to Agents" })}
         </Button>
         <h1 className="text-2xl font-semibold">{agent.agent_name || "Unnamed Agent"}</h1>
         <p className="text-sm text-muted-foreground font-mono">{agent.agent_id}</p>
@@ -306,11 +308,11 @@ const AgentInfoView: React.FC<AgentInfoViewProps> = ({ agentId, onClose, accessT
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList variant="line" className="mb-4 h-auto w-full justify-start rounded-none border-b p-0">
           <TabsTrigger value="overview" className="flex-none rounded-none px-4 py-2">
-            Overview
+            {t("agents:details.overview", { defaultValue: "Overview" })}
           </TabsTrigger>
           {isAdmin && (
             <TabsTrigger value="settings" className="flex-none rounded-none px-4 py-2">
-              Settings
+              {t("agents:details.settings", { defaultValue: "Settings" })}
             </TabsTrigger>
           )}
         </TabsList>
@@ -319,39 +321,75 @@ const AgentInfoView: React.FC<AgentInfoViewProps> = ({ agentId, onClose, accessT
           {/* Overview Panel */}
           <TabsContent value="overview" keepMounted>
             <DetailList>
-              <DetailItem label="Agent ID">{agent.agent_id}</DetailItem>
-              <DetailItem label="Agent Name">{agent.agent_name}</DetailItem>
-              <DetailItem label="Display Name">{agent.agent_card_params?.name || "-"}</DetailItem>
-              <DetailItem label="Description">{agent.agent_card_params?.description || "-"}</DetailItem>
-              <DetailItem label="URL">{agent.agent_card_params?.url || "-"}</DetailItem>
-              <DetailItem label="Version">{agent.agent_card_params?.version || "-"}</DetailItem>
-              <DetailItem label="Protocol Version">{agent.agent_card_params?.protocolVersion || "-"}</DetailItem>
-              <DetailItem label="Streaming">
+              <DetailItem label={t("agents:columns.agent_id", { defaultValue: "Agent ID" })}>{agent.agent_id}</DetailItem>
+              <DetailItem label={t("agents:columns.agent_name", { defaultValue: "Agent Name" })}>{agent.agent_name}</DetailItem>
+              <DetailItem label={t("agents:details.display_name", { defaultValue: "Display Name" })}>
+                {agent.agent_card_params?.name || "-"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.description", { defaultValue: "Description" })}>
+                {agent.agent_card_params?.description || "-"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.url", { defaultValue: "URL" })}>{agent.agent_card_params?.url || "-"}</DetailItem>
+              <DetailItem label={t("agents:details.version", { defaultValue: "Version" })}>
+                {agent.agent_card_params?.version || "-"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.protocol_version", { defaultValue: "Protocol Version" })}>
+                {agent.agent_card_params?.protocolVersion || "-"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.streaming", { defaultValue: "Streaming" })}>
                 {agent.agent_card_params?.capabilities?.streaming ? "Yes" : "No"}
               </DetailItem>
               {agent.agent_card_params?.capabilities?.pushNotifications && (
-                <DetailItem label="Push Notifications">Yes</DetailItem>
+                <DetailItem label={t("agents:details.push_notifications", { defaultValue: "Push Notifications" })}>
+                  Yes
+                </DetailItem>
               )}
               {agent.agent_card_params?.capabilities?.stateTransitionHistory && (
-                <DetailItem label="State Transition History">Yes</DetailItem>
+                <DetailItem label={t("agents:details.state_history", { defaultValue: "State Transition History" })}>
+                  Yes
+                </DetailItem>
               )}
-              <DetailItem label="Skills">{agent.agent_card_params?.skills?.length || 0} configured</DetailItem>
-              {agent.litellm_params?.model && <DetailItem label="Model">{agent.litellm_params.model}</DetailItem>}
+              <DetailItem label={t("agents:details.skills", { defaultValue: "Skills" })}>
+                {agent.agent_card_params?.skills?.length || 0} configured
+              </DetailItem>
+              {agent.litellm_params?.model && (
+                <DetailItem label={t("agents:columns.model", { defaultValue: "Model" })}>
+                  {agent.litellm_params.model}
+                </DetailItem>
+              )}
               {agent.litellm_params?.make_public !== undefined && (
-                <DetailItem label="Make Public">{agent.litellm_params.make_public ? "Yes" : "No"}</DetailItem>
+                <DetailItem label={t("agents:details.make_public", { defaultValue: "Make Public" })}>
+                  {agent.litellm_params.make_public ? "Yes" : "No"}
+                </DetailItem>
               )}
               {agent.agent_card_params?.iconUrl && (
-                <DetailItem label="Icon URL">{agent.agent_card_params.iconUrl}</DetailItem>
+                <DetailItem label={t("agents:details.icon_url", { defaultValue: "Icon URL" })}>
+                  {agent.agent_card_params.iconUrl}
+                </DetailItem>
               )}
               {agent.agent_card_params?.documentationUrl && (
-                <DetailItem label="Documentation URL">{agent.agent_card_params.documentationUrl}</DetailItem>
+                <DetailItem label={t("agents:details.doc_url", { defaultValue: "Documentation URL" })}>
+                  {agent.agent_card_params.documentationUrl}
+                </DetailItem>
               )}
-              <DetailItem label="TPM Limit">{agent.tpm_limit ?? "Unlimited"}</DetailItem>
-              <DetailItem label="RPM Limit">{agent.rpm_limit ?? "Unlimited"}</DetailItem>
-              <DetailItem label="Session TPM Limit">{agent.session_tpm_limit ?? "Unlimited"}</DetailItem>
-              <DetailItem label="Session RPM Limit">{agent.session_rpm_limit ?? "Unlimited"}</DetailItem>
-              <DetailItem label="Created At">{formatDate(agent.created_at)}</DetailItem>
-              <DetailItem label="Updated At">{formatDate(agent.updated_at)}</DetailItem>
+              <DetailItem label={t("agents:details.tpm_limit", { defaultValue: "TPM Limit" })}>
+                {agent.tpm_limit ?? "Unlimited"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.rpm_limit", { defaultValue: "RPM Limit" })}>
+                {agent.rpm_limit ?? "Unlimited"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.session_tpm", { defaultValue: "Session TPM Limit" })}>
+                {agent.session_tpm_limit ?? "Unlimited"}
+              </DetailItem>
+              <DetailItem label={t("agents:details.session_rpm", { defaultValue: "Session RPM Limit" })}>
+                {agent.session_rpm_limit ?? "Unlimited"}
+              </DetailItem>
+              <DetailItem label={t("agents:columns.created_at", { defaultValue: "Created At" })}>
+                {formatDate(agent.created_at)}
+              </DetailItem>
+              <DetailItem label={t("common:updated_at", { defaultValue: "Updated At" })}>
+                {formatDate(agent.updated_at)}
+              </DetailItem>
             </DetailList>
 
             <AgentVirtualKeys keys={agentKeys} isLoading={keysLoading} onKeyClick={setSelectedKey} />
@@ -363,10 +401,12 @@ const AgentInfoView: React.FC<AgentInfoViewProps> = ({ agentId, onClose, accessT
                 (agent.object_permission.mcp_tool_permissions &&
                   Object.keys(agent.object_permission.mcp_tool_permissions).length > 0)) && (
                 <div style={{ marginTop: 24 }}>
-                  <h3 className="text-lg font-medium">MCP Tool Permissions</h3>
+                  <h3 className="text-lg font-medium">
+                    {t("agents:details.mcp_permissions", { defaultValue: "MCP Tool Permissions" })}
+                  </h3>
                   <DetailList className="mt-4">
                     {agent.object_permission.mcp_servers && agent.object_permission.mcp_servers.length > 0 && (
-                      <DetailItem label="MCP Servers">
+                      <DetailItem label={t("agents:details.mcp_servers", { defaultValue: "MCP Servers" })}>
                         <div className="space-y-1">
                           {agent.object_permission.mcp_servers.map((serverId) => (
                             <div key={serverId}>{mcpServerLabel(serverId)}</div>
@@ -376,16 +416,24 @@ const AgentInfoView: React.FC<AgentInfoViewProps> = ({ agentId, onClose, accessT
                     )}
                     {agent.object_permission.mcp_access_groups &&
                       agent.object_permission.mcp_access_groups.length > 0 && (
-                        <DetailItem label="MCP Access Groups">
+                        <DetailItem
+                          label={t("agents:details.mcp_access_groups", { defaultValue: "MCP Access Groups" })}
+                        >
                           {agent.object_permission.mcp_access_groups.join(", ")}
                         </DetailItem>
                       )}
                     {agent.object_permission.mcp_toolsets && agent.object_permission.mcp_toolsets.length > 0 && (
-                      <DetailItem label="MCP Toolsets">{agent.object_permission.mcp_toolsets.join(", ")}</DetailItem>
+                      <DetailItem label={t("agents:details.mcp_toolsets", { defaultValue: "MCP Toolsets" })}>
+                        {agent.object_permission.mcp_toolsets.join(", ")}
+                      </DetailItem>
                     )}
                     {agent.object_permission.mcp_tool_permissions &&
                       Object.keys(agent.object_permission.mcp_tool_permissions).length > 0 && (
-                        <DetailItem label="Tool permissions per server">
+                        <DetailItem
+                          label={t("agents:details.tool_perms_per_server", {
+                            defaultValue: "Tool permissions per server",
+                          })}
+                        >
                           <div className="space-y-1">
                             {Object.entries(agent.object_permission.mcp_tool_permissions).map(([serverId, tools]) => (
                               <div key={serverId}>

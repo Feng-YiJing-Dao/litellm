@@ -3,6 +3,7 @@
 import { OnChangeFn, PaginationState } from "@tanstack/react-table";
 import { Database } from "lucide-react";
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import { MemoryRow } from "@/components/networking";
 import { DataTable, DataTableToolbar } from "@/components/shared/DataTable";
@@ -26,18 +27,21 @@ interface MemoryTableProps {
 }
 
 function MemoryEmptyState({ hasActiveSearch }: { hasActiveSearch: boolean }) {
+  const { t } = useTranslation(["memory"]);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <Database className="size-5 text-muted-foreground" />
       </div>
       <div className="text-sm font-medium text-foreground">
-        {hasActiveSearch ? "No matching memories" : "No memories stored yet"}
+        {hasActiveSearch
+          ? t("memory:empty_state.no_matching", { defaultValue: "No matching memories" })
+          : t("memory:empty_state.no_memories", { defaultValue: "No memories stored yet" })}
       </div>
       <div className="text-sm text-muted-foreground">
         {hasActiveSearch
-          ? "No memories match your search."
-          : "Memories your agents store under /v1/memory will appear here."}
+          ? t("memory:empty_state.no_matching", { defaultValue: "No memories match your search." })
+          : t("memory:empty_state.cta", { defaultValue: "Memories your agents store under /v1/memory will appear here." })}
       </div>
     </div>
   );
@@ -58,10 +62,11 @@ export function MemoryTable({
   onEditClick,
   onDeleteClick,
 }: MemoryTableProps) {
+  const { t } = useTranslation(["memory", "common"]);
   const columns = useMemo(() => {
-    const columnDeps = { onViewClick, onEditClick, onDeleteClick };
+    const columnDeps = { onViewClick, onEditClick, onDeleteClick, t };
     return getMemoryTableColumns(columnDeps);
-  }, [onViewClick, onEditClick, onDeleteClick]);
+  }, [onViewClick, onEditClick, onDeleteClick, t]);
 
   return (
     <DataTable
@@ -73,7 +78,7 @@ export function MemoryTable({
       onPaginationChange={onPaginationChange}
       rowCount={rowCount}
       isLoading={isLoading}
-      loadingMessage="Loading memories…"
+      loadingMessage={t("common:loading", { defaultValue: "Loading memories…" })}
       noDataMessage={<MemoryEmptyState hasActiveSearch={hasActiveSearch} />}
       size="compact"
       toolbar={(table) => (
@@ -81,7 +86,9 @@ export function MemoryTable({
           table={table}
           searchValue={searchValue}
           onSearchChange={onSearchChange}
-          searchPlaceholder="Search by key prefix or memory ID…"
+          searchPlaceholder={t("memory:search_placeholder", {
+            defaultValue: "Search by key prefix or memory ID…",
+          })}
           onRefresh={onRefresh}
           isRefreshing={isRefreshing}
           showViewOptions={false}

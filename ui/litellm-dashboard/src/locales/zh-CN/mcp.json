@@ -1,0 +1,40 @@
+{
+  "title": "MCP 服务",
+  "subtitle": "配置和管理您的模型上下文协议 (MCP) 服务",
+  "import_json": "从 JSON 导入",
+  "add_new_server": "+ 添加新 MCP 服务",
+  "submit_server": "+ 提交 MCP 服务",
+  "tabs": {
+    "servers": "所有服务",
+    "toolsets": "工具集",
+    "connect": "连接指南",
+    "semantic_filter": "语义过滤",
+    "tool_search": "工具搜索",
+    "network_settings": "网络设置",
+    "submitted": "已提交服务"
+  },
+  "team": "团队",
+  "all_available_servers": "所有可用服务",
+  "personal": "个人",
+  "access_group": "访问控制组",
+  "all_access_groups": "所有访问组",
+  "sort": {
+    "label": "排序方式",
+    "created_desc": "最近创建",
+    "updated_desc": "最近更新",
+    "name_asc": "按名称 (A→Z)",
+    "health": "按健康状态 (异常优先)"
+  },
+  "search_placeholder": "按名称、别名、URL 或 ID 搜索",
+  "loading_servers": "正在加载 MCP 服务...",
+  "no_servers_configured": "未配置任何 MCP 服务。点击“+ 添加新 MCP 服务”开始使用。",
+  "no_servers_match": "没有与当前过滤条件或搜索相匹配的服务。",
+  "servers_count": "{{displayed}} / {{total}} 个服务",
+  "delete_modal": {
+    "title": "确认删除 MCP 服务？",
+    "desc": "此操作不可逆且无法撤销。所有关联的配置及工具映射都将被移除。",
+    "name": "服务名称",
+    "id": "服务 ID",
+    "url": "服务地址"
+  }
+}

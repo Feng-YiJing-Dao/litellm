@@ -19,9 +19,11 @@ import { cn } from "@/lib/cva.config";
 interface AgentRowActionsProps {
   agent: Agent;
   onDeleteClick: (agentId: string, agentName: string) => void;
+  translate?: (key: string, options?: any) => string;
 }
 
-function AgentRowActions({ agent, onDeleteClick }: AgentRowActionsProps) {
+function AgentRowActions({ agent, onDeleteClick, translate }: AgentRowActionsProps) {
+  const deleteLabel = translate ? translate("common:delete", { defaultValue: "Delete" }) : "Delete";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -38,7 +40,7 @@ function AgentRowActions({ agent, onDeleteClick }: AgentRowActionsProps) {
           onClick={() => onDeleteClick(agent.agent_id, agent.agent_name)}
         >
           <Trash2 />
-          Delete
+          {deleteLabel}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -49,18 +51,27 @@ interface AgentsTableColumnsDeps {
   isAdmin: boolean;
   onAgentClick: (agentId: string) => void;
   onDeleteClick: (agentId: string, agentName: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getAgentsTableColumns = ({
   isAdmin,
   onAgentClick,
   onDeleteClick,
-}: AgentsTableColumnsDeps): ColumnDef<Agent>[] => [
+  t,
+}: AgentsTableColumnsDeps): ColumnDef<Agent>[] => {
+  const translate = t || ((_k: string, opts?: any) => (typeof opts === "string" ? opts : opts?.defaultValue || _k));
+  return [
   {
     id: "agent_name",
     accessorKey: "agent_name",
-    meta: { title: "Agent Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Agent Name" />,
+    meta: { title: translate("agents:columns.agent_name", { defaultValue: "Agent Name" }) },
+    header: ({ column }) => (
+      <DataTableSortHeader
+        column={column}
+        title={translate("agents:columns.agent_name", { defaultValue: "Agent Name" })}
+      />
+    ),
     size: 200,
     enableSorting: true,
     cell: ({ row }) => {
@@ -75,8 +86,13 @@ export const getAgentsTableColumns = ({
   {
     id: "agent_id",
     accessorKey: "agent_id",
-    meta: { title: "Agent ID" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Agent ID" />,
+    meta: { title: translate("agents:columns.agent_id", { defaultValue: "Agent ID" }) },
+    header: ({ column }) => (
+      <DataTableSortHeader
+        column={column}
+        title={translate("agents:columns.agent_id", { defaultValue: "Agent ID" })}
+      />
+    ),
     size: 200,
     enableSorting: true,
     cell: ({ row }) => (
@@ -90,16 +106,21 @@ export const getAgentsTableColumns = ({
   {
     id: "spend",
     accessorKey: "spend",
-    meta: { title: "Spend (USD)" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Spend (USD)" />,
+    meta: { title: translate("agents:columns.spend", { defaultValue: "Spend (USD)" }) },
+    header: ({ column }) => (
+      <DataTableSortHeader
+        column={column}
+        title={translate("agents:columns.spend", { defaultValue: "Spend (USD)" })}
+      />
+    ),
     size: 130,
     enableSorting: true,
     cell: ({ row }) => <MoneyCell value={row.original.spend} decimals={4} />,
   },
   {
     id: "model",
-    meta: { title: "Model" },
-    header: "Model",
+    meta: { title: translate("agents:columns.model", { defaultValue: "Model" }) },
+    header: translate("agents:columns.model", { defaultValue: "Model" }),
     size: 170,
     enableSorting: false,
     cell: ({ row }) => {
@@ -122,24 +143,29 @@ export const getAgentsTableColumns = ({
       const timestamp = agent.created_at ? new Date(agent.created_at).getTime() : 0;
       return Number.isNaN(timestamp) ? 0 : timestamp;
     },
-    meta: { title: "Created" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created" />,
+    meta: { title: translate("agents:columns.created_at", { defaultValue: "Created" }) },
+    header: ({ column }) => (
+      <DataTableSortHeader
+        column={column}
+        title={translate("agents:columns.created_at", { defaultValue: "Created" })}
+      />
+    ),
     size: 150,
     enableSorting: true,
     cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
   },
   {
     id: "status",
-    meta: { title: "Status" },
-    header: "Status",
+    meta: { title: translate("agents:columns.status", { defaultValue: "Status" }) },
+    header: translate("agents:columns.status", { defaultValue: "Status" }),
     size: 130,
     enableSorting: false,
     cell: ({ row }) => {
       const hasKeys = (row.original.keys?.length ?? 0) > 0;
       return hasKeys ? (
-        <StatusBadge tone="success" label="Active" />
+        <StatusBadge tone="success" label={translate("agents:status_active", { defaultValue: "Active" })} />
       ) : (
-        <StatusBadge tone="warning" label="Needs Setup" />
+        <StatusBadge tone="warning" label={translate("agents:status_needs_setup", { defaultValue: "Needs Setup" })} />
       );
     },
   },
@@ -148,16 +174,21 @@ export const getAgentsTableColumns = ({
         {
           id: "actions",
           meta: { className: "text-right", headerClassName: "text-right" },
-          header: () => <span className="sr-only">Actions</span>,
+          header: () => (
+            <span className="sr-only">
+              {translate("agents:columns.actions", { defaultValue: "Actions" })}
+            </span>
+          ),
           size: 64,
           enableSorting: false,
           enableHiding: false,
           cell: ({ row }) => (
             <div className="flex justify-end">
-              <AgentRowActions agent={row.original} onDeleteClick={onDeleteClick} />
+              <AgentRowActions agent={row.original} onDeleteClick={onDeleteClick} translate={translate} />
             </div>
           ),
         } satisfies ColumnDef<Agent>,
       ]
     : []),
 ];
+};

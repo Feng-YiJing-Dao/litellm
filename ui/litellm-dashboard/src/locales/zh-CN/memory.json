@@ -1,0 +1,44 @@
+{
+  "title": "上下文记忆",
+  "subtitle": "查看智能体保存在 <code1>/v1/memory</code1> 的上下文记忆。仅展示当前用户/团队可见的数据（管理员可查看全部）。",
+  "new_memory": "新建记忆",
+  "search_placeholder": "按键名、内容、用户 ID 搜索...",
+  "columns": {
+    "id": "记忆 ID",
+    "name": "键名 (Key)",
+    "preview": "内容预览",
+    "user": "所属用户",
+    "user_id": "用户 ID",
+    "team": "所属团队",
+    "team_id": "团队 ID",
+    "updated": "更新时间"
+  },
+  "empty_state": {
+    "no_memories": "暂无上下文记忆",
+    "no_matching": "未找到匹配的记忆",
+    "cta": "存储第一条记忆数据以开始使用。"
+  },
+  "delete_modal": {
+    "title": "删除记忆",
+    "confirm_desc": "此操作无法撤销。",
+    "resource_title": "记忆条目",
+    "key": "键名",
+    "memory_id": "记忆 ID",
+    "user_id": "用户 ID",
+    "team_id": "团队 ID"
+  },
+  "modal": {
+    "create_title": "新建上下文记忆",
+    "edit_title": "编辑记忆 {{key}}",
+    "key_label": "键名 (Key)",
+    "key_hint": "全局唯一键名，不可重复。如需按用户隔离，请加前缀命名空间（例如 user:123:notes）。",
+    "value_label": "内容值 (Value)",
+    "value_hint": "存储的文本内容，允许为空字符串。",
+    "metadata_label": "元数据 (JSON)",
+    "metadata_hint": "选填 JSON 对象，用于存储结构化属性。编辑时留空将清除已有元数据。",
+    "key_placeholder": "例如 user_role",
+    "value_placeholder": "输入文本内容...",
+    "metadata_placeholder": "输入有效 JSON 或留空",
+    "saving": "正在保存..."
+  }
+}

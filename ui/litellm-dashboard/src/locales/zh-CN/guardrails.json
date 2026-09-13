@@ -1,0 +1,38 @@
+{
+  "title": "安全护栏",
+  "tabs": {
+    "garden": "护栏集市 (Garden)",
+    "guardrails": "护栏列表",
+    "playground": "测试靶场",
+    "submitted": "已提交护栏"
+  },
+  "add_new_guardrail": "添加新护栏",
+  "add_provider": "添加供应商护栏",
+  "create_custom_code": "创建自定义代码护栏",
+  "delete_modal": {
+    "title": "删除安全护栏",
+    "confirm": "确定要删除安全护栏 {{name}} 吗？此操作无法撤销。",
+    "info_title": "护栏信息"
+  },
+  "monitor": {
+    "title": "护栏监控看板",
+    "subtitle": "全方位监控所有请求的安全护栏拦截表现与性能",
+    "export_data": "导出数据",
+    "total_evaluations": "总评估次数",
+    "blocked_requests": "拦截请求数",
+    "pass_rate": "通过率",
+    "avg_latency": "平均引入延迟",
+    "guardrail_cost": "护栏花费",
+    "active_guardrails": "活跃护栏数",
+    "columns": {
+      "guardrail": "护栏名称",
+      "provider": "提供方",
+      "mode": "运行模式",
+      "requests_evaluated": "评估请求数",
+      "blocked": "拦截次数",
+      "avg_latency_added": "平均增加延迟",
+      "usage_units": "使用单位",
+      "cost": "消耗费用"
+    }
+  }
+}

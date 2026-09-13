@@ -12,6 +12,7 @@ import { useSyntaxTheme } from "@/hooks/useSyntaxTheme";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 import DeleteResourceModal from "@/components/common_components/DeleteResourceModal";
 import { toast } from "@/lib/toast";
 import { useBudgetList, useDeleteBudget, budgetItem } from "@/app/(dashboard)/hooks/budgets/useBudgets";
@@ -27,6 +28,7 @@ interface BudgetSettingsPageProps {
 }
 
 const BudgetPanel: React.FC<BudgetSettingsPageProps> = ({ accessToken }) => {
+  const { t } = useTranslation(["budgets", "common"]);
   const syntaxTheme = useSyntaxTheme(prism);
   const [isCreateModelVisible, setIsCreateModelVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -82,13 +84,13 @@ const BudgetPanel: React.FC<BudgetSettingsPageProps> = ({ accessToken }) => {
       <Tabs defaultValue="budgets" className="min-h-0 flex-1 gap-6">
         <PageHeader
           icon={<Wallet />}
-          title="Budgets"
-          subtitle="Spend, TPM and RPM limits you can assign to customers."
+          title={t("budgets:title", { defaultValue: "Budgets" })}
+          subtitle={t("budgets:subtitle", { defaultValue: "Spend, TPM and RPM limits you can assign to customers." })}
           primaryAction={
             canModify ? (
               <Button onClick={() => setIsCreateModelVisible(true)}>
                 <Plus className="size-4" />
-                Create Budget
+                {t("budgets:create_budget", { defaultValue: "Create Budget" })}
               </Button>
             ) : undefined
           }
@@ -99,10 +101,10 @@ const BudgetPanel: React.FC<BudgetSettingsPageProps> = ({ accessToken }) => {
             >
               {leadingControls}
               <TabsTrigger value="budgets" className="flex-none px-0 py-[7px] data-active:font-semibold">
-                Budgets
+                {t("budgets:tabs.budgets", { defaultValue: "Budgets" })}
               </TabsTrigger>
               <TabsTrigger value="examples" className="flex-none px-0 py-[7px] data-active:font-semibold">
-                Examples
+                {t("budgets:tabs.examples", { defaultValue: "Examples" })}
               </TabsTrigger>
             </TabsList>
           )}
@@ -125,9 +127,9 @@ const BudgetPanel: React.FC<BudgetSettingsPageProps> = ({ accessToken }) => {
             />
             <DeleteResourceModal
               isOpen={isDeleteModalVisible}
-              title="Delete Budget?"
-              message="Are you sure you want to delete this budget? This action cannot be undone."
-              resourceInformationTitle="Budget Information"
+              title={t("budgets:delete_modal.title", { defaultValue: "Delete Budget?" })}
+              message={t("budgets:delete_modal.confirm", { defaultValue: "Are you sure you want to delete this budget? This action cannot be undone." })}
+              resourceInformationTitle={t("budgets:delete_modal.info_title", { defaultValue: "Budget Information" })}
               resourceInformation={[
                 { label: "Budget ID", value: selectedBudget?.budget_id, code: true },
                 { label: "Max Budget", value: selectedBudget?.max_budget },
@@ -142,17 +144,17 @@ const BudgetPanel: React.FC<BudgetSettingsPageProps> = ({ accessToken }) => {
         </TabsContent>
         <TabsContent value="examples" className="min-h-0 flex-1 overflow-y-auto" keepMounted>
           <div className="pt-6">
-            <p className="text-base text-muted-foreground">How to use budget id</p>
+            <p className="text-base text-muted-foreground">{t("budgets:examples_tab.title", { defaultValue: "How to use budget id" })}</p>
             <Tabs defaultValue="assign-budget">
               <TabsList variant="line" className="h-auto w-full justify-start rounded-none border-b p-0">
                 <TabsTrigger value="assign-budget" className="flex-none rounded-none px-4 py-2">
-                  Assign Budget to Customer
+                  {t("budgets:examples_tab.assign_budget", { defaultValue: "Assign Budget to Customer" })}
                 </TabsTrigger>
                 <TabsTrigger value="curl" className="flex-none rounded-none px-4 py-2">
-                  Test it (Curl)
+                  {t("budgets:examples_tab.test_curl", { defaultValue: "Test it (Curl)" })}
                 </TabsTrigger>
                 <TabsTrigger value="openai-sdk" className="flex-none rounded-none px-4 py-2">
-                  Test it (OpenAI SDK)
+                  {t("budgets:examples_tab.test_openai", { defaultValue: "Test it (OpenAI SDK)" })}
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="assign-budget" keepMounted>

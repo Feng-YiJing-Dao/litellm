@@ -1,5 +1,6 @@
 import { Info } from "lucide-react";
 import React, { useEffect, useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -37,6 +38,7 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
   onStreamingChange,
   showAdvancedParams = true,
 }) => {
+  const { t } = useTranslation(["playground", "common"]);
   const [internalUseAdvancedParams, setInternalUseAdvancedParams] = useState(false);
   const useAdvancedParams =
     externalUseAdvancedParams !== undefined ? externalUseAdvancedParams : internalUseAdvancedParams;
@@ -111,18 +113,20 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
             id={streamingId}
             checked={streamingEnabled}
             onCheckedChange={(checked) => onStreamingChange(checked === true)}
-            aria-label="Stream responses"
+            aria-label={t("playground:stream_responses", { defaultValue: "Stream responses" })}
           />
           <label htmlFor={streamingId} className="cursor-pointer text-sm font-medium">
-            Stream responses
+            {t("playground:stream_responses", { defaultValue: "Stream responses" })}
           </label>
           <Tooltip>
-            <TooltipTrigger aria-label="Help: Stream responses">
+            <TooltipTrigger aria-label={`Help: ${t("playground:stream_responses", { defaultValue: "Stream responses" })}`}>
               <Info className="size-3 shrink-0 cursor-pointer text-muted-foreground hover:text-foreground" />
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
-              Streams the answer token by token. Uncheck to send a non-streaming request and render the full response at
-              once.
+              {t("playground:stream_responses_hint", {
+                defaultValue:
+                  "Streams the answer token by token. Uncheck to send a non-streaming request and render the full response at once.",
+              })}
             </TooltipContent>
           </Tooltip>
         </div>
@@ -134,10 +138,10 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
             id={advancedId}
             checked={useAdvancedParams}
             onCheckedChange={(checked) => handleUseAdvancedParamsChange(checked === true)}
-            aria-label="Use Advanced Parameters"
+            aria-label={t("playground:advanced_params", { defaultValue: "Use Advanced Parameters" })}
           />
           <label htmlFor={advancedId} className="cursor-pointer text-sm font-medium">
-            Use Advanced Parameters
+            {t("playground:advanced_params", { defaultValue: "Use Advanced Parameters" })}
           </label>
         </div>
       )}
@@ -186,14 +190,17 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <label htmlFor={temperatureId} className={cn("text-sm", disabledTextColor)}>
-                  Temperature
+                  {t("playground:temperature", { defaultValue: "Temperature" })}
                 </label>
                 <Tooltip>
-                  <TooltipTrigger aria-label="Help: Temperature">
+                  <TooltipTrigger aria-label={`Help: ${t("playground:temperature", { defaultValue: "Temperature" })}`}>
                     <Info className={cn("size-3 cursor-help", disabledTextColor)} />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    Controls randomness. Lower values make output more deterministic, higher values more creative.
+                    {t("playground:temperature_hint", {
+                      defaultValue:
+                        "Controls randomness. Lower values make output more deterministic, higher values more creative.",
+                    })}
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -217,7 +224,7 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
               step={0.1}
               value={localTemperature}
               disabled={!useAdvancedParams}
-              aria-label="Temperature"
+              aria-label={t("playground:temperature", { defaultValue: "Temperature" })}
               className="w-full accent-primary disabled:cursor-not-allowed"
               onChange={(event) => handleTemperatureChange(Number(event.target.value))}
             />
@@ -232,14 +239,16 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <label htmlFor={maxTokensId} className={cn("text-sm", disabledTextColor)}>
-                  Max Tokens
+                  {t("playground:max_tokens", { defaultValue: "Max Tokens" })}
                 </label>
                 <Tooltip>
-                  <TooltipTrigger aria-label="Help: Max Tokens">
+                  <TooltipTrigger aria-label={`Help: ${t("playground:max_tokens", { defaultValue: "Max Tokens" })}`}>
                     <Info className={cn("size-3 cursor-help", disabledTextColor)} />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    Maximum number of tokens to generate in the response.
+                    {t("playground:max_tokens_hint", {
+                      defaultValue: "Maximum number of tokens to generate in the response.",
+                    })}
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -263,7 +272,7 @@ const AdditionalModelSettings: React.FC<AdditionalModelSettingsProps> = ({
               step={1}
               value={localMaxTokens}
               disabled={!useAdvancedParams}
-              aria-label="Max Tokens"
+              aria-label={t("playground:max_tokens", { defaultValue: "Max Tokens" })}
               className="w-full accent-primary disabled:cursor-not-allowed"
               onChange={(event) => handleMaxTokensChange(Number(event.target.value))}
             />

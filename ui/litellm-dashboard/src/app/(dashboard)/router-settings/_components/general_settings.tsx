@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 import { getGeneralSettingsCall, updateConfigFieldSetting, deleteConfigFieldSetting } from "@/components/networking";
 import { Trash2 } from "lucide-react";
 import { StatusBadge } from "@/components/shared/table_cells";
@@ -184,6 +185,7 @@ export const PromptCachingPanel: React.FC<{
 };
 
 const GeneralSettings: React.FC<GeneralSettingsPageProps> = ({ accessToken, userRole, userID }) => {
+  const { t } = useTranslation(["router", "common"]);
   const [generalSettings, setGeneralSettings] = useState<generalSettingsItem[]>([]);
 
   useEffect(() => {
@@ -255,11 +257,11 @@ const GeneralSettings: React.FC<GeneralSettingsPageProps> = ({ accessToken, user
     <div className="w-full">
       <Tabs defaultValue="loadbalancing" className="h-[75vh] w-full">
         <TabsList variant="line" className="mx-8 mt-4">
-          <TabsTrigger value="loadbalancing">Loadbalancing</TabsTrigger>
-          <TabsTrigger value="routing-groups">Routing Groups</TabsTrigger>
-          <TabsTrigger value="fallbacks">Fallbacks</TabsTrigger>
-          <TabsTrigger value="prompt-caching">Prompt Caching</TabsTrigger>
-          <TabsTrigger value="general">General</TabsTrigger>
+          <TabsTrigger value="loadbalancing">{t("router:tabs.loadbalancing", { defaultValue: "Loadbalancing" })}</TabsTrigger>
+          <TabsTrigger value="routing-groups">{t("router:tabs.routing_groups", { defaultValue: "Routing Groups" })}</TabsTrigger>
+          <TabsTrigger value="fallbacks">{t("router:tabs.fallbacks", { defaultValue: "Fallbacks" })}</TabsTrigger>
+          <TabsTrigger value="prompt-caching">{t("router:tabs.prompt_caching", { defaultValue: "Prompt Caching" })}</TabsTrigger>
+          <TabsTrigger value="general">{t("router:tabs.general", { defaultValue: "General" })}</TabsTrigger>
         </TabsList>
         <TabsContent value="loadbalancing" className="px-8 py-6" keepMounted>
           <RouterSettings accessToken={accessToken} userRole={userRole} userID={userID} />
@@ -279,10 +281,10 @@ const GeneralSettings: React.FC<GeneralSettingsPageProps> = ({ accessToken, user
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Setting</TableHead>
-                    <TableHead>Value</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Action</TableHead>
+                    <TableHead>{t("router:general_table.setting", { defaultValue: "Setting" })}</TableHead>
+                    <TableHead>{t("router:general_table.value", { defaultValue: "Value" })}</TableHead>
+                    <TableHead>{t("router:general_table.status", { defaultValue: "Status" })}</TableHead>
+                    <TableHead>{t("router:general_table.action", { defaultValue: "Action" })}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -308,15 +310,15 @@ const GeneralSettings: React.FC<GeneralSettingsPageProps> = ({ accessToken, user
                         </TableCell>
                         <TableCell>
                           {value.stored_in_db == true ? (
-                            <StatusBadge tone="success" label="In DB" />
+                            <StatusBadge tone="success" label={t("router:status.in_db", { defaultValue: "In DB" })} />
                           ) : value.stored_in_db == false ? (
-                            <StatusBadge tone="neutral" label="In Config" />
+                            <StatusBadge tone="neutral" label={t("router:status.in_config", { defaultValue: "In Config" })} />
                           ) : (
-                            <StatusBadge tone="neutral" label="Not Set" />
+                            <StatusBadge tone="neutral" label={t("router:status.not_set", { defaultValue: "Not Set" })} />
                           )}
                         </TableCell>
                         <TableCell>
-                          <Button onClick={() => handleUpdateField(value.field_name)}>Update</Button>
+                          <Button onClick={() => handleUpdateField(value.field_name)}>{t("router:update", { defaultValue: "Update" })}</Button>
                           <span
                             onClick={() => handleResetField(value.field_name)}
                             className="inline-flex shrink-0 cursor-pointer items-center justify-center px-1.5 py-1.5 text-destructive"

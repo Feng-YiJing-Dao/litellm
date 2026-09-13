@@ -2,6 +2,7 @@
 
 import { CircleHelp } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { z } from "zod/v4";
 
 import type { MemoryRow } from "@/components/networking";
@@ -43,6 +44,7 @@ interface MemoryEditModalProps {
 }
 
 export const MemoryEditModal: React.FC<MemoryEditModalProps> = ({ open, mode, initialRow, onClose, onSave }) => {
+  const { t } = useTranslation(["memory", "common"]);
   const form = useZodForm(memorySchema, { defaultValues: EMPTY_MEMORY, mode: "onChange" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -80,7 +82,14 @@ export const MemoryEditModal: React.FC<MemoryEditModalProps> = ({ open, mode, in
     >
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[640px]">
         <DialogHeader>
-          <DialogTitle>{mode === "create" ? "Create memory" : `Edit ${initialRow?.key ?? ""}`}</DialogTitle>
+          <DialogTitle>
+            {mode === "create"
+              ? t("memory:modal.create_title", { defaultValue: "Create memory" })
+              : t("memory:modal.edit_title", {
+                  key: initialRow?.key ?? "",
+                  defaultValue: `Edit ${initialRow?.key ?? ""}`,
+                })}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={(event) => event.preventDefault()} noValidate>
           <TooltipProvider>
@@ -89,22 +98,40 @@ export const MemoryEditModal: React.FC<MemoryEditModalProps> = ({ open, mode, in
                 control={form.control}
                 name="key"
                 label={labelWithHint(
-                  "Key",
-                  "Globally unique — two memories cannot share a key. Namespace your own keys if you need per-user isolation (e.g. user:123:notes).",
+                  t("memory:modal.key_label", { defaultValue: "Key" }),
+                  t("memory:modal.key_hint", {
+                    defaultValue:
+                      "Globally unique — two memories cannot share a key. Namespace your own keys if you need per-user isolation (e.g. user:123:notes).",
+                  }),
                 )}
               >
                 {({ ref, ...field }) => (
-                  <Input {...field} ref={ref} placeholder="e.g. user_role" disabled={mode === "edit"} />
+                  <Input
+                    {...field}
+                    ref={ref}
+                    placeholder={t("memory:modal.key_placeholder", { defaultValue: "e.g. user_role" })}
+                    disabled={mode === "edit"}
+                  />
                 )}
               </FormField>
 
               <FormField
                 control={form.control}
                 name="value"
-                label={labelWithHint("Value", "Markdown/text injected into LLM context. Plain strings are fine.")}
+                label={labelWithHint(
+                  t("memory:modal.value_label", { defaultValue: "Value" }),
+                  t("memory:modal.value_hint", {
+                    defaultValue: "The stored text value. Empty strings are allowed.",
+                  }),
+                )}
               >
                 {({ ref, ...field }) => (
-                  <Textarea {...field} ref={ref} rows={8} placeholder="What the agent should remember…" />
+                  <Textarea
+                    {...field}
+                    ref={ref}
+                    rows={8}
+                    placeholder={t("memory:modal.value_placeholder", { defaultValue: "Enter text value..." })}
+                  />
                 )}
               </FormField>
 
@@ -113,13 +140,23 @@ export const MemoryEditModal: React.FC<MemoryEditModalProps> = ({ open, mode, in
                 name="metadata"
                 label={labelWithHint(
                   <span>
-                    Metadata <span className="text-muted-foreground">(optional JSON)</span>
+                    {t("memory:modal.metadata_label", { defaultValue: "Metadata (JSON)" })}
                   </span>,
-                  "Optional structured metadata — must be valid JSON if provided.",
+                  t("memory:modal.metadata_hint", {
+                    defaultValue: "Optional structured metadata — must be valid JSON if provided.",
+                  }),
                 )}
               >
                 {({ ref, ...field }) => (
-                  <Textarea {...field} ref={ref} rows={4} placeholder='{"tags": ["example"]}' className="font-mono" />
+                  <Textarea
+                    {...field}
+                    ref={ref}
+                    rows={4}
+                    placeholder={t("memory:modal.metadata_placeholder", {
+                      defaultValue: "Valid JSON or leave empty",
+                    })}
+                    className="font-mono"
+                  />
                 )}
               </FormField>
             </FieldGroup>
@@ -133,10 +170,12 @@ export const MemoryEditModal: React.FC<MemoryEditModalProps> = ({ open, mode, in
               onClose();
             }}
           >
-            Cancel
+            {t("common:cancel", { defaultValue: "Cancel" })}
           </Button>
           <Button onClick={handleOk} disabled={submitting} aria-busy={submitting}>
-            {mode === "create" ? "Create" : "Save"}
+            {mode === "create"
+              ? t("common:create", { defaultValue: "Create" })
+              : t("common:save", { defaultValue: "Save" })}
           </Button>
         </DialogFooter>
       </DialogContent>

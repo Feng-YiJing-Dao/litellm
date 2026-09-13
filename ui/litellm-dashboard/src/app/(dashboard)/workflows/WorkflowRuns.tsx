@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, ChevronDown, RefreshCw } from "lucide-react";
 import type { ColumnDef, ColumnFiltersState } from "@tanstack/react-table";
 import { getGlobalLitellmHeaderName, proxyBaseUrl } from "@/components/networking";
@@ -232,8 +233,13 @@ const GanttTimeline: React.FC<{
   run: WorkflowRun;
   events: WorkflowRunEvent[];
 }> = ({ run, events }) => {
+  const { t } = useTranslation(["workflows"]);
   if (events.length === 0) {
-    return <div className="py-4 font-mono text-xs text-muted-foreground">No events recorded</div>;
+    return (
+      <div className="py-4 font-mono text-xs text-muted-foreground">
+        {t("workflows:drawer.no_events", { defaultValue: "No events recorded" })}
+      </div>
+    );
   }
 
   const runStart = new Date(run.created_at).getTime();
@@ -379,6 +385,7 @@ const DetailSection: React.FC<{
 // ── main component ────────────────────────────────────────────────────────────
 
 const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
+  const { t } = useTranslation(["workflows", "common"]);
   const [runs, setRuns] = useState<WorkflowRun[]>([]);
   const [loadingRuns, setLoadingRuns] = useState(false);
   const [selectedRun, setSelectedRun] = useState<WorkflowRun | null>(null);
@@ -455,8 +462,8 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
       {
         id: "run",
         accessorFn: (row) => `${runTitle(row)} ${row.run_id}`,
-        header: "Run",
-        meta: { title: "Run", skeleton: "twoLine" },
+        header: t("workflows:columns.title_state", { defaultValue: "Run" }),
+        meta: { title: t("workflows:columns.title_state", { defaultValue: "Run" }), skeleton: "twoLine" },
         cell: ({ row }) => {
           const run = row.original;
           return (
@@ -472,8 +479,8 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
       },
       {
         accessorKey: "workflow_type",
-        header: "Type",
-        meta: { title: "Type" },
+        header: t("workflows:columns.type", { defaultValue: "Type" }),
+        meta: { title: t("workflows:columns.type", { defaultValue: "Type" }) },
         filterFn: "includesString",
         cell: ({ row }) => (
           <span className="font-mono text-xs text-muted-foreground">{row.original.workflow_type}</span>
@@ -482,8 +489,8 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
       {
         id: "status",
         accessorKey: "status",
-        header: "Status",
-        meta: { title: "Status" },
+        header: t("workflows:columns.status", { defaultValue: "Status" }),
+        meta: { title: t("workflows:columns.status", { defaultValue: "Status" }) },
         filterFn: "equalsString",
         cell: ({ row }) => {
           const run = row.original;
@@ -497,21 +504,23 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
       },
       {
         accessorKey: "created_at",
-        header: "Created",
-        meta: { title: "Created" },
+        header: t("workflows:columns.created", { defaultValue: "Created" }),
+        meta: { title: t("workflows:columns.created", { defaultValue: "Created" }) },
         cell: ({ row }) => <span className="text-xs text-muted-foreground">{timeAgo(row.original.created_at)}</span>,
       },
     ],
-    [],
+    [t],
   );
 
   return (
     <div className="w-full px-8 py-6">
       {/* page header */}
       <div className="mb-5">
-        <div className="text-lg font-semibold text-foreground">Workflow Runs</div>
+        <div className="text-lg font-semibold text-foreground">
+          {t("workflows:title", { defaultValue: "Workflow Runs" })}
+        </div>
         <div className="mt-0.5 text-[13px] text-muted-foreground">
-          Durable state tracking for agents and automated workflows
+          {t("workflows:subtitle", { defaultValue: "Durable state tracking for agents and automated workflows" })}
         </div>
       </div>
 
@@ -520,8 +529,12 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
         columns={columns}
         getRowId={(run) => run.run_id}
         isLoading={loadingRuns}
-        loadingMessage="Loading workflow runs…"
-        noDataMessage={<div className="py-6 text-center text-[13px] text-muted-foreground">No workflow runs yet</div>}
+        loadingMessage={t("workflows:loading_runs", { defaultValue: "Loading workflow runs…" })}
+        noDataMessage={
+          <div className="py-6 text-center text-[13px] text-muted-foreground">
+            {t("workflows:no_runs_yet", { defaultValue: "No workflow runs yet" })}
+          </div>
+        }
         paginationMode="client"
         pageSizeOptions={[50, 100]}
         filterMode="client"
@@ -537,7 +550,7 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
               table={table}
               searchValue={globalFilter}
               onSearchChange={setGlobalFilter}
-              searchPlaceholder="Search runs…"
+              searchPlaceholder={t("workflows:search_placeholder", { defaultValue: "Search runs…" })}
               onRefresh={fetchRuns}
               isRefreshing={loadingRuns}
               onOpenFilters={() => setFiltersOpen(true)}
@@ -546,35 +559,37 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
               table={table}
               open={filtersOpen}
               onOpenChange={setFiltersOpen}
-              title="Filters"
-              description="Narrow down workflow runs"
+              title={t("workflows:filters", { defaultValue: "Filters" })}
+              description={t("workflows:filters_desc", { defaultValue: "Narrow down workflow runs" })}
             >
               {({ get, set }) => (
                 <>
-                  <DataTableFilterField label="Status">
+                  <DataTableFilterField label={t("workflows:status", { defaultValue: "Status" })}>
                     <Select
                       items={STATUS_LABELS}
                       value={(get("status") as string) || null}
                       onValueChange={(value: string | null) => set("status", value ?? "")}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="All statuses" />
+                        <SelectValue placeholder={t("workflows:all_statuses", { defaultValue: "All statuses" })} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value={null}>All statuses</SelectItem>
+                        <SelectItem value={null}>
+                          {t("workflows:all_statuses", { defaultValue: "All statuses" })}
+                        </SelectItem>
                         {RUN_STATUS_OPTIONS.map((status) => (
                           <SelectItem key={status} value={status}>
-                            {STATUS_LABELS[status]}
+                            {t(`workflows:statuses.${status}`, { defaultValue: STATUS_LABELS[status] })}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </DataTableFilterField>
-                  <DataTableFilterField label="Type">
+                  <DataTableFilterField label={t("workflows:type", { defaultValue: "Type" })}>
                     <Input
                       value={(get("workflow_type") as string) ?? ""}
                       onChange={(event) => set("workflow_type", event.target.value)}
-                      placeholder="Filter by type…"
+                      placeholder={t("workflows:filter_by_type", { defaultValue: "Filter by type…" })}
                     />
                   </DataTableFilterField>
                 </>
@@ -590,9 +605,13 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
           showCloseButton={false}
           className="overflow-y-auto p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[680px]"
         >
-          <SheetTitle className="sr-only">Workflow run details</SheetTitle>
+          <SheetTitle className="sr-only">
+            {t("workflows:drawer.title", { defaultValue: "Workflow run details" })}
+          </SheetTitle>
           <SheetDescription className="sr-only">
-            Metadata, timeline and messages for the selected workflow run
+            {t("workflows:drawer.description", {
+              defaultValue: "Metadata, timeline and messages for the selected workflow run",
+            })}
           </SheetDescription>
           {!selectedRun ? null : loadingDetail ? (
             <div className="flex justify-center py-20">
@@ -609,11 +628,11 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
                   onClick={() => setDrawerOpen(false)}
                 >
                   <ArrowLeft />
-                  close
+                  {t("workflows:drawer.close", { defaultValue: "close" })}
                 </Button>
                 <Button variant="outline" size="sm" onClick={() => fetchRunDetail(selectedRun)}>
                   <RefreshCw />
-                  Refresh
+                  {t("workflows:drawer.refresh", { defaultValue: "Refresh" })}
                 </Button>
               </div>
 
@@ -623,7 +642,7 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
               {/* collapsible sections */}
               <div className="divide-y overflow-hidden rounded-lg border">
                 <DetailSection
-                  title="Timeline"
+                  title={t("workflows:drawer.timeline", { defaultValue: "Timeline" })}
                   meta={
                     <>
                       {events.length} {events.length === 1 ? "event" : "events"}
@@ -633,9 +652,14 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
                 >
                   <GanttTimeline run={selectedRun} events={events} />
                 </DetailSection>
-                <DetailSection title="Messages" meta={messages.length}>
+                <DetailSection
+                  title={t("workflows:drawer.messages", { defaultValue: "Messages" })}
+                  meta={messages.length}
+                >
                   {messages.length === 0 ? (
-                    <div className="py-3 font-mono text-xs text-muted-foreground">No messages</div>
+                    <div className="py-3 font-mono text-xs text-muted-foreground">
+                      {t("workflows:drawer.no_messages", { defaultValue: "No messages" })}
+                    </div>
                   ) : (
                     <div>
                       {messages.map((msg) => (

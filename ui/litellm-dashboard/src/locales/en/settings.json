@@ -11,5 +11,32 @@
   "dark": "Dark",
   "system": "System",
   "save_settings": "Save Settings",
-  "reset_settings": "Reset Settings"
+  "reset_settings": "Reset Settings",
+  "tabs": {
+    "logging_callbacks": "Logging Callbacks",
+    "cloudzero": "CloudZero Cost Tracking",
+    "alerting_types": "Alerting Types",
+    "alerting_settings": "Alerting Settings",
+    "email_alerts": "Email Alerts",
+    "ms_teams_alerts": "MS Teams Alerts"
+  },
+  "callbacks": {
+    "title": "Active Logging Callbacks",
+    "add": "Add Callback",
+    "empty_title": "No callbacks configured",
+    "empty_desc": "Add your first callback to start logging data to external services.",
+    "loading": "Loading callbacks…",
+    "columns": {
+      "name": "Callback Name",
+      "type": "Type",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "alerts_panel": {
+    "webhook_notice": "Alerts are sent to any Slack-compatible incoming webhook URL (Slack, Rocket.Chat, Mattermost, etc.).",
+    "get_webhook_url": "Get Slack webhook urls from here",
+    "test_alerts": "Test Alerts",
+    "save_changes": "Save Changes"
+  }
 }

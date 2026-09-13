@@ -1,0 +1,38 @@
+{
+  "title": "Guardrails",
+  "tabs": {
+    "garden": "Guardrail Garden",
+    "guardrails": "Guardrails",
+    "playground": "Test Playground",
+    "submitted": "Submitted Guardrails"
+  },
+  "add_new_guardrail": "Add New Guardrail",
+  "add_provider": "Add Provider Guardrail",
+  "create_custom_code": "Create Custom Code Guardrail",
+  "delete_modal": {
+    "title": "Delete Guardrail",
+    "confirm": "Are you sure you want to delete guardrail: {{name}}? This action cannot be undone.",
+    "info_title": "Guardrail Information"
+  },
+  "monitor": {
+    "title": "Guardrails Monitor",
+    "subtitle": "Monitor guardrail performance across all requests",
+    "export_data": "Export Data",
+    "total_evaluations": "Total Evaluations",
+    "blocked_requests": "Blocked Requests",
+    "pass_rate": "Pass Rate",
+    "avg_latency": "Avg. latency added",
+    "guardrail_cost": "Guardrail Cost",
+    "active_guardrails": "Active Guardrails",
+    "columns": {
+      "guardrail": "Guardrail",
+      "provider": "Provider",
+      "mode": "Mode",
+      "requests_evaluated": "Requests Evaluated",
+      "blocked": "Blocked",
+      "avg_latency_added": "Avg Latency Added",
+      "usage_units": "Usage Units",
+      "cost": "Cost"
+    }
+  }
+}

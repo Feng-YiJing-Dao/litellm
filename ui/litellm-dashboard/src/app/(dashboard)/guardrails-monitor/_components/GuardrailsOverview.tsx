@@ -1,6 +1,7 @@
 import type { ColumnDef, OnChangeFn, SortingState } from "@tanstack/react-table";
 import { CircleDollarSign, Download, HeartPulse, Settings, TrendingUp, TriangleAlert } from "lucide-react";
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { DataTable, DataTableSortHeader } from "@/components/shared/DataTable";
 import { MoneyCell } from "@/components/shared/table_cells/money_cell";
 import { CellTooltip } from "@/components/shared/table_cells/cell_tooltip";
@@ -118,6 +119,7 @@ export function GuardrailsOverview({
   onSelectGuardrail,
   dateRangeControl,
 }: GuardrailsOverviewProps) {
+  const { t } = useTranslation(["guardrails", "common"]);
   const [sortBy, setSortBy] = useState<SortKey>("failRate");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [evaluationModalOpen, setEvaluationModalOpen] = useState(false);
@@ -284,49 +286,49 @@ export function GuardrailsOverview({
     <div>
       <PageHeader
         icon={<HeartPulse />}
-        title="Guardrails Monitor"
-        subtitle="Monitor guardrail performance across all requests"
+        title={t("guardrails:monitor.title", { defaultValue: "Guardrails Monitor" })}
+        subtitle={t("guardrails:monitor.subtitle", { defaultValue: "Monitor guardrail performance across all requests" })}
         utilities={
           <>
             {dateRangeControl}
             <Button variant="outline" title="Coming soon">
               <Download className="size-4" />
-              Export Data
+              {t("guardrails:monitor.export_data", { defaultValue: "Export Data" })}
             </Button>
           </>
         }
       />
 
       <div className="mt-6 mb-6 grid grid-cols-[repeat(auto-fit,minmax(7rem,1fr))] gap-4">
-        <MetricCard label="Total Evaluations" value={metrics.totalRequests.toLocaleString()} />
+        <MetricCard label={t("guardrails:monitor.total_evaluations", { defaultValue: "Total Evaluations" })} value={metrics.totalRequests.toLocaleString()} />
         <MetricCard
-          label="Blocked Requests"
+          label={t("guardrails:monitor.blocked_requests", { defaultValue: "Blocked Requests" })}
           value={metrics.totalBlocked.toLocaleString()}
           valueColor="text-destructive"
           icon={<TriangleAlert className="size-4 text-destructive" />}
         />
         <MetricCard
-          label="Pass Rate"
+          label={t("guardrails:monitor.pass_rate", { defaultValue: "Pass Rate" })}
           value={`${metrics.passRate}%`}
           valueColor="text-success"
           icon={<TrendingUp className="size-4 text-success" />}
         />
         <MetricCard
-          label="Avg. latency added"
+          label={t("guardrails:monitor.avg_latency", { defaultValue: "Avg. latency added" })}
           value={`${metrics.avgLatency}ms`}
           valueColor={
             metrics.avgLatency > 150 ? "text-destructive" : metrics.avgLatency > 50 ? "text-warning" : "text-success"
           }
         />
         <MetricCard
-          label="Guardrail Cost"
+          label={t("guardrails:monitor.guardrail_cost", { defaultValue: "Guardrail Cost" })}
           value={formatCost(metrics.totalCost)}
           valueColor={metrics.totalCost != null ? "text-foreground" : "text-muted-foreground"}
           icon={<CircleDollarSign className="size-4" />}
           subtitle={unpricedSummary(metrics.untracked) ?? undefined}
           hint={<TotalCostMath rows={activeData} total={metrics.totalCost} untracked={metrics.untracked} />}
         />
-        <MetricCard label="Active Guardrails" value={metrics.count} />
+        <MetricCard label={t("guardrails:monitor.active_guardrails", { defaultValue: "Active Guardrails" })} value={metrics.count} />
       </div>
 
       <div className="mb-6">

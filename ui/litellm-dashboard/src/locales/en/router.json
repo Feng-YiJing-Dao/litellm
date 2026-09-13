@@ -1,0 +1,28 @@
+{
+  "title": "Router Settings",
+  "routing_settings": "Routing Settings",
+  "routing_settings_desc": "Configure how requests are routed to deployments",
+  "reliability_retries": "Reliability & Retries",
+  "reliability_retries_desc": "Configure retry logic and failure handling",
+  "tabs": {
+    "loadbalancing": "Loadbalancing",
+    "routing_groups": "Routing Groups",
+    "fallbacks": "Fallbacks",
+    "prompt_caching": "Prompt Caching",
+    "general": "General"
+  },
+  "general_table": {
+    "setting": "Setting",
+    "value": "Value",
+    "status": "Status",
+    "action": "Action",
+    "reset": "Reset",
+    "save": "Save"
+  },
+  "status": {
+    "in_db": "In DB",
+    "in_config": "In Config",
+    "not_set": "Not Set"
+  },
+  "update": "Update"
+}

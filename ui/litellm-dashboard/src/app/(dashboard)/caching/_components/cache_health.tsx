@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, XCircle, ClipboardCopy } from "lucide-react";
@@ -152,15 +153,16 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
     namespace: parsedRedisParams?.namespace || "N/A",
   };
 
+  const { t } = useTranslation(["caching", "common"]);
   return (
     <div className="rounded-lg bg-card shadow-sm">
       <Tabs defaultValue="summary">
         <TabsList className="border-b border-border px-4">
           <TabsTrigger value="summary" className="flex-none">
-            Summary
+            {t("caching:health.tabs.formatted", { defaultValue: "Summary" })}
           </TabsTrigger>
           <TabsTrigger value="raw" className="flex-none">
-            Raw Response
+            {t("caching:health.tabs.raw", { defaultValue: "Raw Response" })}
           </TabsTrigger>
         </TabsList>
 
@@ -271,6 +273,7 @@ export const CacheHealthTab: React.FC<{
   runCachingHealthCheck: () => void;
   responseTimeMs?: number | null;
 }> = ({ accessToken, healthCheckResponse, runCachingHealthCheck, responseTimeMs }) => {
+  const { t } = useTranslation(["caching", "common"]);
   const [localResponseTimeMs, setLocalResponseTimeMs] = React.useState<number | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -287,7 +290,9 @@ export const CacheHealthTab: React.FC<{
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <Button onClick={handleHealthCheck} disabled={isLoading}>
-          {isLoading ? "Running Health Check..." : "Run Health Check"}
+          {isLoading
+            ? t("caching:health.running_check", { defaultValue: "Running Health Check..." })
+            : t("caching:health.run_check", { defaultValue: "Run Health Check" })}
         </Button>
         <ResponseTimeIndicator responseTimeMs={localResponseTimeMs} />
       </div>

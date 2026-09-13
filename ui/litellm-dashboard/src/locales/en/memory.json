@@ -1,0 +1,44 @@
+{
+  "title": "Memory",
+  "subtitle": "Inspect what your agents have stored under <code1>/v1/memory</code1>. Scoped to memories visible to your user / team (admins see all).",
+  "new_memory": "New memory",
+  "search_placeholder": "Search by key, value, user ID...",
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "preview": "Preview",
+    "user": "User ID",
+    "user_id": "User ID",
+    "team": "Team ID",
+    "team_id": "Team ID",
+    "updated": "Updated"
+  },
+  "empty_state": {
+    "no_memories": "No memories yet",
+    "no_matching": "No matching memories",
+    "cta": "Store your first memory entry to get started."
+  },
+  "delete_modal": {
+    "title": "Delete memory",
+    "confirm_desc": "This action cannot be undone.",
+    "resource_title": "Memory",
+    "key": "Key",
+    "memory_id": "Memory ID",
+    "user_id": "User ID",
+    "team_id": "Team ID"
+  },
+  "modal": {
+    "create_title": "Create memory",
+    "edit_title": "Edit {{key}}",
+    "key_label": "Key",
+    "key_hint": "Globally unique — two memories cannot share a key. Namespace your own keys if you need per-user isolation (e.g. user:123:notes).",
+    "value_label": "Value",
+    "value_hint": "The stored text value. Empty strings are allowed.",
+    "metadata_label": "Metadata (JSON)",
+    "metadata_hint": "Optional JSON dictionary for structured attributes. Leave empty to clear existing metadata on edit.",
+    "key_placeholder": "e.g. user_role",
+    "value_placeholder": "Enter text value...",
+    "metadata_placeholder": "Valid JSON or leave empty",
+    "saving": "Saving..."
+  }
+}

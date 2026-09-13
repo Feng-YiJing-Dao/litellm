@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coy } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -126,6 +127,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
   simplified = false,
   fixedModel,
 }) => {
+  const { t } = useTranslation(["playground", "common"]);
   const syntaxTheme = useSyntaxTheme(coy);
   const canViewPolicies = useCan("viewPolicies");
   const [mcpServers, setMCPServers] = useState<MCPServer[]>([]);
@@ -1223,11 +1225,14 @@ const ChatUI: React.FC<ChatUIProps> = ({
         <div className="flex h-full min-h-0 min-w-0 w-full flex-col lg:flex-row">
           {!simplified && (
             <div className="max-h-[42%] w-full shrink-0 overflow-y-auto border-b border-border bg-muted p-4 lg:max-h-none lg:w-72 lg:border-r lg:border-b-0 xl:w-80">
-              <h2 className="mb-6 mt-2 text-xl font-semibold">Configurations</h2>
+              <h2 className="mb-6 mt-2 text-xl font-semibold">
+                {t("playground:configurations", { defaultValue: "Configurations" })}
+              </h2>
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 flex items-center text-sm font-medium text-foreground">
-                    <Key className="mr-2 size-4" aria-hidden="true" /> Virtual Key Source
+                    <Key className="mr-2 size-4" aria-hidden="true" />{" "}
+                    {t("playground:virtual_key_source", { defaultValue: "Virtual Key Source" })}
                   </label>
                   <ShadcnSelect
                     disabled={disabledPersonalKeyCreation}
@@ -1236,12 +1241,20 @@ const ChatUI: React.FC<ChatUIProps> = ({
                       setApiKeySource(value as "session" | "custom");
                     }}
                   >
-                    <SelectTrigger className="w-full" size="sm" aria-label="Virtual Key Source">
-                      <SelectValue>{apiKeySource === "custom" ? "Virtual Key" : "Current UI Session"}</SelectValue>
+                    <SelectTrigger className="w-full" size="sm" aria-label={t("playground:virtual_key_source", { defaultValue: "Virtual Key Source" })}>
+                      <SelectValue>
+                        {apiKeySource === "custom"
+                          ? t("playground:virtual_key", { defaultValue: "Virtual Key" })
+                          : t("playground:current_ui_session", { defaultValue: "Current UI Session" })}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="session">Current UI Session</SelectItem>
-                      <SelectItem value="custom">Virtual Key</SelectItem>
+                      <SelectItem value="session">
+                        {t("playground:current_ui_session", { defaultValue: "Current UI Session" })}
+                      </SelectItem>
+                      <SelectItem value="custom">
+                        {t("playground:virtual_key", { defaultValue: "Virtual Key" })}
+                      </SelectItem>
                     </SelectContent>
                   </ShadcnSelect>
                   {apiKeySource === "custom" && (
@@ -1249,7 +1262,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                       <Key className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
                       <Input
                         className="h-8 pl-8"
-                        placeholder="Enter custom Virtual Key"
+                        placeholder={t("playground:enter_custom_key", { defaultValue: "Enter custom Virtual Key" })}
                         type="password"
                         onChange={(event) => setApiKey(event.target.value)}
                         value={apiKey}
@@ -1261,7 +1274,8 @@ const ChatUI: React.FC<ChatUIProps> = ({
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <label className="flex items-center text-sm font-medium text-foreground">
-                      <Settings className="mr-2 size-4" aria-hidden="true" /> Custom Proxy Base URL
+                      <Settings className="mr-2 size-4" aria-hidden="true" />{" "}
+                      {t("playground:custom_proxy_url", { defaultValue: "Custom Proxy Base URL" })}
                     </label>
                     {proxySettings?.LITELLM_UI_API_DOC_BASE_URL && !customProxyBaseUrl && (
                       <Button
@@ -1275,7 +1289,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                         }}
                       >
                         <Link2 className="size-3" />
-                        Fill
+                        {t("playground:fill", { defaultValue: "Fill" })}
                       </Button>
                     )}
                     {customProxyBaseUrl && (
@@ -1290,7 +1304,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                         }}
                       >
                         <Eraser className="size-3" />
-                        Clear
+                        {t("playground:clear", { defaultValue: "Clear" })}
                       </Button>
                     )}
                   </div>
@@ -1298,7 +1312,9 @@ const ChatUI: React.FC<ChatUIProps> = ({
                     <Wrench className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
                     <Input
                       className="h-8 pl-8"
-                      placeholder="Optional: Enter custom proxy URL (e.g., http://localhost:5000)"
+                      placeholder={t("playground:proxy_url_placeholder", {
+                        defaultValue: "Optional: Enter custom proxy URL (e.g., http://localhost:5000)",
+                      })}
                       value={customProxyBaseUrl}
                       onChange={(event) => {
                         setCustomProxyBaseUrl(event.target.value);
@@ -1308,14 +1324,18 @@ const ChatUI: React.FC<ChatUIProps> = ({
                   </div>
                   {customProxyBaseUrl && (
                     <p className="mt-1 text-xs text-muted-foreground">
-                      API calls will be sent to: {customProxyBaseUrl}
+                      {t("playground:proxy_url_notice", {
+                        url: customProxyBaseUrl,
+                        defaultValue: `API calls will be sent to: ${customProxyBaseUrl}`,
+                      })}
                     </p>
                   )}
                 </div>
 
                 <div>
                   <label className="mb-2 flex items-center text-sm font-medium text-foreground">
-                    <Wrench className="mr-2 size-4" aria-hidden="true" /> Endpoint Type
+                    <Wrench className="mr-2 size-4" aria-hidden="true" />{" "}
+                    {t("playground:endpoint_type", { defaultValue: "Endpoint Type" })}
                   </label>
                   <EndpointSelector
                     endpointType={endpointType}
@@ -1419,12 +1439,16 @@ const ChatUI: React.FC<ChatUIProps> = ({
                     </div>
                     <SearchSelect
                       value={selectedModel}
-                      placeholder={isLoadingModels ? "Loading models..." : "Select a Model"}
+                      placeholder={
+                        isLoadingModels
+                          ? t("playground:loading_models", { defaultValue: "Loading models..." })
+                          : t("playground:select_model", { defaultValue: "Select a Model" })
+                      }
                       emptyText={modelEmptyText}
                       disabled={isLoadingModels}
                       onValueChange={onModelChange}
                       options={[
-                        { value: "custom", label: "Enter custom model" },
+                        { value: "custom", label: t("playground:enter_custom_model", { defaultValue: "Enter custom model" }) },
                         ...modelsForEndpoint.map((model) => ({
                           value: model.model_group,
                           label: model.model_group,
@@ -1435,7 +1459,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                     {showCustomModelInput && (
                       <Input
                         className="mt-2 h-8"
-                        placeholder="Enter custom model name"
+                        placeholder={t("playground:custom_model_placeholder", { defaultValue: "Enter custom model name" })}
                         onChange={(event) => debouncedSetSelectedModel(event.target.value)}
                       />
                     )}
@@ -1445,11 +1469,12 @@ const ChatUI: React.FC<ChatUIProps> = ({
                 {endpointType === EndpointType.A2A_AGENTS && (
                   <div>
                     <label className="mb-2 flex items-center text-sm font-medium text-foreground">
-                      <Bot className="mr-2 size-4" aria-hidden="true" /> Select Agent
+                      <Bot className="mr-2 size-4" aria-hidden="true" />{" "}
+                      {t("playground:select_agent", { defaultValue: "Select Agent" })}
                     </label>
                     <SearchSelect
                       value={selectedAgent}
-                      placeholder="Select an Agent"
+                      placeholder={t("playground:select_agent_placeholder", { defaultValue: "Select an Agent" })}
                       onValueChange={(value) => setSelectedAgent(value)}
                       options={agentInfo.map((agent) => ({
                         value: agent.agent_name,
@@ -1748,16 +1773,18 @@ const ChatUI: React.FC<ChatUIProps> = ({
             ) : (
               <>
                 <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border p-3 sm:p-4">
-                  <h2 className="mb-0 text-xl font-semibold">{simplified ? "Chat" : "Test Key"}</h2>
+                  <h2 className="mb-0 text-xl font-semibold">
+                    {simplified ? t("playground:tabs.chat", { defaultValue: "Chat" }) : t("playground:test_key", { defaultValue: "Test Key" })}
+                  </h2>
                   <div className="flex flex-wrap justify-end gap-2">
                     <Button type="button" variant="outline" size="sm" onClick={clearChatHistory}>
                       <Eraser className="size-3.5" />
-                      Clear Chat
+                      {t("playground:clear_chat", { defaultValue: "Clear Chat" })}
                     </Button>
                     {!simplified && (
                       <Button type="button" variant="outline" size="sm" onClick={() => setIsGetCodeModalVisible(true)}>
                         <Code2 className="size-3.5" />
-                        Get Code
+                        {t("playground:get_code", { defaultValue: "Get Code" })}
                       </Button>
                     )}
                   </div>
@@ -1766,7 +1793,11 @@ const ChatUI: React.FC<ChatUIProps> = ({
                   {chatHistory.length === 0 && (
                     <div className="flex h-full flex-col items-center justify-center text-muted-foreground">
                       <Bot className="mb-4 size-12" aria-hidden="true" />
-                      <p className="text-sm">Start a conversation, generate an image, or handle audio</p>
+                      <p className="text-sm">
+                        {t("playground:empty_conversation", {
+                          defaultValue: "Start a conversation, generate an image, or handle audio",
+                        })}
+                      </p>
                     </div>
                   )}
 
