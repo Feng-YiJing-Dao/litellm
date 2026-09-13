@@ -21,6 +21,26 @@ export const TEAM_INFO_TAB_LABELS: Record<string, string> = {
   [TEAM_INFO_TAB_KEYS.SETTINGS]: "Settings",
 };
 
+export function getTeamInfoTabLabel(key: string, t?: (key: any, options?: any) => any): string {
+  if (t) {
+    switch (key) {
+      case TEAM_INFO_TAB_KEYS.OVERVIEW:
+        return t("teams:tab_overview", { defaultValue: "Overview" });
+      case TEAM_INFO_TAB_KEYS.MY_USER:
+        return t("teams:tab_my_user", { defaultValue: "My User" });
+      case TEAM_INFO_TAB_KEYS.VIRTUAL_KEYS:
+        return t("teams:tab_virtual_keys", { defaultValue: "Virtual Keys" });
+      case TEAM_INFO_TAB_KEYS.MEMBERS:
+        return t("teams:tab_members", { defaultValue: "Members" });
+      case TEAM_INFO_TAB_KEYS.MEMBER_PERMISSIONS:
+        return t("teams:tab_member_permissions", { defaultValue: "Member Permissions" });
+      case TEAM_INFO_TAB_KEYS.SETTINGS:
+        return t("teams:tab_settings", { defaultValue: "Settings" });
+    }
+  }
+  return TEAM_INFO_TAB_LABELS[key] ?? key;
+}
+
 /**
  * Returns the list of tab keys that should be visible based on permissions.
  * - Overview, My User, Virtual Keys: always visible

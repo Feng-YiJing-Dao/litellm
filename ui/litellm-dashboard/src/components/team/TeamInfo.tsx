@@ -95,8 +95,10 @@ import RouterSettingsAccordion, { RouterSettingsAccordionRef } from "../common_c
 import MemberModal from "./EditMembership";
 import MemberPermissions from "./member_permissions";
 import MyUserTab from "./MyUserTab";
+import { useTranslation } from "react-i18next";
 import {
   getTeamInfoDefaultTab,
+  getTeamInfoTabLabel,
   getTeamInfoVisibleTabs,
   TEAM_INFO_TAB_KEYS,
   TEAM_INFO_TAB_LABELS,
@@ -521,6 +523,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
   premiumUser = false,
   onUpdate,
 }) => {
+  const { t } = useTranslation(["teams", "common"]);
   const teamUpdateSchema = useMemo(
     () =>
       teamUpdateFieldsSchema.superRefine((values, ctx) => {
@@ -1142,30 +1145,30 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
   const tabItems = [
     {
       key: TEAM_INFO_TAB_KEYS.OVERVIEW,
-      label: TEAM_INFO_TAB_LABELS[TEAM_INFO_TAB_KEYS.OVERVIEW],
+      label: getTeamInfoTabLabel(TEAM_INFO_TAB_KEYS.OVERVIEW, t),
       children: (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="block p-6">
-            <p>Budget Status</p>
+            <p>{t("teams:budget_status", { defaultValue: "Budget Status" })}</p>
             <div className="mt-2">
               <h3 className="text-lg font-medium">${formatNumberWithCommas(info.spend, 2)}</h3>
-              <p>of {info.max_budget === null ? "Unlimited" : `$${formatNumberWithCommas(info.max_budget, 2)}`}</p>
-              {info.budget_duration && <p className="text-muted-foreground">Reset: {info.budget_duration}</p>}
+              <p>{t("teams:of", { defaultValue: "of" })} {info.max_budget === null ? t("teams:unlimited", { defaultValue: "Unlimited" }) : `$${formatNumberWithCommas(info.max_budget, 2)}`}</p>
+              {info.budget_duration && <p className="text-muted-foreground">{t("teams:budget_reset", { defaultValue: "Reset" })}: {info.budget_duration}</p>}
               <br />
               {info.team_member_budget_table && (
                 <p className="text-muted-foreground">
-                  Team Member Budget: ${formatNumberWithCommas(info.team_member_budget_table.max_budget, 2)}
+                  {t("teams:overview_team_member_budget", { defaultValue: "Team Member Budget" })}: ${formatNumberWithCommas(info.team_member_budget_table.max_budget, 2)}
                 </p>
               )}
             </div>
           </Card>
 
           <Card className="block p-6">
-            <p>Rate Limits</p>
+            <p>{t("teams:rate_limits", { defaultValue: "Rate Limits" })}</p>
             <div className="mt-2">
-              <p>TPM: {info.tpm_limit ?? "Unlimited"}</p>
-              <p>RPM: {info.rpm_limit ?? "Unlimited"}</p>
-              {info.max_parallel_requests && <p>Max Parallel Requests: {info.max_parallel_requests}</p>}
+              <p>TPM: {info.tpm_limit ?? t("teams:unlimited", { defaultValue: "Unlimited" })}</p>
+              <p>RPM: {info.rpm_limit ?? t("teams:unlimited", { defaultValue: "Unlimited" })}</p>
+              {info.max_parallel_requests && <p>{t("teams:max_parallel_requests", { defaultValue: "Max Parallel Requests" })}: {info.max_parallel_requests}</p>}
               {(() => {
                 const modelTpm = (info.metadata?.model_tpm_limit ?? {}) as Record<string, number>;
                 const modelRpm = (info.metadata?.model_rpm_limit ?? {}) as Record<string, number>;
@@ -1173,7 +1176,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                 if (models.length === 0) return null;
                 return (
                   <div className="mt-3">
-                    <p className="text-muted-foreground">Per-model limits:</p>
+                    <p className="text-muted-foreground">{t("teams:per_model_limits", { defaultValue: "Per-model limits" })}:</p>
                     {models.map((m) => (
                       <p key={m} className="text-xs">
                         {m}: TPM {modelTpm[m] ?? "—"}, RPM {modelRpm[m] ?? "—"}
@@ -1182,18 +1185,18 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                   </div>
                 );
               })()}
-              <p>Estimated Output Tokens: {info.metadata?.default_estimated_output_tokens ?? "Default"}</p>
+              <p>{t("teams:estimated_output_tokens", { defaultValue: "Estimated Output Tokens" })}: {info.metadata?.default_estimated_output_tokens ?? t("common:default", { defaultValue: "Default" })}</p>
               <p>
-                Estimated Output Tokens Per Model:{" "}
+                {t("teams:estimated_output_tokens_per_model", { defaultValue: "Estimated Output Tokens Per Model" })}:{" "}
                 {info.metadata?.default_estimated_output_tokens_per_model
                   ? JSON.stringify(info.metadata.default_estimated_output_tokens_per_model)
-                  : "Default"}
+                  : t("common:default", { defaultValue: "Default" })}
               </p>
             </div>
           </Card>
 
           <Card className="block p-6">
-            <p>Models</p>
+            <p>{t("teams:models", { defaultValue: "Models" })}</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {computeTeamModelBadges(info.models, info.access_group_models || [], info.access_group_details).map(
                 (badge, index) => (
@@ -1212,11 +1215,11 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
           </Card>
 
           <Card className="block p-6">
-            <p className="font-semibold text-foreground">Virtual Keys</p>
+            <p className="font-semibold text-foreground">{t("teams:virtual_keys", { defaultValue: "Virtual Keys" })}</p>
             <div className="mt-2">
-              <p>User Keys: {teamData.keys.filter((key) => key.user_id).length}</p>
-              <p>Service Account Keys: {teamData.keys.filter((key) => !key.user_id).length}</p>
-              <p className="text-muted-foreground">Total: {teamData.keys.length}</p>
+              <p>{t("teams:user_keys", { defaultValue: "User Keys" })}: {teamData.keys.filter((key) => key.user_id).length}</p>
+              <p>{t("teams:service_account_keys", { defaultValue: "Service Account Keys" })}: {teamData.keys.filter((key) => !key.user_id).length}</p>
+              <p className="text-muted-foreground">{t("teams:total", { defaultValue: "Total" })}: {teamData.keys.length}</p>
             </div>
           </Card>
 
@@ -1243,18 +1246,18 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
           </Card>
 
           <Card className="block p-6">
-            <p className="font-semibold text-foreground mb-3">Policies</p>
+            <p className="font-semibold text-foreground mb-3">{t("teams:policies", { defaultValue: "Policies" })}</p>
             {info.policies && info.policies.length > 0 ? (
               <div className="space-y-4">
                 {info.policies.map((policy: string, index: number) => (
                   <div key={index} className="space-y-2">
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">{policy}</Badge>
-                      {loadingPolicies && <p className="text-xs text-muted-foreground">Loading guardrails...</p>}
+                      {loadingPolicies && <p className="text-xs text-muted-foreground">{t("teams:loading_guardrails", { defaultValue: "Loading guardrails..." })}</p>}
                     </div>
                     {!loadingPolicies && policyGuardrails[policy] && policyGuardrails[policy].length > 0 && (
                       <div className="ml-4 pl-3 border-l-2 border-border">
-                        <p className="text-xs text-muted-foreground mb-1">Resolved Guardrails:</p>
+                        <p className="text-xs text-muted-foreground mb-1">{t("teams:resolved_guardrails", { defaultValue: "Resolved Guardrails:" })}</p>
                         <div className="flex flex-wrap gap-1">
                           {policyGuardrails[policy].map((guardrail: string, gIndex: number) => (
                             <Badge key={gIndex} variant="secondary">
@@ -1268,7 +1271,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                 ))}
               </div>
             ) : (
-              <p className="text-muted-foreground">No policies configured</p>
+              <p className="text-muted-foreground">{t("teams:no_policies_configured", { defaultValue: "No policies configured" })}</p>
             )}
           </Card>
 
@@ -1278,17 +1281,17 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
     },
     {
       key: TEAM_INFO_TAB_KEYS.MY_USER,
-      label: TEAM_INFO_TAB_LABELS[TEAM_INFO_TAB_KEYS.MY_USER],
+      label: getTeamInfoTabLabel(TEAM_INFO_TAB_KEYS.MY_USER, t),
       children: <MyUserTab teamId={teamId} />,
     },
     {
       key: TEAM_INFO_TAB_KEYS.VIRTUAL_KEYS,
-      label: TEAM_INFO_TAB_LABELS[TEAM_INFO_TAB_KEYS.VIRTUAL_KEYS],
+      label: getTeamInfoTabLabel(TEAM_INFO_TAB_KEYS.VIRTUAL_KEYS, t),
       children: <TeamVirtualKeysTable teamId={teamId} teamAlias={info.team_alias} organization={organization} />,
     },
     {
       key: TEAM_INFO_TAB_KEYS.MEMBERS,
-      label: TEAM_INFO_TAB_LABELS[TEAM_INFO_TAB_KEYS.MEMBERS],
+      label: getTeamInfoTabLabel(TEAM_INFO_TAB_KEYS.MEMBERS, t),
       children: (
         <TeamMembersComponent
           teamData={teamData}
@@ -1302,16 +1305,16 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
     },
     {
       key: TEAM_INFO_TAB_KEYS.MEMBER_PERMISSIONS,
-      label: TEAM_INFO_TAB_LABELS[TEAM_INFO_TAB_KEYS.MEMBER_PERMISSIONS],
+      label: getTeamInfoTabLabel(TEAM_INFO_TAB_KEYS.MEMBER_PERMISSIONS, t),
       children: <MemberPermissions teamId={teamId} accessToken={accessToken} canEditTeam={canEditTeam} />,
     },
     {
       key: TEAM_INFO_TAB_KEYS.SETTINGS,
-      label: TEAM_INFO_TAB_LABELS[TEAM_INFO_TAB_KEYS.SETTINGS],
+      label: getTeamInfoTabLabel(TEAM_INFO_TAB_KEYS.SETTINGS, t),
       children: (
         <Card className="block p-6 overflow-y-auto max-h-[65vh]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-medium">Team Settings</h3>
+            <h3 className="text-lg font-medium">{t("teams:team_settings", { defaultValue: "Team Settings" })}</h3>
             {canEditTeam && !isEditing && (
               <Button
                 variant="outline"
@@ -1321,7 +1324,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                 }}
               >
                 <Pencil />
-                Edit Settings
+                {t("teams:edit_settings", { defaultValue: "Edit Settings" })}
               </Button>
             )}
           </div>
@@ -2144,7 +2147,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
         <div>
           <Button variant="ghost" onClick={onClose} className="mb-4">
             <ArrowLeftIcon className="h-4 w-4" />
-            Back to Teams
+            {t("teams:back_to_teams", { defaultValue: "Back to Teams" })}
           </Button>
           <h1 className="text-2xl font-semibold">{info.team_alias}</h1>
           <div className="flex items-center">

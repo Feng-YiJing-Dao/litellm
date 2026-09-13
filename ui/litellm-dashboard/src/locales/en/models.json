@@ -123,5 +123,8 @@
   "testing_connection": "Testing connection...",
   "failed_delete_model": "Failed to delete model",
   "model_updated_success": "Model settings updated successfully",
-  "model_update_failed": "Failed to update model settings"
+  "model_update_failed": "Failed to update model settings",
+  "litellm_model": "LiteLLM Model",
+  "created_at": "Created At",
+  "loading": "Loading..."
 }

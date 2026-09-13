@@ -123,5 +123,8 @@
   "testing_connection": "正在测试连接…",
   "failed_delete_model": "删除模型失败",
   "model_updated_success": "模型设置更新成功",
-  "model_update_failed": "更新模型设置失败"
+  "model_update_failed": "更新模型设置失败",
+  "litellm_model": "LiteLLM 模型",
+  "created_at": "创建时间",
+  "loading": "加载中..."
 }

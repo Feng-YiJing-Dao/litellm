@@ -129,7 +129,7 @@ export const getUsersTableColumns = ({
             <StatusBadge
               tone="error"
               label={t("users:status_inactive", "Inactive")}
-              tooltip={SCIM_INACTIVE_HINT}
+              tooltip={t("users:hint_scim_inactive", SCIM_INACTIVE_HINT)}
               dataTestId={`user-status-${row.original.user_id}`}
             />
           );
@@ -185,7 +185,7 @@ export const getUsersTableColumns = ({
         <span className="flex items-center gap-1.5">
           {t("users:sso_id", "SSO ID")}
           <CellTooltip
-            content={SSO_ID_HINT}
+            content={t("users:hint_sso_id", SSO_ID_HINT)}
             trigger={<Info className="size-3.5 shrink-0 text-muted-foreground" aria-label="About SSO ID" />}
           />
         </span>
