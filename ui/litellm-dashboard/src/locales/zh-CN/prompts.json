@@ -90,5 +90,40 @@
     "file_label": "选择 .prompt 文件",
     "upload_hint": "点击或拖拽 .prompt 文件至此处上传",
     "submit": "上传并创建"
+  },
+  "prompts": {
+    "title": "提示词管理",
+    "subtitle": "管理和版本控制网关可复用的提示词模板",
+    "all_environments": "全部环境",
+    "environments": {
+      "development": "开发环境 (development)",
+      "staging": "预发环境 (staging)",
+      "production": "生产环境 (production)"
+    },
+    "buttons": {
+      "add_new": "添加新提示词",
+      "upload_file": "上传 .prompt 文件",
+      "cancel": "取消",
+      "delete": "删除",
+      "save": "保存",
+      "copy_id": "复制提示词 ID"
+    },
+    "table": {
+      "prompt_id": "提示词 ID",
+      "model": "模型",
+      "created_at": "创建时间",
+      "updated_at": "更新时间",
+      "environment": "环境",
+      "created_by": "创建人",
+      "type": "类型",
+      "actions": "操作",
+      "no_prompts": "暂无提示词",
+      "no_prompts_desc": "添加提示词以开始管理可复用的模板。",
+      "loading": "正在加载提示词…"
+    },
+    "delete_modal": {
+      "title": "删除提示词",
+      "description": "您确定要删除提示词 {{name}} 的 {{environment}} 副本吗？此操作无法撤销。"
+    }
   }
 }

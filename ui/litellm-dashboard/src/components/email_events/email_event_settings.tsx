@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,6 +15,7 @@ interface EmailEventSettingsProps {
 }
 
 const EmailEventSettings: React.FC<EmailEventSettingsProps> = ({ accessToken }) => {
+  const { t } = useTranslation(["settings", "common"]);
   const [loading, setLoading] = useState(true);
   const [eventSettings, setEventSettings] = useState<EmailEventSetting[]>([]);
 
@@ -49,7 +51,9 @@ const EmailEventSettings: React.FC<EmailEventSettingsProps> = ({ accessToken }) 
 
     try {
       await updateEmailEventSettings(accessToken, { settings: eventSettings });
-      toast.success("Email event settings updated successfully");
+      toast.success(
+        t("settings:email_events.updated_success", { defaultValue: "Email event settings updated successfully" }),
+      );
     } catch (error) {
       console.error("Failed to update email event settings:", error);
       toast.fromError(error);
@@ -61,7 +65,9 @@ const EmailEventSettings: React.FC<EmailEventSettingsProps> = ({ accessToken }) 
 
     try {
       await resetEmailEventSettings(accessToken);
-      toast.success("Email event settings reset to defaults");
+      toast.success(
+        t("settings:email_events.reset_success", { defaultValue: "Email event settings reset to defaults" }),
+      );
       // Refresh settings after reset
       fetchEventSettings();
     } catch (error) {
@@ -74,24 +80,35 @@ const EmailEventSettings: React.FC<EmailEventSettingsProps> = ({ accessToken }) 
   const getEventDescription = (event: EmailEvent): string => {
     // Convert event name to a sentence with more context
     if (event.includes("Virtual Key Created")) {
-      return "An email will be sent to the user when a new virtual key is created with their user ID";
+      return t("settings:email_events.virtual_key_created_desc", {
+        defaultValue: "An email will be sent to the user when a new virtual key is created with their user ID",
+      });
     } else if (event.includes("New User Invitation")) {
-      return "An email will be sent to the email address of the user when a new user is created";
+      return t("settings:email_events.new_user_invitation_desc", {
+        defaultValue: "An email will be sent to the email address of the user when a new user is created",
+      });
     } else {
       // Handle any other event type from the API
       const words = event
         .split(/(?=[A-Z])/)
         .join(" ")
         .toLowerCase();
-      return `Receive an email notification when ${words}`;
+      return t("settings:email_events.default_event_desc", {
+        words,
+        defaultValue: `Receive an email notification when ${words}`,
+      });
     }
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Email Notifications</CardTitle>
-        <p className="text-sm text-muted-foreground">Select which events should trigger email notifications.</p>
+        <CardTitle className="text-base">
+          {t("settings:email_events.title", { defaultValue: "Email Notifications" })}
+        </CardTitle>
+        <p className="text-sm text-muted-foreground">
+          {t("settings:email_events.desc", { defaultValue: "Select which events should trigger email notifications." })}
+        </p>
       </CardHeader>
 
       <CardContent>
@@ -122,10 +139,10 @@ const EmailEventSettings: React.FC<EmailEventSettingsProps> = ({ accessToken }) 
 
         <div className="mt-6 flex gap-4">
           <Button onClick={handleSaveSettings} disabled={loading}>
-            Save Changes
+            {t("settings:email_events.save_changes", { defaultValue: "Save Changes" })}
           </Button>
           <Button variant="secondary" onClick={handleResetSettings} disabled={loading}>
-            Reset to Defaults
+            {t("settings:email_events.reset_defaults", { defaultValue: "Reset to Defaults" })}
           </Button>
         </div>
       </CardContent>

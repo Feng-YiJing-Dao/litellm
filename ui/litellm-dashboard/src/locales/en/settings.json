@@ -33,11 +33,26 @@
       "actions": "Actions"
     }
   },
+  "alert_names": {
+    "llm_exceptions": "LLM Exceptions",
+    "llm_too_slow": "LLM Responses Too Slow",
+    "llm_requests_hanging": "LLM Requests Hanging",
+    "budget_alerts": "Budget Alerts (API Keys, Users)",
+    "user_spend_thresholds": "User Spend Thresholds (Daily/Monthly)",
+    "user_spend_anomalies": "User Spend Anomaly Detection",
+    "db_exceptions": "Database Exceptions (Read/Write)",
+    "daily_reports": "Weekly/Monthly Spend Reports",
+    "outage_alerts": "Outage Alerts",
+    "region_outage_alerts": "Region Outage Alerts",
+    "model_deprecation_warnings": "Model Deprecation Warnings"
+  },
   "alerts_panel": {
     "webhook_notice": "Alerts are sent to any Slack-compatible incoming webhook URL (Slack, Rocket.Chat, Mattermost, etc.).",
-    "get_webhook_url": "Get Slack webhook urls from here",
+    "webhook_header": "Webhook URL (Slack-compatible)",
     "test_alerts": "Test Alerts",
-    "save_changes": "Save Changes"
+    "save_changes": "Save Changes",
+    "enterprise_feature": "✨ Enterprise Feature",
+    "alert_test_success": "Alert test triggered. Test request to slack made - check logs/alerts on slack to verify"
   },
   "ui_theme": {
     "title": "UI Theme Customization",
@@ -62,5 +77,56 @@
     "title": "OpenAI Compatible Proxy: API Reference",
     "desc": "LiteLLM is OpenAI Compatible. This means your API Key works with the OpenAI SDK. Just replace the base_url to point to your litellm proxy. Example Below",
     "docs_link": "API Reference Docs"
+  },
+  "dynamic_form": {
+    "enterprise_feature": "✨ Enterprise Feature",
+    "in_db": "In DB",
+    "in_config": "In Config",
+    "not_set": "Not Set",
+    "reset_field": "Reset {{field_name}}",
+    "update_settings": "Update Settings"
+  },
+  "alerting": {
+    "wait_proxy_update": "Wait 10s for proxy to update."
+  },
+  "ms_teams": {
+    "title": "Microsoft Teams Alerting Settings",
+    "desc": "Send alerts to a Microsoft Teams channel via an incoming webhook.",
+    "webhook_url_help": "Incoming webhook URL for your Teams channel (Workflows or incoming webhook connector)",
+    "required": "Required *",
+    "hide_credential": "Hide credential",
+    "show_credential": "Show credential",
+    "save_changes": "Save Changes",
+    "test_alerts": "Test MS Teams Alerts",
+    "updated_success": "MS Teams settings updated successfully",
+    "test_triggered": "MS Teams test alert triggered. Check your Teams channel."
+  },
+  "email": {
+    "title": "Email Server Settings",
+    "save_changes": "Save Changes",
+    "test_alerts": "Test Email Alerts",
+    "updated_success": "Email settings updated successfully",
+    "test_triggered": "Email test triggered. Check your configured email inbox/logs.",
+    "hide_credential": "Hide credential",
+    "show_credential": "Show credential",
+    "required": "Required *",
+    "smtp_host_help": "Enter the SMTP host address, e.g. `smtp.resend.com`",
+    "smtp_port_help": "Enter the SMTP port number, e.g. `587`",
+    "smtp_username_help": "Enter the SMTP username, e.g. `username`",
+    "smtp_sender_help": "Enter the sender email address, e.g. `sender@example.com`",
+    "test_email_help": "Email Address to send `Test Email Alert` to. example: `info@example.com`",
+    "logo_url_help": "(Optional) Customize the Logo that appears in the email, pass a url to your logo",
+    "support_contact_help": "(Optional) Customize the support email address that appears in the email."
+  },
+  "email_events": {
+    "title": "Email Notifications",
+    "desc": "Select which events should trigger email notifications.",
+    "updated_success": "Email event settings updated successfully",
+    "reset_success": "Email event settings reset to defaults",
+    "save_changes": "Save Changes",
+    "reset_defaults": "Reset to Defaults",
+    "virtual_key_created_desc": "An email will be sent to the user when a new virtual key is created with their user ID",
+    "new_user_invitation_desc": "An email will be sent to the email address of the user when a new user is created",
+    "default_event_desc": "Receive an email notification when {{words}}"
   }
 }

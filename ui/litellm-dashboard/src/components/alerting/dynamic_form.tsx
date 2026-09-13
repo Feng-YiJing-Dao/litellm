@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { CircleCheck, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +34,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
   handleSubmit,
   premiumUser,
 }) => {
+  const { t } = useTranslation(["settings", "common"]);
   const form = useForm<AlertingFormValues>({ defaultValues: {} });
 
   const onFinish = (formData: AlertingFormValues) => {
@@ -95,10 +97,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
           </TableCell>
           {value.premium_field && !premiumUser ? (
             <TableCell>
-              <Button className="flex items-center justify-center">
-                <a href="https://forms.gle/W3U4PZpJGFHWtHyA9" target="_blank">
-                  ✨ Enterprise Feature
-                </a>
+              <Button type="button" variant="outline" size="sm" disabled className="flex items-center justify-center cursor-default">
+                {t("settings:dynamic_form.enterprise_feature", { defaultValue: "✨ Enterprise Feature" })}
               </Button>
             </TableCell>
           ) : (
@@ -108,12 +108,16 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
             {value.stored_in_db == true ? (
               <Badge variant="secondary">
                 <CircleCheck />
-                In DB
+                {t("settings:dynamic_form.in_db", { defaultValue: "In DB" })}
               </Badge>
             ) : value.stored_in_db == false ? (
-              <Badge variant="outline">In Config</Badge>
+              <Badge variant="outline">
+                {t("settings:dynamic_form.in_config", { defaultValue: "In Config" })}
+              </Badge>
             ) : (
-              <Badge variant="outline">Not Set</Badge>
+              <Badge variant="outline">
+                {t("settings:dynamic_form.not_set", { defaultValue: "Not Set" })}
+              </Badge>
             )}
           </TableCell>
           <TableCell>
@@ -121,7 +125,10 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
               type="button"
               variant="ghost"
               size="icon-sm"
-              aria-label={`Reset ${value.field_name}`}
+              aria-label={t("settings:dynamic_form.reset_field", {
+                field_name: value.field_name,
+                defaultValue: `Reset ${value.field_name}`,
+              })}
               onClick={() => handleResetField(value.field_name, index)}
               className="text-destructive"
             >
@@ -131,7 +138,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({
         </TableRow>
       ))}
       <div>
-        <Button type="submit">Update Settings</Button>
+        <Button type="submit">
+          {t("settings:dynamic_form.update_settings", { defaultValue: "Update Settings" })}
+        </Button>
       </div>
     </form>
   );

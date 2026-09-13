@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
@@ -33,6 +34,7 @@ const PREMIUM_ONLY_FIELDS = ["EMAIL_LOGO_URL", "EMAIL_SUPPORT_CONTACT"];
 const SENSITIVE_FIELD_PATTERN = /(PASSWORD|SECRET|KEY|TOKEN)/i;
 
 const EmailSettings: React.FC<EmailSettingsProps> = ({ accessToken, premiumUser, alerts }) => {
+  const { t } = useTranslation(["settings", "common"]);
   const [visibleFields, setVisibleFields] = useState<Record<string, boolean>>({});
 
   const toggleFieldVisibility = (key: string) => {
@@ -78,7 +80,7 @@ const EmailSettings: React.FC<EmailSettingsProps> = ({ accessToken, premiumUser,
     };
     try {
       await setCallbacksCall(accessToken, payload);
-      toast.success("Email settings updated successfully");
+      toast.success(t("settings:email.updated_success", { defaultValue: "Email settings updated successfully" }));
     } catch (error) {
       toast.fromError(error);
     }
@@ -91,7 +93,9 @@ const EmailSettings: React.FC<EmailSettingsProps> = ({ accessToken, premiumUser,
       </div>
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Email Server Settings</CardTitle>
+          <CardTitle className="text-base">
+            {t("settings:email.title", { defaultValue: "Email Server Settings" })}
+          </CardTitle>
           <p className="text-sm">
             <a
               href="https://docs.litellm.ai/docs/proxy/email"
@@ -116,14 +120,9 @@ const EmailSettings: React.FC<EmailSettingsProps> = ({ accessToken, premiumUser,
                   return (
                     <div key={key} className="space-y-1">
                       {isLocked ? (
-                        <a
-                          href="https://forms.gle/W3U4PZpJGFHWtHyA9"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-sm text-primary underline underline-offset-4"
-                        >
+                        <p className="text-sm text-muted-foreground font-medium">
                           ✨ {key}
-                        </a>
+                        </p>
                       ) : (
                         <p className="text-sm">{key}</p>
                       )}
@@ -139,7 +138,11 @@ const EmailSettings: React.FC<EmailSettingsProps> = ({ accessToken, premiumUser,
                             <InputGroupButton
                               size="icon-xs"
                               onClick={() => toggleFieldVisibility(key)}
-                              aria-label={isVisible ? "Hide credential" : "Show credential"}
+                              aria-label={
+                                isVisible
+                                  ? t("settings:email.hide_credential", { defaultValue: "Hide credential" })
+                                  : t("settings:email.show_credential", { defaultValue: "Show credential" })
+                              }
                             >
                               {isVisible ? <EyeOff /> : <Eye />}
                             </InputGroupButton>
@@ -154,20 +157,26 @@ const EmailSettings: React.FC<EmailSettingsProps> = ({ accessToken, premiumUser,
             ))}
 
           <div className="mt-6 flex gap-2">
-            <Button onClick={() => handleSaveEmailSettings()}>Save Changes</Button>
+            <Button onClick={() => handleSaveEmailSettings()}>
+              {t("settings:email.save_changes", { defaultValue: "Save Changes" })}
+            </Button>
             <Button
               variant="secondary"
               onClick={async () => {
                 if (!accessToken) return;
                 try {
                   await serviceHealthCheck(accessToken, "email");
-                  toast.success("Email test triggered. Check your configured email inbox/logs.");
+                  toast.success(
+                    t("settings:email.test_triggered", {
+                      defaultValue: "Email test triggered. Check your configured email inbox/logs.",
+                    }),
+                  );
                 } catch (error) {
                   toast.fromError(error);
                 }
               }}
             >
-              Test Email Alerts
+              {t("settings:email.test_alerts", { defaultValue: "Test Email Alerts" })}
             </Button>
           </div>
         </CardContent>

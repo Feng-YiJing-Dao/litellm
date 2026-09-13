@@ -19,10 +19,12 @@ import { cn } from "@/lib/cva.config";
 import { AutoRouterRow } from "./autoRouterRows";
 import { fitPills } from "./fitPills";
 
-function TypeCell({ row }: { row: AutoRouterRow }) {
+function TypeCell({ row, t }: { row: AutoRouterRow; t?: (key: any, options?: any) => any }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+  const label = tr(`auto_routers.type_labels.${row.typeLabel}`, { defaultValue: row.typeLabel });
   return (
     <Badge variant="secondary" className="font-normal">
-      {row.typeLabel}
+      {label}
     </Badge>
   );
 }
@@ -67,14 +69,17 @@ function TargetsCell({ targets }: { targets: string[] }) {
 function AutoRouterRowActions({
   row,
   onDeleteClick,
+  t,
 }: {
   row: AutoRouterRow;
   onDeleteClick: (row: AutoRouterRow) => void;
+  t?: (key: any, options?: any) => any;
 }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label={`Open actions for ${row.name}`}
+        aria-label={tr("auto_routers.open_actions_aria", { name: row.name, defaultValue: `Open actions for ${row.name}` })}
         data-testid={`auto-router-actions-${row.id}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >
@@ -87,7 +92,7 @@ function AutoRouterRowActions({
           onClick={() => onDeleteClick(row)}
         >
           <Trash2 />
-          Delete auto router
+          {tr("auto_routers.delete_auto_router", { defaultValue: "Delete auto router" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -98,77 +103,84 @@ interface AutoRoutersTableColumnsDeps {
   canModify: boolean;
   onRouterClick: (row: AutoRouterRow) => void;
   onDeleteClick: (row: AutoRouterRow) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getAutoRoutersTableColumns = ({
   canModify,
   onRouterClick,
   onDeleteClick,
-}: AutoRoutersTableColumnsDeps): ColumnDef<AutoRouterRow>[] => [
-  {
-    id: "name",
-    accessorKey: "name",
-    meta: { title: "Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Name" />,
-    size: 260,
-    enableSorting: true,
-    cell: ({ row }) => <IdentityCell title={row.original.name || "-"} onClick={() => onRouterClick(row.original)} />,
-  },
-  {
-    id: "kind",
-    accessorKey: "kind",
-    meta: { title: "Type" },
-    header: "Type",
-    size: 180,
-    enableSorting: false,
-    cell: ({ row }) => <TypeCell row={row.original} />,
-  },
-  {
-    id: "targets",
-    meta: { title: "Routes to" },
-    header: "Routes to",
-    size: 320,
-    enableSorting: false,
-    cell: ({ row }) => <TargetsCell targets={row.original.targets} />,
-  },
-  {
-    id: "defaultModel",
-    accessorKey: "defaultModel",
-    meta: { title: "Default model" },
-    header: "Default model",
-    size: 200,
-    enableSorting: false,
-    cell: ({ row }) =>
-      row.original.defaultModel ? (
-        <Badge variant="secondary" className="max-w-full truncate font-normal" title={row.original.defaultModel}>
-          {row.original.defaultModel}
-        </Badge>
-      ) : (
-        <span className="text-sm text-muted-foreground">-</span>
-      ),
-  },
-  {
-    id: "createdAt",
-    accessorKey: "createdAt",
-    meta: { title: "Created" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created" />,
-    size: 150,
-    enableSorting: true,
-    sortingFn: "datetime",
-    sortUndefined: "last",
-    cell: ({ row }) => <DateCell value={row.original.createdAt} precision="date" />,
-  },
-  ...(canModify
-    ? [
-        {
-          id: "actions",
-          meta: { title: "" },
-          header: "",
-          size: 60,
-          enableSorting: false,
-          cell: ({ row }) =>
-            row.original.canDelete ? <AutoRouterRowActions row={row.original} onDeleteClick={onDeleteClick} /> : null,
-        } satisfies ColumnDef<AutoRouterRow>,
-      ]
-    : []),
-];
+  t,
+}: AutoRoutersTableColumnsDeps): ColumnDef<AutoRouterRow>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+  return [
+    {
+      id: "name",
+      accessorKey: "name",
+      meta: { title: tr("auto_routers.col_name", { defaultValue: "Name" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("auto_routers.col_name", { defaultValue: "Name" })} />,
+      size: 260,
+      enableSorting: true,
+      cell: ({ row }) => <IdentityCell title={row.original.name || "-"} onClick={() => onRouterClick(row.original)} />,
+    },
+    {
+      id: "kind",
+      accessorKey: "kind",
+      meta: { title: tr("auto_routers.col_type", { defaultValue: "Type" }) },
+      header: tr("auto_routers.col_type", { defaultValue: "Type" }),
+      size: 180,
+      enableSorting: false,
+      cell: ({ row }) => <TypeCell row={row.original} t={t} />,
+    },
+    {
+      id: "targets",
+      meta: { title: tr("auto_routers.col_targets", { defaultValue: "Routes to" }) },
+      header: tr("auto_routers.col_targets", { defaultValue: "Routes to" }),
+      size: 320,
+      enableSorting: false,
+      cell: ({ row }) => <TargetsCell targets={row.original.targets} />,
+    },
+    {
+      id: "defaultModel",
+      accessorKey: "defaultModel",
+      meta: { title: tr("auto_routers.col_default_model", { defaultValue: "Default model" }) },
+      header: tr("auto_routers.col_default_model", { defaultValue: "Default model" }),
+      size: 200,
+      enableSorting: false,
+      cell: ({ row }) =>
+        row.original.defaultModel ? (
+          <Badge variant="secondary" className="max-w-full truncate font-normal" title={row.original.defaultModel}>
+            {row.original.defaultModel}
+          </Badge>
+        ) : (
+          <span className="text-sm text-muted-foreground">-</span>
+        ),
+    },
+    {
+      id: "createdAt",
+      accessorKey: "createdAt",
+      meta: { title: tr("auto_routers.col_created", { defaultValue: "Created" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("auto_routers.col_created", { defaultValue: "Created" })} />,
+      size: 150,
+      enableSorting: true,
+      sortingFn: "datetime",
+      sortUndefined: "last",
+      cell: ({ row }) => <DateCell value={row.original.createdAt} precision="date" />,
+    },
+    ...(canModify
+      ? [
+          {
+            id: "actions",
+            meta: { title: "" },
+            header: "",
+            size: 60,
+            enableSorting: false,
+            cell: ({ row }) =>
+              row.original.canDelete ? (
+                <AutoRouterRowActions row={row.original} onDeleteClick={onDeleteClick} t={t} />
+              ) : null,
+          } satisfies ColumnDef<AutoRouterRow>,
+        ]
+      : []),
+  ];
+};

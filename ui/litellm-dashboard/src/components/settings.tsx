@@ -325,17 +325,23 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
     }
   };
   const alerts_to_UI_NAME: Record<string, string> = {
-    llm_exceptions: "LLM Exceptions",
-    llm_too_slow: "LLM Responses Too Slow",
-    llm_requests_hanging: "LLM Requests Hanging",
-    budget_alerts: "Budget Alerts (API Keys, Users)",
-    user_spend_thresholds: "User Spend Thresholds (Daily/Monthly)",
-    user_spend_anomalies: "User Spend Anomaly Detection",
-    db_exceptions: "Database Exceptions (Read/Write)",
-    daily_reports: "Weekly/Monthly Spend Reports",
-    outage_alerts: "Outage Alerts",
-    region_outage_alerts: "Region Outage Alerts",
-    model_deprecation_warnings: "Model Deprecation Warnings",
+    llm_exceptions: t("settings:alert_names.llm_exceptions", { defaultValue: "LLM Exceptions" }),
+    llm_too_slow: t("settings:alert_names.llm_too_slow", { defaultValue: "LLM Responses Too Slow" }),
+    llm_requests_hanging: t("settings:alert_names.llm_requests_hanging", { defaultValue: "LLM Requests Hanging" }),
+    budget_alerts: t("settings:alert_names.budget_alerts", { defaultValue: "Budget Alerts (API Keys, Users)" }),
+    user_spend_thresholds: t("settings:alert_names.user_spend_thresholds", {
+      defaultValue: "User Spend Thresholds (Daily/Monthly)",
+    }),
+    user_spend_anomalies: t("settings:alert_names.user_spend_anomalies", {
+      defaultValue: "User Spend Anomaly Detection",
+    }),
+    db_exceptions: t("settings:alert_names.db_exceptions", { defaultValue: "Database Exceptions (Read/Write)" }),
+    daily_reports: t("settings:alert_names.daily_reports", { defaultValue: "Weekly/Monthly Spend Reports" }),
+    outage_alerts: t("settings:alert_names.outage_alerts", { defaultValue: "Outage Alerts" }),
+    region_outage_alerts: t("settings:alert_names.region_outage_alerts", { defaultValue: "Region Outage Alerts" }),
+    model_deprecation_warnings: t("settings:alert_names.model_deprecation_warnings", {
+      defaultValue: "Model Deprecation Warnings",
+    }),
   };
 
   useEffect(() => {
@@ -559,19 +565,22 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
           </TabsContent>
           <TabsContent value="alerting-types" keepMounted>
             <Card className="p-6">
-              <p className="my-2">
-                Alerts are sent to any Slack-compatible incoming webhook URL (Slack, Rocket.Chat, Mattermost, etc.). Get
-                Slack webhook urls from{" "}
-                <a href="https://api.slack.com/messaging/webhooks" target="_blank" style={{ color: "blue" }}>
-                  here
-                </a>
+              <p className="my-2 text-sm text-muted-foreground">
+                {t("settings:alerts_panel.webhook_notice", {
+                  defaultValue:
+                    "Alerts are sent to any Slack-compatible incoming webhook URL (Slack, Rocket.Chat, Mattermost, etc.).",
+                })}
               </p>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead></TableHead>
                     <TableHead></TableHead>
-                    <TableHead>Webhook URL (Slack-compatible)</TableHead>
+                    <TableHead>
+                      {t("settings:alerts_panel.webhook_header", {
+                        defaultValue: "Webhook URL (Slack-compatible)",
+                      })}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -588,10 +597,10 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
                               onCheckedChange={() => handleSwitchChange(key)}
                             />
                           ) : (
-                            <Button className="flex items-center justify-center">
-                              <a href="https://forms.gle/W3U4PZpJGFHWtHyA9" target="_blank">
-                                ✨ Enterprise Feature
-                              </a>
+                            <Button className="flex items-center justify-center" size="sm" variant="outline" disabled>
+                              {t("settings:alerts_panel.enterprise_feature", {
+                                defaultValue: "✨ Enterprise Feature",
+                              })}
                             </Button>
                           )
                         ) : (
@@ -622,7 +631,7 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
                 </TableBody>
               </Table>
               <Button size="xs" className="mt-2" onClick={handleSaveAlerts}>
-                Save Changes
+                {t("settings:alerts_panel.save_changes", { defaultValue: "Save Changes" })}
               </Button>
 
               <Button
@@ -630,7 +639,10 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
                   try {
                     await serviceHealthCheck(accessToken, "slack");
                     toast.success(
-                      "Alert test triggered. Test request to slack made - check logs/alerts on slack to verify",
+                      t("settings:alerts_panel.alert_test_success", {
+                        defaultValue:
+                          "Alert test triggered. Test request to slack made - check logs/alerts on slack to verify",
+                      }),
                     );
                   } catch (error) {
                     toast.fromError(parseErrorMessage(error));
@@ -638,7 +650,7 @@ const Settings: React.FC<SettingsPageProps> = ({ accessToken, userRole, userID, 
                 }}
                 className="mx-2"
               >
-                Test Alerts
+                {t("settings:alerts_panel.test_alerts", { defaultValue: "Test Alerts" })}
               </Button>
             </Card>
           </TabsContent>

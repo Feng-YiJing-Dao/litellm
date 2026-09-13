@@ -90,5 +90,40 @@
     "file_label": "Upload .prompt File",
     "upload_hint": "Click or drag .prompt file here to upload",
     "submit": "Upload and Create"
+  },
+  "prompts": {
+    "title": "Prompt Management",
+    "subtitle": "Manage and version reusable prompt templates across environments",
+    "all_environments": "All Environments",
+    "environments": {
+      "development": "Development",
+      "staging": "Staging",
+      "production": "Production"
+    },
+    "buttons": {
+      "add_new": "Add New Prompt",
+      "upload_file": "Upload .prompt File",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save",
+      "copy_id": "Copy prompt ID"
+    },
+    "table": {
+      "prompt_id": "Prompt ID",
+      "model": "Model",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "environment": "Environment",
+      "created_by": "Created By",
+      "type": "Type",
+      "actions": "Actions",
+      "no_prompts": "No prompts yet",
+      "no_prompts_desc": "Add a prompt to start managing reusable templates.",
+      "loading": "Loading prompts…"
+    },
+    "delete_modal": {
+      "title": "Delete Prompt",
+      "description": "Are you sure you want to delete the {{environment}} copy of prompt: {{name}}? This action cannot be undone."
+    }
   }
 }

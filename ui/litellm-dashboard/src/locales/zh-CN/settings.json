@@ -33,11 +33,26 @@
       "actions": "操作"
     }
   },
+  "alert_names": {
+    "llm_exceptions": "LLM 调用异常",
+    "llm_too_slow": "LLM 响应过慢",
+    "llm_requests_hanging": "LLM 请求挂起",
+    "budget_alerts": "预算超额告警 (API 密钥、用户)",
+    "user_spend_thresholds": "用户消费阈值告警 (日/月)",
+    "user_spend_anomalies": "用户消费异常检测",
+    "db_exceptions": "数据库异常 (读/写)",
+    "daily_reports": "周/月度消费报告",
+    "outage_alerts": "服务中断告警",
+    "region_outage_alerts": "区域故障告警",
+    "model_deprecation_warnings": "模型弃用预警"
+  },
   "alerts_panel": {
     "webhook_notice": "告警将推送至任何兼容 Slack Webhook 的服务（如 Slack、Rocket.Chat、Mattermost 等）。",
-    "get_webhook_url": "点此获取 Slack Webhook 地址",
+    "webhook_header": "Webhook 地址 (兼容 Slack 格式)",
     "test_alerts": "测试告警",
-    "save_changes": "保存修改"
+    "save_changes": "保存修改",
+    "enterprise_feature": "✨ 企业版特性",
+    "alert_test_success": "告警测试已触发。已向 Slack 发送测试请求，请在 Slack 中检查日志或告警信息"
   },
   "ui_theme": {
     "title": "界面外观定制",
@@ -62,5 +77,56 @@
     "title": "OpenAI 兼容代理：接口参考",
     "desc": "本网关完全兼容 OpenAI API 规范。这意味着您的 API 密钥可以直接搭配 OpenAI 官方 SDK 使用。只需将 base_url 替换为您的代理地址即可。下方附参考示例：",
     "docs_link": "接口参考文档"
+  },
+  "dynamic_form": {
+    "enterprise_feature": "✨ 企业版功能",
+    "in_db": "已存入数据库",
+    "in_config": "在配置文件中",
+    "not_set": "未设置",
+    "reset_field": "重置 {{field_name}}",
+    "update_settings": "更新设置"
+  },
+  "alerting": {
+    "wait_proxy_update": "请等待约 10 秒以使代理完成配置更新。"
+  },
+  "ms_teams": {
+    "title": "Microsoft Teams 告警设置",
+    "desc": "通过传入 Webhook 将告警发送至 Microsoft Teams 频道。",
+    "webhook_url_help": "Teams 频道的传入 Webhook URL（工作流或传入 Webhook 连接器）",
+    "required": "必填 *",
+    "hide_credential": "隐藏凭据",
+    "show_credential": "显示凭据",
+    "save_changes": "保存更改",
+    "test_alerts": "测试 MS Teams 告警",
+    "updated_success": "MS Teams 设置更新成功",
+    "test_triggered": "已触发 MS Teams 测试告警，请检查您的 Teams 频道。"
+  },
+  "email": {
+    "title": "邮件服务器设置",
+    "save_changes": "保存更改",
+    "test_alerts": "测试邮件告警",
+    "updated_success": "邮件设置更新成功",
+    "test_triggered": "已触发邮件测试，请检查您配置的收件箱或日志。",
+    "hide_credential": "隐藏凭据",
+    "show_credential": "显示凭据",
+    "required": "必填 *",
+    "smtp_host_help": "输入 SMTP 主机地址，例如 `smtp.resend.com`",
+    "smtp_port_help": "输入 SMTP 端口号，例如 `587`",
+    "smtp_username_help": "输入 SMTP 用户名，例如 `username`",
+    "smtp_sender_help": "输入发件人邮箱地址，例如 `sender@example.com`",
+    "test_email_help": "用于接收“测试邮件告警”的邮箱地址，例如 `info@example.com`",
+    "logo_url_help": "（可选）自定义邮件中显示的 Logo，传入图片 URL",
+    "support_contact_help": "（可选）自定义邮件中显示的技术支持邮箱地址。"
+  },
+  "email_events": {
+    "title": "邮件通知设置",
+    "desc": "选择应当触发邮件通知的系统事件。",
+    "updated_success": "邮件通知事件设置更新成功",
+    "reset_success": "邮件通知事件设置已恢复为默认值",
+    "save_changes": "保存更改",
+    "reset_defaults": "恢复默认值",
+    "virtual_key_created_desc": "当使用用户 ID 创建新的虚拟密钥时，将向该用户发送邮件通知",
+    "new_user_invitation_desc": "当创建新用户时，将向该用户的邮箱地址发送邀请邮件",
+    "default_event_desc": "当发生 {{words}} 时接收邮件通知"
   }
 }

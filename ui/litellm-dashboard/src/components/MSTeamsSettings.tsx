@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@/components/ui/input-group";
@@ -18,18 +19,10 @@ interface MSTeamsSettingsProps {
   alerts: AlertingDestination[];
 }
 
-const FIELD_HELP: Record<string, React.ReactNode> = {
-  MS_TEAMS_WEBHOOK_URL: (
-    <>
-      Incoming webhook URL for your Teams channel (Workflows or incoming webhook connector)
-      <span className="text-destructive"> Required * </span>
-    </>
-  ),
-};
-
 const SENSITIVE_FIELD_PATTERN = /(PASSWORD|SECRET|KEY|TOKEN|URL)/i;
 
 const MSTeamsSettings: React.FC<MSTeamsSettingsProps> = ({ accessToken, userID, userRole, alerts }) => {
+  const { t } = useTranslation(["settings", "common"]);
   const [visibleFields, setVisibleFields] = useState<Record<string, boolean>>({});
 
   const toggleFieldVisibility = (key: string) => {
@@ -77,7 +70,7 @@ const MSTeamsSettings: React.FC<MSTeamsSettingsProps> = ({ accessToken, userID, 
         environment_variables: updatedVariables,
       };
       await setCallbacksCall(accessToken, payload);
-      toast.success("MS Teams settings updated successfully");
+      toast.success(t("settings:ms_teams.updated_success", { defaultValue: "MS Teams settings updated successfully" }));
     } catch (error) {
       toast.fromError(error);
     }
@@ -86,17 +79,13 @@ const MSTeamsSettings: React.FC<MSTeamsSettingsProps> = ({ accessToken, userID, 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Microsoft Teams Alerting Settings</CardTitle>
-        <p className="text-sm">
-          Send LiteLLM alerts to a Microsoft Teams channel via an incoming webhook. Create one from{" "}
-          <a
-            href="https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook"
-            target="_blank"
-            rel="noreferrer"
-            className="text-primary underline underline-offset-4"
-          >
-            Microsoft Docs: incoming webhooks
-          </a>
+        <CardTitle className="text-base">
+          {t("settings:ms_teams.title", { defaultValue: "Microsoft Teams Alerting Settings" })}
+        </CardTitle>
+        <p className="text-sm text-muted-foreground">
+          {t("settings:ms_teams.desc", {
+            defaultValue: "Send alerts to a Microsoft Teams channel via an incoming webhook.",
+          })}
         </p>
       </CardHeader>
 
@@ -122,14 +111,31 @@ const MSTeamsSettings: React.FC<MSTeamsSettingsProps> = ({ accessToken, userID, 
                           <InputGroupButton
                             size="icon-xs"
                             onClick={() => toggleFieldVisibility(key)}
-                            aria-label={isVisible ? "Hide credential" : "Show credential"}
+                            aria-label={
+                              isVisible
+                                ? t("settings:ms_teams.hide_credential", { defaultValue: "Hide credential" })
+                                : t("settings:ms_teams.show_credential", { defaultValue: "Show credential" })
+                            }
                           >
                             {isVisible ? <EyeOff /> : <Eye />}
                           </InputGroupButton>
                         </InputGroupAddon>
                       )}
                     </InputGroup>
-                    <div className="text-xs text-muted-foreground italic">{FIELD_HELP[key]}</div>
+                    <div className="text-xs text-muted-foreground italic">
+                      {key === "MS_TEAMS_WEBHOOK_URL" && (
+                        <>
+                          {t("settings:ms_teams.webhook_url_help", {
+                            defaultValue:
+                              "Incoming webhook URL for your Teams channel (Workflows or incoming webhook connector)",
+                          })}
+                          <span className="text-destructive">
+                            {" "}
+                            {t("settings:ms_teams.required", { defaultValue: "Required *" })}{" "}
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -137,20 +143,26 @@ const MSTeamsSettings: React.FC<MSTeamsSettingsProps> = ({ accessToken, userID, 
           ))}
 
         <div className="mt-6 flex gap-2">
-          <Button onClick={() => handleSaveMSTeamsSettings()}>Save Changes</Button>
+          <Button onClick={() => handleSaveMSTeamsSettings()}>
+            {t("settings:ms_teams.save_changes", { defaultValue: "Save Changes" })}
+          </Button>
           <Button
             variant="secondary"
             onClick={async () => {
               if (!accessToken) return;
               try {
                 await serviceHealthCheck(accessToken, "ms_teams");
-                toast.success("MS Teams test alert triggered. Check your Teams channel.");
+                toast.success(
+                  t("settings:ms_teams.test_triggered", {
+                    defaultValue: "MS Teams test alert triggered. Check your Teams channel.",
+                  }),
+                );
               } catch (error) {
                 toast.fromError(error);
               }
             }}
           >
-            Test MS Teams Alerts
+            {t("settings:ms_teams.test_alerts", { defaultValue: "Test MS Teams Alerts" })}
           </Button>
         </div>
       </CardContent>

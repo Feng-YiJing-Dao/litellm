@@ -144,5 +144,41 @@
     "delete_tag": "删除标签",
     "delete_tag_confirm": "确定要删除此标签吗？此操作无法撤消。",
     "tag_info": "标签信息"
+  },
+  "auto_routers": {
+    "title": "自动路由",
+    "desc": "自动路由部署在您的模型之上，并按请求自动选择最合适的大模型。它们的调用方式与常规模型完全相同，客户端只需请求同一个模型名称。",
+    "add_btn": "添加自动路由",
+    "modal_title": "添加自动路由",
+    "modal_desc": "通过对请求复杂度进行分类，将每个请求路由到最合适的模型。调用方式与常规模型相同，客户端只需使用同一个模型名称。",
+    "deleted_success": "已删除自动路由：{{name}}",
+    "delete_failed": "删除自动路由失败：{{error}}",
+    "delete_title": "删除自动路由",
+    "delete_msg": "确定要删除“{{name}}”吗？任何继续调用该模型名称的客户端将会报错。",
+    "info_title": "自动路由信息",
+    "info_name": "名称",
+    "info_type": "类型",
+    "info_id": "ID",
+    "empty_title": "暂无自动路由",
+    "empty_desc_can_modify": "创建自动路由以按请求智能选择最合适的模型，无需客户端固定指定模型。",
+    "empty_desc_readonly": "自动路由会根据请求自动选择合适的模型，无需固定指定。",
+    "loading": "正在加载自动路由…",
+    "col_name": "名称",
+    "col_type": "类型",
+    "col_targets": "路由目标",
+    "col_default_model": "默认模型",
+    "col_created": "创建时间",
+    "delete_auto_router": "删除自动路由",
+    "open_actions_aria": "打开 {{name}} 的操作菜单",
+    "type_labels": {
+      "Heuristic": "启发式",
+      "Semantic": "语义路由",
+      "Adaptive": "自适应",
+      "Quality": "质量优先",
+      "LLM Classifier": "大模型分类器",
+      "Heuristic first": "启发式优先",
+      "Hybrid": "混合模式",
+      "Custom classifier": "自定义分类器"
+    }
   }
 }
