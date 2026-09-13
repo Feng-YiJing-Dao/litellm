@@ -198,10 +198,10 @@
     "model_hub_url": "模型中心地址:",
     "copy_url": "复制链接",
     "tabs": {
-      "models": "Model Hub",
-      "agents": "Agent Hub",
-      "mcp": "MCP Hub",
-      "skills": "Skill Hub"
+      "models": "模型广场",
+      "agents": "智能体中心",
+      "mcp": "MCP 中心",
+      "skills": "技能中心"
     },
     "buttons": {
       "make_models_public": "选择要公开的模型",
