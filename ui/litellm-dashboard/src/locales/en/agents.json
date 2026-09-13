@@ -52,14 +52,20 @@
     "mcp_toolsets": "MCP Toolsets",
     "tool_perms_per_server": "Tool permissions per server"
   },
-  "create_modal": {
-    "title": "Add New Agent",
-    "steps": {
-      "configure": "Configure",
-      "entitlements": "Entitlements",
-      "governance": "Governance",
-      "management": "Agent Management",
-      "ready": "Ready"
-    }
+    "create_modal": {
+      "title": "Add New Agent",
+      "steps": {
+        "configure": "Configure",
+        "entitlements": "Entitlements",
+        "governance": "Governance",
+        "management": "Agent Management",
+        "ready": "Ready"
+      }
+    },
+  "virtual_keys": {
+    "title": "Virtual Keys",
+    "loading": "Loading keys...",
+    "no_keys": "No virtual key assigned to this agent.",
+    "unnamed_key": "Unnamed key"
   }
 }

@@ -40,5 +40,17 @@
     "value_placeholder": "输入文本内容...",
     "metadata_placeholder": "输入有效 JSON 或留空",
     "saving": "正在保存..."
+  },
+  "drawer": {
+    "default_title": "记忆",
+    "memory_id": "记忆 ID",
+    "user_id": "用户 ID",
+    "team_id": "团队 ID",
+    "value": "内容值",
+    "metadata": "元数据",
+    "created": "创建于 {{time}}",
+    "created_by": "由 {{user}} 创建于 {{time}}",
+    "updated": "更新于 {{time}}",
+    "updated_by": "由 {{user}} 更新于 {{time}}"
   }
 }

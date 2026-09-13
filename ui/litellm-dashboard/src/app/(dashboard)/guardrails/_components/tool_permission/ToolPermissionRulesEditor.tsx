@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Info, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,6 +58,7 @@ const ensureConfig = (config?: ToolPermissionConfig): ToolPermissionConfig => ({
 });
 
 const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ value, onChange, disabled = false }) => {
+  const { t } = useTranslation("guardrails");
   const config = ensureConfig(value);
 
   const updateConfig = (partial: Partial<ToolPermissionConfig>) => {
@@ -135,14 +137,16 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
           size="sm"
           onClick={() => updateRule(index, { allowed_param_patterns: { "": "" } })}
         >
-          + Restrict tool arguments (optional)
+          {t("tool_permission.restrict_args", { defaultValue: "+ Restrict tool arguments (optional)" })}
         </Button>
       );
     }
 
     return (
       <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">Argument constraints (dot or array paths)</p>
+        <p className="text-sm text-muted-foreground">
+          {t("tool_permission.argument_constraints", { defaultValue: "Argument constraints (dot or array paths)" })}
+        </p>
         {entries.map(([path, pattern], patternIndex) => (
           <div key={`${rule.id || index}-${patternIndex}`} className="flex items-start gap-2">
             <Input
@@ -185,7 +189,7 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
             })
           }
         >
-          + Add another constraint
+          {t("tool_permission.add_another_constraint", { defaultValue: "+ Add another constraint" })}
         </Button>
       </div>
     );
@@ -196,16 +200,20 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
       <CardContent>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-lg font-semibold">LiteLLM Tool Permission Guardrail</p>
+            <p className="text-lg font-semibold">
+              {t("tool_permission.title", { defaultValue: "LiteLLM Tool Permission Guardrail" })}
+            </p>
             <p className="text-sm text-muted-foreground">
-              Provide regex patterns (e.g., ^mcp__github_.*$) for tool names or types and optionally constrain payload
-              fields.
+              {t("tool_permission.subtitle", {
+                defaultValue:
+                  "Provide regex patterns (e.g., ^mcp__github_.*$) for tool names or types and optionally constrain payload fields.",
+              })}
             </p>
           </div>
           {!disabled && (
             <Button onClick={addRule}>
               <Plus />
-              Add Rule
+              {t("tool_permission.add_rule", { defaultValue: "Add Rule" })}
             </Button>
           )}
         </div>
@@ -213,22 +221,28 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
         <Separator className="my-4" />
 
         {config.rules.length === 0 ? (
-          <div className="py-10 text-center text-muted-foreground">No tool rules added yet</div>
+          <div className="py-10 text-center text-muted-foreground">
+            {t("tool_permission.no_rules", { defaultValue: "No tool rules added yet" })}
+          </div>
         ) : (
           <div className="space-y-4">
             {config.rules.map((rule, index) => (
               <Card key={rule.id || index} className="bg-muted/40">
                 <CardContent>
                   <div className="mb-3 flex items-center justify-between">
-                    <p className="font-semibold">Rule {index + 1}</p>
+                    <p className="font-semibold">
+                      {t("tool_permission.rule_n", { index: index + 1, defaultValue: `Rule ${index + 1}` })}
+                    </p>
                     <Button variant="ghost" disabled={disabled} onClick={() => removeRule(index)}>
                       <Trash2 />
-                      Remove
+                      {t("tool_permission.remove", { defaultValue: "Remove" })}
                     </Button>
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                      <p className="text-sm font-medium">Rule ID</p>
+                      <p className="text-sm font-medium">
+                        {t("tool_permission.rule_id", { defaultValue: "Rule ID" })}
+                      </p>
                       <Input
                         disabled={disabled}
                         placeholder="unique_rule_id"
@@ -237,7 +251,9 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
                       />
                     </div>
                     <div>
-                      <p className="text-sm font-medium">Tool Name (optional)</p>
+                      <p className="text-sm font-medium">
+                        {t("tool_permission.tool_name_optional", { defaultValue: "Tool Name (optional)" })}
+                      </p>
                       <Input
                         disabled={disabled}
                         placeholder="^mcp__github_.*$"
@@ -253,7 +269,9 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
 
                   <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                      <p className="text-sm font-medium">Tool Type (optional)</p>
+                      <p className="text-sm font-medium">
+                        {t("tool_permission.tool_type_optional", { defaultValue: "Tool Type (optional)" })}
+                      </p>
                       <Input
                         disabled={disabled}
                         placeholder="^function$"
@@ -268,7 +286,9 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
                   </div>
 
                   <div className="mt-4 flex flex-col gap-2">
-                    <p className="text-sm font-medium">Decision</p>
+                    <p className="text-sm font-medium">
+                      {t("tool_permission.decision", { defaultValue: "Decision" })}
+                    </p>
                     <Select
                       items={DECISION_ITEMS}
                       disabled={disabled}
@@ -301,7 +321,9 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
 
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <p className="text-sm font-medium">Default action</p>
+            <p className="text-sm font-medium">
+              {t("tool_permission.default_action", { defaultValue: "Default action" })}
+            </p>
             <Select
               items={DECISION_ITEMS}
               disabled={disabled}
@@ -324,7 +346,7 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
           </div>
           <div>
             <p className="flex items-center gap-1 text-sm font-medium">
-              On disallowed action
+              {t("tool_permission.on_disallowed_action", { defaultValue: "On disallowed action" })}
               <Tooltip>
                 <TooltipTrigger
                   render={
@@ -334,8 +356,10 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
                   }
                 />
                 <TooltipContent>
-                  Block returns an error when a forbidden tool is invoked. Rewrite strips the tool call but lets the
-                  rest of the response continue.
+                  {t("tool_permission.on_disallowed_tooltip", {
+                    defaultValue:
+                      "Block returns an error when a forbidden tool is invoked. Rewrite strips the tool call but lets the rest of the response continue.",
+                  })}
                 </TooltipContent>
               </Tooltip>
             </p>
@@ -362,12 +386,16 @@ const ToolPermissionRulesEditor: React.FC<ToolPermissionRulesEditorProps> = ({ v
         </div>
 
         <div className="mt-4">
-          <p className="text-sm font-medium">Violation message (optional)</p>
+          <p className="text-sm font-medium">
+            {t("tool_permission.violation_message", { defaultValue: "Violation message (optional)" })}
+          </p>
           <Textarea
             className="field-sizing-fixed"
             disabled={disabled}
             rows={3}
-            placeholder="This violates our org policy..."
+            placeholder={t("tool_permission.violation_placeholder", {
+              defaultValue: "This violates our org policy...",
+            })}
             value={config.violation_message_template}
             onChange={(e) => updateConfig({ violation_message_template: e.target.value })}
           />

@@ -274,5 +274,16 @@
   "tooltip_allowed_skills": "Enabled skills are visible to every key. Grant disabled (private) Claude Code plugins to this key here",
   "help_skills": "Select private skills this key can access in the Claude Code marketplace",
   "placeholder_skills": "Select skills (optional)",
-  "key_being_created": "Key being created, this might take 30s"
+  "key_being_created": "Key being created, this might take 30s",
+  "auto_rotation": {
+    "title": "Auto-Rotation",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "every_interval": "Every {{interval}}",
+    "last_rotation": "Last Rotation",
+    "next_scheduled_rotation": "Next Scheduled Rotation",
+    "no_history": "No rotation history available",
+    "not_enabled": "Auto-rotation is not enabled for this key",
+    "card_desc": "Automatic key rotation settings and status for this key"
+  }
 }

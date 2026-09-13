@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { toast } from "@/lib/toast";
 import { Logo } from "@/components/molecules/logo/Logo";
@@ -66,6 +67,7 @@ export interface GuardrailInfoProps {
 }
 
 const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose, accessToken, isAdmin }) => {
+  const { t } = useTranslation("guardrails");
   const [guardrailData, setGuardrailData] = useState<any>(null);
   const [guardrailProviderSpecificParams, setGuardrailProviderSpecificParams] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -484,7 +486,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
   const backButton = (
     <Button variant="ghost" onClick={onClose} className="mb-4">
       <ArrowLeft className="w-4 h-4" />
-      Back to Guardrails
+      {t("info.back", { defaultValue: "Back to Guardrails" })}
     </Button>
   );
 
@@ -513,7 +515,9 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
     <div className="p-4">
       <div>
         {backButton}
-        <h1 className="text-2xl font-semibold">{guardrailData.guardrail_name || "Unnamed Guardrail"}</h1>
+        <h1 className="text-2xl font-semibold">
+          {guardrailData.guardrail_name || t("unnamed_guardrail", { defaultValue: "Unnamed Guardrail" })}
+        </h1>
         <div className="flex items-center cursor-pointer">
           <p className="text-muted-foreground font-mono">{guardrailData.guardrail_id}</p>
 
@@ -535,11 +539,11 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
       <Tabs defaultValue="overview">
         <TabsList variant="line" className="mb-4 h-auto w-full justify-start rounded-none border-b p-0">
           <TabsTrigger value="overview" className="flex-none rounded-none px-4 py-2">
-            Overview
+            {t("info.overview", { defaultValue: "Overview" })}
           </TabsTrigger>
           {isAdmin && (
             <TabsTrigger value="settings" className="flex-none rounded-none px-4 py-2">
-              Settings
+              {t("info.settings", { defaultValue: "Settings" })}
             </TabsTrigger>
           )}
         </TabsList>
@@ -549,7 +553,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
           <TabsContent value="overview" keepMounted>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="block p-6">
-                <p>Provider</p>
+                <p>{t("info.provider", { defaultValue: "Provider" })}</p>
                 <div className="mt-2 flex items-center space-x-2">
                   <Logo src={logo} label={displayName} className="w-6 h-6" />
                   <h3 className="text-lg font-medium">{displayName}</h3>
@@ -557,22 +561,29 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
               </Card>
 
               <Card className="block p-6">
-                <p>Mode</p>
+                <p>{t("info.mode", { defaultValue: "Mode" })}</p>
                 <div className="mt-2">
                   <h3 className="text-lg font-medium">
                     {formatGuardrailMode(guardrailData.litellm_params?.mode) || "-"}
                   </h3>
                   <Badge variant={guardrailData.litellm_params?.default_on ? "secondary" : "outline"}>
-                    {guardrailData.litellm_params?.default_on ? "Default On" : "Default Off"}
+                    {guardrailData.litellm_params?.default_on
+                      ? t("info.default_on", { defaultValue: "Default On" })
+                      : t("info.default_off", { defaultValue: "Default Off" })}
                   </Badge>
                 </div>
               </Card>
 
               <Card className="block p-6">
-                <p>Created At</p>
+                <p>{t("info.created_at", { defaultValue: "Created At" })}</p>
                 <div className="mt-2">
                   <h3 className="text-lg font-medium">{formatDate(guardrailData.created_at)}</h3>
-                  <p>Last Updated: {formatDate(guardrailData.updated_at)}</p>
+                  <p>
+                    {t("info.last_updated", {
+                      date: formatDate(guardrailData.updated_at),
+                      defaultValue: `Last Updated: ${formatDate(guardrailData.updated_at)}`,
+                    })}
+                  </p>
                 </div>
               </Card>
             </div>
@@ -581,9 +592,12 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
               Object.keys(guardrailData.litellm_params.pii_entities_config).length > 0 && (
                 <Card className="block mt-6 p-6">
                   <div className="flex justify-between items-center">
-                    <p className="font-medium">PII Protection</p>
+                    <p className="font-medium">{t("info.pii_protection", { defaultValue: "PII Protection" })}</p>
                     <Badge variant="secondary">
-                      {Object.keys(guardrailData.litellm_params.pii_entities_config).length} PII entities configured
+                      {t("info.pii_configured", {
+                        count: Object.keys(guardrailData.litellm_params.pii_entities_config).length,
+                        defaultValue: `${Object.keys(guardrailData.litellm_params.pii_entities_config).length} PII entities configured`,
+                      })}
                     </Badge>
                   </div>
                 </Card>
@@ -592,11 +606,17 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
             {guardrailData.litellm_params?.pii_entities_config &&
               Object.keys(guardrailData.litellm_params.pii_entities_config).length > 0 && (
                 <Card className="block mt-6 p-6">
-                  <p className="mb-4 text-lg font-semibold">PII Entity Configuration</p>
+                  <p className="mb-4 text-lg font-semibold">
+                    {t("info.pii_config_title", { defaultValue: "PII Entity Configuration" })}
+                  </p>
                   <div className="border rounded-lg overflow-hidden shadow-xs">
                     <div className="bg-muted px-5 py-3 border-b flex">
-                      <p className="flex-1 font-semibold text-foreground">Entity Type</p>
-                      <p className="flex-1 font-semibold text-foreground">Configuration</p>
+                      <p className="flex-1 font-semibold text-foreground">
+                        {t("info.entity_type", { defaultValue: "Entity Type" })}
+                      </p>
+                      <p className="flex-1 font-semibold text-foreground">
+                        {t("info.configuration", { defaultValue: "Configuration" })}
+                      </p>
                     </div>
                     <div className="max-h-[400px] overflow-y-auto">
                       {Object.entries(guardrailData.litellm_params?.pii_entities_config).map(([key, value]) => (
@@ -631,12 +651,14 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2">
                     <Code className="text-info" />
-                    <p className="font-medium text-lg">Custom Code</p>
+                    <p className="font-medium text-lg">
+                      {t("info.custom_code", { defaultValue: "Custom Code" })}
+                    </p>
                   </div>
                   {isAdmin && !isConfigGuardrail && (
                     <Button variant="outline" size="sm" onClick={() => setCustomCodeModalVisible(true)}>
                       <Code />
-                      Edit Code
+                      {t("info.edit_code", { defaultValue: "Edit Code" })}
                     </Button>
                   )}
                 </div>

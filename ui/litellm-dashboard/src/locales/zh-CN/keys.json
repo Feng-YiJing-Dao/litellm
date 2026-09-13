@@ -274,5 +274,16 @@
   "tooltip_allowed_skills": "已启用的技能对所有密钥可见。在此处为此密钥授予已禁用（私有）的 Claude Code 插件权限",
   "help_skills": "选择此密钥可以在 Claude Code 市场中访问的私有技能",
   "placeholder_skills": "选择技能（选填）",
-  "key_being_created": "正在创建密钥，可能需要最多 30 秒"
+  "key_being_created": "正在创建密钥，可能需要最多 30 秒",
+  "auto_rotation": {
+    "title": "自动轮换",
+    "enabled": "已启用",
+    "disabled": "未启用",
+    "every_interval": "每 {{interval}}",
+    "last_rotation": "上次轮换时间",
+    "next_scheduled_rotation": "下次计划轮换时间",
+    "no_history": "暂无轮换历史记录",
+    "not_enabled": "此密钥未启用自动轮换",
+    "card_desc": "此密钥的自动轮换设置与当前状态"
+  }
 }

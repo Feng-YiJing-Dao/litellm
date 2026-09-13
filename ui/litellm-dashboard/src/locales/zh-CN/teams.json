@@ -143,5 +143,32 @@
   "no_private_skills_desc": "未授予私有技能。仅可见已启用（公开）的 Claude Code 插件。",
   "no_vector_stores_configured": "未配置向量知识库",
   "no_agents_configured": "未配置智能体或访问控制组",
-  "group": "分组"
+  "group": "分组",
+  "logging": {
+    "callback_success": "仅成功",
+    "callback_failure": "仅失败",
+    "callback_success_and_failure": "成功与失败",
+    "hide_password": "隐藏密码",
+    "show_password": "显示密码",
+    "integration_params": "集成参数",
+    "badge_sensitive": "敏感信息",
+    "badge_number": "数值",
+    "number_range_hint": "数值必须介于 0 和 1 之间",
+    "disabled_callbacks_title": "已禁用回调",
+    "disabled_callbacks_tooltip": "选择要为此密钥禁用的回调。被禁用的回调将不会接收到任何日志数据。",
+    "disabled_callbacks_label": "已禁用回调",
+    "disabled_callbacks_placeholder": "选择要禁用的回调",
+    "disabled_callbacks_desc": "选择应针对此密钥禁用的回调，被禁用的回调将不会收到任何日志数据。",
+    "logging_integrations_title": "日志集成",
+    "logging_integrations_tooltip": "为此团队配置回调日志集成。",
+    "add_integration": "添加集成",
+    "new_integration": "新集成",
+    "config_suffix": "配置",
+    "remove": "移除",
+    "integration_type": "集成类型",
+    "select_integration": "选择集成",
+    "event_type": "事件类型",
+    "no_integrations_title": "未配置日志集成",
+    "no_integrations_desc": "点击“添加集成”以为此团队配置日志记录"
+  }
 }

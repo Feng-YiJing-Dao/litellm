@@ -69,5 +69,17 @@
   "gateway_requests_by_endpoint": "Gateway Requests by Endpoint",
   "top_virtual_keys": "Top Virtual Keys",
   "top_public_model_names": "Top Public Model Names",
-  "top_litellm_models": "Top Litellm Models"
+  "top_litellm_models": "Top Litellm Models",
+  "spend_by_provider": {
+    "title": "Spend by Provider",
+    "show_zero_spend": "Show Zero Spend",
+    "show_unknown": "Show Unknown",
+    "unknown_tooltip": "Requests that failed to route to a provider",
+    "col_provider": "Provider",
+    "col_spend": "Spend",
+    "col_successful": "Successful",
+    "col_failed": "Failed",
+    "col_tokens": "Tokens",
+    "no_data": "No provider usage data"
+  }
 }

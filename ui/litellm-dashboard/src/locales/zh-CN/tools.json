@@ -81,10 +81,40 @@
       "loading": "加载向量存储中…",
       "no_stores": "暂无向量存储",
       "no_stores_desc": "连接向量存储以启用检索增强生成（RAG）。"
+    },
+    "test_tab": {
+      "access_token_required": "测试向量存储需要访问令牌 (Access Token)。",
+      "no_stores": "暂无可用向量存储，请先创建一个向量存储后再进行测试。",
+      "select_title": "选择向量存储",
+      "select_subtitle": "选择用于测试检索查询的向量存储",
+      "select_placeholder": "请选择向量存储",
+      "no_matching": "未找到匹配的向量存储"
+    },
+    "tester": {
+      "title": "测试向量存储",
+      "clear_history": "清空历史",
+      "empty_state": "在下方输入检索查询以测试您的向量存储",
+      "query_label": "检索词",
+      "results_label": "向量存储检索结果",
+      "results_count": "{{count}} 条结果",
+      "result_title": "结果 {{number}}",
+      "score": "相似度得分：{{score}}",
+      "content_type": "内容 ({{type}})",
+      "metadata": "元数据",
+      "file_id": "文件 ID：",
+      "filename": "文件名：",
+      "attributes": "属性：",
+      "search_failed": "检索失败：{{error}}",
+      "no_results": "未检索到匹配结果",
+      "input_placeholder": "输入检索查询... (Shift+Enter 换行)",
+      "search_btn": "检索",
+      "search_query_required": "请输入检索查询内容",
+      "history_cleared": "检索历史已清空"
     }
   },
   "policies": {
     "title": "工具策略管理",
+    "admin_only": "工具策略仅对管理员用户开放。",
     "metrics": {
       "new_today": "今日新增",
       "total_tools": "发现工具总数",
@@ -115,6 +145,34 @@
       "user_agent": "用户代理",
       "no_tools": "未发现工具",
       "loading": "正在加载工具策略…"
+    },
+    "detail": {
+      "back": "返回工具策略",
+      "calls": "{{count}} 次调用",
+      "user_agent": "用户代理 (User Agent)：",
+      "first_discovered": "首次发现时间：",
+      "last_used": "最近使用时间：",
+      "input_policy": "输入策略",
+      "output_policy": "输出策略",
+      "input_desc_default": "控制此工具允许接收的数据类型与安全规则。",
+      "output_desc_default": "控制下游工具如何信任并消费此工具的输出。",
+      "blocked_for_team_or_key": "针对团队或密钥的阻断规则",
+      "team_prefix": "团队：{{id}}",
+      "key_prefix": "密钥：{{key}}",
+      "remove": "移除",
+      "block_for_team_or_key": "阻断特定团队或密钥",
+      "scope": "阻断范围",
+      "team": "团队",
+      "key": "密钥",
+      "select_key": "选择密钥",
+      "no_keys_found": "未找到密钥",
+      "block_for_scope": "对 {{scope}} 执行阻断",
+      "recent_invocations": "最近调用记录",
+      "failed_load": "加载工具详情失败。",
+      "failed_update_input": "更新输入策略失败：{{error}}",
+      "failed_update_output": "更新输出策略失败：{{error}}",
+      "failed_add_override": "添加阻断规则失败：{{error}}",
+      "failed_remove_override": "移除阻断规则失败：{{error}}"
     }
   }
 }

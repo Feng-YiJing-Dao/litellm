@@ -36,5 +36,43 @@
     "name": "Name",
     "id": "ID",
     "url": "URL"
+  },
+  "connection_status": {
+    "title": "Connection Status",
+    "complete_required": "Complete required fields to test connection",
+    "fill_in_prompt": "Fill in URL, Transport, and Authentication to test MCP server connection",
+    "testing": "Testing connection to MCP server...",
+    "successful": "Connection successful",
+    "ready_to_submit": "Ready to submit",
+    "failed": "Connection failed",
+    "ready_to_test": "Ready to test connection",
+    "server": "Server: {{target}}",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "failed_short": "Failed",
+    "testing_loading_tools": "Testing connection and loading tools...",
+    "preview_unavailable": "Tool preview unavailable",
+    "stack_trace": "Stack Trace",
+    "retry": "Retry",
+    "successful_no_tools": "Connection successful!",
+    "no_tools_found": "No tools found for this MCP server"
+  },
+  "env_vars": {
+    "title": "Variables",
+    "tooltip_body": "Define variables you can interpolate in Static Headers or Authentication using ${VAR_NAME}. Instance: admin-defined value used for every user. Per-user: each user supplies their own value (e.g. personal credentials) via the MCP Gateway dashboard.",
+    "reference_guide": "Reference these in Static Headers or Authentication as ${VAR_NAME}. For example: ${DB_PROTOCOL}://${CORP_USERNAME}:${CORP_PASSWORD}@${DB_HOSTNAME}",
+    "col_name": "Variable Name",
+    "col_value": "Value / Description",
+    "col_scope": "Scope",
+    "scope_instance": "Instance",
+    "scope_per_user": "Per-user",
+    "placeholder_name": "e.g. DB_PROTOCOL",
+    "hint_tooltip": "Per-user variables have no shared value. This text is only a hint shown to each user when they fill in their own value.",
+    "hint_label": "Hint",
+    "placeholder_hint": "e.g. Your DB username",
+    "placeholder_val": "e.g. postgresql",
+    "add_variable": "Add Variable",
+    "name_required": "Variable name is required",
+    "name_pattern": "Use letters, digits, underscores; cannot start with a digit."
   }
 }

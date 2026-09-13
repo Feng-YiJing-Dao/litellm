@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/shared/DataTable";
@@ -30,101 +31,111 @@ const CategoryTable: React.FC<CategoryTableProps> = ({
   onRemove,
   readOnly = false,
 }) => {
-  const columns: ColumnDef<ContentCategory>[] = [
-    {
-      header: "Category",
-      accessorKey: "display_name",
-      cell: ({ row }) => {
-        const { category, display_name: displayName } = row.original;
-        return (
-          <div>
-            <span className="font-semibold">{displayName}</span>
-            {displayName !== category && <div className="text-xs text-muted-foreground">{category}</div>}
-          </div>
-        );
-      },
-    },
-    {
-      header: "Severity Threshold",
-      accessorKey: "severity_threshold",
-      size: 180,
-      cell: ({ row }) => {
-        const { id, severity_threshold: severity } = row.original;
-        if (readOnly) {
-          return <Badge variant={severity === "high" ? "destructive" : "secondary"}>{severity.toUpperCase()}</Badge>;
-        }
-        return (
-          <Select
-            items={SEVERITY_ITEMS}
-            value={severity}
-            onValueChange={(value: string | null) =>
-              value && onSeverityChange?.(id, value as "high" | "medium" | "low")
-            }
-          >
-            <SelectTrigger size="sm" className="w-[150px]" aria-label="Severity Threshold">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SEVERITY_ITEMS.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        );
-      },
-    },
-    {
-      header: "Action",
-      accessorKey: "action",
-      size: 150,
-      cell: ({ row }) => {
-        const { action, id } = row.original;
-        if (readOnly) {
-          return <Badge variant={action === "BLOCK" ? "destructive" : "secondary"}>{action}</Badge>;
-        }
-        return (
-          <Select
-            items={ACTION_ITEMS}
-            value={action}
-            onValueChange={(value: string | null) => value && onActionChange?.(id, value as "BLOCK" | "MASK")}
-          >
-            <SelectTrigger size="sm" className="w-[120px]" aria-label="Action">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {ACTION_ITEMS.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
-                  {item.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        );
-      },
-    },
-  ];
+  const { t } = useTranslation("guardrails");
 
-  if (!readOnly) {
-    columns.push({
-      header: "",
-      id: "actions",
-      size: 100,
-      cell: ({ row }) => (
-        <Button variant="ghost" size="sm" onClick={() => onRemove?.(row.original.id)}>
-          <Trash2 />
-          Delete
-        </Button>
-      ),
-    });
-  }
+  const columns: ColumnDef<ContentCategory>[] = useMemo(() => {
+    const cols: ColumnDef<ContentCategory>[] = [
+      {
+        header: t("content_filter.category", { defaultValue: "Category" }),
+        accessorKey: "display_name",
+        cell: ({ row }) => {
+          const { category, display_name: displayName } = row.original;
+          return (
+            <div>
+              <span className="font-semibold">{displayName}</span>
+              {displayName !== category && <div className="text-xs text-muted-foreground">{category}</div>}
+            </div>
+          );
+        },
+      },
+      {
+        header: t("content_filter.severity_threshold", { defaultValue: "Severity Threshold" }),
+        accessorKey: "severity_threshold",
+        size: 180,
+        cell: ({ row }) => {
+          const { id, severity_threshold: severity } = row.original;
+          if (readOnly) {
+            return <Badge variant={severity === "high" ? "destructive" : "secondary"}>{severity.toUpperCase()}</Badge>;
+          }
+          return (
+            <Select
+              items={SEVERITY_ITEMS}
+              value={severity}
+              onValueChange={(value: string | null) =>
+                value && onSeverityChange?.(id, value as "high" | "medium" | "low")
+              }
+            >
+              <SelectTrigger size="sm" className="w-[150px]" aria-label="Severity Threshold">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {SEVERITY_ITEMS.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          );
+        },
+      },
+      {
+        header: t("content_filter.action", { defaultValue: "Action" }),
+        accessorKey: "action",
+        size: 150,
+        cell: ({ row }) => {
+          const { action, id } = row.original;
+          if (readOnly) {
+            return <Badge variant={action === "BLOCK" ? "destructive" : "secondary"}>{action}</Badge>;
+          }
+          return (
+            <Select
+              items={ACTION_ITEMS}
+              value={action}
+              onValueChange={(value: string | null) => value && onActionChange?.(id, value as "BLOCK" | "MASK")}
+            >
+              <SelectTrigger size="sm" className="w-[120px]" aria-label="Action">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ACTION_ITEMS.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          );
+        },
+      },
+    ];
+
+    if (!readOnly) {
+      cols.push({
+        header: "",
+        id: "actions",
+        size: 100,
+        cell: ({ row }) => (
+          <Button variant="ghost" size="sm" onClick={() => onRemove?.(row.original.id)}>
+            <Trash2 />
+            {t("content_filter.delete", { defaultValue: "Delete" })}
+          </Button>
+        ),
+      });
+    }
+
+    return cols;
+  }, [readOnly, t, onActionChange, onSeverityChange, onRemove]);
 
   if (categories.length === 0) {
-    return <div className="py-10 text-center text-muted-foreground">No categories configured.</div>;
+    return (
+      <div className="py-10 text-center text-muted-foreground">
+        {t("content_filter.no_categories", { defaultValue: "No categories configured." })}
+      </div>
+    );
   }
 
   return <DataTable data={categories} columns={columns} getRowId={(row) => row.id} size="compact" />;
 };
-
 export default CategoryTable;
+

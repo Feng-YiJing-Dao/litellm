@@ -61,5 +61,11 @@
       "management": "智能体管理",
       "ready": "准备完成"
     }
+  },
+  "virtual_keys": {
+    "title": "虚拟密钥",
+    "loading": "正在加载密钥…",
+    "no_keys": "此智能体尚未分配虚拟密钥。",
+    "unnamed_key": "未命名密钥"
   }
 }

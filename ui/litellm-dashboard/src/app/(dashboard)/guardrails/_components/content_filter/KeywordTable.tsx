@@ -1,6 +1,7 @@
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 import { DataTable } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,13 +21,15 @@ interface KeywordTableProps {
 }
 
 const KeywordTable: React.FC<KeywordTableProps> = ({ keywords, onActionChange, onRemove }) => {
-  const columns: ColumnDef<BlockedWord>[] = [
+  const { t } = useTranslation("guardrails");
+
+  const columns: ColumnDef<BlockedWord>[] = useMemo(() => [
     {
-      header: "Keyword",
+      header: t("content_filter.keyword", { defaultValue: "Keyword" }),
       accessorKey: "keyword",
     },
     {
-      header: "Action",
+      header: t("content_filter.action", { defaultValue: "Action" }),
       accessorKey: "action",
       size: 150,
       cell: ({ row }) => (
@@ -49,7 +52,7 @@ const KeywordTable: React.FC<KeywordTableProps> = ({ keywords, onActionChange, o
       ),
     },
     {
-      header: "Description",
+      header: t("content_filter.description", { defaultValue: "Description" }),
       accessorKey: "description",
       cell: ({ row }) => row.original.description || "-",
     },
@@ -60,14 +63,18 @@ const KeywordTable: React.FC<KeywordTableProps> = ({ keywords, onActionChange, o
       cell: ({ row }) => (
         <Button variant="ghost" size="sm" onClick={() => onRemove(row.original.id)}>
           <Trash2 />
-          Delete
+          {t("content_filter.delete", { defaultValue: "Delete" })}
         </Button>
       ),
     },
-  ];
+  ], [t, onActionChange, onRemove]);
 
   if (keywords.length === 0) {
-    return <div className="py-10 text-center text-muted-foreground">No keywords added.</div>;
+    return (
+      <div className="py-10 text-center text-muted-foreground">
+        {t("content_filter.no_keywords", { defaultValue: "No keywords added." })}
+      </div>
+    );
   }
 
   return <DataTable data={keywords} columns={columns} getRowId={(row) => row.id} size="compact" />;

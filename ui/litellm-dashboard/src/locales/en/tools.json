@@ -81,10 +81,40 @@
       "loading": "Loading vector stores…",
       "no_stores": "No vector stores",
       "no_stores_desc": "Connect a vector store to enable retrieval-augmented generation."
+    },
+    "test_tab": {
+      "access_token_required": "Access token is required to test vector stores.",
+      "no_stores": "No vector stores available. Create one first to test it.",
+      "select_title": "Select Vector Store",
+      "select_subtitle": "Choose a vector store to test search queries against",
+      "select_placeholder": "Select a vector store",
+      "no_matching": "No matching vector stores"
+    },
+    "tester": {
+      "title": "Test Vector Store",
+      "clear_history": "Clear History",
+      "empty_state": "Test your vector store by entering a search query below",
+      "query_label": "Query",
+      "results_label": "Vector Store Results",
+      "results_count": "{{count}} results",
+      "result_title": "Result {{number}}",
+      "score": "Score: {{score}}",
+      "content_type": "Content ({{type}})",
+      "metadata": "Metadata",
+      "file_id": "File ID:",
+      "filename": "Filename:",
+      "attributes": "Attributes:",
+      "search_failed": "Search failed: {{error}}",
+      "no_results": "No results found",
+      "input_placeholder": "Enter your search query... (Shift+Enter for new line)",
+      "search_btn": "Search",
+      "search_query_required": "Please enter a search query",
+      "history_cleared": "Search history cleared"
     }
   },
   "policies": {
     "title": "Tool Policies",
+    "admin_only": "Tool Policies is only available to admin users.",
     "metrics": {
       "new_today": "New Today",
       "total_tools": "Total Tools Discovered",
@@ -115,6 +145,34 @@
       "user_agent": "User Agent",
       "no_tools": "No tools discovered",
       "loading": "Loading tool policies…"
+    },
+    "detail": {
+      "back": "Back to Tool Policies",
+      "calls": "{{count}} calls",
+      "user_agent": "User Agent:",
+      "first_discovered": "First Discovered:",
+      "last_used": "Last Used:",
+      "input_policy": "Input Policy",
+      "output_policy": "Output Policy",
+      "input_desc_default": "Controls what data this tool is allowed to accept.",
+      "output_desc_default": "Controls how this tool's output is trusted by downstream tools.",
+      "blocked_for_team_or_key": "Blocked for team or key",
+      "team_prefix": "Team: {{id}}",
+      "key_prefix": "Key: {{key}}",
+      "remove": "Remove",
+      "block_for_team_or_key": "Block for team or key",
+      "scope": "Scope",
+      "team": "Team",
+      "key": "Key",
+      "select_key": "Select key",
+      "no_keys_found": "No keys found",
+      "block_for_scope": "Block for {{scope}}",
+      "recent_invocations": "Recent invocations",
+      "failed_load": "Failed to load tool details.",
+      "failed_update_input": "Failed to update input policy: {{error}}",
+      "failed_update_output": "Failed to update output policy: {{error}}",
+      "failed_add_override": "Failed to add override: {{error}}",
+      "failed_remove_override": "Failed to remove override: {{error}}"
     }
   }
 }

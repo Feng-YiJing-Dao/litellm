@@ -69,5 +69,17 @@
   "gateway_requests_by_endpoint": "网关各端点请求数",
   "top_virtual_keys": "消耗最高虚拟密钥",
   "top_public_model_names": "最常用公共模型名称",
-  "top_litellm_models": "最常用 LiteLLM 模型"
+  "top_litellm_models": "最常用 LiteLLM 模型",
+  "spend_by_provider": {
+    "title": "按提供商支出统计",
+    "show_zero_spend": "显示零支出",
+    "show_unknown": "显示未知 (Unknown)",
+    "unknown_tooltip": "未能成功路由到具体提供商的请求",
+    "col_provider": "提供商",
+    "col_spend": "支出",
+    "col_successful": "成功请求",
+    "col_failed": "失败请求",
+    "col_tokens": "Token 数",
+    "no_data": "暂无提供商使用数据"
+  }
 }

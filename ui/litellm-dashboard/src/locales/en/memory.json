@@ -40,5 +40,17 @@
     "value_placeholder": "Enter text value...",
     "metadata_placeholder": "Valid JSON or leave empty",
     "saving": "Saving..."
+  },
+  "drawer": {
+    "default_title": "Memory",
+    "memory_id": "Memory ID",
+    "user_id": "User ID",
+    "team_id": "Team ID",
+    "value": "Value",
+    "metadata": "Metadata",
+    "created": "Created {{time}}",
+    "created_by": "Created {{time}} by {{user}}",
+    "updated": "Updated {{time}}",
+    "updated_by": "Updated {{time}} by {{user}}"
   }
 }

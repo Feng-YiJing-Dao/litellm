@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/shared/DataTable";
@@ -23,20 +24,28 @@ interface PatternTableProps {
 }
 
 const PatternTable: React.FC<PatternTableProps> = ({ patterns, onActionChange, onRemove }) => {
-  const columns: ColumnDef<Pattern>[] = [
+  const { t } = useTranslation("guardrails");
+
+  const columns: ColumnDef<Pattern>[] = useMemo(() => [
     {
-      header: "Type",
+      header: t("content_filter.type", { defaultValue: "Type" }),
       accessorKey: "type",
       size: 100,
-      cell: ({ row }) => <Badge variant="secondary">{row.original.type === "prebuilt" ? "Prebuilt" : "Custom"}</Badge>,
+      cell: ({ row }) => (
+        <Badge variant="secondary">
+          {row.original.type === "prebuilt"
+            ? t("content_filter.prebuilt", { defaultValue: "Prebuilt" })
+            : t("content_filter.custom", { defaultValue: "Custom" })}
+        </Badge>
+      ),
     },
     {
-      header: "Pattern name",
+      header: t("content_filter.pattern_name", { defaultValue: "Pattern name" }),
       accessorKey: "name",
       cell: ({ row }) => row.original.display_name || row.original.name,
     },
     {
-      header: "Regex pattern",
+      header: t("content_filter.regex_pattern", { defaultValue: "Regex pattern" }),
       accessorKey: "pattern",
       cell: ({ row }) =>
         row.original.pattern ? (
@@ -46,7 +55,7 @@ const PatternTable: React.FC<PatternTableProps> = ({ patterns, onActionChange, o
         ),
     },
     {
-      header: "Action",
+      header: t("content_filter.action", { defaultValue: "Action" }),
       accessorKey: "action",
       size: 150,
       cell: ({ row }) => (
@@ -75,14 +84,18 @@ const PatternTable: React.FC<PatternTableProps> = ({ patterns, onActionChange, o
       cell: ({ row }) => (
         <Button variant="ghost" size="sm" onClick={() => onRemove(row.original.id)}>
           <Trash2 />
-          Delete
+          {t("content_filter.delete", { defaultValue: "Delete" })}
         </Button>
       ),
     },
-  ];
+  ], [t, onActionChange, onRemove]);
 
   if (patterns.length === 0) {
-    return <div className="py-10 text-center text-muted-foreground">No patterns added.</div>;
+    return (
+      <div className="py-10 text-center text-muted-foreground">
+        {t("content_filter.no_patterns", { defaultValue: "No patterns added." })}
+      </div>
+    );
   }
 
   return <DataTable data={patterns} columns={columns} getRowId={(row) => row.id} size="compact" />;
