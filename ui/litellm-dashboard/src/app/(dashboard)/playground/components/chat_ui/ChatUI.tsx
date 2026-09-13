@@ -1505,7 +1505,9 @@ const ChatUI: React.FC<ChatUIProps> = ({
                 <div>
                   <div className="mb-2 flex items-center gap-1 text-sm font-medium text-foreground">
                     <Wrench className="mr-1 size-4" aria-hidden="true" />
-                    {endpointType === EndpointType.MCP ? "MCP Server" : "MCP Servers"}
+                    {endpointType === EndpointType.MCP
+                      ? t("playground:mcp_server", { defaultValue: "MCP Server" })
+                      : t("playground:mcp_servers", { defaultValue: "MCP Servers" })}
                     <Tooltip>
                       <TooltipTrigger
                         render={
@@ -1521,8 +1523,12 @@ const ChatUI: React.FC<ChatUIProps> = ({
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         {endpointType === EndpointType.MCP
-                          ? "Select an MCP server or toolset to test tools directly."
-                          : "Select MCP servers or toolsets to use in your conversation."}
+                          ? t("playground:mcp_tooltip_single", {
+                              defaultValue: "Select an MCP server or toolset to test tools directly.",
+                            })
+                          : t("playground:mcp_tooltip_multi", {
+                              defaultValue: "Select MCP servers or toolsets to use in your conversation.",
+                            })}
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -1533,8 +1539,12 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           ? selectedMCPServers[0]
                           : undefined
                       }
-                      placeholder="Select MCP server"
-                      emptyText={isLoadingMCPServers ? "Loading..." : "No MCP servers"}
+                      placeholder={t("playground:select_mcp_server", { defaultValue: "Select MCP server" })}
+                      emptyText={
+                        isLoadingMCPServers
+                          ? t("common:loading", { defaultValue: "Loading..." })
+                          : t("playground:no_mcp_servers", { defaultValue: "No MCP servers" })
+                      }
                       disabled={!MCP_SUPPORTED_ENDPOINTS.has(endpointType as EndpointType) || isLoadingMCPServers}
                       onValueChange={(value) => handleMcpServersChange(value ? [value] : [])}
                       options={mcpServerOptions}
@@ -1544,8 +1554,12 @@ const ChatUI: React.FC<ChatUIProps> = ({
                     <MultiSelect
                       value={selectedMCPServers}
                       onValueChange={handleMcpServersChange}
-                      placeholder="Select MCP servers"
-                      emptyText={isLoadingMCPServers ? "Loading..." : "No MCP servers"}
+                      placeholder={t("playground:select_mcp_servers", { defaultValue: "Select MCP servers" })}
+                      emptyText={
+                        isLoadingMCPServers
+                          ? t("common:loading", { defaultValue: "Loading..." })
+                          : t("playground:no_mcp_servers", { defaultValue: "No MCP servers" })
+                      }
                       disabled={!MCP_SUPPORTED_ENDPOINTS.has(endpointType as EndpointType)}
                       loading={isLoadingMCPServers}
                       options={mcpServerOptions}
@@ -1577,10 +1591,14 @@ const ChatUI: React.FC<ChatUIProps> = ({
                       }
                       return (
                         <div className="mt-3">
-                          <p className="mb-1 block text-xs text-muted-foreground">Select Tool</p>
+                          <p className="mb-1 block text-xs text-muted-foreground">
+                            {t("playground:select_tool", { defaultValue: "Select Tool" })}
+                          </p>
                           <SearchSelect
                             value={selectedMCPDirectTool}
-                            placeholder="Select a tool to call"
+                            placeholder={t("playground:select_tool_placeholder", {
+                              defaultValue: "Select a tool to call",
+                            })}
                             onValueChange={(value) => setSelectedMCPDirectTool(value || undefined)}
                             options={toolOptions}
                             className="rounded-md"
@@ -1602,7 +1620,10 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           return (
                             <div key={serverId} className="rounded-sm border p-2">
                               <p className="mb-1 text-xs text-muted-foreground">
-                                Limit tools for {server?.alias || server?.server_name || serverId}:
+                                {t("playground:limit_tools_for", {
+                                  defaultValue: "Limit tools for {{name}}:",
+                                  name: server?.alias || server?.server_name || serverId,
+                                })}
                               </p>
                               <MultiSelect
                                 value={mcpServerToolRestrictions[serverId] || []}
@@ -1612,7 +1633,9 @@ const ChatUI: React.FC<ChatUIProps> = ({
                                     [serverId]: selectedTools,
                                   }));
                                 }}
-                                placeholder="All tools (default)"
+                                placeholder={t("playground:all_tools_default", {
+                                  defaultValue: "All tools (default)",
+                                })}
                                 options={tools.map((tool: { name: string }) => ({
                                   value: tool.name,
                                   label: tool.name,
@@ -1640,18 +1663,24 @@ const ChatUI: React.FC<ChatUIProps> = ({
                               key={serverId}
                               className="flex items-center justify-between rounded-sm border border-info/15 bg-info/10 p-2"
                             >
-                              <p className="text-xs text-info">{serverName} requires your API key</p>
+                              <p className="text-xs text-info">
+                                {t("playground:requires_api_key", {
+                                  defaultValue: "{{serverName}} requires your API key",
+                                  serverName,
+                                })}
+                              </p>
                               {server.has_user_credential ? (
                                 <div className="flex items-center gap-2">
                                   <span className="flex items-center gap-1 text-xs font-medium text-success">
-                                    <Key className="size-3" /> Connected
+                                    <Key className="size-3" />{" "}
+                                    {t("playground:connected", { defaultValue: "Connected" })}
                                   </span>
                                   <button
                                     type="button"
                                     className="text-xs text-muted-foreground underline hover:text-info"
                                     onClick={() => setByokModalServer(server)}
                                   >
-                                    Reconnect
+                                    {t("playground:reconnect", { defaultValue: "Reconnect" })}
                                   </button>
                                 </div>
                               ) : (
@@ -1661,7 +1690,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                                   className="rounded-lg bg-info px-3 py-1 text-xs font-medium text-info-foreground hover:bg-info/80"
                                   onClick={() => setByokModalServer(server)}
                                 >
-                                  Connect
+                                  {t("playground:connect", { defaultValue: "Connect" })}
                                 </Button>
                               )}
                             </div>
@@ -1673,13 +1702,15 @@ const ChatUI: React.FC<ChatUIProps> = ({
 
                 <div>
                   <div className="mb-2 flex items-center gap-1 text-sm font-medium text-foreground">
-                    <Database className="mr-1 size-4" aria-hidden="true" /> Vector Store
+                    <Database className="mr-1 size-4" aria-hidden="true" /> {t("playground:vector_stores", { defaultValue: "Vector Store" })}
                     <Tooltip>
                       <TooltipTrigger aria-label="About vector stores">
                         <Info className="size-3.5 text-muted-foreground" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
-                        Select vector store(s) to use for this LLM API call. You can set up your vector store{" "}
+                        {t("playground:vector_store_tooltip", {
+                          defaultValue: "Select vector store(s) to use for this LLM API call.",
+                        })}{" "}
                         <a href={uiHref("vector-stores")} className="text-info underline">
                           here
                         </a>
@@ -1697,13 +1728,15 @@ const ChatUI: React.FC<ChatUIProps> = ({
 
                 <div>
                   <div className="mb-2 flex items-center gap-1 text-sm font-medium text-foreground">
-                    <Shield className="mr-1 size-4" aria-hidden="true" /> Guardrails
+                    <Shield className="mr-1 size-4" aria-hidden="true" /> {t("playground:guardrails", { defaultValue: "Guardrails" })}
                     <Tooltip>
                       <TooltipTrigger aria-label="About guardrails">
                         <Info className="size-3.5 text-muted-foreground" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
-                        Select guardrail(s) to use for this LLM API call. You can set up your guardrails{" "}
+                        {t("playground:guardrails_tooltip", {
+                          defaultValue: "Select guardrail(s) to use for this LLM API call.",
+                        })}{" "}
                         <a href={uiHref("guardrails")} className="text-info underline">
                           here
                         </a>
@@ -1728,8 +1761,9 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           <Info className="size-3.5 text-muted-foreground" />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-xs">
-                          Select policy/policies to apply to this LLM API call. Policies define which guardrails are
-                          applied based on conditions. You can set up your policies{" "}
+                          {t("playground:policies_tooltip", {
+                            defaultValue: "Select policy/policies to apply to this LLM API call.",
+                          })}{" "}
                           <a href={uiHref("policies")} className="text-info underline">
                             here
                           </a>
@@ -1853,9 +1887,13 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           }}
                         >
                           <ImageIcon className="mb-2 size-6 text-muted-foreground" aria-hidden="true" />
-                          <p className="text-sm">Click or drag images to upload</p>
+                          <p className="text-sm">
+                            {t("playground:upload_images_hint", { defaultValue: "Click or drag images to upload" })}
+                          </p>
                           <p className="text-xs text-muted-foreground">
-                            Support for PNG, JPG, JPEG, GIF, WebP. Multiple images supported.
+                            {t("playground:upload_images_types", {
+                              defaultValue: "Support for PNG, JPG, JPEG, GIF, WebP. Multiple images supported.",
+                            })}
                           </p>
                           <input
                             type="file"
@@ -1900,7 +1938,9 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           ))}
                           <label className="flex h-32 w-32 cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed border-border hover:border-ring">
                             <ImageIcon className="size-6 text-muted-foreground" aria-hidden="true" />
-                            <p className="mt-1 text-xs text-muted-foreground">Add more</p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {t("playground:add_more", { defaultValue: "Add more" })}
+                            </p>
                             <input
                               type="file"
                               accept={IMAGE_EDIT_ACCEPT}
@@ -1932,9 +1972,14 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           }}
                         >
                           <Volume2 className="mb-2 size-6 text-muted-foreground" aria-hidden="true" />
-                          <p className="text-sm">Click or drag audio file to upload</p>
+                          <p className="text-sm">
+                            {t("playground:upload_audio_hint", { defaultValue: "Click or drag audio file to upload" })}
+                          </p>
                           <p className="text-xs text-muted-foreground">
-                            Support for MP3, MP4, MPEG, MPGA, M4A, WAV, WEBM formats. Max file size: 25 MB.
+                            {t("playground:upload_audio_types", {
+                              defaultValue:
+                                "Support for MP3, MP4, MPEG, MPGA, M4A, WAV, WEBM formats. Max file size: 25 MB.",
+                            })}
                           </p>
                           <input
                             type="file"
@@ -1960,7 +2005,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                             onClick={handleRemoveAudio}
                           >
                             <Trash2 className="size-3" />
-                            Remove
+                            {t("common:delete", { defaultValue: "Remove" })}
                           </Button>
                         </div>
                       )}
@@ -1990,12 +2035,16 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           {isLoading ? (
                             <>
                               <Loader2 className="size-4 animate-spin text-info" aria-hidden="true" />
-                              <span className="text-sm font-medium text-info">Running Python code...</span>
+                              <span className="text-sm font-medium text-info">
+                                {t("playground:code_interpreter_running", { defaultValue: "Running Python code..." })}
+                              </span>
                             </>
                           ) : (
                             <>
                               <Code2 className="size-4 text-info" aria-hidden="true" />
-                              <span className="text-sm font-medium text-info">Code Interpreter Active</span>
+                              <span className="text-sm font-medium text-info">
+                                {t("playground:code_interpreter_active", { defaultValue: "Code Interpreter Active" })}
+                              </span>
                             </>
                           )}
                         </div>
@@ -2004,7 +2053,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                           className="text-xs text-info hover:text-info/80"
                           onClick={() => codeInterpreter.setEnabled(false)}
                         >
-                          Disable
+                          {t("playground:disable", { defaultValue: "Disable" })}
                         </button>
                       </div>
                       {!isLoading && (
@@ -2100,7 +2149,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
                               <MCPToolArgumentsForm ref={mcpToolArgsFormRef} tool={mcpTool} className="space-y-2" />
                             ) : (
                               <div className="flex h-10 items-center justify-center text-sm text-muted-foreground">
-                                Loading tool schema...
+                                {t("playground:loading_tool_schema", { defaultValue: "Loading tool schema..." })}
                               </div>
                             );
                           })()
@@ -2117,17 +2166,23 @@ const ChatUI: React.FC<ChatUIProps> = ({
       <Dialog open={isGetCodeModalVisible} onOpenChange={setIsGetCodeModalVisible}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Generated Code</DialogTitle>
+            <DialogTitle>{t("playground:generated_code", { defaultValue: "Generated Code" })}</DialogTitle>
           </DialogHeader>
           <div className="my-2 flex items-end justify-between gap-3">
             <div>
-              <p className="mb-1 text-sm font-medium text-foreground">SDK Type</p>
+              <p className="mb-1 text-sm font-medium text-foreground">
+                {t("playground:sdk_type", { defaultValue: "SDK Type" })}
+              </p>
               <ShadcnSelect
                 items={SDK_ITEMS}
                 value={selectedSdk}
                 onValueChange={(value) => setSelectedSdk(value as "openai" | "azure")}
               >
-                <SelectTrigger className="w-[150px]" size="sm" aria-label="SDK Type">
+                <SelectTrigger
+                  className="w-[150px]"
+                  size="sm"
+                  aria-label={t("playground:sdk_type", { defaultValue: "SDK Type" })}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -2145,12 +2200,12 @@ const ChatUI: React.FC<ChatUIProps> = ({
               size="sm"
               onClick={() => {
                 void navigator.clipboard.writeText(generatedCode).then(
-                  () => toast.success("Copied to clipboard!"),
+                  () => toast.success(t("playground:transform.copied", { defaultValue: "Copied to clipboard!" })),
                   () => toast.error("Unable to copy to clipboard"),
                 );
               }}
             >
-              Copy to Clipboard
+              {t("playground:copy_to_clipboard", { defaultValue: "Copy to Clipboard" })}
             </Button>
           </div>
           <SyntaxHighlighter
@@ -2184,7 +2239,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
       <Dialog open={isToolsetsInfoModalVisible} onOpenChange={setIsToolsetsInfoModalVisible}>
         <DialogContent className="sm:max-w-xl">
           <DialogHeader>
-            <DialogTitle>How Toolsets Work</DialogTitle>
+            <DialogTitle>{t("playground:how_toolsets_work", { defaultValue: "How Toolsets Work" })}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <p className="text-foreground">
@@ -2220,7 +2275,7 @@ const ChatUI: React.FC<ChatUIProps> = ({
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setIsToolsetsInfoModalVisible(false)}>
-              Close
+              {t("playground:close", { defaultValue: "Close" })}
             </Button>
           </DialogFooter>
         </DialogContent>
