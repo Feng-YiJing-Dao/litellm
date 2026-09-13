@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { uiHref } from "@/utils/uiHref";
 import { useChatShell } from "@/contexts/ChatShellContext";
+import { useTranslation } from "react-i18next";
 import ConversationList from "./ConversationList";
 
 export function getChatRoutes() {
@@ -53,6 +54,7 @@ interface ChatShellProps {
 }
 
 const ChatShell: React.FC<ChatShellProps> = ({ children }) => {
+  const { t } = useTranslation(["playground"]);
   const router = useRouter();
   const pathname = stripTrailingSlash(usePathname() ?? "");
   const { conversations, activeConversationId, deleteConversation, renameConversation } = useChatShell();
@@ -63,23 +65,16 @@ const ChatShell: React.FC<ChatShellProps> = ({ children }) => {
   return (
     <div className="flex h-full w-full flex-col bg-background overflow-hidden">
       <div className="shrink-0 border-b border-warning/20 bg-warning/10 px-4 py-1.5 text-center text-[13px] text-warning">
-        This is a pre-v0 feature. Do not use in production, it may change unexpectedly. Please share feedback{" "}
-        <a
-          href="https://github.com/BerriAI/litellm/discussions/32085"
-          target="_blank"
-          rel="noreferrer"
-          className="font-medium underline"
-        >
-          here
-        </a>
-        .
+        {t("chat_shell.pre_v0_notice", {
+          defaultValue: "This is a pre-v0 feature. Do not use in production, it may change unexpectedly.",
+        })}
       </div>
       <div className="flex flex-1 min-h-0 overflow-hidden">
         <div className="shrink-0 bg-sidebar border-sidebar-border border-r flex flex-col overflow-hidden w-[260px]">
           <div className="px-2 pt-3 pb-1 shrink-0">
             <Button onClick={() => router.push(routes.chats)} className="w-full justify-start gap-2.5">
               <Plus className="h-4 w-4" />
-              New Chat
+              {t("chat_shell.new_chat", { defaultValue: "New Chat" })}
             </Button>
           </div>
 
@@ -88,37 +83,37 @@ const ChatShell: React.FC<ChatShellProps> = ({ children }) => {
           <div className="px-2 py-1 shrink-0">
             <NavItem
               icon={<MessageSquare className="h-4 w-4" />}
-              label="Chats"
+              label={t("chat_shell.nav.chats", { defaultValue: "Chats" })}
               onClick={() => router.push(routes.chats)}
               active={isChatsRoute}
             />
             <NavItem
               icon={<LayoutGrid className="h-4 w-4" />}
-              label="Integrations"
+              label={t("chat_shell.nav.integrations", { defaultValue: "Integrations" })}
               onClick={() => router.push(routes.integrations)}
               active={pathname === routes.integrations}
             />
             <NavItem
               icon={<KeyRound className="h-4 w-4" />}
-              label="Credentials"
+              label={t("chat_shell.nav.credentials", { defaultValue: "Credentials" })}
               onClick={() => router.push(routes.credentials)}
               active={pathname === routes.credentials}
             />
             <NavItem
               icon={<Lock className="h-4 w-4" />}
-              label="API Keys"
+              label={t("chat_shell.nav.api_keys", { defaultValue: "API Keys" })}
               onClick={() => router.push(routes.apiKeys)}
               active={pathname === routes.apiKeys}
             />
             <NavItem
               icon={<ScrollText className="h-4 w-4" />}
-              label="Logs"
+              label={t("chat_shell.nav.logs", { defaultValue: "Logs" })}
               onClick={() => router.push(routes.logs)}
               active={pathname === routes.logs}
             />
             <NavItem
               icon={<BarChart3 className="h-4 w-4" />}
-              label="Usage"
+              label={t("chat_shell.nav.usage", { defaultValue: "Usage" })}
               onClick={() => router.push(routes.usage)}
               active={pathname === routes.usage}
             />

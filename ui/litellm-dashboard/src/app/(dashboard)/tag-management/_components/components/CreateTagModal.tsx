@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useZodForm } from "@/lib/forms/useZodForm";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useTranslation } from "react-i18next";
 
 const labelWithHint = (label: React.ReactNode, hint: string): React.ReactNode => (
   <>
@@ -56,6 +57,7 @@ interface CreateTagModalProps {
 }
 
 const CreateTagModal: React.FC<CreateTagModalProps> = ({ visible, onCancel, onSubmit, availableModels }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [budgetSectionOpen, setBudgetSectionOpen] = React.useState(false);
   const form = useZodForm(createTagSchema, { defaultValues: { tag_name: "" } });
 
@@ -150,16 +152,9 @@ const CreateTagModal: React.FC<CreateTagModalProps> = ({ visible, onCancel, onSu
 
                 <div className="mt-4 rounded-md border border-border bg-muted p-3">
                   <p className="text-sm text-muted-foreground">
-                    TPM/RPM limits for tags are not currently supported. If you need this feature, please{" "}
-                    <a
-                      href="https://github.com/BerriAI/litellm/issues/new"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-info underline hover:text-info/80"
-                    >
-                      create a GitHub issue
-                    </a>
-                    .
+                    {t("models:tags.tpm_rpm_unsupported", {
+                      defaultValue: "TPM/RPM limits for tags are not currently supported.",
+                    })}
                   </p>
                 </div>
               </CollapsibleContent>

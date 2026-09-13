@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useZodForm } from "@/lib/forms/useZodForm";
 import { copyToClipboard as utilCopyToClipboard } from "@/utils/dataUtils";
 import { CheckIcon, ChevronRight, CopyIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const tagEditShape = {
   name: z.string().min(1, "Please input a tag name"),
@@ -44,6 +45,7 @@ interface TagEditFormProps {
 }
 
 const TagEditForm: React.FC<TagEditFormProps> = ({ tag, seedBudgetFields, userModels, onCancel, onSave }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [budgetSectionOpen, setBudgetSectionOpen] = useState(false);
   const form = useZodForm(tagEditSchema, {
     defaultValues: {
@@ -117,16 +119,9 @@ const TagEditForm: React.FC<TagEditFormProps> = ({ tag, seedBudgetFields, userMo
 
           <div className="mt-4 rounded-md border border-border bg-muted p-3">
             <p className="text-sm text-muted-foreground">
-              TPM/RPM limits for tags are not currently supported. If you need this feature, please{" "}
-              <a
-                href="https://github.com/BerriAI/litellm/issues/new"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-info underline hover:text-info/80"
-              >
-                create a GitHub issue
-              </a>
-              .
+              {t("models:tags.tpm_rpm_unsupported", {
+                defaultValue: "TPM/RPM limits for tags are not currently supported.",
+              })}
             </p>
           </div>
         </CollapsibleContent>

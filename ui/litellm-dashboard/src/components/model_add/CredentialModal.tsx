@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { SearchSelect, type SearchSelectOption } from "@/components/shared/SearchSelect";
-import { SimpleTooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -142,19 +141,11 @@ export default function CredentialModal({
 
               <ProviderSpecificFields selectedProvider={selectedProvider} />
 
-              <div className="flex justify-between items-center">
-                <SimpleTooltip content="Get help on our github">
-                  <a href="https://github.com/BerriAI/litellm/issues" className="text-sm text-primary hover:underline">
-                    Need Help?
-                  </a>
-                </SimpleTooltip>
-
-                <div>
-                  <Button variant="outline" className="mr-2.5" onClick={closeAndReset}>
-                    Cancel
-                  </Button>
-                  <Button type="submit">{isEdit ? "Update Credential" : "Add Credential"}</Button>
-                </div>
+              <div className="flex justify-end items-center gap-2">
+                <Button variant="outline" className="mr-2.5" onClick={closeAndReset}>
+                  Cancel
+                </Button>
+                <Button type="submit">{isEdit ? "Update Credential" : "Add Credential"}</Button>
               </div>
             </form>
           </MountedFormProvider>

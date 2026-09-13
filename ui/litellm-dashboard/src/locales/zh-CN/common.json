@@ -83,7 +83,21 @@
     "sso_notice_domain": "您的域名已启用 SSO 单点登录，可使用企业账号登录。",
     "sso_enabled_notice": "已启用单点登录 (SSO)。LiteLLM 在加载此页面时不再自动重定向到 SSO 登录流程。如需重新启用自动重定向，请在环境配置中设置 <code1>AUTO_REDIRECT_UI_LOGIN_TO_SSO=true</code1>。",
     "login_failed": "登录失败",
-    "admin_ui_disabled_title": "管理控制台已禁用",
-    "admin_ui_disabled_desc": "管理员已禁用管理控制台。如需重新启用，请更新以下环境变量："
+    "admin_ui_disabled_title": "管理面板已禁用",
+    "admin_ui_disabled_desc": "管理员已禁用该管理面板。如需重新启用，请更新以下环境变量配置："
+  },
+  "onboarding": {
+    "sign_up": "注册",
+    "reset_password": "重置密码",
+    "reset_password_desc": "重置您的密码以访问管理控制台。",
+    "claim_account_desc": "认领您的用户账号以登录管理控制台。",
+    "sso": "单点登录 (SSO)",
+    "sso_enterprise": "单点登录为企业版功能。",
+    "get_free_trial": "企业版特性",
+    "email_address": "电子邮箱地址",
+    "password": "密码",
+    "enter_new_password": "输入您的新密码",
+    "create_password_desc": "为您的账户创建密码",
+    "password_required": "注册需要设置密码"
   }
 }

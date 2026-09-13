@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Upload as UploadIcon } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { requiredRule } from "../common_components/formRules";
 import {
@@ -118,6 +119,7 @@ export const createCredentialFromModel = (provider: string, modelData: any): Cre
 };
 
 const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selectedProvider }) => {
+  const { t } = useTranslation(["models"]);
   const selectedProviderEnum = Providers[selectedProvider as keyof typeof Providers] as Providers;
   const form = useFormContext<MountedFormValues>();
   const credentialsFileRef = React.useRef<HTMLInputElement>(null);
@@ -341,16 +343,10 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
           {/* Special case for Azure Base Model help text */}
           {field.key === "base_model" && (
             <div className="grid grid-cols-24">
-              <p className="col-start-11 col-span-10 text-sm mb-2">
-                The actual model your azure deployment uses. Used for accurate cost tracking. Select name from{" "}
-                <a
-                  href="https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary underline-offset-4 hover:underline"
-                >
-                  here
-                </a>
+              <p className="col-start-11 col-span-10 text-sm mb-2 text-muted-foreground">
+                {t("azure_base_model_help", {
+                  defaultValue: "The actual model your azure deployment uses. Used for accurate cost tracking.",
+                })}
               </p>
             </div>
           )}

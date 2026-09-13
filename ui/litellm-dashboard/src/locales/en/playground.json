@@ -148,5 +148,26 @@
     "batch_test_select_first": "Select an agent to run batch tests.",
     "signin_required": "Sign in to use Agent Builder.",
     "delete_button": "Delete"
+  },
+  "chat_shell": {
+    "new_chat": "New Chat",
+    "pre_v0_notice": "This is a pre-v0 feature. Do not use in production, it may change unexpectedly.",
+    "nav": {
+      "chats": "Chats",
+      "integrations": "Integrations",
+      "credentials": "Credentials",
+      "api_keys": "API Keys",
+      "logs": "Logs",
+      "usage": "Usage"
+    }
+  },
+  "code_interpreter_tool": {
+    "title": "Code Interpreter",
+    "tooltip": "Run Python code to generate files, charts, and analyze data. Container is created automatically.",
+    "only_openai": "Code Interpreter is currently only supported for OpenAI models.",
+    "request_support": "Request support for other providers",
+    "only_openai_toast": "Code Interpreter is only available for OpenAI models",
+    "switch_aria": "Enable Code Interpreter",
+    "info_aria": "About Code Interpreter"
   }
 }

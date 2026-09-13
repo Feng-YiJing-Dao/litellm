@@ -49,6 +49,7 @@
   "test_connect": "测试连接",
   "add_model_btn": "添加模型",
   "connection_test_results": "连接测试结果",
+  "azure_base_model_help": "Azure 部署实际使用的模型。用于精确的费用跟踪。",
   "configure_fallbacks": "配置模型降级策略",
   "manage_fallback_chains_desc": "管理不同模型的多级故障转移降级链（每次最多 5 组）",
   "primary_model": "首选主模型",
@@ -143,7 +144,8 @@
     "loading_tags": "正在加载标签…",
     "delete_tag": "删除标签",
     "delete_tag_confirm": "确定要删除此标签吗？此操作无法撤消。",
-    "tag_info": "标签信息"
+    "tag_info": "标签信息",
+    "tpm_rpm_unsupported": "标签暂不支持 TPM/RPM 速率限制。"
   },
   "auto_routers": {
     "title": "自动路由",

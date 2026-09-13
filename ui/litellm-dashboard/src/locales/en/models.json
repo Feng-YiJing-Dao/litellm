@@ -49,6 +49,7 @@
   "test_connect": "Test Connect",
   "add_model_btn": "Add Model",
   "connection_test_results": "Connection Test Results",
+  "azure_base_model_help": "The actual model your azure deployment uses. Used for accurate cost tracking.",
   "configure_fallbacks": "Configure Model Fallbacks",
   "manage_fallback_chains_desc": "Manage multiple fallback chains for different models (up to 5 groups at a time)",
   "primary_model": "Primary Model",
@@ -144,7 +145,8 @@
     "loading_tags": "Loading tags…",
     "delete_tag": "Delete Tag",
     "delete_tag_confirm": "Are you sure you want to delete this tag? This action cannot be undone.",
-    "tag_info": "Tag Information"
+    "tag_info": "Tag Information",
+    "tpm_rpm_unsupported": "TPM/RPM limits for tags are not currently supported."
   },
   "auto_routers": {
     "title": "Auto routers",

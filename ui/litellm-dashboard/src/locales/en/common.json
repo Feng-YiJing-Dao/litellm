@@ -85,5 +85,19 @@
     "login_failed": "Login Failed",
     "admin_ui_disabled_title": "Admin UI Disabled",
     "admin_ui_disabled_desc": "The Admin UI has been disabled by the administrator. To re-enable it, please update the following environment variable:"
+  },
+  "onboarding": {
+    "sign_up": "Sign Up",
+    "reset_password": "Reset Password",
+    "reset_password_desc": "Reset your password to access Admin UI.",
+    "claim_account_desc": "Claim your user account to login to Admin UI.",
+    "sso": "SSO",
+    "sso_enterprise": "SSO is under the Enterprise Tier.",
+    "get_free_trial": "Enterprise Feature",
+    "email_address": "Email Address",
+    "password": "Password",
+    "enter_new_password": "Enter your new password",
+    "create_password_desc": "Create a password for your account",
+    "password_required": "password required to sign up"
   }
 }

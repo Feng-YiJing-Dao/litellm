@@ -148,5 +148,26 @@
     "batch_test_select_first": "请选择一个智能体运行批量测试。",
     "signin_required": "请先登录以使用智能体构建器。",
     "delete_button": "删除"
+  },
+  "chat_shell": {
+    "new_chat": "新建对话",
+    "pre_v0_notice": "此功能为早期预览版本（pre-v0）。请勿用于生产环境，后续可能发生变动。",
+    "nav": {
+      "chats": "对话",
+      "integrations": "集成",
+      "credentials": "凭证",
+      "api_keys": "API 密钥",
+      "logs": "日志",
+      "usage": "用量"
+    }
+  },
+  "code_interpreter_tool": {
+    "title": "代码解释器",
+    "tooltip": "运行 Python 代码以生成文件、图表和分析数据。容器将自动创建。",
+    "only_openai": "代码解释器当前仅支持 OpenAI 模型。",
+    "request_support": "请求支持其他提供商",
+    "only_openai_toast": "代码解释器仅适用于 OpenAI 模型",
+    "switch_aria": "启用代码解释器",
+    "info_aria": "关于代码解释器"
   }
 }
