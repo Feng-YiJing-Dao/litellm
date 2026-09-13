@@ -32,6 +32,7 @@ import {
   resolveComplexityDefaultModel,
 } from "./tier_rows";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ModelGroup } from "@/components/llm_calls/fetch_models";
 import AdaptiveRoutingConfig from "./AdaptiveRoutingConfig";
 import ClassificationMethodConfig from "./ClassificationMethodConfig";
@@ -214,69 +215,82 @@ const TierSetToolbar: React.FC<{
   onEditingChange: ((editing: boolean) => void) | undefined;
   onAdd: () => void;
   onRestore: () => void;
-}> = ({ editing, isCustomSet, rowCount, rowsError, keywordRulesError, onEditingChange, onAdd, onRestore }) => (
-  <>
-    <div className="mt-4 flex flex-wrap items-center gap-2">
-      {editing ? (
-        <>
-          <Button variant="outline" onClick={onAdd} disabled={rowCount >= MAX_TIER_COUNT}>
-            <Plus />
-            Add tier
-          </Button>
-          <SimpleTooltip content={rowsError || undefined}>
-            <Button variant="outline" disabled={Boolean(rowsError)} onClick={() => onEditingChange?.(false)}>
-              Done
+}> = ({ editing, isCustomSet, rowCount, rowsError, keywordRulesError, onEditingChange, onAdd, onRestore }) => {
+  const { t } = useTranslation(["models", "common"]);
+  return (
+    <>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {editing ? (
+          <>
+            <Button variant="outline" onClick={onAdd} disabled={rowCount >= MAX_TIER_COUNT}>
+              <Plus />
+              {t("models:auto_router.add_tier", "Add tier")}
             </Button>
-          </SimpleTooltip>
-          {isCustomSet && (
-            <Button variant="outline" size="sm" onClick={onRestore}>
-              Restore defaults
+            <SimpleTooltip content={rowsError || undefined}>
+              <Button variant="outline" disabled={Boolean(rowsError)} onClick={() => onEditingChange?.(false)}>
+                {t("models:auto_router.done", "Done")}
+              </Button>
+            </SimpleTooltip>
+            {isCustomSet && (
+              <Button variant="outline" size="sm" onClick={onRestore}>
+                {t("models:auto_router.restore_defaults", "Restore defaults")}
+              </Button>
+            )}
+          </>
+        ) : (
+          onEditingChange && (
+            <Button variant="outline" onClick={() => onEditingChange(true)}>
+              {t("models:auto_router.edit_tiers", "Edit tiers")}
             </Button>
+          )
+        )}
+      </div>
+      {editing && (
+        <span className="block mt-1 text-xs text-muted-foreground">
+          {t(
+            "models:auto_router.edit_tiers_desc",
+            "Add or remove tiers to define your own set. Every custom tier needs a definition the LLM classifier routes on, and an edited set requires the LLM classification method",
           )}
-        </>
-      ) : (
-        onEditingChange && (
-          <Button variant="outline" onClick={() => onEditingChange(true)}>
-            Edit tiers
-          </Button>
-        )
+        </span>
       )}
-    </div>
-    {editing && (
-      <span className="block mt-1 text-xs text-muted-foreground">
-        Add or remove tiers to define your own set. Every custom tier needs a definition the LLM classifier routes on,
-        and an edited set requires the LLM classification method
-      </span>
-    )}
-    {editing && keywordRulesError && (
-      <span className="block mt-1 text-xs text-destructive">
-        {keywordRulesError}. Edit the rules under Advanced: Keyword/Semantic Matching, or bring the tier back
-      </span>
-    )}
-  </>
-);
+      {editing && keywordRulesError && (
+        <span className="block mt-1 text-xs text-destructive">
+          {keywordRulesError}. Edit the rules under Advanced: Keyword/Semantic Matching, or bring the tier back
+        </span>
+      )}
+    </>
+  );
+};
 
 const FallbackTierField: React.FC<{
   rows: readonly TierRow[];
   fallbackTierId: string;
   onValueChange: (rowId: string) => void;
-}> = ({ rows, fallbackTierId, onValueChange }) => (
-  <div className="mt-4">
-    <div className="flex items-center gap-2 mb-2">
-      <strong className="text-base font-semibold">Fallback Tier</strong>
-      <SimpleTooltip content="Where requests route when the LLM classifier errors, times out, or returns an unparseable reply. Required for an edited tier set: the heuristic scorer cannot produce your tiers.">
-        <Info className="size-4 text-muted-foreground" />
-      </SimpleTooltip>
+}> = ({ rows, fallbackTierId, onValueChange }) => {
+  const { t } = useTranslation(["models", "common"]);
+  return (
+    <div className="mt-4">
+      <div className="flex items-center gap-2 mb-2">
+        <strong className="text-base font-semibold">{t("models:auto_router.fallback_tier", "Fallback Tier")}</strong>
+        <SimpleTooltip
+          content={t(
+            "models:auto_router.fallback_tier_tooltip",
+            "Where requests route when the LLM classifier errors, times out, or returns an unparseable reply. Required for an edited tier set: the heuristic scorer cannot produce your tiers.",
+          )}
+        >
+          <Info className="size-4 text-muted-foreground" />
+        </SimpleTooltip>
+      </div>
+      <TierRowSelect
+        label={t("models:auto_router.fallback_tier_select", "Fallback tier")}
+        options={rows.filter((row) => activeTierName(row)).map((row) => ({ value: row.id, label: activeTierName(row) }))}
+        value={fallbackTierId || null}
+        onValueChange={onValueChange}
+        placeholder={t("models:auto_router.pick_fallback_tier", "Pick the tier classifier failures route to")}
+      />
     </div>
-    <TierRowSelect
-      label="Fallback tier"
-      options={rows.filter((row) => activeTierName(row)).map((row) => ({ value: row.id, label: activeTierName(row) }))}
-      value={fallbackTierId || null}
-      onValueChange={onValueChange}
-      placeholder="Pick the tier classifier failures route to"
-    />
-  </div>
-);
+  );
+};
 
 const TierRowHeader: React.FC<{
   row: TierRow;
@@ -587,6 +601,7 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
   onAutoRouterCompressionChange,
   showValidationErrors = false,
 }) => {
+  const { t } = useTranslation(["models", "common"]);
   const customTierSet = value.custom_tier_set;
   const tierRows = activeTierRows(value);
   const tierRowsError = customTierSet ? getCustomTierRowsError(customTierSet) : null;
@@ -646,8 +661,15 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
   return (
     <div className="w-full max-w-none">
       <div className="inline-flex items-center gap-2 mb-4">
-        <h4 className="m-0 text-xl font-semibold text-foreground">Complexity Tier Configuration</h4>
-        <SimpleTooltip content="Map each complexity tier to one or more models. Simple queries use cheaper/faster models, complex queries use more capable models.">
+        <h4 className="m-0 text-xl font-semibold text-foreground">
+          {t("models:auto_router.complexity_tier_config", "Complexity Tier Configuration")}
+        </h4>
+        <SimpleTooltip
+          content={t(
+            "models:auto_router.complexity_tier_tooltip",
+            "Map each complexity tier to one or more models. Simple queries use cheaper/faster models, complex queries use more capable models.",
+          )}
+        >
           <Info className="size-4 text-muted-foreground" />
         </SimpleTooltip>
       </div>
@@ -763,7 +785,7 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
 
           <div className="mb-2">
             <div className="flex items-center gap-2 mb-2">
-              <strong className="text-base font-semibold">Default Model</strong>
+              <strong className="text-base font-semibold">{t("models:auto_router.default_model", "Default Model")}</strong>
               <SimpleTooltip content="Leave empty to follow the tiers. A model chosen here is pinned: it stays the default however the tiers change.">
                 <Info className="size-4 text-muted-foreground" />
               </SimpleTooltip>
@@ -773,12 +795,14 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
               value={value.default_model ?? ""}
               onValueChange={handleDefaultModelChange}
               placeholder={defaultModelPlaceholder}
-              emptyText="No models found"
+              emptyText={t("models:auto_router.no_models_found", "No models found")}
               aria-label="Default model"
             />
             <span className="block mt-1 text-xs text-muted-foreground">
-              Used when the tier the request lands in has no model, and when the classifier fails with &quot;Route to
-              the default model&quot; selected.
+              {t(
+                "models:auto_router.default_model_desc",
+                'Used when the tier the request lands in has no model, and when the classifier fails with "Route to the default model" selected.',
+              )}
             </span>
           </div>
         </CardContent>
@@ -790,7 +814,11 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
         {[
           {
             key: "classifier",
-            label: <strong className="text-foreground font-semibold">Advanced: Classification Method</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_classification", "Advanced: Classification Method")}
+              </strong>
+            ),
             children: (
               <ClassificationMethodConfig
                 value={value}
@@ -806,7 +834,11 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
           },
           {
             key: "adaptive",
-            label: <strong className="text-foreground font-semibold">Advanced: Adaptive Routing</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_adaptive", "Advanced: Adaptive Routing")}
+              </strong>
+            ),
             children: (
               <Restricted by={restrictedBy(value, "adaptive")}>
                 <AdaptiveRoutingConfig value={value} onChange={onChange} />
@@ -815,29 +847,49 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
           },
           {
             key: "affinity",
-            label: <strong className="text-foreground font-semibold">Advanced: Affinity</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_affinity", "Advanced: Affinity")}
+              </strong>
+            ),
             children: <AffinityControls value={value} onChange={onChange} />,
           },
           {
             key: "modality",
-            label: <strong className="text-foreground font-semibold">Advanced: Modality Routing</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_modality", "Advanced: Modality Routing")}
+              </strong>
+            ),
             children: <ModalityRoutingControls value={value} onChange={onChange} />,
           },
           {
             key: "plan-mode",
-            label: <strong className="text-foreground font-semibold">Advanced: Plan-Mode Override</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_plan_mode", "Advanced: Plan-Mode Override")}
+              </strong>
+            ),
             children: (
               <PlanModeOverrideControls value={value} onChange={onChange} planModeTierOptions={planModeTierOptions} />
             ),
           },
           {
             key: "context-window",
-            label: <strong className="text-foreground font-semibold">Advanced: Context Window Escalation</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_context_window", "Advanced: Context Window Escalation")}
+              </strong>
+            ),
             children: <ContextWindowEscalationConfig value={value} onChange={onChange} />,
           },
           {
             key: "stall-escalation",
-            label: <strong className="text-foreground font-semibold">Advanced: Stalled Task Escalation</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_stall", "Advanced: Stalled Task Escalation")}
+              </strong>
+            ),
             children: (
               <Restricted by={restrictedBy(value, "stallEscalation")}>
                 <StallEscalationConfig value={value} onChange={onChange} />
@@ -846,14 +898,22 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
           },
           {
             key: "response",
-            label: <strong className="text-foreground font-semibold">Advanced: Response Format</strong>,
+            label: (
+              <strong className="text-foreground font-semibold">
+                {t("models:auto_router.advanced_response_format", "Advanced: Response Format")}
+              </strong>
+            ),
             children: <ResponseFormatControls value={value} onChange={onChange} />,
           },
           ...(onEscalationKeywordsChange
             ? [
                 {
                   key: "escalation",
-                  label: <strong className="text-foreground font-semibold">Advanced: Escalation Keywords</strong>,
+                  label: (
+                    <strong className="text-foreground font-semibold">
+                      {t("models:auto_router.advanced_escalation_keywords", "Advanced: Escalation Keywords")}
+                    </strong>
+                  ),
                   children: (
                     <Restricted by={restrictedBy(value, "escalation")}>
                       <EscalationKeywords keywords={escalationKeywords} onChange={onEscalationKeywordsChange} />
@@ -866,7 +926,11 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
             ? [
                 {
                   key: "compression",
-                  label: <strong className="text-foreground font-semibold">Advanced: Compression</strong>,
+                  label: (
+                    <strong className="text-foreground font-semibold">
+                      {t("models:auto_router.advanced_compression", "Advanced: Compression")}
+                    </strong>
+                  ),
                   children: (
                     <CompressionControls value={autoRouterCompression} onChange={onAutoRouterCompressionChange} />
                   ),
@@ -877,7 +941,11 @@ const ComplexityRouterConfig: React.FC<ComplexityRouterConfigProps> = ({
             ? [
                 {
                   key: "keyword-semantic",
-                  label: <strong className="text-foreground font-semibold">Advanced: Keyword/Semantic Matching</strong>,
+                  label: (
+                    <strong className="text-foreground font-semibold">
+                      {t("models:auto_router.advanced_matching", "Advanced: Keyword/Semantic Matching")}
+                    </strong>
+                  ),
                   children: (
                     <>
                       {onKeywordTierRulesChange && (

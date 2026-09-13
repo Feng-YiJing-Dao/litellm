@@ -191,11 +191,11 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       <MountedFormField
                         label={labelWithHint(
                           t("models:select_team", { defaultValue: "Select Team" }),
-                          "Select the team for which you want to add this model",
+                          t("models:add_model_form.select_team_hint", { defaultValue: "Select the team for which you want to add this model" }),
                         )}
                         name="team_id"
                         required
-                        rules={{ validate: { required: requiredRule("Please select a team to continue") } }}
+                        rules={{ validate: { required: requiredRule(t("models:add_model_form.please_select_team_to_continue", { defaultValue: "Please select a team to continue" })) } }}
                         className="mb-4"
                       >
                         {(control) => (
@@ -211,9 +211,9 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       {!teamAdminSelectedTeam && (
                         <Alert variant="info" className="mb-4">
                           <Info />
-                          <AlertTitle>Team Selection Required</AlertTitle>
+                          <AlertTitle>{t("models:add_model_form.team_selection_required", { defaultValue: "Team Selection Required" })}</AlertTitle>
                           <AlertDescription>
-                            As a team admin, you need to select your team first before adding models.
+                            {t("models:add_model_form.team_selection_required_desc", { defaultValue: "As a team admin, you need to select your team first before adding models." })}
                           </AlertDescription>
                         </Alert>
                       )}
@@ -224,18 +224,18 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       <MountedFormField
                         label={labelWithHint(
                           t("models:provider", { defaultValue: "Provider" }),
-                          "E.g. OpenAI, Azure OpenAI, Anthropic, Bedrock, etc.",
+                          t("models:add_model_form.provider_hint", { defaultValue: "E.g. OpenAI, Azure OpenAI, Anthropic, Bedrock, etc." }),
                         )}
                         name="custom_llm_provider"
                         required
-                        rules={{ validate: { required: requiredRule("Required") } }}
+                        rules={{ validate: { required: requiredRule(t("common:required", { defaultValue: "Required" })) } }}
                         className="mb-4"
                       >
                         {(control) => (
                           <SearchSelect
                             inputId={control.id}
                             options={providerOptions}
-                            emptyText={providerMetadataErrorText ?? "No providers found"}
+                            emptyText={providerMetadataErrorText ?? t("models:add_model_form.no_providers_found", { defaultValue: "No providers found" })}
                             placeholder={
                               isProviderMetadataLoading
                                 ? t("models:loading_providers", { defaultValue: "Loading providers..." })
@@ -286,14 +286,17 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                         <div className="col-span-5" />
                         <div className="col-span-5">
                           <p className="text-sm mb-5 mt-1">
-                            <strong>Optional</strong> - LiteLLM endpoint to use when health checking this model{" "}
+                            <strong>{t("common:optional", { defaultValue: "Optional" })}</strong> -{" "}
+                            {t("models:add_model_form.healthcheck_endpoint_hint", {
+                              defaultValue: "LiteLLM endpoint to use when health checking this model",
+                            })}{" "}
                             <a
                               href="https://docs.litellm.ai/docs/proxy/health#health"
                               target="_blank"
                               rel="noreferrer"
                               className="text-primary hover:underline"
                             >
-                              Learn more
+                              {t("common:learn_more", { defaultValue: "Learn more" })}
                             </a>
                           </p>
                         </div>
@@ -302,12 +305,14 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       {/* Credentials */}
                       <div className="mb-4">
                         <span className="text-sm text-muted-foreground">
-                          Either select existing credentials OR enter new provider credentials below
+                          {t("models:add_model_form.credentials_choice_hint", {
+                            defaultValue: "Either select existing credentials OR enter new provider credentials below",
+                          })}
                         </span>
                       </div>
 
                       <MountedFormField
-                        label="Existing Credentials"
+                        label={t("models:add_model_form.existing_credentials", { defaultValue: "Existing Credentials" })}
                         name="litellm_credential_name"
                         defaultValue={null}
                         className="mb-4"
@@ -315,7 +320,9 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                         {(control) => (
                           <SearchSelect
                             inputId={control.id}
-                            placeholder="Select or search for existing credentials"
+                            placeholder={t("models:add_model_form.select_existing_credentials_placeholder", {
+                              defaultValue: "Select or search for existing credentials",
+                            })}
                             options={credentialOptions}
                             value={(control.value as string | null | undefined) ?? ""}
                             onValueChange={(value) => control.onChange(value === "" ? null : value)}
@@ -328,7 +335,9 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                         <>
                           <div className="flex items-center my-4">
                             <div className="grow border-t border-border"></div>
-                            <span className="px-4 text-muted-foreground text-sm">OR</span>
+                            <span className="px-4 text-muted-foreground text-sm">
+                              {t("common:or", { defaultValue: "OR" })}
+                            </span>
                             <div className="grow border-t border-border"></div>
                           </div>
                           <ProviderSpecificFields selectedProvider={selectedProvider} />
@@ -336,7 +345,11 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       )}
                       <div className="flex items-center my-4">
                         <div className="grow border-t border-border"></div>
-                        <span className="px-4 text-muted-foreground text-sm">Additional Model Info Settings</span>
+                        <span className="px-4 text-muted-foreground text-sm">
+                          {t("models:add_model_form.additional_model_info_settings", {
+                            defaultValue: "Additional Model Info Settings",
+                          })}
+                        </span>
                         <div className="grow border-t border-border"></div>
                       </div>
                       {/* Team-only Model Switch - Only show for proxy admins, not team admins */}
@@ -344,14 +357,20 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                         <Field className="mb-4">
                           <FieldLabel>
                             {labelWithHint(
-                              "Team-BYOK Model",
-                              "Only use this model + credential combination for this team. Useful when teams want to onboard their own OpenAI keys.",
+                              t("models:add_model_form.team_byok_model", { defaultValue: "Team-BYOK Model" }),
+                              t("models:add_model_form.team_byok_model_hint", {
+                                defaultValue:
+                                  "Only use this model + credential combination for this team. Useful when teams want to onboard their own OpenAI keys.",
+                              }),
                             )}
                           </FieldLabel>
                           <SimpleTooltip
                             content={
                               !premiumUser
-                                ? "This is an enterprise-only feature. Upgrade to premium to restrict model+credential combinations to a specific team."
+                                ? t("models:add_model_form.team_byok_enterprise_tooltip", {
+                                    defaultValue:
+                                      "This is an enterprise-only feature. Upgrade to premium to restrict model+credential combinations to a specific team.",
+                                  })
                                 : ""
                             }
                             side="top"
@@ -366,7 +385,7 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                                   }
                                 }}
                                 disabled={!premiumUser}
-                                aria-label="Team-BYOK Model"
+                                aria-label={t("models:add_model_form.team_byok_model", { defaultValue: "Team-BYOK Model" })}
                               />
                             </span>
                           </SimpleTooltip>
@@ -377,15 +396,25 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                       {isTeamOnly && !requiresTeamScope && (
                         <MountedFormField
                           label={labelWithHint(
-                            "Select Team",
-                            "Only keys for this team will be able to call this model.",
+                            t("models:select_team", { defaultValue: "Select Team" }),
+                            t("models:add_model_form.only_team_keys_can_call", {
+                              defaultValue: "Only keys for this team will be able to call this model.",
+                            }),
                           )}
                           name="team_id"
                           className="mb-4"
                           required={isTeamOnly && !isAdmin}
                           rules={
                             isTeamOnly && !isAdmin
-                              ? { validate: { required: requiredRule("Please select a team.") } }
+                              ? {
+                                  validate: {
+                                    required: requiredRule(
+                                      t("models:add_model_form.please_select_team", {
+                                        defaultValue: "Please select a team.",
+                                      }),
+                                    ),
+                                  },
+                                }
                               : undefined
                           }
                         >
@@ -403,7 +432,10 @@ const AddModelForm: React.FC<AddModelFormProps> = ({
                           <MountedFormField
                             label={labelWithHint(
                               t("models:model_access_group", { defaultValue: "Model Access Group" }),
-                              "Use model access groups to give users access to select models, and add new ones to the group over time.",
+                              t("models:add_model_form.model_access_group_hint", {
+                                defaultValue:
+                                  "Use model access groups to give users access to select models, and add new ones to the group over time.",
+                              }),
                             )}
                             name="model_access_group"
                             className="mb-4"

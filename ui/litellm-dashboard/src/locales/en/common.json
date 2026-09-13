@@ -473,5 +473,7 @@
       "access_denied": "Access Denied",
       "error": "Error"
     }
-  }
+  },
+  "click_to_upload": "Click to Upload",
+  "or": "OR"
 }

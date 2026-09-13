@@ -1,5 +1,6 @@
 import React from "react";
 import { CircleCheck, CircleX, LoaderCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { testModelGroupConnection, ModelGroupConnectionResult } from "../networking";
 import { AutoRouterTestTarget } from "./build_auto_router_test_targets";
@@ -22,6 +23,7 @@ const AutoRouterConnectionTest: React.FC<AutoRouterConnectionTestProps> = ({
   targets,
   onTestComplete,
 }) => {
+  const { t } = useTranslation(["models"]);
   const [results, setResults] = React.useState<TargetResult[]>(() => targets.map(() => ({ status: "pending" })));
 
   React.useEffect(() => {
@@ -50,7 +52,7 @@ const AutoRouterConnectionTest: React.FC<AutoRouterConnectionTestProps> = ({
   if (targets.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No complexity tiers are configured yet, so there is nothing to test.
+        {t("models:auto_router.no_tiers_to_test", "No complexity tiers are configured yet, so there is nothing to test.")}
       </p>
     );
   }
@@ -58,8 +60,10 @@ const AutoRouterConnectionTest: React.FC<AutoRouterConnectionTestProps> = ({
   return (
     <div className="space-y-3">
       <p className="mb-2 text-sm text-muted-foreground">
-        Test Connection sends a minimal request to every configured tier, classifier, default, and embedding model. The
-        classifier probe includes its reasoning effort override.
+        {t(
+          "models:auto_router.test_connection_desc",
+          "Test Connection sends a minimal request to every configured tier, classifier, default, and embedding model. The classifier probe includes its reasoning effort override.",
+        )}
       </p>
       {targets.map((target, index) => {
         const result = results[index] ?? { status: "pending" };

@@ -3,6 +3,7 @@ import { SearchSelect, type SearchSelectOption } from "@/components/shared/Searc
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import ProviderSpecificFields from "../add_model/provider_specific_fields";
 import { requiredRule } from "../common_components/formRules";
 import { labelWithHint } from "@/components/shared/form/LabelWithHint";
@@ -40,6 +41,7 @@ export default function CredentialModal({
   mode,
   existingCredential = null,
 }: CredentialModalProps) {
+  const { t } = useTranslation(["models", "common"]);
   const isEdit = mode === "edit";
   const [selectedProvider, setSelectedProvider] = useState<Providers>(
     (existingCredential?.credential_info.custom_llm_provider as Providers) ?? Providers.OpenAI,
@@ -89,7 +91,11 @@ export default function CredentialModal({
     <Dialog open={open} onOpenChange={(open) => !open && closeAndReset()}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Edit Credential" : "Add New Credential"}</DialogTitle>
+          <DialogTitle>
+            {isEdit
+              ? t("models:credentials.title_edit", "Edit Credential")
+              : t("models:credentials.title_add", "Add New Credential")}
+          </DialogTitle>
         </DialogHeader>
         <FormProvider {...form}>
           <MountedFormProvider value={{ control: form.control, registry }}>
@@ -100,10 +106,16 @@ export default function CredentialModal({
               }}
             >
               <MountedFormField
-                label="Credential Name:"
+                label={t("models:credentials.credential_name_label", "Credential Name:")}
                 name="credential_name"
                 required
-                rules={{ validate: { required: requiredRule("Credential name is required") } }}
+                rules={{
+                  validate: {
+                    required: requiredRule(
+                      t("models:credentials.name_required", "Credential name is required"),
+                    ),
+                  },
+                }}
                 className="mb-4"
               >
                 {(control) => (
@@ -112,23 +124,29 @@ export default function CredentialModal({
                     value={(control.value as string | undefined) ?? ""}
                     onChange={control.onChange}
                     onBlur={control.onBlur}
-                    placeholder="Enter a friendly name for these credentials"
+                    placeholder={t(
+                      "models:credentials.credential_name_placeholder",
+                      "Enter a friendly name for these credentials",
+                    )}
                     disabled={isEdit}
                   />
                 )}
               </MountedFormField>
 
               <MountedFormField
-                label={labelWithHint("Provider:", "Helper to auto-populate provider specific fields")}
+                label={labelWithHint(
+                  t("models:credentials.provider_label", "Provider:"),
+                  t("models:credentials.provider_hint", "Helper to auto-populate provider specific fields"),
+                )}
                 name="custom_llm_provider"
                 required
-                rules={{ validate: { required: requiredRule("Required") } }}
+                rules={{ validate: { required: requiredRule(t("common:required", "Required")) } }}
                 className="mb-4"
               >
                 {(control) => (
                   <SearchSelect
                     inputId={control.id}
-                    placeholder="Select a provider"
+                    placeholder={t("models:credentials.select_provider_placeholder", "Select a provider")}
                     options={providerOptions}
                     value={(control.value as string | undefined) ?? ""}
                     onValueChange={(value) => {
@@ -143,9 +161,13 @@ export default function CredentialModal({
 
               <div className="flex justify-end items-center gap-2">
                 <Button variant="outline" className="mr-2.5" onClick={closeAndReset}>
-                  Cancel
+                  {t("common:cancel", "Cancel")}
                 </Button>
-                <Button type="submit">{isEdit ? "Update Credential" : "Add Credential"}</Button>
+                <Button type="submit">
+                  {isEdit
+                    ? t("models:credentials.update_credential_btn", "Update Credential")
+                    : t("models:credentials.add_credential_btn", "Add Credential")}
+                </Button>
               </div>
             </form>
           </MountedFormProvider>

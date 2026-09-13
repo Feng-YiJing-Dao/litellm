@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/locales";
 import { MultiSelect } from "@/components/shared/MultiSelect";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
@@ -64,7 +66,9 @@ const validateNumber = (_: unknown, value: unknown) => {
     return Promise.resolve();
   }
   if (isNaN(Number(value)) || Number(value) < 0) {
-    return Promise.reject("Please enter a valid positive number");
+    return Promise.reject(
+      i18n.t("models:advanced_settings.valid_positive_number", { defaultValue: "Please enter a valid positive number" }),
+    );
   }
   return Promise.resolve();
 };
@@ -82,6 +86,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
   tagsList,
   accessToken,
 }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [customPricing, setCustomPricing] = React.useState(false);
   const [pricingModel, setPricingModel] = React.useState<"per_token" | "per_second">("per_token");
   const [showCacheControl, setShowCacheControl] = React.useState(false);
@@ -99,12 +104,16 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
     <>
       <Collapsible className="mt-2 mb-4 overflow-hidden rounded-lg border">
         <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-          <b>Advanced Settings</b>
+          <b>{t("models:advanced_settings.advanced_settings", { defaultValue: "Advanced Settings" })}</b>
           <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
         </CollapsibleTrigger>
         <CollapsibleContent className="px-4 pb-3">
           <div className="rounded-lg">
-            <MountedFormField name="custom_pricing" label="Custom Pricing" className="mb-4">
+            <MountedFormField
+              name="custom_pricing"
+              label={t("models:advanced_settings.custom_pricing", { defaultValue: "Custom Pricing" })}
+              className="mb-4"
+            >
               {(control) => (
                 <Switch
                   id={control.id}
@@ -142,7 +151,9 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                   onChange={control.onChange}
                   value={control.value as string[] | undefined}
                   accessToken={accessToken}
-                  placeholder="Select knowledge bases (optional)"
+                  placeholder={t("models:advanced_settings.select_knowledge_bases_placeholder", {
+                    defaultValue: "Select knowledge bases (optional)",
+                  })}
                 />
               )}
             </MountedFormField>
@@ -151,7 +162,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               name="guardrails"
               label={
                 <span>
-                  Guardrails{" "}
+                  {t("models:advanced_settings.guardrails", { defaultValue: "Guardrails" })}{" "}
                   <SimpleTooltip content="Apply safety guardrails to this key to filter content or enforce policies">
                     <a
                       href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start"
@@ -170,7 +181,9 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               {(control) => (
                 <MultiSelect
                   id={control.id}
-                  placeholder="Select or enter guardrails"
+                  placeholder={t("models:advanced_settings.select_guardrails_placeholder", {
+                    defaultValue: "Select or enter guardrails",
+                  })}
                   emptyText="Type to add a guardrail"
                   value={(control.value as string[] | undefined) ?? []}
                   onValueChange={control.onChange}
@@ -180,11 +193,15 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               )}
             </MountedFormField>
 
-            <MountedFormField name="tags" label="Tags" className="mb-4">
+            <MountedFormField
+              name="tags"
+              label={t("models:advanced_settings.tags", { defaultValue: "Tags" })}
+              className="mb-4"
+            >
               {(control) => (
                 <MultiSelect
                   id={control.id}
-                  placeholder="Select or enter tags"
+                  placeholder={t("models:advanced_settings.select_tags_placeholder", { defaultValue: "Select or enter tags" })}
                   emptyText="Type to add a tag"
                   value={(control.value as string[] | undefined) ?? []}
                   onValueChange={control.onChange}
@@ -305,7 +322,11 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
 
             {customPricing && (
               <div className="ml-6 pl-4 border-l-2 border-border">
-                <MountedFormField name="pricing_model" label="Pricing Model" className="mb-4">
+                <MountedFormField
+                  name="pricing_model"
+                  label={t("models:advanced_settings.pricing_model", { defaultValue: "Pricing Model" })}
+                  className="mb-4"
+                >
                   {(control) => (
                     <Select
                       items={PRICING_MODEL_ITEMS}
@@ -318,7 +339,9 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                       <SelectContent>
                         {PRICING_MODEL_ITEMS.map((item) => (
                           <SelectItem key={item.value} value={item.value}>
-                            {item.label}
+                            {item.value === "per_token"
+                              ? t("models:advanced_settings.per_million_tokens", { defaultValue: "Per Million Tokens" })
+                              : t("models:advanced_settings.per_second", { defaultValue: "Per Second" })}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -330,7 +353,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                   <>
                     <MountedFormField
                       name="input_cost_per_token"
-                      label="Input Cost (per 1M tokens)"
+                      label={t("models:advanced_settings.input_cost_per_1m", { defaultValue: "Input Cost (per 1M tokens)" })}
                       rules={usageCostRules}
                       className="mb-4"
                     >
@@ -345,7 +368,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                     </MountedFormField>
                     <MountedFormField
                       name="output_cost_per_token"
-                      label="Output Cost (per 1M tokens)"
+                      label={t("models:advanced_settings.output_cost_per_1m", { defaultValue: "Output Cost (per 1M tokens)" })}
                       rules={usageCostRules}
                       className="mb-4"
                     >
@@ -360,7 +383,10 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                     </MountedFormField>
                     <MountedFormField
                       name="cache_read_input_token_cost"
-                      label={labelWithHint("Cache Read Cost (per 1M tokens)", "If left blank, defaults to Input Cost.")}
+                      label={labelWithHint(
+                        t("models:advanced_settings.cache_read_input_cost", { defaultValue: "Cache Read Input Token Cost (per 1M tokens)" }),
+                        "If left blank, defaults to Input Cost.",
+                      )}
                       rules={usageCostRules}
                       className="mb-4"
                     >
@@ -377,7 +403,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                     <MountedFormField
                       name="cache_creation_input_token_cost"
                       label={labelWithHint(
-                        "Cache Write Cost (per 1M tokens)",
+                        t("models:advanced_settings.cache_creation_input_cost", { defaultValue: "Cache Creation Input Token Cost (per 1M tokens)" }),
                         "If left blank, defaults to Input Cost (the backend falls back to input_cost_per_token when no cache-write rate is set).",
                       )}
                       rules={usageCostRules}
@@ -397,7 +423,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                 ) : (
                   <MountedFormField
                     name="input_cost_per_second"
-                    label="Cost Per Second"
+                    label={t("models:advanced_settings.input_cost_per_second", { defaultValue: "Input Cost (per second)" })}
                     rules={usageCostRules}
                     className="mb-4"
                   >

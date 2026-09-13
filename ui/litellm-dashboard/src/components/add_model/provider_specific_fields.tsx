@@ -118,8 +118,34 @@ export const createCredentialFromModel = (provider: string, modelData: any): Cre
   return credential;
 };
 
+const slugify = (text: string, maxLen = 60) =>
+  text
+    .slice(0, maxLen)
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s-]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+const translateProviderLabel = (label: string, t: any) => {
+  if (!label) return label;
+  const slug = slugify(label);
+  return t(`models:provider_fields.labels.${slug}`, { defaultValue: label });
+};
+
+const translateProviderTooltip = (tooltip: string | undefined, t: any) => {
+  if (!tooltip) return tooltip;
+  const slug = slugify(tooltip);
+  return t(`models:provider_fields.tooltips.${slug}`, { defaultValue: tooltip });
+};
+
+const translateProviderPlaceholder = (placeholder: string | undefined, t: any) => {
+  if (!placeholder) return placeholder;
+  const slug = slugify(placeholder);
+  return t(`models:provider_fields.placeholders.${slug}`, { defaultValue: placeholder });
+};
+
 const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selectedProvider }) => {
-  const { t } = useTranslation(["models"]);
+  const { t } = useTranslation(["models", "common"]);
   const selectedProviderEnum = Providers[selectedProvider as keyof typeof Providers] as Providers;
   const form = useFormContext<MountedFormValues>();
   const credentialsFileRef = React.useRef<HTMLInputElement>(null);
@@ -236,7 +262,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
           onValueChange={control.onChange}
         >
           <SelectTrigger id={control.id} onBlur={control.onBlur} className="w-full">
-            <SelectValue placeholder={field.placeholder} />
+            <SelectValue placeholder={translateProviderPlaceholder(field.placeholder, t)} />
           </SelectTrigger>
           <SelectContent>
             {field.options?.map((option) => (
@@ -254,7 +280,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
         <>
           <Button type="button" variant="outline" className="w-fit" onClick={() => credentialsFileRef.current?.click()}>
             <UploadIcon />
-            Click to Upload
+            {t("common:click_to_upload", { defaultValue: "Click to Upload" })}
           </Button>
           <input
             ref={credentialsFileRef}
@@ -276,7 +302,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
           value={control.value as string | undefined}
           onChange={control.onChange}
           onBlur={control.onBlur}
-          placeholder={field.placeholder}
+          placeholder={translateProviderPlaceholder(field.placeholder, t)}
           defaultValue={field.defaultValue}
           rows={6}
           className="font-mono text-xs"
@@ -291,7 +317,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
           value={control.value as string | undefined}
           onChange={control.onChange}
           onBlur={control.onBlur}
-          placeholder={field.placeholder}
+          placeholder={translateProviderPlaceholder(field.placeholder, t)}
           defaultValue={field.defaultValue}
         />
       );
@@ -302,7 +328,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
         id={control.id}
         value={(control.value as string | undefined) ?? undefined}
         onBlur={control.onBlur}
-        placeholder={field.placeholder}
+        placeholder={translateProviderPlaceholder(field.placeholder, t)}
         type="text"
         defaultValue={field.defaultValue}
         onChange={(event) => {
@@ -317,41 +343,55 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({ selecte
 
   return (
     <>
-      {isLoading && allFields.length === 0 && <p className="text-sm mb-2">Loading provider fields...</p>}
+      {isLoading && allFields.length === 0 && (
+        <p className="text-sm mb-2">{t("models:provider_fields.loading_provider_fields", { defaultValue: "Loading provider fields..." })}</p>
+      )}
       {loadError && allFields.length === 0 && (
         <p className="text-sm mb-2 text-destructive">
-          {loadError instanceof Error ? loadError.message : "Failed to load provider credential fields"}
+          {loadError instanceof Error
+            ? loadError.message
+            : t("models:provider_fields.failed_to_load_provider_fields", {
+                defaultValue: "Failed to load provider credential fields",
+              })}
         </p>
       )}
-      {allFields.map((field) => (
-        <React.Fragment key={field.key}>
-          <MountedFormField
-            label={field.tooltip ? labelWithHint(field.label, field.tooltip) : field.label}
-            name={field.key}
-            required={field.required}
-            rules={field.required ? { validate: { required: requiredRule("Required") } } : undefined}
-            className={field.key === "vertex_credentials" ? "mb-0" : "mb-4"}
-          >
-            {(control) => renderFieldControl(field, control)}
-          </MountedFormField>
+      {allFields.map((field) => {
+        const translatedLabel = translateProviderLabel(field.label, t);
+        const translatedTooltip = translateProviderTooltip(field.tooltip, t);
+        return (
+          <React.Fragment key={field.key}>
+            <MountedFormField
+              label={translatedTooltip ? labelWithHint(translatedLabel, translatedTooltip) : translatedLabel}
+              name={field.key}
+              required={field.required}
+              rules={field.required ? { validate: { required: requiredRule(t("common:required", { defaultValue: "Required" })) } } : undefined}
+              className={field.key === "vertex_credentials" ? "mb-0" : "mb-4"}
+            >
+              {(control) => renderFieldControl(field, control)}
+            </MountedFormField>
 
-          {/* Special case for Vertex Credentials help text */}
-          {field.key === "vertex_credentials" && (
-            <p className="text-sm mb-3 mt-1">Give a gcp service account(.json file)</p>
-          )}
-
-          {/* Special case for Azure Base Model help text */}
-          {field.key === "base_model" && (
-            <div className="grid grid-cols-24">
-              <p className="col-start-11 col-span-10 text-sm mb-2 text-muted-foreground">
-                {t("azure_base_model_help", {
-                  defaultValue: "The actual model your azure deployment uses. Used for accurate cost tracking.",
+            {/* Special case for Vertex Credentials help text */}
+            {field.key === "vertex_credentials" && (
+              <p className="text-sm mb-3 mt-1">
+                {t("models:provider_fields.give_gcp_service_account", {
+                  defaultValue: "Give a gcp service account(.json file)",
                 })}
               </p>
-            </div>
-          )}
-        </React.Fragment>
-      ))}
+            )}
+
+            {/* Special case for Azure Base Model help text */}
+            {field.key === "base_model" && (
+              <div className="grid grid-cols-24">
+                <p className="col-start-11 col-span-10 text-sm mb-2 text-muted-foreground">
+                  {t("azure_base_model_help", {
+                    defaultValue: "The actual model your azure deployment uses. Used for accurate cost tracking.",
+                  })}
+                </p>
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })}
     </>
   );
 };

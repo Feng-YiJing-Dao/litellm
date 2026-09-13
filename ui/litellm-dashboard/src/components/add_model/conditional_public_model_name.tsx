@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useFormContext, useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import i18n from "@/locales";
 import { DataTable } from "@/components/shared/DataTable";
 import { Input } from "@/components/ui/input";
 import { SimpleTooltip } from "@/components/ui/tooltip";
@@ -23,13 +25,21 @@ const sameMappings = (left: readonly ModelMapping[], right: readonly ModelMappin
 const modelMappingsRule = {
   validator: async (_: unknown, value: unknown) => {
     if (!value || (value as ModelMapping[]).length === 0) {
-      throw new Error("At least one model mapping is required");
+      throw new Error(
+        i18n.t("models:conditional_public_model_name.err_min_one", {
+          defaultValue: "At least one model mapping is required",
+        }),
+      );
     }
     const invalidMappings = (value as ModelMapping[]).filter(
       (mapping) => !mapping.public_name || mapping.public_name.trim() === "",
     );
     if (invalidMappings.length > 0) {
-      throw new Error("All model mappings must have valid public names");
+      throw new Error(
+        i18n.t("models:conditional_public_model_name.err_valid_public_names", {
+          defaultValue: "All model mappings must have valid public names",
+        }),
+      );
     }
   },
 };
@@ -38,23 +48,74 @@ const tooltipCodeClassName = "rounded-sm bg-background/20 px-1 py-0.5 font-mono 
 
 const ANTHROPIC_1M_HEADERS = JSON.stringify({ extra_headers: { "anthropic-beta": "context-1m-2025-08-07" } }, null, 2);
 
-const publicNameTooltipContent = (
-  <div className="flex flex-col gap-2 text-left font-normal">
-    <div>The name you specify in your API calls to LiteLLM Proxy</div>
-    <div>
-      <strong>Example:</strong> If you name your public model <code className={tooltipCodeClassName}>example-name</code>
-      , and choose <code className={tooltipCodeClassName}>openai/qwen-plus-latest</code> as the LiteLLM model
-    </div>
-    <div>
-      <strong>Usage:</strong> You make an API call to the LiteLLM proxy with{" "}
-      <code className={tooltipCodeClassName}>model = &quot;example-name&quot;</code>
-    </div>
-    <div>
-      <strong>Result:</strong> LiteLLM sends <code className={tooltipCodeClassName}>qwen-plus-latest</code> to the
-      provider
-    </div>
-  </div>
-);
+const PublicNameHeader: React.FC = () => {
+  const { t } = useTranslation(["models"]);
+  return (
+    <span className="flex items-center">
+      {t("models:public_model_name", { defaultValue: "Public Model Name" })}
+      <SimpleTooltip
+        content={
+          <div className="flex flex-col gap-2 text-left font-normal">
+            <div>
+              {t("models:conditional_public_model_name.tooltip_desc", {
+                defaultValue: "The name you specify in your API calls to LiteLLM Proxy",
+              })}
+            </div>
+            <div>
+              <strong>
+                {t("models:conditional_public_model_name.example_label", { defaultValue: "Example:" })}
+              </strong>{" "}
+              {t("models:conditional_public_model_name.example_text", {
+                publicName: "example-name",
+                litellmModel: "openai/qwen-plus-latest",
+                defaultValue:
+                  "If you name your public model example-name, and choose openai/qwen-plus-latest as the LiteLLM model",
+              })}
+            </div>
+            <div>
+              <strong>
+                {t("models:conditional_public_model_name.usage_label", { defaultValue: "Usage:" })}
+              </strong>{" "}
+              {t("models:conditional_public_model_name.usage_text", {
+                exampleName: "example-name",
+                defaultValue: 'You make an API call to the LiteLLM proxy with model = "example-name"',
+              })}
+            </div>
+            <div>
+              <strong>
+                {t("models:conditional_public_model_name.result_label", { defaultValue: "Result:" })}
+              </strong>{" "}
+              {t("models:conditional_public_model_name.result_text", {
+                targetModel: "qwen-plus-latest",
+                defaultValue: "LiteLLM sends qwen-plus-latest to the provider",
+              })}
+            </div>
+          </div>
+        }
+        width="500px"
+      />
+    </span>
+  );
+};
+
+const LiteLLMModelHeader: React.FC = () => {
+  const { t } = useTranslation(["models"]);
+  return (
+    <span className="flex items-center">
+      {t("models:litellm_model_name", { defaultValue: "LiteLLM Model Name" })}
+      <SimpleTooltip
+        content={
+          <div>
+            {t("models:conditional_public_model_name.litellm_model_tooltip", {
+              defaultValue: "The model name LiteLLM will send to the LLM API",
+            })}
+          </div>
+        }
+        width="360px"
+      />
+    </span>
+  );
+};
 
 const PublicNameInput: React.FC<{ readonly index: number; readonly value: string }> = ({ index, value }) => {
   const form = useFormContext<MountedFormValues>();
@@ -92,23 +153,13 @@ const columns: ColumnDef<ModelMapping>[] = [
   {
     id: "public_name",
     accessorKey: "public_name",
-    header: () => (
-      <span className="flex items-center">
-        Public Model Name
-        <SimpleTooltip content={publicNameTooltipContent} width="500px" />
-      </span>
-    ),
+    header: () => <PublicNameHeader />,
     cell: ({ row }) => <PublicNameInput index={row.index} value={row.original.public_name} />,
   },
   {
     id: "litellm_model",
     accessorKey: "litellm_model",
-    header: () => (
-      <span className="flex items-center">
-        LiteLLM Model Name
-        <SimpleTooltip content={<div>The model name LiteLLM will send to the LLM API</div>} width="360px" />
-      </span>
-    ),
+    header: () => <LiteLLMModelHeader />,
   },
 ];
 
@@ -200,13 +251,19 @@ const ConditionalPublicModelName: React.FC = () => {
 
   if (!showPublicModelName) return null;
 
+  const { t } = useTranslation(["models"]);
+
   return (
     <MountedFormField
       name="model_mappings"
       label={
         <span className="flex items-center">
-          Model Mappings
-          <SimpleTooltip content="Map public model names to LiteLLM model names for load balancing" />
+          {t("models:conditional_public_model_name.model_mappings", { defaultValue: "Model Mappings" })}
+          <SimpleTooltip
+            content={t("models:conditional_public_model_name.model_mappings_tooltip", {
+              defaultValue: "Map public model names to LiteLLM model names for load balancing",
+            })}
+          />
         </span>
       }
       required

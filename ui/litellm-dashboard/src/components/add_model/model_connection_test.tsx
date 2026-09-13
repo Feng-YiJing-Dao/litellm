@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { AlertTriangle, CircleCheck, Copy, ExternalLink, Info, LoaderCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ const ModelConnectionTest: React.FC<ModelConnectionTestProps> = ({
   onClose: _onClose,
   onTestComplete,
 }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [error, setError] = React.useState<Error | string | null>(null);
   const [rawResponse, setRawResponse] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -137,13 +139,21 @@ ${formattedBody}
       {isLoading ? (
         <div aria-busy="true" className="flex flex-col items-center justify-center gap-4 px-5 py-8 text-center">
           <LoaderCircle className="size-8 animate-spin text-primary" />
-          <p className="text-base">Testing connection to {modelName}...</p>
+          <p className="text-base">
+            {t("models:connection_test.testing_connection", {
+              modelName,
+              defaultValue: `Testing connection to ${modelName}...`,
+            })}
+          </p>
         </div>
       ) : isSuccess ? (
         <div className="flex items-center justify-center gap-2.5 px-5 py-8">
           <CircleCheck className="size-6 text-primary" />
           <p data-testid="connection-success-msg" className="text-lg font-medium">
-            Connection to {modelName} successful!
+            {t("models:connection_test.connection_success", {
+              modelName,
+              defaultValue: `Connection to ${modelName} successful!`,
+            })}
           </p>
         </div>
       ) : (
@@ -151,12 +161,15 @@ ${formattedBody}
           <div className="mb-5 flex items-center gap-3">
             <AlertTriangle className="size-6 text-destructive" />
             <p data-testid="connection-failure-msg" className="text-lg font-medium text-destructive">
-              Connection to {modelName} failed
+              {t("models:connection_test.connection_failed", {
+                modelName,
+                defaultValue: `Connection to ${modelName} failed`,
+              })}
             </p>
           </div>
 
           <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 p-4 shadow-xs">
-            <p className="mb-2 font-medium">Error:</p>
+            <p className="mb-2 font-medium">{t("models:connection_test.error_label", { defaultValue: "Error:" })}</p>
             <p className="text-sm leading-relaxed text-destructive">{errorMessage}</p>
 
             {error && (
@@ -166,14 +179,18 @@ ${formattedBody}
                 className="mt-3 h-auto px-0"
                 onClick={() => setShowDetails((visible) => !visible)}
               >
-                {showDetails ? "Hide Details" : "Show Details"}
+                {showDetails
+                  ? t("models:connection_test.hide_details", { defaultValue: "Hide Details" })
+                  : t("models:connection_test.show_details", { defaultValue: "Show Details" })}
               </Button>
             )}
           </div>
 
           {showDetails && (
             <div className="mb-5">
-              <p className="mb-2 text-sm font-medium">Troubleshooting Details</p>
+              <p className="mb-2 text-sm font-medium">
+                {t("models:connection_test.troubleshooting_details", { defaultValue: "Troubleshooting Details" })}
+              </p>
               <pre className="max-h-52 overflow-auto rounded-lg border bg-muted/50 p-4 text-xs leading-relaxed">
                 {typeof error === "string" ? error : JSON.stringify(error, null, 2)}
               </pre>
@@ -181,9 +198,11 @@ ${formattedBody}
           )}
 
           <div>
-            <p className="mb-2 text-sm font-medium">API Request</p>
+            <p className="mb-2 text-sm font-medium">
+              {t("models:connection_test.api_request", { defaultValue: "API Request" })}
+            </p>
             <pre className="max-h-64 overflow-auto rounded-lg border bg-muted/50 p-4 text-xs leading-relaxed">
-              {curlCommand || "No request data available"}
+              {curlCommand || t("models:connection_test.no_request_data", { defaultValue: "No request data available" })}
             </pre>
             <Button
               type="button"
@@ -195,7 +214,7 @@ ${formattedBody}
               }}
             >
               <Copy data-icon="inline-start" />
-              Copy to Clipboard
+              {t("models:connection_test.copy_to_clipboard", { defaultValue: "Copy to Clipboard" })}
             </Button>
           </div>
         </div>
@@ -209,7 +228,7 @@ ${formattedBody}
         render={<a href="https://docs.litellm.ai/docs/providers" target="_blank" rel="noopener noreferrer" />}
       >
         <Info data-icon="inline-start" />
-        View Documentation
+        {t("models:connection_test.view_docs", { defaultValue: "View Documentation" })}
         <ExternalLink data-icon="inline-end" />
       </Button>
     </div>

@@ -1,5 +1,6 @@
 import { CircleHelp, Minus, Plus } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -71,6 +72,7 @@ interface CacheControlInjectionPointsProps {
  * independently; both hand a child exactly `value` and `onChange`.
  */
 const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = ({ value, onChange }) => {
+  const { t } = useTranslation(["models", "common"]);
   const points = value ?? [];
 
   const replaceAt = (index: number, point: CacheControlInjectionPoint) =>
@@ -78,12 +80,12 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
 
   return (
     <div className="ml-6 border-l-2 border-border pl-4">
-      <p className="mb-4 block text-sm text-muted-foreground">{CACHE_CONTROL_DESCRIPTION}</p>
+      <p className="mb-4 block text-sm text-muted-foreground">{t("models:cache_control.desc", CACHE_CONTROL_DESCRIPTION)}</p>
 
       {points.map((point, index) => (
         <div key={index} className="mb-4 flex items-end gap-4">
           <div className="w-[180px] space-y-1">
-            <Label>Type</Label>
+            <Label>{t("models:cache_control.type", "Type")}</Label>
             <Select items={LOCATION_ITEMS} value={point.location} disabled>
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -91,7 +93,7 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
               <SelectContent>
                 {LOCATION_ITEMS.map((item) => (
                   <SelectItem key={item.value} value={item.value}>
-                    {item.label}
+                    {t(`models:cache_control.${item.value}`, item.label)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -99,7 +101,10 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
           </div>
 
           <div className="w-[180px] space-y-1">
-            <LabelWithHint label="Role" hint={CACHE_CONTROL_ROLE_HINT} />
+            <LabelWithHint
+              label={t("models:cache_control.role", "Role")}
+              hint={t("models:cache_control.role_hint", CACHE_CONTROL_ROLE_HINT)}
+            />
             <Select
               items={ROLE_ITEMS}
               value={point.role ?? null}
@@ -108,13 +113,13 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
               }
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a role" />
+                <SelectValue placeholder={t("models:cache_control.select_role", "Select a role")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>None</SelectItem>
+                <SelectItem value={null}>{t("models:cache_control.none", "None")}</SelectItem>
                 {ROLE_ITEMS.map((item) => (
                   <SelectItem key={item.value} value={item.value}>
-                    {item.label}
+                    {t(`models:cache_control.${item.value}`, item.label)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -122,10 +127,13 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
           </div>
 
           <div className="w-[180px] space-y-1">
-            <LabelWithHint label="Index" hint={CACHE_CONTROL_INDEX_HINT} />
+            <LabelWithHint
+              label={t("models:cache_control.index", "Index")}
+              hint={t("models:cache_control.index_hint", CACHE_CONTROL_INDEX_HINT)}
+            />
             <NumericalInput
               type="number"
-              placeholder="Optional"
+              placeholder={t("models:cache_control.optional", "Optional")}
               step={1}
               value={point.index ?? ""}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -142,7 +150,7 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
               type="button"
               variant="ghost"
               size="icon"
-              aria-label={`Remove injection point ${index + 1}`}
+              aria-label={t("models:cache_control.remove_point", `Remove injection point ${index + 1}`, { index: index + 1 })}
               className="text-destructive"
               onClick={() => onChange?.(points.filter((_, position) => position !== index))}
             >
@@ -159,7 +167,7 @@ const CacheControlInjectionPoints: React.FC<CacheControlInjectionPointsProps> = 
         onClick={() => onChange?.([...points, NEW_CACHE_CONTROL_POINT])}
       >
         <Plus className="mr-2 size-4" />
-        Add Injection Point
+        {t("models:cache_control.add_point", "Add Injection Point")}
       </Button>
     </div>
   );

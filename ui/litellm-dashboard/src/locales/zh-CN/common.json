@@ -473,5 +473,7 @@
       "access_denied": "访问被拒绝",
       "error": "错误"
     }
-  }
+  },
+  "click_to_upload": "点击上传",
+  "or": "或"
 }

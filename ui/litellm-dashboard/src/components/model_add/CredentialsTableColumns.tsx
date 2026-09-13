@@ -53,7 +53,7 @@ function CredentialRowActions({ credential, onEdit, onDelete }: CredentialRowAct
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open credential actions"
+        aria-label={t("models:credentials.open_actions", "Open credential actions")}
         data-testid={`credential-actions-${credential.credential_name}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >
@@ -66,7 +66,7 @@ function CredentialRowActions({ credential, onEdit, onDelete }: CredentialRowAct
         </DropdownMenuItem>
         <DropdownMenuItem
           data-testid="credential-action-copy"
-          onClick={() => void copyToClipboard(credential.credential_name, "Credential name copied")}
+          onClick={() => void copyToClipboard(credential.credential_name, t("models:credentials.copied", "Credential name copied"))}
         >
           <Copy />
           {t("models:copy_credential_name", "Copy credential name")}
@@ -128,7 +128,7 @@ export const getCredentialsTableColumns = ({
     {
       id: "actions",
       meta: { className: "text-right", headerClassName: "text-right" },
-      header: () => <span className="sr-only">Actions</span>,
+      header: () => <span className="sr-only">{t("common:actions", "Actions")}</span>,
       size: 64,
       enableSorting: false,
       enableHiding: false,
