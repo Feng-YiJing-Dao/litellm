@@ -31,16 +31,55 @@
     "run_check": "运行健康检查",
     "running_check": "正在执行健康检查...",
     "response_time": "响应时间",
+    "status_prefix": "缓存状态：",
+    "healthy": "健康",
+    "unhealthy": "异常",
+    "error_details": "错误详情",
+    "error_message": "错误信息",
+    "traceback": "错误堆栈",
+    "cache_details": "缓存详情",
+    "cache_config": "缓存配置类型",
+    "ping_response": "Ping 响应",
+    "set_cache_response": "写入缓存响应",
+    "redis_details": "Redis 详细信息",
+    "redis_host": "Redis 主机",
+    "redis_port": "Redis 端口",
+    "redis_version": "Redis 版本",
+    "startup_nodes": "启动节点",
+    "namespace": "命名空间",
     "tabs": {
-      "formatted": "格式化信息",
+      "formatted": "状态摘要",
       "raw": "原始响应"
     }
   },
   "settings": {
     "test_connection": "测试连接",
     "testing": "测试中...",
-    "save": "保存缓存配置",
+    "save": "保存修改",
     "saving": "保存中...",
-    "advanced": "高级配置"
+    "advanced": "高级设置",
+    "connection_title": "连接设置",
+    "cluster_title": "集群配置",
+    "sentinel_title": "哨兵 (Sentinel) 配置",
+    "semantic_title": "语义缓存配置",
+    "ssl_title": "SSL 安全设置",
+    "management_title": "缓存生命周期管理",
+    "gcp_title": "GCP 身份认证",
+    "desc": "为 LiteLLM 网关配置 Redis 响应缓存",
+    "test_success": "缓存连接测试成功！",
+    "test_failed": "连接测试失败：{{error}}",
+    "update_success": "缓存配置更新成功",
+    "update_failed": "更新缓存配置失败",
+    "load_failed": "加载缓存配置失败"
+  },
+  "coordination": {
+    "title": "协同协调 Redis",
+    "desc": "用于跨代理 Pod 协同工作的 Redis：跨 Pod 速率限制、支出追踪以及 Pod 分布式锁管理。此配置独立于响应缓存。",
+    "restart_warning": "保存的修改将在重启网关服务后生效。",
+    "test_success": "协同 Redis 连接测试成功！",
+    "test_failed": "连接测试失败：{{error}}",
+    "saved_success": "协同 Redis 配置已保存。请重启网关以应用更改。",
+    "update_failed": "更新协同 Redis 配置失败",
+    "load_failed": "加载协同 Redis 配置失败"
   }
 }

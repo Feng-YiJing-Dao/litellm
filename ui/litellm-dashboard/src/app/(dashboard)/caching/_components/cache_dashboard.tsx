@@ -114,7 +114,7 @@ const CacheDashboard: React.FC<CachePageProps> = ({ accessToken, token, userRole
 
   const runCachingHealthCheck = async () => {
     try {
-      toast.info("Running cache health check...");
+      toast.info(t("caching:health.running_check", { defaultValue: "Running cache health check..." }));
       setHealthCheckResponse("");
       const response = await cachingHealthCheckCall(accessToken !== null ? accessToken : "");
       setHealthCheckResponse(response);
@@ -178,26 +178,10 @@ const CacheDashboard: React.FC<CachePageProps> = ({ accessToken, token, userRole
         <Card>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Analytics for LiteLLM&apos;s{" "}
-              <a
-                href="https://docs.litellm.ai/docs/proxy/caching"
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                response cache
-              </a>{" "}
-              (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side{" "}
-              <a
-                href="https://docs.litellm.ai/docs/completion/prompt_caching"
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                prompt caching
-              </a>{" "}
-              (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see &quot;Prompt Caching
-              Metrics&quot; on the Usage page or individual requests in the Logs page.
+              {t("caching:analytics_desc", {
+                defaultValue:
+                  "Analytics for LiteLLM's response cache (e.g. Redis / in-memory): requests answered from cache without calling the LLM provider. Provider-side prompt caching (cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see \"Prompt Caching Metrics\" on the Usage page or individual requests in the Logs page.",
+              })}
             </p>
 
             <div className="mt-4 grid grid-cols-1 items-center gap-4 md:grid-cols-[1fr_1fr_auto]">

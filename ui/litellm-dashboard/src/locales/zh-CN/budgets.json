@@ -13,19 +13,41 @@
     "no_budgets_yet": "暂无预算配置",
     "cta": "创建预算以设置针对客户的金额消费、TPM 及 RPM 限制。"
   },
+  "loading": "正在加载预算列表…",
   "columns": {
     "budget_id": "预算 ID",
-    "max_budget": "最大预算 (USD)",
-    "budget_reset": "预算重置周期",
-    "tpm_limit": "TPM 限制",
-    "rpm_limit": "RPM 限制",
+    "max_budget": "最大预算",
+    "max_budget_usd": "最大预算 (USD)",
+    "budget_reset": "重置周期",
+    "tpm_limit": "TPM 限额",
+    "rpm_limit": "RPM 限额",
     "created_at": "创建时间",
-    "actions": "操作"
+    "actions": "操作",
+    "unlimited": "无限制"
   },
   "actions": {
+    "open_actions": "打开预算操作菜单",
     "edit": "编辑预算",
     "delete": "删除预算",
     "not_set": "未设置"
+  },
+  "filter": {
+    "title": "筛选条件",
+    "description": "精确筛选您的预算配置",
+    "unlimited_only": "仅限无限制额度",
+    "min_placeholder": "最小值",
+    "max_placeholder": "最大值",
+    "min_aria": "最小预算额度",
+    "max_aria": "最大预算额度",
+    "created_from": "创建起始时间",
+    "created_to": "创建截止时间",
+    "any": "不限",
+    "to": "至"
+  },
+  "errors": {
+    "forbidden_title": "您没有访问预算管理的权限",
+    "forbidden_desc": "请联系代理管理员为您授予管理员查看者角色。",
+    "load_failed": "无法加载预算列表"
   },
   "delete_modal": {
     "title": "确认删除预算？",

@@ -24,5 +24,12 @@
     "in_config": "配置文件",
     "not_set": "未设置"
   },
-  "update": "更新"
+  "update": "更新",
+  "default": "默认",
+  "prompt_caching": {
+    "title": "Prompt 缓存",
+    "anthropic_auto": "Anthropic 自动 Prompt 缓存",
+    "cache_ttl": "缓存有效期 (TTL)",
+    "ttl_default": "5 分钟 (默认)"
+  }
 }

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Settings, Shield, TriangleAlert } from "lucide-react";
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getGuardrailsUsageLogs } from "@/components/networking";
 import { useGuardrailsUsageDetail } from "@/app/(dashboard)/hooks/guardrails/useGuardrailsUsage";
 import { StatusBadge, type StatusTone } from "@/components/shared/table_cells/status_badge";
@@ -29,6 +30,7 @@ const STATUS_TONE: Record<string, StatusTone> = {
 };
 
 export function GuardrailDetail({ guardrailId, onBack, accessToken = null, startDate, endDate }: GuardrailDetailProps) {
+  const { t } = useTranslation(["guardrails", "common"]);
   const [activeTab, setActiveTab] = useState("overview");
   const [evaluationModalOpen, setEvaluationModalOpen] = useState(false);
   const [logsPage] = useState(1);
@@ -102,9 +104,11 @@ export function GuardrailDetail({ guardrailId, onBack, accessToken = null, start
       <div>
         <Button variant="link" onClick={onBack} className="mb-4 pl-0">
           <ArrowLeft className="size-4" />
-          Back to Overview
+          {t("guardrails:monitor.back_to_overview", { defaultValue: "Back to Overview" })}
         </Button>
-        <p className="text-destructive">Failed to load guardrail details.</p>
+        <p className="text-destructive">
+          {t("guardrails:monitor.failed_load_details", { defaultValue: "Failed to load guardrail details." })}
+        </p>
       </div>
     );
   }
@@ -127,7 +131,7 @@ export function GuardrailDetail({ guardrailId, onBack, accessToken = null, start
       <div className="mb-6">
         <Button variant="link" onClick={onBack} className="mb-4 pl-0">
           <ArrowLeft className="size-4" />
-          Back to Overview
+          {t("guardrails:monitor.back_to_overview", { defaultValue: "Back to Overview" })}
         </Button>
 
         <div className="flex items-start justify-between">
@@ -148,7 +152,7 @@ export function GuardrailDetail({ guardrailId, onBack, accessToken = null, start
               variant="outline"
               size="icon"
               onClick={() => setEvaluationModalOpen(true)}
-              title="Evaluation settings"
+              title={t("guardrails:monitor.evaluation_settings", { defaultValue: "Evaluation settings" })}
             >
               <Settings className="size-4" />
             </Button>
@@ -159,25 +163,28 @@ export function GuardrailDetail({ guardrailId, onBack, accessToken = null, start
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as string)}>
         <TabsList variant="line">
           <TabsTrigger value="overview" className="flex-none">
-            Overview
+            {t("guardrails:monitor.tabs.overview", { defaultValue: "Overview" })}
           </TabsTrigger>
           <TabsTrigger value="logs" className="flex-none">
-            Logs
+            {t("guardrails:monitor.tabs.logs", { defaultValue: "Logs" })}
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 space-y-6">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            <MetricCard label="Requests Evaluated" value={data.requestsEvaluated.toLocaleString()} />
             <MetricCard
-              label="Fail Rate"
+              label={t("guardrails:monitor.columns.requests_evaluated", { defaultValue: "Requests Evaluated" })}
+              value={data.requestsEvaluated.toLocaleString()}
+            />
+            <MetricCard
+              label={t("guardrails:monitor.columns.fail_rate", { defaultValue: "Fail Rate" })}
               value={`${data.failRate}%`}
               valueColor={data.failRate > 15 ? "text-destructive" : data.failRate > 5 ? "text-warning" : "text-success"}
               subtitle={`${Math.round((data.requestsEvaluated * data.failRate) / 100).toLocaleString()} blocked`}
               icon={data.failRate > 15 ? <TriangleAlert className="size-4 text-destructive" /> : undefined}
             />
             <MetricCard
-              label="Avg. latency added"
+              label={t("guardrails:monitor.columns.avg_latency_added", { defaultValue: "Avg. latency added" })}
               value={data.avgLatency != null ? `${Math.round(data.avgLatency)}ms` : "—"}
               valueColor={
                 data.avgLatency != null

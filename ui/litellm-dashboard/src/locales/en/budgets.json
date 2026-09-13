@@ -13,19 +13,41 @@
     "no_budgets_yet": "No budgets yet",
     "cta": "Create a budget to set spend, TPM and RPM limits for customers."
   },
+  "loading": "Loading budgets…",
   "columns": {
     "budget_id": "Budget ID",
-    "max_budget": "Max Budget (USD)",
-    "budget_reset": "Budget Reset",
-    "tpm_limit": "TPM Limit",
-    "rpm_limit": "RPM Limit",
-    "created_at": "Created At",
-    "actions": "Actions"
+    "max_budget": "Max Budget",
+    "max_budget_usd": "Max Budget (USD)",
+    "budget_reset": "Reset",
+    "tpm_limit": "TPM",
+    "rpm_limit": "RPM",
+    "created_at": "Created",
+    "actions": "Actions",
+    "unlimited": "Unlimited"
   },
   "actions": {
+    "open_actions": "Open budget actions",
     "edit": "Edit budget",
     "delete": "Delete budget",
     "not_set": "Not set"
+  },
+  "filter": {
+    "title": "Filters",
+    "description": "Narrow down your budgets",
+    "unlimited_only": "Unlimited only",
+    "min_placeholder": "Min",
+    "max_placeholder": "Max",
+    "min_aria": "Minimum max budget",
+    "max_aria": "Maximum max budget",
+    "created_from": "Created from",
+    "created_to": "Created to",
+    "any": "any",
+    "to": "to"
+  },
+  "errors": {
+    "forbidden_title": "You do not have access to budgets",
+    "forbidden_desc": "Ask a proxy admin to grant you the admin viewer role.",
+    "load_failed": "Could not load budgets"
   },
   "delete_modal": {
     "title": "Delete Budget?",

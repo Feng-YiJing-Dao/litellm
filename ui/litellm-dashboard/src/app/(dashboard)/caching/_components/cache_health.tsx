@@ -177,7 +177,12 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
               <p
                 className={`text-sm font-medium ${response?.status === "healthy" ? "text-success" : "text-destructive"}`}
               >
-                Cache Status: {response?.status || "unhealthy"}
+                {t("caching:health.status_prefix", { defaultValue: "Cache Status: " })}
+                {response?.status === "healthy"
+                  ? t("caching:health.healthy", { defaultValue: "healthy" })
+                  : response?.status
+                    ? response.status
+                    : t("caching:health.unhealthy", { defaultValue: "unhealthy" })}
               </p>
             </div>
 
@@ -188,23 +193,23 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
                   <>
                     <tr>
                       <td colSpan={2} className="pt-4 pb-2 font-semibold text-destructive">
-                        Error Details
+                        {t("caching:health.error_details", { defaultValue: "Error Details" })}
                       </td>
                     </tr>
-                    <TableClickableErrorField label="Error Message" value={errorDetails.message} />
-                    <TableClickableErrorField label="Traceback" value={errorDetails.traceback} />
+                    <TableClickableErrorField label={t("caching:health.error_message", { defaultValue: "Error Message" })} value={errorDetails.message} />
+                    <TableClickableErrorField label={t("caching:health.traceback", { defaultValue: "Traceback" })} value={errorDetails.traceback} />
                   </>
                 )}
 
                 {/* Always show cache details, regardless of error state */}
                 <tr>
                   <td colSpan={2} className="pt-4 pb-2 font-semibold">
-                    Cache Details
+                    {t("caching:health.cache_details", { defaultValue: "Cache Details" })}
                   </td>
                 </tr>
-                <TableClickableErrorField label="Cache Configuration" value={String(parsedLitellmParams?.type)} />
-                <TableClickableErrorField label="Ping Response" value={String(response.ping_response)} />
-                <TableClickableErrorField label="Set Cache Response" value={response.set_cache_response || "N/A"} />
+                <TableClickableErrorField label={t("caching:health.cache_config", { defaultValue: "Cache Configuration" })} value={String(parsedLitellmParams?.type)} />
+                <TableClickableErrorField label={t("caching:health.ping_response", { defaultValue: "Ping Response" })} value={String(response.ping_response)} />
+                <TableClickableErrorField label={t("caching:health.set_cache_response", { defaultValue: "Set Cache Response" })} value={response.set_cache_response || "N/A"} />
                 <TableClickableErrorField
                   label="litellm_settings.cache_params"
                   value={JSON.stringify(parsedLitellmParams, null, 2)}
@@ -215,14 +220,14 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
                   <>
                     <tr>
                       <td colSpan={2} className="pt-4 pb-2 font-semibold">
-                        Redis Details
+                        {t("caching:health.redis_details", { defaultValue: "Redis Details" })}
                       </td>
                     </tr>
-                    <TableClickableErrorField label="Redis Host" value={redisDetails.redis_host || "N/A"} />
-                    <TableClickableErrorField label="Redis Port" value={redisDetails.redis_port || "N/A"} />
-                    <TableClickableErrorField label="Redis Version" value={redisDetails.redis_version || "N/A"} />
-                    <TableClickableErrorField label="Startup Nodes" value={redisDetails.startup_nodes || "N/A"} />
-                    <TableClickableErrorField label="Namespace" value={redisDetails.namespace || "N/A"} />
+                    <TableClickableErrorField label={t("caching:health.redis_host", { defaultValue: "Redis Host" })} value={redisDetails.redis_host || "N/A"} />
+                    <TableClickableErrorField label={t("caching:health.redis_port", { defaultValue: "Redis Port" })} value={redisDetails.redis_port || "N/A"} />
+                    <TableClickableErrorField label={t("caching:health.redis_version", { defaultValue: "Redis Version" })} value={redisDetails.redis_version || "N/A"} />
+                    <TableClickableErrorField label={t("caching:health.startup_nodes", { defaultValue: "Startup Nodes" })} value={redisDetails.startup_nodes || "N/A"} />
+                    <TableClickableErrorField label={t("caching:health.namespace", { defaultValue: "Namespace" })} value={redisDetails.namespace || "N/A"} />
                   </>
                 )}
               </tbody>

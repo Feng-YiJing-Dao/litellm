@@ -31,16 +31,55 @@
     "run_check": "Run Health Check",
     "running_check": "Running Health Check...",
     "response_time": "Response Time",
+    "status_prefix": "Cache Status: ",
+    "healthy": "healthy",
+    "unhealthy": "unhealthy",
+    "error_details": "Error Details",
+    "error_message": "Error Message",
+    "traceback": "Traceback",
+    "cache_details": "Cache Details",
+    "cache_config": "Cache Configuration",
+    "ping_response": "Ping Response",
+    "set_cache_response": "Set Cache Response",
+    "redis_details": "Redis Details",
+    "redis_host": "Redis Host",
+    "redis_port": "Redis Port",
+    "redis_version": "Redis Version",
+    "startup_nodes": "Startup Nodes",
+    "namespace": "Namespace",
     "tabs": {
-      "formatted": "Formatted",
+      "formatted": "Summary",
       "raw": "Raw Response"
     }
   },
   "settings": {
     "test_connection": "Test Connection",
     "testing": "Testing...",
-    "save": "Save Cache Settings",
+    "save": "Save Changes",
     "saving": "Saving...",
-    "advanced": "Advanced Settings"
+    "advanced": "Advanced Settings",
+    "connection_title": "Connection Settings",
+    "cluster_title": "Cluster Configuration",
+    "sentinel_title": "Sentinel Configuration",
+    "semantic_title": "Semantic Configuration",
+    "ssl_title": "SSL Settings",
+    "management_title": "Cache Management",
+    "gcp_title": "GCP Authentication",
+    "desc": "Configure Redis cache for LiteLLM",
+    "test_success": "Cache connection test successful!",
+    "test_failed": "Connection test failed: {{error}}",
+    "update_success": "Cache settings updated successfully",
+    "update_failed": "Failed to update cache settings",
+    "load_failed": "Failed to load cache settings"
+  },
+  "coordination": {
+    "title": "Coordination Redis",
+    "desc": "Redis used to coordinate work across proxy pods: cross-pod rate limits, spend tracking, and the pod lock manager. It is configured independently of the response cache.",
+    "restart_warning": "Saved changes take effect on proxy restart.",
+    "test_success": "Coordination Redis connection test successful!",
+    "test_failed": "Connection test failed: {{error}}",
+    "saved_success": "Coordination Redis settings saved. Restart the proxy to apply them.",
+    "update_failed": "Failed to update coordination Redis settings",
+    "load_failed": "Failed to load coordination Redis settings"
   }
 }

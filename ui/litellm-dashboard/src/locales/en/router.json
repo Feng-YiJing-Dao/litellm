@@ -24,5 +24,12 @@
     "in_config": "In Config",
     "not_set": "Not Set"
   },
-  "update": "Update"
+  "update": "Update",
+  "default": "Default",
+  "prompt_caching": {
+    "title": "Prompt Caching",
+    "anthropic_auto": "Automatic Anthropic prompt caching",
+    "cache_ttl": "Cache lifetime (TTL)",
+    "ttl_default": "5m (default)"
+  }
 }

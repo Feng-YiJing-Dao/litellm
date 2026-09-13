@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,7 @@ const toRedisType = (value: unknown): RedisType =>
   REDIS_TYPES.includes(value as RedisType) ? (value as RedisType) : "node";
 
 const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
+  const { t } = useTranslation(["caching", "common"]);
   const form = useForm<CacheFormValues>({ defaultValues: buildInitialValues({}) });
   const [redisType, setRedisType] = useState<RedisType>("node");
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -50,9 +52,9 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
       setRedisType(toRedisType(currentValues.redis_type));
     } catch (error) {
       console.error("Failed to load cache settings:", error);
-      toast.fromError("Failed to load cache settings");
+      toast.fromError(t("caching:settings.load_failed", { defaultValue: "Failed to load cache settings" }));
     }
-  }, [accessToken, form]);
+  }, [accessToken, form, t]);
 
   useEffect(() => {
     loadCacheSettings();
@@ -105,13 +107,24 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
         buildCachePayload(redisType, values, { forTesting: true }),
       );
       if (result.status === "success") {
-        toast.success("Cache connection test successful!");
+        toast.success(t("caching:settings.test_success", { defaultValue: "Cache connection test successful!" }));
       } else {
-        toast.fromError(`Connection test failed: ${result.message || result.error}`);
+        toast.fromError(
+          t("caching:settings.test_failed", {
+            error: result.message || result.error,
+            defaultValue: `Connection test failed: ${result.message || result.error}`,
+          }),
+        );
       }
     } catch (error) {
       console.error("Test connection error:", error);
-      toast.fromError(`Connection test failed: ${error instanceof Error ? error.message : "Unknown error"}`);
+      const errMsg = error instanceof Error ? error.message : "Unknown error";
+      toast.fromError(
+        t("caching:settings.test_failed", {
+          error: errMsg,
+          defaultValue: `Connection test failed: ${errMsg}`,
+        }),
+      );
     } finally {
       setIsTesting(false);
     }
@@ -129,11 +142,11 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
     setIsSaving(true);
     try {
       await updateCacheSettingsCall(accessToken, buildCachePayload(redisType, values, { forTesting: false }));
-      toast.success("Cache settings updated successfully");
+      toast.success(t("caching:settings.update_success", { defaultValue: "Cache settings updated successfully" }));
       await loadCacheSettings();
     } catch (error) {
       console.error("Failed to save cache settings:", error);
-      toast.fromError("Failed to update cache settings");
+      toast.fromError(t("caching:settings.update_failed", { defaultValue: "Failed to update cache settings" }));
     } finally {
       setIsSaving(false);
     }
@@ -148,8 +161,8 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
       <FormProvider {...form}>
         <form onSubmit={(event) => event.preventDefault()} className="space-y-6">
           <div className="max-w-3xl">
-            <h3 className="text-sm font-medium text-foreground">Cache Settings</h3>
-            <p className="text-xs text-muted-foreground mt-1">Configure Redis cache for LiteLLM</p>
+            <h3 className="text-sm font-medium text-foreground">{t("caching:tabs.settings", { defaultValue: "Cache Settings" })}</h3>
+            <p className="text-xs text-muted-foreground mt-1">{t("caching:settings.desc", { defaultValue: "Configure Redis cache for LiteLLM" })}</p>
           </div>
 
           <RedisTypeSelector
@@ -160,7 +173,7 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
 
           <div className="pt-4 border-t border-border">
             <CacheFieldSection
-              title="Connection Settings"
+              title={t("caching:settings.connection_title", { defaultValue: "Connection Settings" })}
               section="connection"
               redisType={redisType}
               embeddingModels={embeddingModels}
@@ -171,7 +184,7 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
           {redisType === "cluster" && (
             <div className="pt-4 border-t border-border">
               <CacheFieldSection
-                title="Cluster Configuration"
+                title={t("caching:settings.cluster_title", { defaultValue: "Cluster Configuration" })}
                 section="cluster"
                 redisType={redisType}
                 embeddingModels={embeddingModels}
@@ -183,7 +196,7 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
           {redisType === "sentinel" && (
             <div className="pt-4 border-t border-border">
               <CacheFieldSection
-                title="Sentinel Configuration"
+                title={t("caching:settings.sentinel_title", { defaultValue: "Sentinel Configuration" })}
                 section="sentinel"
                 redisType={redisType}
                 embeddingModels={embeddingModels}
@@ -195,7 +208,7 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
           {redisType === "semantic" && (
             <div className="pt-4 border-t border-border">
               <CacheFieldSection
-                title="Semantic Configuration"
+                title={t("caching:settings.semantic_title", { defaultValue: "Semantic Configuration" })}
                 section="semantic"
                 redisType={redisType}
                 embeddingModels={embeddingModels}
@@ -205,27 +218,27 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
 
           <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen} className="mt-4">
             <CollapsibleTrigger className="group flex w-full items-center justify-between py-2 text-left">
-              <span className="text-sm font-medium text-foreground">Advanced Settings</span>
+              <span className="text-sm font-medium text-foreground">{t("caching:settings.advanced", { defaultValue: "Advanced Settings" })}</span>
               <ChevronRight className="size-4 text-muted-foreground transition-transform group-data-panel-open:rotate-90" />
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="space-y-6">
                 <CacheFieldSection
-                  title="SSL Settings"
+                  title={t("caching:settings.ssl_title", { defaultValue: "SSL Settings" })}
                   section="ssl"
                   redisType={redisType}
                   embeddingModels={embeddingModels}
                   headingLevel="h5"
                 />
                 <CacheFieldSection
-                  title="Cache Management"
+                  title={t("caching:settings.management_title", { defaultValue: "Cache Management" })}
                   section="cacheManagement"
                   redisType={redisType}
                   embeddingModels={embeddingModels}
                   headingLevel="h5"
                 />
                 <CacheFieldSection
-                  title="GCP Authentication"
+                  title={t("caching:settings.gcp_title", { defaultValue: "GCP Authentication" })}
                   section="gcp"
                   redisType={redisType}
                   embeddingModels={embeddingModels}
@@ -239,10 +252,10 @@ const CacheSettings: React.FC<CacheSettingsProps> = ({ accessToken }) => {
 
       <div className="border-t border-border pt-6 flex justify-end gap-3">
         <Button variant="secondary" size="sm" onClick={handleTestConnection} disabled={isTesting} className="text-sm">
-          {isTesting ? "Testing..." : "Test Connection"}
+          {isTesting ? t("caching:settings.testing", { defaultValue: "Testing..." }) : t("caching:settings.test_connection", { defaultValue: "Test Connection" })}
         </Button>
         <Button size="sm" onClick={handleSaveChanges} disabled={isSaving} className="text-sm font-medium">
-          {isSaving ? "Saving..." : "Save Changes"}
+          {isSaving ? t("caching:settings.saving", { defaultValue: "Saving..." }) : t("caching:settings.save", { defaultValue: "Save Changes" })}
         </Button>
       </div>
     </div>

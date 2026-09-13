@@ -158,118 +158,138 @@ export function GuardrailsOverview({
   const isLoading = guardrailsLoading;
   const error = guardrailsError;
 
-  const columns: ColumnDef<GuardrailUsageOverviewRow>[] = [
-    {
-      header: "Status",
-      accessorKey: "status",
-      enableSorting: false,
-      cell: ({ row }) => (
-        <span className="inline-flex items-center gap-1.5">
+  const columns: ColumnDef<GuardrailUsageOverviewRow>[] = useMemo(
+    () => [
+      {
+        header: t("guardrails:monitor.columns.status", { defaultValue: "Status" }),
+        accessorKey: "status",
+        enableSorting: false,
+        cell: ({ row }) => (
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                row.original.status === "healthy"
+                  ? "bg-success"
+                  : row.original.status === "warning"
+                    ? "bg-warning"
+                    : "bg-destructive"
+              }`}
+            />
+            <span className="text-xs text-muted-foreground capitalize">{row.original.status}</span>
+          </span>
+        ),
+      },
+      {
+        header: t("guardrails:monitor.columns.guardrail", { defaultValue: "Guardrail" }),
+        accessorKey: "name",
+        enableSorting: false,
+        cell: ({ row }) => (
+          <button
+            type="button"
+            className="text-sm font-medium text-foreground hover:text-indigo-600 text-left"
+            onClick={() => onSelectGuardrail(row.original.id)}
+          >
+            {row.original.name}
+          </button>
+        ),
+      },
+      {
+        header: t("guardrails:monitor.columns.provider", { defaultValue: "Provider" }),
+        accessorKey: "provider",
+        enableSorting: false,
+        cell: ({ row }) => (
           <span
-            className={`w-2 h-2 rounded-full ${
-              row.original.status === "healthy"
-                ? "bg-success"
-                : row.original.status === "warning"
-                  ? "bg-warning"
-                  : "bg-destructive"
+            className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded border ${
+              providerColors[row.original.provider] ?? providerColors.Custom
             }`}
+          >
+            {row.original.provider}
+          </span>
+        ),
+      },
+      {
+        header: ({ column }) => (
+          <DataTableSortHeader
+            column={column}
+            title={t("guardrails:monitor.columns.requests", { defaultValue: "Requests" })}
           />
-          <span className="text-xs text-muted-foreground capitalize">{row.original.status}</span>
-        </span>
-      ),
-    },
-    {
-      header: "Guardrail",
-      accessorKey: "name",
-      enableSorting: false,
-      cell: ({ row }) => (
-        <button
-          type="button"
-          className="text-sm font-medium text-foreground hover:text-indigo-600 text-left"
-          onClick={() => onSelectGuardrail(row.original.id)}
-        >
-          {row.original.name}
-        </button>
-      ),
-    },
-    {
-      header: "Provider",
-      accessorKey: "provider",
-      enableSorting: false,
-      cell: ({ row }) => (
-        <span
-          className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded border ${
-            providerColors[row.original.provider] ?? providerColors.Custom
-          }`}
-        >
-          {row.original.provider}
-        </span>
-      ),
-    },
-    {
-      header: ({ column }) => <DataTableSortHeader column={column} title="Requests" />,
-      accessorKey: "requestsEvaluated",
-      meta: { numeric: true },
-      sortDescFirst: false,
-      cell: ({ row }) => row.original.requestsEvaluated.toLocaleString(),
-    },
-    {
-      header: ({ column }) => <DataTableSortHeader column={column} title="Fail Rate" />,
-      accessorKey: "failRate",
-      meta: { numeric: true },
-      sortDescFirst: false,
-      cell: ({ row }) => (
-        <span
-          className={
-            row.original.failRate > 15
-              ? "text-destructive"
-              : row.original.failRate > 5
-                ? "text-warning"
-                : "text-success"
-          }
-        >
-          {row.original.failRate}%
-          {row.original.trend === "up" && <span className="ml-1 text-xs text-destructive">↑</span>}
-          {row.original.trend === "down" && <span className="ml-1 text-xs text-success">↓</span>}
-        </span>
-      ),
-    },
-    {
-      header: ({ column }) => <DataTableSortHeader column={column} title="Avg. latency added" />,
-      accessorKey: "avgLatency",
-      meta: { numeric: true },
-      sortDescFirst: false,
-      cell: ({ row }) => (
-        <span
-          className={
-            row.original.avgLatency == null
-              ? "text-muted-foreground"
-              : row.original.avgLatency > 150
+        ),
+        accessorKey: "requestsEvaluated",
+        meta: { numeric: true },
+        sortDescFirst: false,
+        cell: ({ row }) => row.original.requestsEvaluated.toLocaleString(),
+      },
+      {
+        header: ({ column }) => (
+          <DataTableSortHeader
+            column={column}
+            title={t("guardrails:monitor.columns.fail_rate", { defaultValue: "Fail Rate" })}
+          />
+        ),
+        accessorKey: "failRate",
+        meta: { numeric: true },
+        sortDescFirst: false,
+        cell: ({ row }) => (
+          <span
+            className={
+              row.original.failRate > 15
                 ? "text-destructive"
-                : row.original.avgLatency > 50
+                : row.original.failRate > 5
                   ? "text-warning"
                   : "text-success"
-          }
-        >
-          {row.original.avgLatency != null ? `${row.original.avgLatency}ms` : "—"}
-        </span>
-      ),
-    },
-    {
-      header: "Usage Units",
-      accessorKey: "usageUnits",
-      enableSorting: false,
-      meta: { numeric: true },
-      cell: ({ row }) => <UsageUnitsCell units={row.original.usageUnits} />,
-    },
-    {
-      header: ({ column }) => <DataTableSortHeader column={column} title="Cost" />,
-      accessorKey: "cost",
-      meta: { numeric: true },
-      sortDescFirst: false,
-      cell: ({ row }) => <CostCell row={row.original} />,
-    },
-  ];
+            }
+          >
+            {row.original.failRate}%
+            {row.original.trend === "up" && <span className="ml-1 text-xs text-destructive">↑</span>}
+            {row.original.trend === "down" && <span className="ml-1 text-xs text-success">↓</span>}
+          </span>
+        ),
+      },
+      {
+        header: ({ column }) => (
+          <DataTableSortHeader
+            column={column}
+            title={t("guardrails:monitor.columns.avg_latency_added", { defaultValue: "Avg. latency added" })}
+          />
+        ),
+        accessorKey: "avgLatency",
+        meta: { numeric: true },
+        sortDescFirst: false,
+        cell: ({ row }) => (
+          <span
+            className={
+              row.original.avgLatency == null
+                ? "text-muted-foreground"
+                : row.original.avgLatency > 150
+                  ? "text-destructive"
+                  : row.original.avgLatency > 50
+                    ? "text-warning"
+                    : "text-success"
+            }
+          >
+            {row.original.avgLatency != null ? `${row.original.avgLatency}ms` : "—"}
+          </span>
+        ),
+      },
+      {
+        header: t("guardrails:monitor.columns.usage_units", { defaultValue: "Usage Units" }),
+        accessorKey: "usageUnits",
+        enableSorting: false,
+        meta: { numeric: true },
+        cell: ({ row }) => <UsageUnitsCell units={row.original.usageUnits} />,
+      },
+      {
+        header: ({ column }) => (
+          <DataTableSortHeader column={column} title={t("guardrails:monitor.columns.cost", { defaultValue: "Cost" })} />
+        ),
+        accessorKey: "cost",
+        meta: { numeric: true },
+        sortDescFirst: false,
+        cell: ({ row }) => <CostCell row={row.original} />,
+      },
+    ],
+    [onSelectGuardrail, t],
+  );
 
   const sortableKeys: SortKey[] = ["failRate", "requestsEvaluated", "avgLatency", "cost"];
   const sorting = useMemo<SortingState>(() => [{ id: sortBy, desc: sortDir === "desc" }], [sortBy, sortDir]);
@@ -343,7 +363,11 @@ export function GuardrailsOverview({
                 <UiLoadingSpinner className="size-4 text-primary" />
               </span>
             )}
-            {error && <span className="text-sm text-destructive">Failed to load data. Try again.</span>}
+            {error && (
+              <span className="text-sm text-destructive">
+                {t("guardrails:monitor.failed_load_data", { defaultValue: "Failed to load data. Try again." })}
+              </span>
+            )}
           </div>
         )}
         <DataTable
@@ -351,7 +375,7 @@ export function GuardrailsOverview({
           data={sorted}
           getRowId={(row) => row.id}
           isLoading={isLoading}
-          noDataMessage="No data for this period"
+          noDataMessage={t("guardrails:monitor.no_data_period", { defaultValue: "No data for this period" })}
           onRowClick={(row) => onSelectGuardrail(row.id)}
           rowClassName={() => "cursor-pointer"}
           sortingMode="server"
@@ -362,9 +386,13 @@ export function GuardrailsOverview({
           toolbar={() => (
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h5 className="mb-0 text-base font-semibold text-foreground">Guardrail Performance</h5>
+                <h5 className="mb-0 text-base font-semibold text-foreground">
+                  {t("guardrails:monitor.performance_title", { defaultValue: "Guardrail Performance" })}
+                </h5>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Click a guardrail to view details, logs, and configuration
+                  {t("guardrails:monitor.performance_desc", {
+                    defaultValue: "Click a guardrail to view details, logs, and configuration",
+                  })}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -372,7 +400,7 @@ export function GuardrailsOverview({
                   variant="outline"
                   size="icon"
                   onClick={() => setEvaluationModalOpen(true)}
-                  title="Evaluation settings"
+                  title={t("guardrails:monitor.evaluation_settings", { defaultValue: "Evaluation settings" })}
                 >
                   <Settings className="size-4" />
                 </Button>
