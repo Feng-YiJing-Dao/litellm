@@ -33,18 +33,28 @@
   "action_cannot_be_undone": "此操作无法撤销。",
   "actions": "操作",
   "status": "状态",
+  "status_blocked": "已阻止",
+  "status_active": "生效中",
   "enabled": "已启用",
   "disabled": "已禁用",
   "active": "生效中",
   "inactive": "未激活",
   "expired": "已过期",
   "pending": "待处理",
+  "blocked": "已阻止",
   "all": "全部",
   "name": "名称",
   "description": "描述",
   "created_at": "创建时间",
   "updated_at": "更新时间",
+  "updated": "更新时间",
   "expires_at": "过期时间",
+  "default": "默认",
+  "required": "必填",
+  "not_set": "未设置",
+  "remove": "移除",
+  "brand_name": "🚅 LiteLLM",
+  "enterprise_feature_tooltip": "此功能为 LiteLLM 企业版专属功能，需要有效密钥方可使用。",
   "details": "详情",
   "view": "查看",
   "manage": "管理",
@@ -63,7 +73,7 @@
     "title": "登录",
     "subtitle": "访问您的 {{brandName}} 管理控制台。",
     "default_credentials_title": "默认登录凭据",
-    "default_credentials_desc": "默认用户名为 <code1>admin</code1>，密码为系统设置的 <code2>MASTER_KEY</code2>。",
+    "default_credentials_desc": "默认用户名为 <code1>admin</code1>，密码为系统设置的 {{brandName}} Proxy <code2>MASTER_KEY</code2>。",
     "need_credentials_or_sso": "需要配置 UI 凭据或 SSO 单点登录？",
     "see_documentation": "查看文档",
     "contact_admin": "请联系管理员",
@@ -113,6 +123,40 @@
     "hide_new_feature_indicators": "隐藏新功能指示器",
     "hide_all_prompts": "隐藏所有提示信息",
     "hide_blog_posts": "隐藏博客推荐",
-    "hide_bouncing_icon": "隐藏动态小图标"
+    "hide_bouncing_icon": "隐藏动态小图标",
+    "toggle_hide_new_feature_indicators": "切换隐藏新功能指示器",
+    "toggle_hide_all_prompts": "切换隐藏所有提示",
+    "toggle_hide_blog_posts": "切换隐藏博客推荐",
+    "toggle_hide_bouncing_icon": "切换隐藏动态图标",
+    "account_trigger_aria": "账户菜单 — {{role}} — 已登录为 {{identity}}"
+  },
+  "banners": {
+    "debug": {
+      "title": "性能警告：详细调试模式已开启",
+      "description": "当前已启用详细调试日志（<code1>LITELLM_LOG=DEBUG</code1>）。此模式会记录海量诊断信息，并显著降低系统性能。仅建议用于排查故障，且应在生产环境中关闭。"
+    },
+    "no_redis": {
+      "title": "未配置 Redis。强烈建议配置 Redis",
+      "description": "此代理正在运行多个工作进程（或无法验证工作进程数）。缺少 Redis 时，速率限制、预算控制、路由状态与缓存失效均在工作进程内独立生效，导致限制按进程分别执行，可能引起花费超支。<link1>查看无 Redis 时受影响的功能清单</link1>。设置 <code1>LITELLM_DISABLE_NO_REDIS_WARNING=true</code1> 可隐藏此提示。"
+    },
+    "env_credential_login": {
+      "title": "环境变量凭据登录已启用",
+      "description": "任何持有 <code1>UI_USERNAME</code1>/<code2>UI_PASSWORD</code2>（或当 <code3>UI_PASSWORD</code3> 未设置时的主密钥）的人员均可使用共享静态凭据登录为代理管理员。请先创建具有独立密码的常规管理员账户，然后配置 <code4>general_settings.disable_env_credential_login: true</code4> 以关闭此登录通道。"
+    },
+    "license_expiry": {
+      "expired_title": "您的 LiteLLM 企业版许可证已于 {{date}} 到期",
+      "expiring_title": "您的 LiteLLM 企业版许可证{{countdown}} ({{date}})",
+      "expires_today": "今天到期",
+      "expires_in_one_day": "将在 1 天后到期",
+      "expires_in_days": "将在 {{days}} 天后到期",
+      "desc_expired": "企业版功能现已停用。请联系 <link1>{{email}}</link1> 恢复访问权限",
+      "desc_critical": "请立即续费以避免失去企业版功能。请联系 <link1>{{email}}</link1>",
+      "desc_warning": "请在到期前续订以保留企业版功能。请联系 <link1>{{email}}</link1>",
+      "close": "关闭"
+    }
+  },
+  "plugins": {
+    "title": "插件",
+    "configure_url_in_settings": "请在系统设置中配置插件 URL"
   }
 }

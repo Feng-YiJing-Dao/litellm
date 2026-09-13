@@ -190,5 +190,108 @@
       "Hybrid": "Hybrid",
       "Custom classifier": "Custom classifier"
     }
+  },
+  "ai_hub": {
+    "title": "AI Hub",
+    "admin_desc": "Make models, agents, and MCP servers public for developers to know what's available.",
+    "user_desc": "A list of all public model names personally available to you.",
+    "model_hub_url": "Model Hub URL:",
+    "copy_url": "Copy URL",
+    "tabs": {
+      "models": "Model Hub",
+      "agents": "Agent Hub",
+      "mcp": "MCP Hub",
+      "skills": "Skill Hub"
+    },
+    "buttons": {
+      "make_models_public": "Select Models to Make Public",
+      "make_agents_public": "Select Agents to Make Public",
+      "make_mcp_public": "Select MCP Servers to Make Public",
+      "make_skills_public": "Select Skills to Make Public"
+    },
+    "search": {
+      "search_models": "Search model names...",
+      "search_agents_label": "Search Agents:",
+      "search_agents_placeholder": "Search agent names or descriptions...",
+      "clear_search": "Clear search"
+    },
+    "counts": {
+      "models": "Showing {{filtered}} of {{total}} models",
+      "agents": "Showing {{filtered}} of {{total}} agents",
+      "mcp_servers": "Showing {{count}} MCP server",
+      "mcp_servers_other": "Showing {{count}} MCP servers",
+      "servers": "Showing {{filtered}} of {{total}} MCP servers"
+    },
+    "empty": {
+      "models_no_match_title": "No matching models",
+      "models_no_match_body": "Adjust the filters to see more models.",
+      "models_empty_title": "No models yet",
+      "models_empty_body": "Models added to this proxy will appear here.",
+      "agents_no_match_title": "No matching agents",
+      "agents_no_match_body": "Adjust the search to see more agents.",
+      "agents_empty_title": "No agents yet",
+      "agents_empty_body": "Agents added to this proxy will appear here.",
+      "mcp_no_match_title": "No matching MCP servers",
+      "mcp_no_match_body": "Adjust the search or transport filter to see more servers.",
+      "mcp_empty_title": "No MCP servers yet",
+      "mcp_empty_body": "MCP servers added to this proxy will appear here.",
+      "skills_empty_title": "No skills yet",
+      "skills_empty_body": "Skills added to this proxy will appear here."
+    },
+    "loading": {
+      "models": "Loading models…",
+      "agents": "Loading agents…",
+      "mcp": "Loading MCP servers…"
+    },
+    "public_hub_disabled_title": "Public Model Hub not enabled.",
+    "public_hub_disabled_desc": "Ask your proxy admin to enable this on their Admin UI."
+  },
+  "public_hub": {
+    "models_tab": "Models",
+    "agents_tab": "Agents",
+    "mcp_tab": "MCP Servers",
+    "skills_tab": "Skills",
+    "about_title": "About",
+    "default_description": "Proxy Server to call 100+ LLMs in the OpenAI format.",
+    "built_with": "Built with litellm: v{{version}}",
+    "embedded_explainer": "These are models, agents, and MCP servers your proxy admin has indicated are available in your company.",
+    "useful_links_title": "Useful Links",
+    "health_status_title": "Health and Endpoint Status",
+    "service_status_label": "Service status: ",
+    "available_models": "Available Models",
+    "available_agents": "Available Agents",
+    "available_mcp_servers": "Available MCP Servers",
+    "search_models_label": "Search Models:",
+    "search_agents_label": "Search Agents:",
+    "search_mcp_label": "Search MCP Servers:",
+    "provider_label": "Provider:",
+    "mode_label": "Mode:",
+    "features_label": "Features:",
+    "skill_label": "Skill:",
+    "transport_label": "Transport:",
+    "select_providers": "Select providers",
+    "select_modes": "Select modes",
+    "select_features": "Select features",
+    "select_skills": "Select skills",
+    "select_transport": "Select transport types",
+    "no_providers_found": "No providers found",
+    "search_models_placeholder": "Search model names...",
+    "search_agents_placeholder": "Search agent names or descriptions...",
+    "search_mcp_placeholder": "Search MCP server names or descriptions...",
+    "search_models_tooltip": "Finds every published model whose name contains what you type, across all pages. Try 'grok', 'claude', 'gpt-4', or 'sonnet'",
+    "search_agents_tooltip": "Search agents by name or description",
+    "search_mcp_tooltip": "Search MCP servers by name or description",
+    "filter_by_skill": "Filter by skill",
+    "filter_by_transport": "Filter by transport",
+    "filter_by_mode": "Filter by mode",
+    "filter_by_feature": "Filter by feature",
+    "service_unavailable": "Service unavailable",
+    "service_alive": "I'm alive! ✓",
+    "no_models_title": "No models available",
+    "no_models_body": "No models have been made public yet.",
+    "no_agents_title": "No agents available",
+    "no_agents_body": "No agents have been made public yet.",
+    "no_mcp_title": "No MCP servers available",
+    "no_mcp_body": "No MCP servers have been made public yet."
   }
 }

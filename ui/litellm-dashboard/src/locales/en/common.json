@@ -33,18 +33,28 @@
   "action_cannot_be_undone": "This action cannot be undone.",
   "actions": "Actions",
   "status": "Status",
+  "status_blocked": "Blocked",
+  "status_active": "Active",
   "enabled": "Enabled",
   "disabled": "Disabled",
   "active": "Active",
   "inactive": "Inactive",
   "expired": "Expired",
   "pending": "Pending",
+  "blocked": "Blocked",
   "all": "All",
   "name": "Name",
   "description": "Description",
   "created_at": "Created At",
   "updated_at": "Updated At",
+  "updated": "Updated",
   "expires_at": "Expires At",
+  "default": "Default",
+  "required": "required",
+  "not_set": "Not set",
+  "remove": "Remove",
+  "brand_name": "🚅 LiteLLM",
+  "enterprise_feature_tooltip": "This is a LiteLLM Enterprise feature, and requires a valid key to use.",
   "details": "Details",
   "view": "View",
   "manage": "Manage",
@@ -113,6 +123,40 @@
     "hide_new_feature_indicators": "Hide New Feature Indicators",
     "hide_all_prompts": "Hide All Prompts",
     "hide_blog_posts": "Hide Blog Posts",
-    "hide_bouncing_icon": "Hide Bouncing Icon"
+    "hide_bouncing_icon": "Hide Bouncing Icon",
+    "toggle_hide_new_feature_indicators": "Toggle hide new feature indicators",
+    "toggle_hide_all_prompts": "Toggle hide all prompts",
+    "toggle_hide_blog_posts": "Toggle hide blog posts",
+    "toggle_hide_bouncing_icon": "Toggle hide bouncing icon",
+    "account_trigger_aria": "Account menu — {{role}} — signed in as {{identity}}"
+  },
+  "banners": {
+    "debug": {
+      "title": "Performance Warning: Detailed Debug Mode Active",
+      "description": "Detailed debug logging (<code1>LITELLM_LOG=DEBUG</code1>) is currently enabled. This mode logs extensive diagnostic information and will significantly degrade performance. It should only be used for troubleshooting and disabled in production environments."
+    },
+    "no_redis": {
+      "title": "No Redis configured. Redis is highly recommended",
+      "description": "This proxy is running more than one worker (or the worker count could not be verified). Without Redis, rate limits, budgets, router state, and cache invalidation are per worker, so limits are enforced once per worker and spend can overshoot. <link1>See everything that does not work without Redis</link1>. Set <code1>LITELLM_DISABLE_NO_REDIS_WARNING=true</code1> to hide this banner anyway."
+    },
+    "env_credential_login": {
+      "title": "Environment-credential login is enabled",
+      "description": "Anyone with <code1>UI_USERNAME</code1>/<code2>UI_PASSWORD</code2> (or the master key, when <code3>UI_PASSWORD</code3> is unset) can sign in as a proxy admin with a shared static secret. First create a regular admin account with its own password, then set <code4>general_settings.disable_env_credential_login: true</code4> to turn this login path off."
+    },
+    "license_expiry": {
+      "expired_title": "Your LiteLLM Enterprise license expired on {{date}}",
+      "expiring_title": "Your LiteLLM Enterprise license {{countdown}} ({{date}})",
+      "expires_today": "expires today",
+      "expires_in_one_day": "expires in 1 day",
+      "expires_in_days": "expires in {{days}} days",
+      "desc_expired": "Enterprise features are now disabled. Reach out to <link1>{{email}}</link1> to restore access",
+      "desc_critical": "Renew now to avoid losing enterprise features. Reach out to <link1>{{email}}</link1>",
+      "desc_warning": "Renew before it lapses to keep enterprise features. Reach out to <link1>{{email}}</link1>",
+      "close": "Close"
+    }
+  },
+  "plugins": {
+    "title": "Plugin",
+    "configure_url_in_settings": "Configure the plugin URL in settings"
   }
 }

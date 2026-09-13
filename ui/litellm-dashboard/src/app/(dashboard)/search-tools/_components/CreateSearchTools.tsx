@@ -181,7 +181,9 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
         <DialogHeader>
           <div className="flex items-center space-x-3 pb-4 border-b border-border">
             <span className="text-2xl">🔍</span>
-            <DialogTitle className="text-xl font-semibold text-foreground">{t("tools:search_tools.create.title")}</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-foreground">
+              {t("tools:search_tools.create.title", "Create Search Tool")}
+            </DialogTitle>
           </div>
         </DialogHeader>
         <div className="mt-6">
@@ -192,15 +194,15 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                   control={form.control}
                   name="search_tool_name"
                   label={labelWithHint(
-                    t("tools:search_tools.create.name"),
-                    t("tools:search_tools.create.name_hint"),
+                    t("tools:search_tools.create.name", "Search Tool Name"),
+                    t("tools:search_tools.create.name_hint", "A unique identifier for this search tool"),
                   )}
                 >
                   {({ ref, ...field }) => (
                     <Input
                       {...field}
                       ref={ref}
-                      placeholder={t("tools:search_tools.create.name_placeholder")}
+                      placeholder={t("tools:search_tools.create.name_placeholder", "e.g., my-perplexity-search")}
                       className="rounded-lg"
                     />
                   )}
@@ -210,8 +212,8 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                   control={form.control}
                   name="search_provider"
                   label={labelWithHint(
-                    t("tools:search_tools.create.provider"),
-                    t("tools:search_tools.create.provider_hint"),
+                    t("tools:search_tools.create.provider", "Search Provider"),
+                    t("tools:search_tools.create.provider_hint", "Select the search provider service to use"),
                   )}
                 >
                   {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }) => (
@@ -225,13 +227,13 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                         id={id}
                         aria-invalid={ariaInvalid}
                         aria-describedby={ariaDescribedBy}
-                        placeholder={t("tools:search_tools.create.provider_placeholder")}
+                        placeholder={t("tools:search_tools.create.provider_placeholder", "Select a search provider")}
                         className="h-10 w-full rounded-lg"
                         disabled={isLoadingProviders}
                         showClear={value !== ""}
                       />
                       <ComboboxContent>
-                        <ComboboxEmpty>{t("tools:search_tools.create.no_providers")}</ComboboxEmpty>
+                        <ComboboxEmpty>{t("tools:search_tools.create.no_providers", "No providers found")}</ComboboxEmpty>
                         <ComboboxList>
                           {(providerName: string) => (
                             <ComboboxItem key={providerName} value={providerName}>
@@ -251,8 +253,8 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                   control={form.control}
                   name="api_key"
                   label={labelWithHint(
-                    t("tools:search_tools.create.api_key"),
-                    t("tools:search_tools.create.api_key_hint"),
+                    t("tools:search_tools.create.api_key", "API Key"),
+                    t("tools:search_tools.create.api_key_hint", "The API key from your search provider account"),
                   )}
                 >
                   {({ ref, value, ...field }) => (
@@ -260,20 +262,24 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                       {...field}
                       ref={ref}
                       value={value ?? ""}
-                      placeholder={t("tools:search_tools.create.api_key_placeholder")}
+                      placeholder={t("tools:search_tools.create.api_key_placeholder", "Enter API key")}
                       groupClassName="h-10 rounded-lg"
                     />
                   )}
                 </FormField>
 
-                <FormField control={form.control} name="description" label={t("tools:search_tools.create.description")}>
+                <FormField
+                  control={form.control}
+                  name="description"
+                  label={t("tools:search_tools.create.description", "Description")}
+                >
                   {({ ref, value, ...field }) => (
                     <Textarea
                       {...field}
                       ref={ref}
                       value={value ?? ""}
                       rows={3}
-                      placeholder={t("tools:search_tools.create.description_placeholder")}
+                      placeholder={t("tools:search_tools.create.description_placeholder", "Description of this search tool")}
                       className="rounded-lg"
                     />
                   )}
@@ -285,11 +291,11 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                 <div className="flex gap-2">
                   <Button type="submit" variant="outline" onClick={handleTestConnection} disabled={isTestingConnection}>
                     {isTestingConnection && <UiLoadingSpinner className="size-4" />}
-                    {t("tools:search_tools.create.test_connection")}
+                    {t("tools:search_tools.create.test_connection", "Test Connection")}
                   </Button>
                   <Button type="submit" variant="outline" disabled={isLoading}>
                     {isLoading && <UiLoadingSpinner className="size-4" />}
-                    {t("tools:search_tools.create.submit")}
+                    {t("tools:search_tools.create.submit", "Add Search Tool")}
                   </Button>
                 </div>
               </div>
@@ -308,7 +314,7 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
         >
           <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[700px]">
             <DialogHeader>
-              <DialogTitle>{t("tools:search_tools.create.test_results_title")}</DialogTitle>
+              <DialogTitle>{t("tools:search_tools.create.test_results_title", "Connection Test Results")}</DialogTitle>
             </DialogHeader>
             {isTestModalVisible && accessToken && (
               <SearchConnectionTest
@@ -331,7 +337,7 @@ const CreateSearchTool: React.FC<CreateSearchToolProps> = ({
                   setIsTestingConnection(false);
                 }}
               >
-                {t("tools:search_tools.create.close")}
+                {t("tools:search_tools.create.close", "Close")}
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -88,7 +88,9 @@
       "tip_verify_key": "Verify your API key is correct and active",
       "tip_check_operational": "Check if the search provider service is operational",
       "tip_ensure_credits": "Ensure you have sufficient credits/quota with the provider",
-      "tip_review_docs": "Review the provider's documentation for any additional requirements"
+      "tip_review_docs": "Review the provider's documentation for any additional requirements",
+      "success_toast": "Connection test successful!",
+      "view_docs": "View Search Documentation"
     },
     "tester": {
       "title": "Test Search Tool",
@@ -266,6 +268,12 @@
       "key_name": "Key Name",
       "user_agent": "User Agent",
       "no_tools": "No tools discovered",
+      "no_tools_desc": "Make a chat completion that returns tool_calls to start auto-discovery.",
+      "no_matching": "No matching tools",
+      "no_matching_desc": "No tools match your search or filters.",
+      "search_placeholder": "Search by Tool Name",
+      "filters_title": "Filters",
+      "filters_desc": "Narrow down discovered tools",
       "loading": "Loading tool policies…"
     },
     "detail": {

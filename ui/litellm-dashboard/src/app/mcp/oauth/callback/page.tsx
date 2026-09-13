@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 import { getSecureItem, setSecureItem } from "@/utils/secureStorage";
 
@@ -28,6 +29,7 @@ const resolveDefaultRedirect = () => {
 };
 
 const McpOAuthCallbackContent = () => {
+  const { t } = useTranslation("mcp");
   const searchParams = useSearchParams();
 
   const payload = useMemo(() => {
@@ -79,12 +81,19 @@ const McpOAuthCallbackContent = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted p-6">
       <div className="max-w-lg w-full rounded-lg bg-card shadow-md p-8 text-center space-y-4">
-        <h1 className="text-xl font-semibold text-foreground">LiteLLM MCP OAuth</h1>
+        <h1 className="text-xl font-semibold text-foreground">
+          {t("oauth_callback.title", { defaultValue: "LiteLLM MCP OAuth" })}
+        </h1>
         <p className="text-sm text-foreground">
-          Authorization complete. You may close this window and return to the LiteLLM dashboard.
+          {t("oauth_callback.complete", {
+            defaultValue: "Authorization complete. You may close this window and return to the LiteLLM dashboard.",
+          })}
         </p>
         <p className="text-xs text-muted-foreground">
-          If the window does not close automatically, everything is still saved—you can close it manually.
+          {t("oauth_callback.manual_close_hint", {
+            defaultValue:
+              "If the window does not close automatically, everything is still saved—you can close it manually.",
+          })}
         </p>
       </div>
     </div>
@@ -92,8 +101,9 @@ const McpOAuthCallbackContent = () => {
 };
 
 const McpOAuthCallbackPage = () => {
+  const { t } = useTranslation("mcp");
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">{t("oauth_callback.loading", { defaultValue: "Loading..." })}</div>}>
       <McpOAuthCallbackContent />
     </Suspense>
   );

@@ -75,7 +75,9 @@
     "copied": "Copied to clipboard",
     "invalid_json": "Invalid JSON in request body",
     "success": "Request transformed successfully",
-    "error": "Failed to transform request"
+    "error": "Failed to transform request",
+    "no_token": "No access token found",
+    "unexpected_format": "Transformed request received in unexpected format"
   },
   "mcp_server": "MCP Server",
   "mcp_servers": "MCP Servers",

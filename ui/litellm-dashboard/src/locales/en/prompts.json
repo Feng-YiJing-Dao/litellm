@@ -10,6 +10,7 @@
   "buttons": {
     "add_new": "Add New Prompt",
     "upload_file": "Upload .prompt File",
+    "create": "Create Prompt",
     "cancel": "Cancel",
     "delete": "Delete",
     "save": "Save",
@@ -88,6 +89,7 @@
     "prompt_id_desc": "Prompt ID can only contain letters, numbers, underscores, and hyphens",
     "integration": "Prompt Integration",
     "file_label": "Upload .prompt File",
+    "select_file": "Select .prompt File",
     "upload_hint": "Click or drag .prompt file here to upload",
     "submit": "Upload and Create"
   },

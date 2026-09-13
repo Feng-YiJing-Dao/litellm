@@ -51,6 +51,7 @@
   "col_actions": "Actions",
   "members_count_one": "{{count}} Member",
   "members_count_other": "{{count}} Members",
+  "members_count": "{{count}} Members",
   "default_proxy_admin": "Default Proxy Admin",
   "delete_member": "Delete member",
   "edit_member": "Edit Member",
@@ -141,6 +142,7 @@
   "no_restriction_search_tools": "No restriction — all configured search tools are allowed for this team.",
   "skills": "Skills",
   "no_private_skills_desc": "No private skills granted. Only enabled (public) Claude Code plugins are visible.",
+  "no_vector_stores_configured": "No vector stores configured",
   "no_agents_configured": "No agents or access groups configured",
   "group": "Group",
   "logging": {

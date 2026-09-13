@@ -69,8 +69,10 @@
   },
   "table": {
     "no_policies": "未找到策略",
+    "no_policies_desc": "创建策略以捆绑安全防护栏并在各团队间应用。",
     "loading_policies": "加载策略中…",
     "no_attachments": "未找到绑定",
+    "no_attachments_desc": "将策略关联至团队、密钥、模型或标签以控制其生效范围。",
     "loading_attachments": "加载绑定中…"
   },
   "delete_modal": {

@@ -26,6 +26,7 @@ import { usePublicModelHubFacets } from "./publicModelHub/usePublicModelHubFacet
 import { usePublicModelHubList } from "./publicModelHub/usePublicModelHubList";
 import { DataTable } from "./shared/DataTable";
 import { toast } from "@/lib/toast";
+import { useTranslation } from "react-i18next";
 import Navbar from "./navbar";
 import {
   agentHubPublicModelsCall,
@@ -69,6 +70,7 @@ function PublicHubEmptyState({ title, body }: { title: string; body: string }) {
 }
 
 const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded = false }) => {
+  const { t } = useTranslation(["models", "common"]);
   const anchor = useComboboxAnchor();
   const [proxyConfigured, setProxyConfigured] = useState<boolean>(false);
   const [agentHubData, setAgentHubData] = useState<AgentCard[] | null>(null);
@@ -272,7 +274,9 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
     () => modelFacets.features.map((feature) => ({ label: featureLabel(feature), value: feature })),
     [modelFacets],
   );
-  const serviceStatus = models.error ? "Service unavailable" : "I'm alive! ✓";
+  const serviceStatus = models.error
+    ? t("models:public_hub.service_unavailable", { defaultValue: "Service unavailable" })
+    : t("models:public_hub.service_alive", { defaultValue: "I'm alive! ✓" });
   const [agentSorting, setAgentSorting] = useState<SortingState>([{ id: "name", desc: false }]);
   const [mcpSorting, setMcpSorting] = useState<SortingState>([{ id: "server_name", desc: false }]);
 
@@ -310,8 +314,10 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
             {isEmbedded && (
               <div className="mb-6 p-4 bg-info/10 border border-info/20 rounded-lg">
                 <p className="text-sm text-foreground">
-                  These are models, agents, and MCP servers your proxy admin has indicated are available in your
-                  company.
+                  {t("models:public_hub.embedded_explainer", {
+                    defaultValue:
+                      "These are models, agents, and MCP servers your proxy admin has indicated are available in your company.",
+                  })}
                 </p>
               </div>
             )}
@@ -319,16 +325,23 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
             {/* About Section - only shown when not embedded */}
             {!isEmbedded && (
               <Card className="mb-10 p-8 bg-card border border-border rounded-lg shadow-xs">
-                <h2 className="text-2xl font-semibold mb-6 text-foreground">About</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-foreground">
+                  {t("models:public_hub.about_title", { defaultValue: "About" })}
+                </h2>
                 <p className="text-foreground mb-6 text-base leading-relaxed">
                   {customDocsDescription
                     ? customDocsDescription
-                    : "Proxy Server to call 100+ LLMs in the OpenAI format."}
+                    : t("models:public_hub.default_description", {
+                        defaultValue: "Proxy Server to call 100+ LLMs in the OpenAI format.",
+                      })}
                 </p>
                 <div className="flex items-center space-x-3 text-sm text-muted-foreground">
                   <span className="flex items-center">
                     <span className="w-4 h-4 mr-2">🔧</span>
-                    Built with litellm: v{litellmVersion}
+                    {t("models:public_hub.built_with", {
+                      version: litellmVersion,
+                      defaultValue: `Built with litellm: v${litellmVersion}`,
+                    })}
                   </span>
                 </div>
               </Card>
@@ -337,7 +350,9 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
             {/* Useful Links - only shown when not embedded */}
             {usefulLinks && Object.keys(usefulLinks).length > 0 && (
               <Card className="mb-10 p-8 bg-card border border-border rounded-lg shadow-xs">
-                <h2 className="text-2xl font-semibold mb-6 text-foreground">Useful Links</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-foreground">
+                  {t("models:public_hub.useful_links_title", { defaultValue: "Useful Links" })}
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {Object.entries(usefulLinks || {})
                     .map(([title, value]) => {
@@ -364,9 +379,14 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
             {/* Health and Endpoint Status - only shown when not embedded */}
             {!isEmbedded && (
               <Card className="mb-10 p-8 bg-card border border-border rounded-lg shadow-xs">
-                <h2 className="text-2xl font-semibold mb-6 text-foreground">Health and Endpoint Status</h2>
+                <h2 className="text-2xl font-semibold mb-6 text-foreground">
+                  {t("models:public_hub.health_status_title", { defaultValue: "Health and Endpoint Status" })}
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <p className="text-success font-medium text-sm">Service status: {serviceStatus}</p>
+                  <p className="text-success font-medium text-sm">
+                    {t("models:public_hub.service_status_label", { defaultValue: "Service status: " })}
+                    {serviceStatus}
+                  </p>
                 </div>
               </Card>
             )}
@@ -375,28 +395,46 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
             <Card className="p-8 bg-card border border-border rounded-lg shadow-xs">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="public-hub-tabs">
                 <TabsList>
-                  <TabsTrigger value="models">Model Hub</TabsTrigger>
-                  {hasAgents && <TabsTrigger value="agents">Agent Hub</TabsTrigger>}
-                  {hasMcpServers && <TabsTrigger value="mcp">MCP Hub</TabsTrigger>}
-                  <TabsTrigger value="skills">Skill Hub</TabsTrigger>
+                  <TabsTrigger value="models">
+                    {t("models:ai_hub.tabs.models", { defaultValue: "Model Hub" })}
+                  </TabsTrigger>
+                  {hasAgents && (
+                    <TabsTrigger value="agents">
+                      {t("models:ai_hub.tabs.agents", { defaultValue: "Agent Hub" })}
+                    </TabsTrigger>
+                  )}
+                  {hasMcpServers && (
+                    <TabsTrigger value="mcp">
+                      {t("models:ai_hub.tabs.mcp", { defaultValue: "MCP Hub" })}
+                    </TabsTrigger>
+                  )}
+                  <TabsTrigger value="skills">
+                    {t("models:ai_hub.tabs.skills", { defaultValue: "Skill Hub" })}
+                  </TabsTrigger>
                 </TabsList>
 
                 {/* Models Tab */}
                 <TabsContent value="models">
                   <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-semibold text-foreground">Available Models</h2>
+                    <h2 className="text-2xl font-semibold text-foreground">
+                      {t("models:public_hub.available_models", { defaultValue: "Available Models" })}
+                    </h2>
                   </div>
 
                   {/* Filters */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 p-6 bg-muted rounded-lg border border-border">
                     <div>
                       <div className="flex items-center space-x-2 mb-3">
-                        <p className="text-sm font-medium text-foreground">Search Models:</p>
+                        <p className="text-sm font-medium text-foreground">
+                          {t("models:public_hub.search_models_label", { defaultValue: "Search Models:" })}
+                        </p>
                         <Tooltip>
                           <TooltipTrigger render={<Info className="w-4 h-4 text-muted-foreground cursor-help" />} />
                           <TooltipContent side="top">
-                            Finds every published model whose name contains what you type, across all pages. Try
-                            &apos;grok&apos;, &apos;claude&apos;, &apos;gpt-4&apos;, or &apos;sonnet&apos;
+                            {t("models:public_hub.search_models_tooltip", {
+                              defaultValue:
+                                "Finds every published model whose name contains what you type, across all pages. Try 'grok', 'claude', 'gpt-4', or 'sonnet'",
+                            })}
                           </TooltipContent>
                         </Tooltip>
                       </div>
@@ -404,8 +442,12 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                         <SearchIcon className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 transform -translate-y-1/2" />
                         <input
                           type="text"
-                          placeholder="Search model names..."
-                          aria-label="Search model names"
+                          placeholder={t("models:public_hub.search_models_placeholder", {
+                            defaultValue: "Search model names...",
+                          })}
+                          aria-label={t("models:public_hub.search_models_placeholder", {
+                            defaultValue: "Search model names...",
+                          })}
                           value={models.searchValue}
                           onChange={(e) => models.onSearchChange(e.target.value)}
                           className="border border-border rounded-lg pl-10 pr-4 py-2 w-full text-sm focus:outline-hidden focus:ring-2 focus:ring-ring focus:border-transparent bg-card"
@@ -413,7 +455,9 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                       </div>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium mb-3 text-foreground">Provider:</p>
+                      <p className="text-sm font-medium mb-3 text-foreground">
+                        {t("models:public_hub.provider_label", { defaultValue: "Provider:" })}
+                      </p>
                       <Combobox
                         multiple
                         items={modelFacets.providers}
@@ -431,13 +475,15 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                             }
                           </ComboboxValue>
                           <ComboboxChipsInput
-                            placeholder="Select providers"
-                            aria-label="Select providers"
+                            placeholder={t("models:public_hub.select_providers", { defaultValue: "Select providers" })}
+                            aria-label={t("models:public_hub.select_providers", { defaultValue: "Select providers" })}
                             className="min-w-24"
                           />
                         </ComboboxChips>
                         <ComboboxContent anchor={anchor}>
-                          <ComboboxEmpty>No providers found</ComboboxEmpty>
+                          <ComboboxEmpty>
+                            {t("models:public_hub.no_providers_found", { defaultValue: "No providers found" })}
+                          </ComboboxEmpty>
                           <ComboboxList>
                             {(provider: string) => {
                               const { logo } = getProviderLogoAndName(provider);
@@ -464,22 +510,26 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                       </Combobox>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium mb-3 text-foreground">Mode:</p>
+                      <p className="text-sm font-medium mb-3 text-foreground">
+                        {t("models:public_hub.mode_label", { defaultValue: "Mode:" })}
+                      </p>
                       <MultiSelect
                         options={modeOptions}
                         value={models.modeValues}
                         onValueChange={models.onModesChange}
-                        placeholder="Select modes"
+                        placeholder={t("models:public_hub.select_modes", { defaultValue: "Select modes" })}
                         className="w-full"
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium mb-3 text-foreground">Features:</p>
+                      <p className="text-sm font-medium mb-3 text-foreground">
+                        {t("models:public_hub.features_label", { defaultValue: "Features:" })}
+                      </p>
                       <MultiSelect
                         options={featureOptions}
                         value={models.featureValues}
                         onValueChange={models.onFeaturesChange}
-                        placeholder="Select features"
+                        placeholder={t("models:public_hub.select_features", { defaultValue: "Select features" })}
                         className="w-full"
                       />
                     </div>
@@ -497,14 +547,22 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                     onPaginationChange={models.onPaginationChange}
                     rowCount={models.rowCount}
                     isLoading={models.isLoading}
-                    loadingMessage="Loading models…"
+                    loadingMessage={t("models:ai_hub.loading.models", { defaultValue: "Loading models…" })}
                     noDataMessage={
                       <PublicHubEmptyState
-                        title={models.hasActiveQuery ? "No matching models" : "No models available"}
+                        title={
+                          models.hasActiveQuery
+                            ? t("models:ai_hub.empty.models_no_match_title", { defaultValue: "No matching models" })
+                            : t("models:public_hub.no_models_title", { defaultValue: "No models available" })
+                        }
                         body={
                           models.hasActiveQuery
-                            ? "Adjust the search or filters to see more models."
-                            : "Models made public by the proxy admin will appear here."
+                            ? t("models:ai_hub.empty.models_no_match_body", {
+                                defaultValue: "Adjust the search or filters to see more models.",
+                              })
+                            : t("models:public_hub.no_models_body", {
+                                defaultValue: "Models made public by the proxy admin will appear here.",
+                              })
                         }
                       />
                     }
@@ -516,24 +574,34 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                 {hasAgents && (
                   <TabsContent value="agents">
                     <div className="flex justify-between items-center mb-8">
-                      <h2 className="text-2xl font-semibold text-foreground">Available Agents</h2>
+                      <h2 className="text-2xl font-semibold text-foreground">
+                        {t("models:public_hub.available_agents", { defaultValue: "Available Agents" })}
+                      </h2>
                     </div>
 
                     {/* Filters */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-6 bg-muted rounded-lg border border-border">
                       <div>
                         <div className="flex items-center space-x-2 mb-3">
-                          <p className="text-sm font-medium text-foreground">Search Agents:</p>
+                          <p className="text-sm font-medium text-foreground">
+                            {t("models:public_hub.search_agents_label", { defaultValue: "Search Agents:" })}
+                          </p>
                           <Tooltip>
                             <TooltipTrigger render={<Info className="w-4 h-4 text-muted-foreground cursor-help" />} />
-                            <TooltipContent side="top">Search agents by name or description</TooltipContent>
+                            <TooltipContent side="top">
+                              {t("models:public_hub.search_agents_tooltip", {
+                                defaultValue: "Search agents by name or description",
+                              })}
+                            </TooltipContent>
                           </Tooltip>
                         </div>
                         <div className="relative">
                           <SearchIcon className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 transform -translate-y-1/2" />
                           <input
                             type="text"
-                            placeholder="Search agent names or descriptions..."
+                            placeholder={t("models:public_hub.search_agents_placeholder", {
+                              defaultValue: "Search agent names or descriptions...",
+                            })}
                             value={agentSearchTerm}
                             onChange={(e) => setAgentSearchTerm(e.target.value)}
                             className="border border-border rounded-lg pl-10 pr-4 py-2 w-full text-sm focus:outline-hidden focus:ring-2 focus:ring-ring focus:border-transparent bg-card"
@@ -541,12 +609,14 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                         </div>
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium mb-3 text-foreground">Skills:</p>
+                        <p className="text-sm font-medium mb-3 text-foreground">
+                          {t("models:public_hub.skill_label", { defaultValue: "Skill:" })}
+                        </p>
                         <MultiSelect
                           options={agentSkillOptions}
                           value={selectedAgentSkills}
                           onValueChange={setSelectedAgentSkills}
-                          placeholder="Select skills"
+                          placeholder={t("models:public_hub.select_skills", { defaultValue: "Select skills" })}
                           className="w-full"
                         />
                       </div>
@@ -561,11 +631,15 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                       sorting={agentSorting}
                       onSortingChange={setAgentSorting}
                       isLoading={agentLoading}
-                      loadingMessage="Loading agents…"
+                      loadingMessage={t("models:ai_hub.loading.agents", { defaultValue: "Loading agents…" })}
                       noDataMessage={
                         <PublicHubEmptyState
-                          title="No matching agents"
-                          body="Adjust the search or skill filter to see more agents."
+                          title={t("models:ai_hub.empty.agents_no_match_title", {
+                            defaultValue: "No matching agents",
+                          })}
+                          body={t("models:ai_hub.empty.agents_no_match_body", {
+                            defaultValue: "Adjust the search or skill filter to see more agents.",
+                          })}
                         />
                       }
                       size="compact"
@@ -573,7 +647,11 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
 
                     <div className="mt-8 text-center">
                       <p className="text-sm text-muted-foreground">
-                        Showing {filteredAgentData.length} of {agentHubData?.length || 0} agents
+                        {t("models:ai_hub.counts.agents", {
+                          filtered: filteredAgentData.length,
+                          total: agentHubData?.length || 0,
+                          defaultValue: `Showing ${filteredAgentData.length} of ${agentHubData?.length || 0} agents`,
+                        })}
                       </p>
                     </div>
                   </TabsContent>
@@ -583,24 +661,34 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                 {hasMcpServers && (
                   <TabsContent value="mcp">
                     <div className="flex justify-between items-center mb-8">
-                      <h2 className="text-2xl font-semibold text-foreground">Available MCP Servers</h2>
+                      <h2 className="text-2xl font-semibold text-foreground">
+                        {t("models:public_hub.available_mcp_servers", { defaultValue: "Available MCP Servers" })}
+                      </h2>
                     </div>
 
                     {/* Filters */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 p-6 bg-muted rounded-lg border border-border">
                       <div>
                         <div className="flex items-center space-x-2 mb-3">
-                          <p className="text-sm font-medium text-foreground">Search MCP Servers:</p>
+                          <p className="text-sm font-medium text-foreground">
+                            {t("models:public_hub.search_mcp_label", { defaultValue: "Search MCP Servers:" })}
+                          </p>
                           <Tooltip>
                             <TooltipTrigger render={<Info className="w-4 h-4 text-muted-foreground cursor-help" />} />
-                            <TooltipContent side="top">Search MCP servers by name or description</TooltipContent>
+                            <TooltipContent side="top">
+                              {t("models:public_hub.search_mcp_tooltip", {
+                                defaultValue: "Search MCP servers by name or description",
+                              })}
+                            </TooltipContent>
                           </Tooltip>
                         </div>
                         <div className="relative">
                           <SearchIcon className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 transform -translate-y-1/2" />
                           <input
                             type="text"
-                            placeholder="Search MCP server names or descriptions..."
+                            placeholder={t("models:public_hub.search_mcp_placeholder", {
+                              defaultValue: "Search MCP server names or descriptions...",
+                            })}
                             value={mcpSearchTerm}
                             onChange={(e) => setMcpSearchTerm(e.target.value)}
                             className="border border-border rounded-lg pl-10 pr-4 py-2 w-full text-sm focus:outline-hidden focus:ring-2 focus:ring-ring focus:border-transparent bg-card"
@@ -608,12 +696,16 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                         </div>
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium mb-3 text-foreground">Transport:</p>
+                        <p className="text-sm font-medium mb-3 text-foreground">
+                          {t("models:public_hub.transport_label", { defaultValue: "Transport:" })}
+                        </p>
                         <MultiSelect
                           options={mcpTransportOptions}
                           value={selectedMcpTransports}
                           onValueChange={setSelectedMcpTransports}
-                          placeholder="Select transport types"
+                          placeholder={t("models:public_hub.select_transport", {
+                            defaultValue: "Select transport types",
+                          })}
                           className="w-full"
                         />
                       </div>
@@ -628,11 +720,15 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
                       sorting={mcpSorting}
                       onSortingChange={setMcpSorting}
                       isLoading={mcpLoading}
-                      loadingMessage="Loading MCP servers…"
+                      loadingMessage={t("models:ai_hub.loading.mcp", { defaultValue: "Loading MCP servers…" })}
                       noDataMessage={
                         <PublicHubEmptyState
-                          title="No matching MCP servers"
-                          body="Adjust the search or transport filter to see more servers."
+                          title={t("models:ai_hub.empty.mcp_no_match_title", {
+                            defaultValue: "No matching MCP servers",
+                          })}
+                          body={t("models:ai_hub.empty.mcp_no_match_body", {
+                            defaultValue: "Adjust the search or transport filter to see more servers.",
+                          })}
                         />
                       }
                       size="compact"
@@ -640,7 +736,11 @@ const PublicModelHub: React.FC<PublicModelHubProps> = ({ accessToken, isEmbedded
 
                     <div className="mt-8 text-center">
                       <p className="text-sm text-muted-foreground">
-                        Showing {filteredMcpData.length} of {mcpHubData?.length || 0} MCP servers
+                        {t("models:ai_hub.counts.servers", {
+                          filtered: filteredMcpData.length,
+                          total: mcpHubData?.length || 0,
+                          defaultValue: `Showing ${filteredMcpData.length} of ${mcpHubData?.length || 0} MCP servers`,
+                        })}
                       </p>
                     </div>
                   </TabsContent>

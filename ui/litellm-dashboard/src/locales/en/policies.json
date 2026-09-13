@@ -69,8 +69,10 @@
   },
   "table": {
     "no_policies": "No policies found",
+    "no_policies_desc": "Create a policy to bundle guardrails and apply them across teams.",
     "loading_policies": "Loading policies…",
     "no_attachments": "No attachments found",
+    "no_attachments_desc": "Attach a policy to teams, keys, models, or tags to control where it applies.",
     "loading_attachments": "Loading attachments…"
   },
   "delete_modal": {

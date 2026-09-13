@@ -1,6 +1,7 @@
 "use client";
 
 import React, { Suspense, useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import Navbar from "@/components/navbar";
 import LoadingScreen from "@/components/common_components/LoadingScreen";
@@ -28,6 +29,7 @@ function PluginModeProviderWithAuth({ children }: { children: React.ReactNode })
 }
 
 export function AgentControlPlaneView() {
+  const { t } = useTranslation("common");
   const { activePlugin } = usePluginMode();
   const activePluginName = activePlugin?.name;
   const agentPlatformUrl = activePlugin?.url ?? "";
@@ -58,6 +60,7 @@ export function AgentControlPlaneView() {
   useEffect(() => {
     const iframe = iframeRef.current;
     if (!iframe || !auth || auth.plugin !== activePluginName || !agentPlatformUrl) return;
+
     const send = () => {
       iframe.contentWindow?.postMessage({ type: "litellm-auth", session_claim: auth.claim }, agentPlatformUrl);
     };
@@ -72,8 +75,10 @@ export function AgentControlPlaneView() {
     return (
       <div className="flex flex-1 items-center justify-center text-muted-foreground">
         <div className="text-center">
-          <p className="text-lg font-medium mb-2">Plugin</p>
-          <p className="text-sm">Configure the plugin URL in settings</p>
+          <p className="text-lg font-medium mb-2">{t("plugins.title", { defaultValue: "Plugin" })}</p>
+          <p className="text-sm">
+            {t("plugins.configure_url_in_settings", { defaultValue: "Configure the plugin URL in settings" })}
+          </p>
         </div>
       </div>
     );

@@ -46,14 +46,14 @@ export const SearchToolView: React.FC<SearchToolViewProps> = ({
         <div>
           <Button variant="ghost" size="sm" className="mb-4 -ml-2 text-muted-foreground" onClick={onBack}>
             <ArrowLeft className="mr-2 size-4" />
-            {t("tools:search_tools.view.back")}
+            {t("tools:search_tools.view.back", "Back to all search tools")}
           </Button>
           <div className="flex items-center gap-1">
             <h1 className="text-2xl font-semibold text-foreground">{searchTool.search_tool_name}</h1>
             <Button
               variant="ghost"
               size="icon-xs"
-              aria-label={t("tools:search_tools.view.copy_name")}
+              aria-label={t("tools:search_tools.view.copy_name", "Copy name")}
               className="text-muted-foreground"
               onClick={() => copyToClipboard(searchTool.search_tool_name, "search-tool-name")}
             >
@@ -65,7 +65,7 @@ export const SearchToolView: React.FC<SearchToolViewProps> = ({
             <Button
               variant="ghost"
               size="icon-xs"
-              aria-label={t("tools:search_tools.view.copy_id")}
+              aria-label={t("tools:search_tools.view.copy_id", "Copy ID")}
               className="text-muted-foreground"
               onClick={() => copyToClipboard(searchTool.search_tool_id, "search-tool-id")}
             >
@@ -78,7 +78,7 @@ export const SearchToolView: React.FC<SearchToolViewProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card>
           <CardContent>
-            <p className="text-sm text-muted-foreground">{t("tools:search_tools.view.provider")}</p>
+            <p className="text-sm text-muted-foreground">{t("tools:search_tools.view.provider", "Search Provider")}</p>
             <p className="mt-2 text-lg font-semibold text-foreground">
               {getProviderDisplayName(searchTool.litellm_params.search_provider)}
             </p>
@@ -87,16 +87,16 @@ export const SearchToolView: React.FC<SearchToolViewProps> = ({
 
         <Card>
           <CardContent>
-            <p className="text-sm text-muted-foreground">{t("tools:search_tools.view.api_key")}</p>
-            <p className="mt-2 text-foreground">{searchTool.litellm_params.api_key ? "****" : t("tools:search_tools.view.not_set")}</p>
+            <p className="text-sm text-muted-foreground">{t("tools:search_tools.view.api_key", "API Key")}</p>
+            <p className="mt-2 text-foreground">{searchTool.litellm_params.api_key ? "****" : t("tools:search_tools.view.not_set", "Not set")}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent>
-            <p className="text-sm text-muted-foreground">{t("tools:search_tools.view.created_at")}</p>
+            <p className="text-sm text-muted-foreground">{t("tools:search_tools.view.created_at", "Created At")}</p>
             <p className="mt-2 text-foreground">
-              {searchTool.created_at ? new Date(searchTool.created_at).toLocaleString() : t("tools:search_tools.view.unknown")}
+              {searchTool.created_at ? new Date(searchTool.created_at).toLocaleString() : t("tools:search_tools.view.unknown", "Unknown")}
             </p>
           </CardContent>
         </Card>

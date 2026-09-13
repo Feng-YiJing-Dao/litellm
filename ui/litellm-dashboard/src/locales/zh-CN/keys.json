@@ -157,6 +157,7 @@
   "edit_settings": "编辑设置",
   "not_set": "未设置",
   "recent": "最近",
+  "last_regenerated": "上次重新生成时间",
   "prompt_caching": "提示词缓存",
   "prompt_caching_description": "已启用（在 Anthropic 和 Bedrock Claude 请求上自动注入 cache_control 标记）",
   "budget_reset": "预算重置",

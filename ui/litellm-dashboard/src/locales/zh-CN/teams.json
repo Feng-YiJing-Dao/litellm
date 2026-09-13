@@ -51,6 +51,7 @@
   "col_actions": "操作",
   "members_count_one": "{{count}} 名成员",
   "members_count_other": "{{count}} 名成员",
+  "members_count": "{{count}} 名成员",
   "default_proxy_admin": "默认网关管理员",
   "delete_member": "删除成员",
   "edit_member": "编辑成员",

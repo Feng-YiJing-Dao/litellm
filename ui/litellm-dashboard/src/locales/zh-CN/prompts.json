@@ -10,6 +10,7 @@
   "buttons": {
     "add_new": "添加新提示词",
     "upload_file": "上传 .prompt 文件",
+    "create": "创建提示词",
     "cancel": "取消",
     "delete": "删除",
     "save": "保存",
@@ -88,6 +89,7 @@
     "prompt_id_desc": "提示词 ID 仅支持字母、数字、下划线和连字符",
     "integration": "集成类型",
     "file_label": "选择 .prompt 文件",
+    "select_file": "选择 .prompt 文件",
     "upload_hint": "点击或拖拽 .prompt 文件至此处上传",
     "submit": "上传并创建"
   },

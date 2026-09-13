@@ -88,7 +88,9 @@
       "tip_verify_key": "确认您的 API 密钥正确且处于激活状态",
       "tip_check_operational": "检查搜索提供商服务是否正常运行",
       "tip_ensure_credits": "确保您在提供商处有足够的积分/配额",
-      "tip_review_docs": "查看提供商的相关文档了解是否有其他要求"
+      "tip_review_docs": "查看提供商的相关文档了解是否有其他要求",
+      "success_toast": "连接测试成功！",
+      "view_docs": "查看搜索文档"
     },
     "tester": {
       "title": "测试搜索工具",
@@ -266,6 +268,12 @@
       "key_name": "密钥名称",
       "user_agent": "用户代理",
       "no_tools": "未发现工具",
+      "no_tools_desc": "发起返回 tool_calls 的对话调用以开始自动发现工具。",
+      "no_matching": "未找到匹配的工具",
+      "no_matching_desc": "没有与您的搜索或筛选条件匹配的工具。",
+      "search_placeholder": "按工具名称搜索",
+      "filters_title": "筛选",
+      "filters_desc": "缩小已发现工具的范围",
       "loading": "正在加载工具策略…"
     },
     "detail": {

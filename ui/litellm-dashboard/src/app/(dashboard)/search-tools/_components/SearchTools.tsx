@@ -216,7 +216,11 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
   );
 
   if (!accessToken || !userRole || !userID) {
-    return <div className="p-6 text-center text-muted-foreground">{t("tools:search_tools.missing_auth")}</div>;
+    return (
+      <div className="p-6 text-center text-muted-foreground">
+        {t("tools:search_tools.missing_auth", { defaultValue: "Missing required authentication parameters." })}
+      </div>
+    );
   }
 
   const ToolsTab = () =>

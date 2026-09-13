@@ -128,8 +128,8 @@ export const getProjectsTableColumns = ({
           tone={row.original.blocked ? "error" : "success"}
           label={
             row.original.blocked
-              ? tr("common:status.blocked", { defaultValue: "Blocked" })
-              : tr("common:status.active", { defaultValue: "Active" })
+              ? tr("common:status_blocked", { defaultValue: "Blocked" })
+              : tr("common:status_active", { defaultValue: "Active" })
           }
         />
       ),

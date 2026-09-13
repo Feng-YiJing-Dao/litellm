@@ -19,6 +19,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { Conversation } from "./types";
 
 interface Props {
@@ -29,33 +30,33 @@ interface Props {
   onRename: (id: string, newTitle: string) => void;
 }
 
-type DateGroup = "Recents" | "Yesterday" | "Last 7 Days" | "Older";
+type DateGroupKey = "recents" | "yesterday" | "last_7_days" | "older";
 
-const getDateGroup = (timestamp: number): DateGroup => {
+const getDateGroupKey = (timestamp: number): DateGroupKey => {
   const now = dayjs();
   const date = dayjs(timestamp);
-  if (date.isSame(now, "day")) return "Recents";
-  if (date.isSame(now.subtract(1, "day"), "day")) return "Yesterday";
-  if (date.isAfter(now.subtract(7, "day"))) return "Last 7 Days";
-  return "Older";
+  if (date.isSame(now, "day")) return "recents";
+  if (date.isSame(now.subtract(1, "day"), "day")) return "yesterday";
+  if (date.isAfter(now.subtract(7, "day"))) return "last_7_days";
+  return "older";
 };
 
-const DATE_GROUP_ORDER: DateGroup[] = ["Recents", "Yesterday", "Last 7 Days", "Older"];
+const DATE_GROUP_ORDER: DateGroupKey[] = ["recents", "yesterday", "last_7_days", "older"];
 
 interface GroupedConversations {
-  group: DateGroup;
+  groupKey: DateGroupKey;
   items: Conversation[];
 }
 
 const groupConversations = (conversations: Conversation[]): GroupedConversations[] => {
-  const map = new Map<DateGroup, Conversation[]>();
+  const map = new Map<DateGroupKey, Conversation[]>();
   for (const conv of conversations) {
-    const group = getDateGroup(conv.updatedAt);
-    if (!map.has(group)) map.set(group, []);
-    map.get(group)!.push(conv);
+    const groupKey = getDateGroupKey(conv.updatedAt);
+    if (!map.has(groupKey)) map.set(groupKey, []);
+    map.get(groupKey)!.push(conv);
   }
   return DATE_GROUP_ORDER.filter((g) => map.has(g)).map((g) => ({
-    group: g,
+    groupKey: g,
     items: map.get(g)!,
   }));
 };
@@ -69,6 +70,7 @@ interface ConversationRowProps {
 }
 
 const ConversationRow: React.FC<ConversationRowProps> = ({ conv, isActive, onSelect, onDelete, onRename }) => {
+  const { t } = useTranslation("chat");
   const [editing, setEditing] = useState(false);
   const [editValue, setEditValue] = useState(conv.title);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -153,7 +155,7 @@ const ConversationRow: React.FC<ConversationRowProps> = ({ conv, isActive, onSel
                   }
                 />
                 <TooltipContent side="bottom">
-                  <p>Rename</p>
+                  <p>{t("conversations.rename", { defaultValue: "Rename" })}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -177,22 +179,22 @@ const ConversationRow: React.FC<ConversationRowProps> = ({ conv, isActive, onSel
                     }
                   />
                   <TooltipContent side="bottom">
-                    <p>Delete</p>
+                    <p>{t("conversations.delete", { defaultValue: "Delete" })}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete this conversation?</AlertDialogTitle>
-                  <AlertDialogDescription>This action cannot be undone</AlertDialogDescription>
+                  <AlertDialogTitle>{t("conversations.delete_title", { defaultValue: "Delete this conversation?" })}</AlertDialogTitle>
+                  <AlertDialogDescription>{t("conversations.delete_desc", { defaultValue: "This action cannot be undone" })}</AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel>{t("conversations.cancel", { defaultValue: "Cancel" })}</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => onDelete(conv.id)}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
-                    Delete
+                    {t("conversations.delete", { defaultValue: "Delete" })}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -212,6 +214,7 @@ interface SearchModalProps {
 }
 
 const SearchModal: React.FC<SearchModalProps> = ({ open, conversations, onSelect, onClose }) => {
+  const { t } = useTranslation("chat");
   const [query, setQuery] = useState("");
   const [wasOpen, setWasOpen] = useState(open);
 
@@ -236,7 +239,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ open, conversations, onSelect
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             autoFocus
-            placeholder="Search conversations\u2026"
+            placeholder={t("conversations.search_placeholder")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-9"
@@ -245,7 +248,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ open, conversations, onSelect
 
         <ScrollArea className="max-h-[320px]">
           {filtered.length === 0 ? (
-            <div className="text-center py-6 text-muted-foreground text-sm">No conversations found</div>
+            <div className="text-center py-6 text-muted-foreground text-sm">{t("conversations.no_conversations_found")}</div>
           ) : (
             filtered.map((conv) => {
               const truncated = conv.title.length > 55 ? conv.title.slice(0, 55) + "\u2026" : conv.title;
@@ -271,6 +274,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ open, conversations, onSelect
 };
 
 const ConversationList: React.FC<Props> = ({ conversations, activeConversationId, onSelect, onDelete, onRename }) => {
+  const { t } = useTranslation("chat");
   const [searchModalOpen, setSearchModalOpen] = useState(false);
 
   const handleGlobalKeyDown = useCallback((e: KeyboardEvent) => {
@@ -293,15 +297,15 @@ const ConversationList: React.FC<Props> = ({ conversations, activeConversationId
         <ScrollArea className="flex-1 h-0 px-1.5 pt-2">
           {grouped.length === 0 ? (
             <div className="text-center text-muted-foreground/60 text-xs mt-8 px-3">
-              No conversations yet
+              {t("conversations.no_conversations_yet")}
               <br />
-              Start a new chat above
+              {t("conversations.start_new_chat")}
             </div>
           ) : (
-            grouped.map(({ group, items }) => (
-              <div key={group} className="mb-2">
+            grouped.map(({ groupKey, items }) => (
+              <div key={groupKey} className="mb-2">
                 <div className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider px-2 pt-2 pb-1">
-                  {group}
+                  {t(`conversations.groups.${groupKey}` as any)}
                 </div>
                 {items.map((conv) => (
                   <ConversationRow

@@ -41,6 +41,7 @@ import { useUISettings } from "@/app/(dashboard)/hooks/uiSettings/useUISettings"
 import { checkTokenValidity } from "@/utils/jwtUtils";
 import { getCookie } from "@/utils/cookieUtils";
 import { getLoginUrl } from "@/utils/returnUrlUtils";
+import { useTranslation } from "react-i18next";
 
 interface ModelHubTableProps {
   accessToken: string | null;
@@ -62,6 +63,7 @@ function HubEmptyState({ title, body }: { title: string; body: string }) {
 }
 
 const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, premiumUser, userRole }) => {
+  const { t } = useTranslation(["models", "common"]);
   const syntaxTheme = useSyntaxTheme(prism);
   // Admin Viewer follows the read-parity rule: see the AI Hub catalog, but
   // cannot toggle public visibility (write).
@@ -397,25 +399,32 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
           {/* Header with Title, Description and URL */}
           <div className="flex justify-between items-center mb-6">
             <div className="flex flex-col items-start">
-              <h2 className="text-center text-xl font-semibold">AI Hub</h2>
+              <h2 className="text-center text-xl font-semibold">
+                {t("models:ai_hub.title", { defaultValue: "AI Hub" })}
+              </h2>
               {isAdminRole(userRole || "") ? (
                 <p className="text-sm text-muted-foreground">
-                  Make models, agents, and MCP servers public for developers to know what&apos;s available.
+                  {t("models:ai_hub.admin_desc", {
+                    defaultValue:
+                      "Make models, agents, and MCP servers public for developers to know what's available.",
+                  })}
                 </p>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  A list of all public model names personally available to you.
+                  {t("models:ai_hub.user_desc", {
+                    defaultValue: "A list of all public model names personally available to you.",
+                  })}
                 </p>
               )}
             </div>
             <div className="flex items-center space-x-4">
-              <p>Model Hub URL:</p>
+              <p>{t("models:ai_hub.model_hub_url", { defaultValue: "Model Hub URL:" })}</p>
               <div className="flex items-center bg-border px-2 py-1 rounded-sm">
                 <p className="mr-2">{`${getProxyBaseUrl()}/ui/model_hub_table`}</p>
                 <button
                   onClick={() => void copyToClipboard(`${getProxyBaseUrl()}/ui/model_hub_table`)}
                   className="p-1 hover:bg-accent rounded-sm transition-colors"
-                  title="Copy URL"
+                  title={t("models:ai_hub.copy_url", { defaultValue: "Copy URL" })}
                 >
                   <Copy size={16} className="text-muted-foreground" />
                 </button>
@@ -434,16 +443,16 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
           <Tabs defaultValue="models">
             <TabsList variant="line" className="mb-4 h-auto w-full justify-start rounded-none border-b p-0">
               <TabsTrigger value="models" className="flex-none rounded-none px-4 py-2">
-                Model Hub
+                {t("models:ai_hub.tabs.models", { defaultValue: "Model Hub" })}
               </TabsTrigger>
               <TabsTrigger value="agents" className="flex-none rounded-none px-4 py-2">
-                Agent Hub
+                {t("models:ai_hub.tabs.agents", { defaultValue: "Agent Hub" })}
               </TabsTrigger>
               <TabsTrigger value="mcp" className="flex-none rounded-none px-4 py-2">
-                MCP Hub
+                {t("models:ai_hub.tabs.mcp", { defaultValue: "MCP Hub" })}
               </TabsTrigger>
               <TabsTrigger value="skills" className="flex-none rounded-none px-4 py-2">
-                Skill Hub
+                {t("models:ai_hub.tabs.skills", { defaultValue: "Skill Hub" })}
               </TabsTrigger>
             </TabsList>
 
@@ -455,7 +464,11 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                   {/* Header with Make Public Button */}
                   {publicPage == false && canModify && (
                     <div className="flex justify-end mb-4">
-                      <Button onClick={() => handleMakePublicPage()}>Select Models to Make Public</Button>
+                      <Button onClick={() => handleMakePublicPage()}>
+                        {t("models:ai_hub.buttons.make_models_public", {
+                          defaultValue: "Select Models to Make Public",
+                        })}
+                      </Button>
                     </div>
                   )}
 
@@ -472,14 +485,22 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                     sorting={modelSorting}
                     onSortingChange={setModelSorting}
                     isLoading={loading}
-                    loadingMessage="Loading models…"
+                    loadingMessage={t("models:ai_hub.loading.models", { defaultValue: "Loading models…" })}
                     noDataMessage={
                       <HubEmptyState
-                        title={modelHubData?.length ? "No matching models" : "No models yet"}
+                        title={
+                          modelHubData?.length
+                            ? t("models:ai_hub.empty.models_no_match_title", { defaultValue: "No matching models" })
+                            : t("models:ai_hub.empty.models_empty_title", { defaultValue: "No models yet" })
+                        }
                         body={
                           modelHubData?.length
-                            ? "Adjust the filters to see more models."
-                            : "Models added to this proxy will appear here."
+                            ? t("models:ai_hub.empty.models_no_match_body", {
+                                defaultValue: "Adjust the filters to see more models.",
+                              })
+                            : t("models:ai_hub.empty.models_empty_body", {
+                                defaultValue: "Models added to this proxy will appear here.",
+                              })
                         }
                       />
                     }
@@ -489,7 +510,11 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
 
                 <div className="mt-4 text-center space-y-2">
                   <p className="text-sm text-muted-foreground">
-                    Showing {filteredData.length} of {modelHubData?.length || 0} models
+                    {t("models:ai_hub.counts.models", {
+                      filtered: filteredData.length,
+                      total: modelHubData?.length || 0,
+                      defaultValue: `Showing ${filteredData.length} of ${modelHubData?.length || 0} models`,
+                    })}
                   </p>
                 </div>
               </TabsContent>
@@ -500,18 +525,26 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                   {/* Header with Make Public Button */}
                   {publicPage == false && canModify && (
                     <div className="flex justify-end mb-4">
-                      <Button onClick={() => handleMakeAgentPublicPage()}>Select Agents to Make Public</Button>
+                      <Button onClick={() => handleMakeAgentPublicPage()}>
+                        {t("models:ai_hub.buttons.make_agents_public", {
+                          defaultValue: "Select Agents to Make Public",
+                        })}
+                      </Button>
                     </div>
                   )}
 
                   <div className="mb-4">
-                    <p className="text-sm font-medium mb-2">Search Agents:</p>
+                    <p className="text-sm font-medium mb-2">
+                      {t("models:ai_hub.search.search_agents_label", { defaultValue: "Search Agents:" })}
+                    </p>
                     <InputGroup className="max-w-sm">
                       <InputGroupAddon>
                         <SearchIcon className="size-4 text-muted-foreground" />
                       </InputGroupAddon>
                       <InputGroupInput
-                        placeholder="Search agent names or descriptions..."
+                        placeholder={t("models:ai_hub.search.search_agents_placeholder", {
+                          defaultValue: "Search agent names or descriptions...",
+                        })}
                         value={agentSearchTerm}
                         onChange={(e) => setAgentSearchTerm(e.target.value)}
                       />
@@ -519,7 +552,7 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                         <InputGroupAddon align="inline-end">
                           <InputGroupButton
                             size="icon-xs"
-                            aria-label="Clear search"
+                            aria-label={t("models:ai_hub.search.clear_search", { defaultValue: "Clear search" })}
                             onClick={() => setAgentSearchTerm("")}
                           >
                             <X />
@@ -539,14 +572,22 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                     sorting={agentSorting}
                     onSortingChange={setAgentSorting}
                     isLoading={agentLoading}
-                    loadingMessage="Loading agents…"
+                    loadingMessage={t("models:ai_hub.loading.agents", { defaultValue: "Loading agents…" })}
                     noDataMessage={
                       <HubEmptyState
-                        title={agentHubData?.length ? "No matching agents" : "No agents yet"}
+                        title={
+                          agentHubData?.length
+                            ? t("models:ai_hub.empty.agents_no_match_title", { defaultValue: "No matching agents" })
+                            : t("models:ai_hub.empty.agents_empty_title", { defaultValue: "No agents yet" })
+                        }
                         body={
                           agentHubData?.length
-                            ? "Adjust the search to see more agents."
-                            : "Agents added to this proxy will appear here."
+                            ? t("models:ai_hub.empty.agents_no_match_body", {
+                                defaultValue: "Adjust the search to see more agents.",
+                              })
+                            : t("models:ai_hub.empty.agents_empty_body", {
+                                defaultValue: "Agents added to this proxy will appear here.",
+                              })
                         }
                       />
                     }
@@ -556,7 +597,11 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
 
                 <div className="mt-4 text-center space-y-2">
                   <p className="text-sm text-muted-foreground">
-                    Showing {filteredAgentData.length} of {agentHubData?.length || 0} agents
+                    {t("models:ai_hub.counts.agents", {
+                      filtered: filteredAgentData.length,
+                      total: agentHubData?.length || 0,
+                      defaultValue: `Showing ${filteredAgentData.length} of ${agentHubData?.length || 0} agents`,
+                    })}
                   </p>
                 </div>
               </TabsContent>
@@ -567,7 +612,11 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                   {/* Header with Make Public Button */}
                   {publicPage == false && canModify && (
                     <div className="flex justify-end mb-4">
-                      <Button onClick={() => handleMakeMcpPublicPage()}>Select MCP Servers to Make Public</Button>
+                      <Button onClick={() => handleMakeMcpPublicPage()}>
+                        {t("models:ai_hub.buttons.make_mcp_public", {
+                          defaultValue: "Select MCP Servers to Make Public",
+                        })}
+                      </Button>
                     </div>
                   )}
 
@@ -581,11 +630,13 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
                     sorting={mcpSorting}
                     onSortingChange={setMcpSorting}
                     isLoading={mcpLoading}
-                    loadingMessage="Loading MCP servers…"
+                    loadingMessage={t("models:ai_hub.loading.mcp", { defaultValue: "Loading MCP servers…" })}
                     noDataMessage={
                       <HubEmptyState
-                        title="No MCP servers yet"
-                        body="MCP servers added to this proxy will appear here."
+                        title={t("models:ai_hub.empty.mcp_empty_title", { defaultValue: "No MCP servers yet" })}
+                        body={t("models:ai_hub.empty.mcp_empty_body", {
+                          defaultValue: "MCP servers added to this proxy will appear here.",
+                        })}
                       />
                     }
                     size="compact"
@@ -594,7 +645,10 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
 
                 <div className="mt-4 text-center space-y-2">
                   <p className="text-sm text-muted-foreground">
-                    Showing {mcpHubData?.length || 0} MCP server{mcpHubData?.length !== 1 ? "s" : ""}
+                    {t("models:ai_hub.counts.mcp_servers", {
+                      count: mcpHubData?.length || 0,
+                      defaultValue: `Showing ${mcpHubData?.length || 0} MCP server${mcpHubData?.length !== 1 ? "s" : ""}`,
+                    })}
                   </p>
                 </div>
               </TabsContent>
@@ -603,7 +657,11 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
               <TabsContent value="skills" keepMounted>
                 {publicPage == false && canModify && (
                   <div className="flex justify-end mb-4">
-                    <Button onClick={() => setIsMakeSkillPublicModalVisible(true)}>Select Skills to Make Public</Button>
+                    <Button onClick={() => setIsMakeSkillPublicModalVisible(true)}>
+                      {t("models:ai_hub.buttons.make_skills_public", {
+                        defaultValue: "Select Skills to Make Public",
+                      })}
+                    </Button>
                   </div>
                 )}
                 <SkillHubDashboard
@@ -623,9 +681,13 @@ const ModelHubTable: React.FC<ModelHubTableProps> = ({ accessToken, publicPage, 
         </div>
       ) : (
         <Card className="mx-auto max-w-xl mt-10 px-6">
-          <p className="text-xl text-center mb-2 text-foreground">Public Model Hub not enabled.</p>
+          <p className="text-xl text-center mb-2 text-foreground">
+            {t("models:ai_hub.public_hub_disabled_title", { defaultValue: "Public Model Hub not enabled." })}
+          </p>
           <p className="text-base text-center text-foreground">
-            Ask your proxy admin to enable this on their Admin UI.
+            {t("models:ai_hub.public_hub_disabled_desc", {
+              defaultValue: "Ask your proxy admin to enable this on their Admin UI.",
+            })}
           </p>
         </Card>
       )}

@@ -157,6 +157,7 @@
   "edit_settings": "Edit Settings",
   "not_set": "Not Set",
   "recent": "Recent",
+  "last_regenerated": "Last Regenerated",
   "prompt_caching": "Prompt Caching",
   "prompt_caching_description": "Enabled (auto-injects cache_control markers on Anthropic and Bedrock Claude requests)",
   "budget_reset": "Budget Reset",
