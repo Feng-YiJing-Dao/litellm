@@ -94,9 +94,32 @@ function DialogFooter({
   );
 }
 
-function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
+import i18n from "@/locales";
+
+function slugifyDialog(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+function translateDialogText(children: React.ReactNode): React.ReactNode {
+  if (typeof children !== "string") return children;
+  if (!i18n?.isInitialized) return children;
+  const slug = slugifyDialog(children);
+  const key = `common:dialogs.${slug}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key, { defaultValue: children });
+  }
+  return children;
+}
+
+function DialogTitle({ className, children, ...props }: DialogPrimitive.Title.Props) {
   return (
-    <DialogPrimitive.Title data-slot="dialog-title" className={cn("leading-none font-medium", className)} {...props} />
+    <DialogPrimitive.Title data-slot="dialog-title" className={cn("leading-none font-medium", className)} {...props}>
+      {translateDialogText(children)}
+    </DialogPrimitive.Title>
   );
 }
 

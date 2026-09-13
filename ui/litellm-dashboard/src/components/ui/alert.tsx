@@ -23,7 +23,28 @@ function Alert({ className, variant, ...props }: React.ComponentProps<"div"> & V
   return <div data-slot="alert" role="alert" className={cn(alertVariants({ variant }), className)} {...props} />;
 }
 
-function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+import i18n from "@/locales";
+
+function slugifyAlert(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+function translateAlertText(children: React.ReactNode): React.ReactNode {
+  if (typeof children !== "string") return children;
+  if (!i18n?.isInitialized) return children;
+  const slug = slugifyAlert(children);
+  const key = `common:dialogs.${slug}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key, { defaultValue: children });
+  }
+  return children;
+}
+
+function AlertTitle({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-title"
@@ -32,7 +53,9 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
         className,
       )}
       {...props}
-    />
+    >
+      {translateAlertText(children)}
+    </div>
   );
 }
 

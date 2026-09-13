@@ -29,12 +29,34 @@ function SortIndicator({ sorted }: { sorted: false | SortDirection }) {
 const MENU_ITEM_CLASS =
   "flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground";
 
+import i18n from "@/locales";
+
+function slugifyHeader(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+function translateHeaderTitle(title: React.ReactNode): React.ReactNode {
+  if (typeof title !== "string") return title;
+  if (!i18n?.isInitialized) return title;
+  const slug = slugifyHeader(title);
+  const key = `common:table.${slug}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key, { defaultValue: title });
+  }
+  return title;
+}
+
 export function DataTableSortHeader<TData, TValue>({
   column,
-  title,
+  title: rawTitle,
   variant = "header-cycle",
   className,
 }: DataTableSortHeaderProps<TData, TValue>) {
+  const title = translateHeaderTitle(rawTitle);
   const sorted = column.getIsSorted();
 
   if (!column.getCanSort()) {
@@ -66,13 +88,13 @@ export function DataTableSortHeader<TData, TValue>({
             <Menu.Positioner side="bottom" align="start" sideOffset={4} className="isolate z-popup">
               <Menu.Popup className="min-w-[9rem] rounded-md bg-popover p-1 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden">
                 <Menu.Item className={MENU_ITEM_CLASS} onClick={() => column.toggleSorting(false)}>
-                  <ChevronUp className="size-3.5" /> Ascending
+                  <ChevronUp className="size-3.5" /> {i18n?.isInitialized ? i18n.t("common:table.sort_ascending", { defaultValue: "Ascending" }) : "Ascending"}
                 </Menu.Item>
                 <Menu.Item className={MENU_ITEM_CLASS} onClick={() => column.toggleSorting(true)}>
-                  <ChevronDown className="size-3.5" /> Descending
+                  <ChevronDown className="size-3.5" /> {i18n?.isInitialized ? i18n.t("common:table.sort_descending", { defaultValue: "Descending" }) : "Descending"}
                 </Menu.Item>
                 <Menu.Item className={MENU_ITEM_CLASS} onClick={() => column.clearSorting()}>
-                  <X className="size-3.5" /> Reset
+                  <X className="size-3.5" /> {i18n?.isInitialized ? i18n.t("common:reset", { defaultValue: "Reset" }) : "Reset"}
                 </Menu.Item>
               </Menu.Popup>
             </Menu.Positioner>

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { toast as sonner } from "sonner";
 import { ApiError, deriveErrorMessage, unwrapProxyErrorMessage } from "@/lib/http/client";
+import i18n from "@/locales";
 
 export type ToastKind = "success" | "info" | "warning" | "error";
 
@@ -110,6 +111,25 @@ const describeError = (input: unknown): ErrorFacts => {
   };
 };
 
+function slugifyToast(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+function translateToastText(text: ReactNode): ReactNode {
+  if (typeof text !== "string") return text;
+  if (!i18n?.isInitialized) return text;
+  const slug = slugifyToast(text);
+  const key = `common:toasts.${slug}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key, { defaultValue: text });
+  }
+  return text;
+}
+
 const titleForStatus = (status: number): string => {
   const known = STATUS_TITLES[status];
   if (known !== undefined) return known;
@@ -119,15 +139,29 @@ const titleForStatus = (status: number): string => {
 };
 
 const titleFor = ({ status, proxyType }: ErrorFacts): string => {
-  if (proxyType?.endsWith("_access_denied")) return "Access Denied";
-  const byType = proxyType === undefined ? undefined : PROXY_TYPE_TITLES[proxyType];
-  if (byType !== undefined) return byType;
-  return status === undefined ? "Error" : titleForStatus(status);
+  let title = "Error";
+  if (proxyType?.endsWith("_access_denied")) {
+    title = "Access Denied";
+  } else if (proxyType !== undefined && PROXY_TYPE_TITLES[proxyType] !== undefined) {
+    title = PROXY_TYPE_TITLES[proxyType];
+  } else {
+    title = status === undefined ? "Error" : titleForStatus(status);
+  }
+  if (i18n?.isInitialized) {
+    const slug = slugifyToast(title);
+    const key = `common:toasts.titles.${slug}`;
+    if (i18n.exists(key)) {
+      return i18n.t(key, { defaultValue: title });
+    }
+  }
+  return title;
 };
 
 const show = (kind: ToastKind, message: ReactNode, options?: ToastOptions): void => {
-  sonner[kind](message, {
-    description: options?.description,
+  const finalMessage = translateToastText(message);
+  const finalDescription = translateToastText(options?.description);
+  sonner[kind](finalMessage, {
+    description: finalDescription,
     duration: options?.durationMs ?? DEFAULT_DURATION_MS[kind],
   });
 };
@@ -140,7 +174,8 @@ export const toast = {
   fromError: (input: unknown, options?: ToastOptions): void => {
     const facts = describeError(input);
     const title = titleFor(facts);
-    show(WARNING_TITLES.has(title) ? "warning" : "error", title, { description: facts.text, ...options });
+    const description = translateToastText(facts.text);
+    show(WARNING_TITLES.has(title) ? "warning" : "error", title, { description, ...options });
   },
   dismiss: (): void => {
     sonner.dismiss();

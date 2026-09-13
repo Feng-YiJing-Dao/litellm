@@ -167,6 +167,27 @@ function widthStyle<TData, TValue>(
   return undefined;
 }
 
+import i18n from "@/locales";
+
+function slugifyHeader(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+function translateHeaderContent(content: React.ReactNode): React.ReactNode {
+  if (typeof content !== "string") return content;
+  if (!i18n?.isInitialized) return content;
+  const slug = slugifyHeader(content);
+  const key = `common:table.${slug}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key, { defaultValue: content });
+  }
+  return content;
+}
+
 interface HeadCellProps<TData> {
   header: Header<TData, unknown>;
   size: DataTableSize;
@@ -195,7 +216,7 @@ function DataTableHeadCell<TData>({ header, size, stickyHeader, enableColumnResi
     >
       {header.isPlaceholder ? null : (
         <div className={cn("flex items-center gap-1", meta?.numeric ? "justify-end" : "")}>
-          {flexRender(column.columnDef.header, header.getContext())}
+          {translateHeaderContent(flexRender(column.columnDef.header, header.getContext()))}
         </div>
       )}
       {canResize && (

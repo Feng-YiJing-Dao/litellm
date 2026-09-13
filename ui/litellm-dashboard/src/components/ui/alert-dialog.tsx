@@ -93,7 +93,28 @@ function AlertDialogMedia({ className, ...props }: React.ComponentProps<"div">) 
   );
 }
 
-function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
+import i18n from "@/locales";
+
+function slugifyAlertDialog(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+function translateAlertDialogText(children: React.ReactNode): React.ReactNode {
+  if (typeof children !== "string") return children;
+  if (!i18n?.isInitialized) return children;
+  const slug = slugifyAlertDialog(children);
+  const key = `common:dialogs.${slug}`;
+  if (i18n.exists(key)) {
+    return i18n.t(key, { defaultValue: children });
+  }
+  return children;
+}
+
+function AlertDialogTitle({ className, children, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Title>) {
   return (
     <AlertDialogPrimitive.Title
       data-slot="alert-dialog-title"
@@ -102,7 +123,9 @@ function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof A
         className,
       )}
       {...props}
-    />
+    >
+      {translateAlertDialogText(children)}
+    </AlertDialogPrimitive.Title>
   );
 }
 
