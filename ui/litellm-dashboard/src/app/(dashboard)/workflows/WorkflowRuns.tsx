@@ -131,6 +131,7 @@ const StatusDot: React.FC<{ status: RunStatus; className?: string }> = ({ status
 const TRUNCATE_AT = 120;
 
 const TruncatedValue: React.FC<{ value: string }> = ({ value }) => {
+  const { t } = useTranslation(["workflows"]);
   const [expanded, setExpanded] = useState(false);
   if (value.length <= TRUNCATE_AT) {
     return <span className="break-all text-foreground">{value}</span>;
@@ -139,7 +140,7 @@ const TruncatedValue: React.FC<{ value: string }> = ({ value }) => {
     <span className="break-all text-foreground">
       {expanded ? value : value.slice(0, TRUNCATE_AT) + "…"}
       <Button variant="link" size="xs" className="h-auto px-1 py-0 text-[11px]" onClick={() => setExpanded((e) => !e)}>
-        {expanded ? "less" : "more"}
+        {expanded ? t("workflows:less", { defaultValue: "less" }) : t("workflows:more", { defaultValue: "more" })}
       </Button>
     </span>
   );
@@ -148,13 +149,14 @@ const TruncatedValue: React.FC<{ value: string }> = ({ value }) => {
 // ── metadata card ─────────────────────────────────────────────────────────────
 
 const MetadataCard: React.FC<{ run: WorkflowRun }> = ({ run }) => {
+  const { t } = useTranslation(["workflows"]);
   const meta = run.metadata ?? {};
 
   const primaryFields: { key: string; label: string }[] = [
-    { key: "state", label: "state" },
-    { key: "worktree_path", label: "worktree" },
-    { key: "grill_session_id", label: "grill session" },
-    { key: "session_id", label: "session" },
+    { key: "state", label: t("workflows:fields.state", { defaultValue: "state" }) },
+    { key: "worktree_path", label: t("workflows:fields.worktree", { defaultValue: "worktree" }) },
+    { key: "grill_session_id", label: t("workflows:fields.grill_session", { defaultValue: "grill session" }) },
+    { key: "session_id", label: t("workflows:fields.session", { defaultValue: "session" }) },
   ];
 
   const primaryKeys = new Set(["title", ...primaryFields.map((f) => f.key)]);
@@ -176,15 +178,17 @@ const MetadataCard: React.FC<{ run: WorkflowRun }> = ({ run }) => {
 
       {/* key fields grid */}
       <div className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-x-6 gap-y-2 px-5 py-3 font-mono text-xs">
-        <FieldPair label="status">
-          <span className="capitalize text-foreground">{run.status}</span>
+        <FieldPair label={t("workflows:fields.status", { defaultValue: "status" })}>
+          <span className="capitalize text-foreground">
+            {t(`workflows:statuses.${run.status}`, { defaultValue: run.status })}
+          </span>
         </FieldPair>
-        <FieldPair label="created">
+        <FieldPair label={t("workflows:fields.created", { defaultValue: "created" })}>
           <span className="text-foreground">{timeAgo(run.created_at)}</span>
         </FieldPair>
 
         {meta.pr_url && (
-          <FieldPair label="pr">
+          <FieldPair label={t("workflows:fields.pr", { defaultValue: "pr" })}>
             <a
               href={String(meta.pr_url)}
               target="_blank"
@@ -643,11 +647,10 @@ const WorkflowRuns: React.FC<WorkflowRunsProps> = ({ accessToken }) => {
               <div className="divide-y overflow-hidden rounded-lg border">
                 <DetailSection
                   title={t("workflows:drawer.timeline", { defaultValue: "Timeline" })}
-                  meta={
-                    <>
-                      {events.length} {events.length === 1 ? "event" : "events"}
-                    </>
-                  }
+                  meta={t("workflows:events_count", {
+                    count: events.length,
+                    defaultValue: events.length === 1 ? `${events.length} event` : `${events.length} events`,
+                  })}
                   defaultOpen
                 >
                   <GanttTimeline run={selectedRun} events={events} />

@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { PaginationState } from "@tanstack/react-table";
 import { Plus } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import { MemoryRow, createMemory, deleteMemory, fetchMemoryList, updateMemory } from "@/components/networking";
 import DeleteResourceModal from "@/components/common_components/DeleteResourceModal";
@@ -74,11 +74,11 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
       return createMemory(accessToken, args);
     },
     onSuccess: (row) => {
-      toast.success(`Created ${row.key}`);
+      toast.success(t("memory:toasts.created_success", { key: row.key, defaultValue: `Created ${row.key}` }));
       invalidateList();
     },
     onError: (err: Error) => {
-      toast.error(`Save failed: ${err.message}`);
+      toast.error(t("memory:toasts.save_failed", { message: err.message, defaultValue: `Save failed: ${err.message}` }));
     },
   });
 
@@ -89,11 +89,11 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
       return updateMemory(accessToken, key, payload);
     },
     onSuccess: (row) => {
-      toast.success(`Updated ${row.key}`);
+      toast.success(t("memory:toasts.updated_success", { key: row.key, defaultValue: `Updated ${row.key}` }));
       invalidateList();
     },
     onError: (err: Error) => {
-      toast.error(`Save failed: ${err.message}`);
+      toast.error(t("memory:toasts.save_failed", { message: err.message, defaultValue: `Save failed: ${err.message}` }));
     },
   });
 
@@ -103,11 +103,11 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
       return deleteMemory(accessToken, key).then(() => key);
     },
     onSuccess: (key) => {
-      toast.success(`Deleted ${key}`);
+      toast.success(t("memory:toasts.deleted_success", { key, defaultValue: `Deleted ${key}` }));
       invalidateList();
     },
     onError: (err: Error) => {
-      toast.error(`Delete failed: ${err.message}`);
+      toast.error(t("memory:toasts.delete_failed", { message: err.message, defaultValue: `Delete failed: ${err.message}` }));
     },
   });
 
@@ -149,7 +149,7 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
       try {
         metadataPayload = JSON.parse(metadataText);
       } catch {
-        toast.error("Metadata must be valid JSON (or leave empty).");
+        toast.error(t("memory:toasts.invalid_json", { defaultValue: "Metadata must be valid JSON (or leave empty)." }));
         return false;
       }
     }
@@ -184,11 +184,20 @@ export const MemoryView: React.FC<MemoryViewProps> = ({ accessToken }) => {
               {t("memory:title", { defaultValue: "Memory" })}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Inspect what your agents have stored under{" "}
-              <code className="rounded-sm border border-border bg-muted px-1 py-0.5 font-mono text-xs text-foreground">
-                /v1/memory
-              </code>
-              . Scoped to memories visible to your user / team (admins see all).
+              <Trans
+                i18nKey="memory:subtitle"
+                components={{
+                  code1: (
+                    <code className="rounded-sm border border-border bg-muted px-1 py-0.5 font-mono text-xs text-foreground" />
+                  ),
+                }}
+              >
+                Inspect what your agents have stored under{" "}
+                <code className="rounded-sm border border-border bg-muted px-1 py-0.5 font-mono text-xs text-foreground">
+                  /v1/memory
+                </code>
+                . Scoped to memories visible to your user / team (admins see all).
+              </Trans>
             </p>
           </div>
           <Button onClick={() => setIsCreateOpen(true)}>

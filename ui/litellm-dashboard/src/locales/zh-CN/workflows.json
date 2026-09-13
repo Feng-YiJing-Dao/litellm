@@ -1,5 +1,6 @@
 {
   "title": "工作流运行记录",
+  "subtitle": "面向智能体与自动化工作流的持久化状态追踪",
   "search_placeholder": "搜索运行记录…",
   "no_runs_yet": "暂无工作流运行记录",
   "loading_runs": "正在加载工作流运行记录…",
@@ -9,6 +10,20 @@
   "all_statuses": "所有状态",
   "type": "工作流类型",
   "filter_by_type": "按类型筛选…",
+  "events_count": "{{count}} 个事件",
+  "events_count_one": "{{count}} 个事件",
+  "events_count_other": "{{count}} 个事件",
+  "less": "收起",
+  "more": "展开",
+  "fields": {
+    "state": "状态",
+    "worktree": "工作目录",
+    "grill_session": "审阅会话",
+    "session": "会话",
+    "status": "运行状态",
+    "created": "创建时间",
+    "pr": "合并请求 (PR)"
+  },
   "columns": {
     "run_id": "运行 ID",
     "type": "类型",

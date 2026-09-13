@@ -1,5 +1,6 @@
 {
   "title": "Workflow Runs",
+  "subtitle": "Durable state tracking for agents and automated workflows",
   "search_placeholder": "Search runs…",
   "no_runs_yet": "No workflow runs yet",
   "loading_runs": "Loading workflow runs…",
@@ -9,6 +10,20 @@
   "all_statuses": "All statuses",
   "type": "Type",
   "filter_by_type": "Filter by type…",
+  "events_count": "{{count}} event",
+  "events_count_one": "{{count}} event",
+  "events_count_other": "{{count}} events",
+  "less": "less",
+  "more": "more",
+  "fields": {
+    "state": "state",
+    "worktree": "worktree",
+    "grill_session": "grill session",
+    "session": "session",
+    "status": "status",
+    "created": "created",
+    "pr": "pr"
+  },
   "columns": {
     "run_id": "Run ID",
     "type": "Type",

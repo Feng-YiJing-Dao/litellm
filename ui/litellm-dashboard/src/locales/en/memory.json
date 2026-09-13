@@ -52,5 +52,13 @@
     "created_by": "Created {{time}} by {{user}}",
     "updated": "Updated {{time}}",
     "updated_by": "Updated {{time}} by {{user}}"
+  },
+  "toasts": {
+    "created_success": "Created {{key}}",
+    "updated_success": "Updated {{key}}",
+    "deleted_success": "Deleted {{key}}",
+    "save_failed": "Save failed: {{message}}",
+    "delete_failed": "Delete failed: {{message}}",
+    "invalid_json": "Metadata must be valid JSON (or leave empty)."
   }
 }
