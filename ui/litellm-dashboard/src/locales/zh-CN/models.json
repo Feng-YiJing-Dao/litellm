@@ -126,5 +126,23 @@
   "model_update_failed": "更新模型设置失败",
   "litellm_model": "LiteLLM 模型",
   "created_at": "创建时间",
-  "loading": "加载中..."
+  "loading": "加载中...",
+  "tags": {
+    "title": "标签管理",
+    "last_refreshed": "最近刷新：{{date}}",
+    "description": "点击标签名称以查看和编辑详情。您可以使用标签根据请求中携带的标签限制特定大模型的使用权限。",
+    "create_tag_btn": "+ 创建新标签",
+    "tag_name": "标签名称",
+    "desc_column": "描述",
+    "allowed_models": "允许调用的模型",
+    "created": "创建时间",
+    "actions": "操作",
+    "all_models": "全部模型",
+    "no_tags": "暂无标签",
+    "no_tags_desc": "创建标签以开始进行标签路由与模型使用限制。",
+    "loading_tags": "正在加载标签…",
+    "delete_tag": "删除标签",
+    "delete_tag_confirm": "确定要删除此标签吗？此操作无法撤消。",
+    "tag_info": "标签信息"
+  }
 }

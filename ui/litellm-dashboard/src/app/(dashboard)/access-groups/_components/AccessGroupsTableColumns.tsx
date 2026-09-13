@@ -64,10 +64,13 @@ function ResourcesCell({ group }: { group: AccessGroup }) {
 function AccessGroupRowActions({
   group,
   onDeleteClick,
+  t,
 }: {
   group: AccessGroup;
   onDeleteClick: (group: AccessGroup) => void;
+  t?: (key: any, options?: any) => any;
 }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -84,7 +87,7 @@ function AccessGroupRowActions({
           onClick={() => onDeleteClick(group)}
         >
           <Trash2 />
-          Delete access group
+          {tr("accessGroups:delete_modal.delete", { defaultValue: "Delete access group" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -95,19 +98,22 @@ interface AccessGroupsTableColumnsDeps {
   canModify: boolean;
   onGroupClick: (id: string) => void;
   onDeleteClick: (group: AccessGroup) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getAccessGroupsTableColumns = ({
   canModify,
   onGroupClick,
   onDeleteClick,
+  t,
 }: AccessGroupsTableColumnsDeps): ColumnDef<AccessGroup>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   const columns: ColumnDef<AccessGroup>[] = [
     {
       id: "id",
       accessorKey: "id",
-      meta: { title: "ID" },
-      header: "ID",
+      meta: { title: tr("accessGroups:columns.id", { defaultValue: "ID" }) },
+      header: tr("accessGroups:columns.id", { defaultValue: "ID" }),
       size: 200,
       enableSorting: false,
       cell: ({ row }) => (
@@ -121,8 +127,10 @@ export const getAccessGroupsTableColumns = ({
     {
       id: "name",
       accessorKey: "name",
-      meta: { title: "Name" },
-      header: ({ column }) => <DataTableSortHeader column={column} title="Name" />,
+      meta: { title: tr("accessGroups:columns.name", { defaultValue: "Name" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("accessGroups:columns.name", { defaultValue: "Name" })} />
+      ),
       size: 220,
       enableSorting: true,
       cell: ({ row }) => {
@@ -136,8 +144,8 @@ export const getAccessGroupsTableColumns = ({
     },
     {
       id: "resources",
-      meta: { title: "Resources" },
-      header: "Resources",
+      meta: { title: tr("accessGroups:columns.resources", { defaultValue: "Resources" }) },
+      header: tr("accessGroups:columns.resources", { defaultValue: "Resources" }),
       size: 220,
       enableSorting: false,
       cell: ({ row }) => <ResourcesCell group={row.original} />,
@@ -145,8 +153,10 @@ export const getAccessGroupsTableColumns = ({
     {
       id: "createdAt",
       accessorKey: "createdAt",
-      meta: { title: "Created" },
-      header: ({ column }) => <DataTableSortHeader column={column} title="Created" />,
+      meta: { title: tr("accessGroups:columns.created", { defaultValue: "Created" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("accessGroups:columns.created", { defaultValue: "Created" })} />
+      ),
       size: 150,
       enableSorting: true,
       sortingFn: "datetime",
@@ -155,8 +165,8 @@ export const getAccessGroupsTableColumns = ({
     {
       id: "updatedAt",
       accessorKey: "updatedAt",
-      meta: { title: "Updated" },
-      header: "Updated",
+      meta: { title: tr("common:updated", { defaultValue: "Updated" }) },
+      header: tr("common:updated", { defaultValue: "Updated" }),
       size: 150,
       enableSorting: false,
       cell: ({ row }) => <DateCell value={row.original.updatedAt} precision="date" />,
@@ -178,7 +188,7 @@ export const getAccessGroupsTableColumns = ({
       enableHiding: false,
       cell: ({ row }) => (
         <div className="flex justify-end">
-          <AccessGroupRowActions group={row.original} onDeleteClick={onDeleteClick} />
+          <AccessGroupRowActions group={row.original} onDeleteClick={onDeleteClick} t={tr} />
         </div>
       ),
     },

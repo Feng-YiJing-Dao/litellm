@@ -1,5 +1,6 @@
 import { AccessGroupResponse, useAccessGroups } from "@/app/(dashboard)/hooks/accessGroups/useAccessGroups";
 import { useDeleteAccessGroup } from "@/app/(dashboard)/hooks/accessGroups/useDeleteAccessGroup";
+import { useTranslation } from "react-i18next";
 import { Boxes, Plus, SearchIcon, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import DeleteResourceModal from "@/components/common_components/DeleteResourceModal";
@@ -31,6 +32,7 @@ function mapResponseToAccessGroup(r: AccessGroupResponse): AccessGroup {
 }
 
 export function AccessGroupsPage() {
+  const { t } = useTranslation(["accessGroups", "common"]);
   const { userRole } = useAuthorized();
   // Admin Viewer follows the read-parity rule: see access groups, no writes.
   const canModify = isProxyAdminRole(userRole ?? "");
@@ -62,13 +64,13 @@ export function AccessGroupsPage() {
     <div className="p-8">
       <PageHeader
         icon={<Boxes />}
-        title="Access Groups"
-        subtitle="Manage resource permissions for your organization"
+        title={t("accessGroups:title", { defaultValue: "Access Groups" })}
+        subtitle={t("accessGroups:subtitle", { defaultValue: "Manage resource permissions for your organization" })}
         primaryAction={
           canModify ? (
             <Button onClick={() => setIsCreateModalVisible(true)}>
               <Plus className="size-4" />
-              Create Access Group
+              {t("accessGroups:create_btn", { defaultValue: "Create Access Group" })}
             </Button>
           ) : undefined
         }
@@ -80,7 +82,9 @@ export function AccessGroupsPage() {
             <SearchIcon className="size-4 text-muted-foreground" />
           </InputGroupAddon>
           <InputGroupInput
-            placeholder="Search groups by name, ID, or description..."
+            placeholder={t("accessGroups:search_placeholder", {
+              defaultValue: "Search groups by name, ID, or description...",
+            })}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />

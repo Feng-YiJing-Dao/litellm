@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { RefreshCw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import TagInfoView from "./tag_info";
 import { modelInfoCall } from "@/components/networking";
@@ -27,6 +28,7 @@ interface TagProps {
 }
 
 const TagManagement: React.FC<TagProps> = ({ accessToken, userID, userRole }) => {
+  const { t } = useTranslation(["models", "common"]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [isLoadingTags, setIsLoadingTags] = useState(true);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -141,9 +143,16 @@ const TagManagement: React.FC<TagProps> = ({ accessToken, userID, userRole }) =>
       ) : (
         <div className="flex h-full w-full flex-col p-8 pt-10">
           <div className="mt-2 mb-4 flex w-full items-center justify-between">
-            <h1>Tag Management</h1>
+            <h1>{t("models:tags.title", { defaultValue: "Tag Management" })}</h1>
             <div className="flex items-center space-x-2">
-              {lastRefreshed && <p className="text-sm">Last Refreshed: {lastRefreshed}</p>}
+              {lastRefreshed && (
+                <p className="text-sm">
+                  {t("models:tags.last_refreshed", {
+                    defaultValue: `Last Refreshed: ${lastRefreshed}`,
+                    date: lastRefreshed,
+                  })}
+                </p>
+              )}
               <Button variant="outline" size="icon-sm" aria-label="Refresh tags" onClick={handleRefreshClick}>
                 <RefreshCw />
               </Button>
@@ -151,19 +160,14 @@ const TagManagement: React.FC<TagProps> = ({ accessToken, userID, userRole }) =>
           </div>
 
           <div className="mb-4 text-sm">
-            Click on a tag name to view and edit its details.
-            <p>
-              You can use tags to restrict the usage of certain LLMs based on tags passed in the request. Read more
-              about tag routing{" "}
-              <a href="https://docs.litellm.ai/docs/proxy/tag_routing" target="_blank" rel="noopener noreferrer">
-                here
-              </a>
-              .
-            </p>
+            {t("models:tags.description", {
+              defaultValue:
+                "Click on a tag name to view and edit its details. You can use tags to restrict the usage of certain LLMs based on tags passed in the request.",
+            })}
           </div>
 
           <Button className="mb-4 self-start" onClick={() => setIsCreateModalVisible(true)}>
-            + Create New Tag
+            {t("models:tags.create_tag_btn", { defaultValue: "+ Create New Tag" })}
           </Button>
 
           <div className="mt-2 flex min-h-0 flex-1 flex-col">
@@ -190,10 +194,12 @@ const TagManagement: React.FC<TagProps> = ({ accessToken, userID, userRole }) =>
           {/* Delete Confirmation Modal */}
           <DeleteResourceModal
             isOpen={isDeleteModalOpen}
-            title="Delete Tag"
-            message="Are you sure you want to delete this tag? This action cannot be undone."
-            resourceInformationTitle="Tag Information"
-            resourceInformation={[{ label: "Tag Name", value: tagToDelete, code: true }]}
+            title={t("models:tags.delete_tag", { defaultValue: "Delete Tag" })}
+            message={t("models:tags.delete_tag_confirm", {
+              defaultValue: "Are you sure you want to delete this tag? This action cannot be undone.",
+            })}
+            resourceInformationTitle={t("models:tags.tag_info", { defaultValue: "Tag Information" })}
+            resourceInformation={[{ label: t("models:tags.tag_name", { defaultValue: "Tag Name" }), value: tagToDelete, code: true }]}
             onCancel={() => {
               setIsDeleteModalOpen(false);
               setTagToDelete(null);

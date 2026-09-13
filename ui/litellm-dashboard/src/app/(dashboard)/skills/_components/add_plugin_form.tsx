@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CircleHelp } from "lucide-react";
 import { z } from "zod/v4";
 import { toast } from "@/lib/toast";
@@ -147,6 +148,7 @@ const labelWithHint = (label: string, hint: string): React.ReactNode => (
 );
 
 const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessToken, onSuccess }) => {
+  const { t } = useTranslation(["skills", "common"]);
   const form = useZodForm(addPluginSchema, { defaultValues: EMPTY_VALUES });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [urlPreview, setUrlPreview] = useState<SkillSourcePreview | null>(null);
@@ -170,34 +172,34 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
 
   const handleSubmit = async (values: AddPluginFormValues) => {
     if (!accessToken) {
-      toast.error("No access token available");
+      toast.error(t("skills:form.no_token", "No access token available"));
       return;
     }
 
     if (!urlPreview) {
-      toast.error("Please enter a valid repository or zip archive URL");
+      toast.error(t("skills:form.invalid_url", "Please enter a valid repository or zip archive URL"));
       return;
     }
 
     if (!validatePluginName(values.name)) {
-      toast.error("Skill name must be kebab-case (lowercase letters, numbers, and hyphens only)");
+      toast.error(t("skills:form.invalid_name", "Skill name must be kebab-case (lowercase letters, numbers, and hyphens only)"));
       return;
     }
 
     if (values.version && !isValidSemanticVersion(values.version)) {
-      toast.error("Version must be in semantic versioning format (e.g., 1.0.0)");
+      toast.error(t("skills:form.invalid_version", "Version must be in semantic versioning format (e.g., 1.0.0)"));
       return;
     }
 
     if (values.authorEmail && !isValidEmail(values.authorEmail)) {
-      toast.error("Invalid email format");
+      toast.error(t("skills:form.invalid_email", "Invalid email format"));
       return;
     }
 
     setIsSubmitting(true);
     try {
       await registerClaudeCodePlugin(accessToken, buildRegisterRequest(values, urlPreview.parsed));
-      toast.success("Skill registered successfully");
+      toast.success(t("skills:form.success", "Skill registered successfully"));
       form.reset(EMPTY_VALUES);
       setUrlPreview(null);
       setSubPathLock(null);
@@ -222,7 +224,7 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
     <Dialog open={visible} onOpenChange={(open) => !open && handleCancel()}>
       <DialogContent className="top-8 max-h-[calc(100dvh-4rem)] translate-y-0 overflow-y-auto sm:max-w-[700px]">
         <DialogHeader>
-          <DialogTitle>Add New Skill</DialogTitle>
+          <DialogTitle>{t("skills:form.title", "Add New Skill")}</DialogTitle>
         </DialogHeader>
         <TooltipProvider>
           <form onSubmit={form.handleSubmit(handleSubmit)} noValidate className="mt-4">
@@ -231,8 +233,8 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
                 control={form.control}
                 name="skillUrl"
                 label={labelWithHint(
-                  "Source URL",
-                  "Paste an HTTPS git repository URL from GitHub, GitLab, Bitbucket, or a self-hosted host (e.g. github.com/org/repo or github.com/org/repo/tree/main/my-skill), or an HTTPS link to a .zip archive of the skill hosted on S3 or any static file server.",
+                  t("skills:form.source_url", "Source URL"),
+                  t("skills:form.source_url_hint", "Paste an HTTPS git repository URL from GitHub, GitLab, Bitbucket, or a self-hosted host (e.g. github.com/org/repo or github.com/org/repo/tree/main/my-skill), or an HTTPS link to a .zip archive of the skill hosted on S3 or any static file server."),
                 )}
               >
                 {({ ref, onChange, ...field }) => (
@@ -253,10 +255,10 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
                 control={form.control}
                 name="subPath"
                 label={labelWithHint(
-                  "Subfolder path (Optional)",
-                  "Path within the repository where the skill lives (e.g., plugins/my-skill). Leave empty if the skill is at the repo root.",
+                  t("skills:form.subfolder", "Subfolder path (Optional)"),
+                  t("skills:form.subfolder_hint", "Path within the repository where the skill lives (e.g., plugins/my-skill). Leave empty if the skill is at the repo root."),
                 )}
-                description={subPathLock ? SUB_PATH_LOCK_REASON[subPathLock] : undefined}
+                description={subPathLock ? (subPathLock === "git-subdir" ? t("skills:form.lock_git_subdir", SUB_PATH_LOCK_REASON["git-subdir"]) : t("skills:form.lock_archive", SUB_PATH_LOCK_REASON.archive)) : undefined}
               >
                 {({ ref, onChange, ...field }) => (
                   <Input
@@ -278,8 +280,8 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
                   control={form.control}
                   name="sha256"
                   label={labelWithHint(
-                    "Archive SHA-256 (Optional)",
-                    "Hex digest of the zip file. Claude Code refuses to install the archive if its checksum does not match.",
+                    t("skills:form.archive_sha256", "Archive SHA-256 (Optional)"),
+                    t("skills:form.archive_sha256_hint", "Hex digest of the zip file. Claude Code refuses to install the archive if its checksum does not match."),
                   )}
                 >
                   {({ ref, ...field }) => (
@@ -290,14 +292,17 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
 
               {urlPreview && (
                 <div className="rounded-lg border border-info/20 bg-info/10 px-3 py-2 text-sm text-info">
-                  Detected: {urlPreview.label}
+                  {t("skills:form.detected_prefix", "Detected:")} {urlPreview.label}
                 </div>
               )}
 
               <FormField
                 control={form.control}
                 name="name"
-                label={labelWithHint("Skill Name", "Unique identifier in kebab-case format (e.g., my-skill)")}
+                label={labelWithHint(
+                  t("skills:form.name", "Skill Name"),
+                  t("skills:form.name_hint", "Unique identifier in kebab-case format (e.g., my-skill)"),
+                )}
               >
                 {({ ref, ...field }) => <Input {...field} ref={ref} placeholder="my-skill" className="rounded-lg" />}
               </FormField>
@@ -306,7 +311,10 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
                 <FormField
                   control={form.control}
                   name="domain"
-                  label={labelWithHint("Domain (Optional)", "Top-level grouping in the Skill Hub (e.g., Productivity)")}
+                  label={labelWithHint(
+                    t("skills:form.domain", "Domain (Optional)"),
+                    t("skills:form.domain_hint", "Top-level grouping in the Skill Hub (e.g., Productivity)"),
+                  )}
                   className="flex-1"
                 >
                   {({ ref, ...field }) => (
@@ -316,7 +324,10 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
                 <FormField
                   control={form.control}
                   name="namespace"
-                  label={labelWithHint("Namespace (Optional)", "Sub-grouping within domain (e.g., workflows)")}
+                  label={labelWithHint(
+                    t("skills:form.namespace", "Namespace (Optional)"),
+                    t("skills:form.namespace_hint", "Sub-grouping within domain (e.g., workflows)"),
+                  )}
                   className="flex-1"
                 >
                   {({ ref, ...field }) => <Input {...field} ref={ref} placeholder="workflows" className="rounded-lg" />}
@@ -326,14 +337,17 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
               <FormField
                 control={form.control}
                 name="description"
-                label={labelWithHint("Description (Optional)", "Brief description of what the skill does")}
+                label={labelWithHint(
+                  t("skills:form.description", "Description (Optional)"),
+                  t("skills:form.description_hint", "Brief description of what the skill does"),
+                )}
               >
                 {({ ref, ...field }) => (
                   <Textarea
                     {...field}
                     ref={ref}
                     rows={3}
-                    placeholder="A skill that helps with..."
+                    placeholder={t("skills:form.description_placeholder", "A skill that helps with...")}
                     maxLength={500}
                     className="rounded-lg"
                   />
@@ -343,7 +357,10 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
               <FormField
                 control={form.control}
                 name="category"
-                label={labelWithHint("Category (Optional)", "Select a category or enter a custom one")}
+                label={labelWithHint(
+                  t("skills:form.category", "Category (Optional)"),
+                  t("skills:form.category_hint", "Select a category or enter a custom one"),
+                )}
               >
                 {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }) => (
                   <Combobox
@@ -355,12 +372,12 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
                       id={id}
                       aria-invalid={ariaInvalid}
                       aria-describedby={ariaDescribedBy}
-                      placeholder="Select or type a category"
+                      placeholder={t("skills:form.category_placeholder", "Select or type a category")}
                       className="w-full rounded-lg"
                       showClear={value !== ""}
                     />
                     <ComboboxContent>
-                      <ComboboxEmpty>No matching categories</ComboboxEmpty>
+                      <ComboboxEmpty>{t("skills:form.category_empty", "No matching categories")}</ComboboxEmpty>
                       <ComboboxList>
                         {(category: string) => (
                           <ComboboxItem key={category} value={category}>
@@ -376,7 +393,10 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
               <FormField
                 control={form.control}
                 name="keywords"
-                label={labelWithHint("Keywords (Optional)", "Comma-separated list of keywords for search")}
+                label={labelWithHint(
+                  t("skills:form.keywords", "Keywords (Optional)"),
+                  t("skills:form.keywords_hint", "Comma-separated list of keywords for search"),
+                )}
               >
                 {({ ref, ...field }) => (
                   <Input {...field} ref={ref} placeholder="search, web, api" className="rounded-lg" />
@@ -386,7 +406,10 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
               <FormField
                 control={form.control}
                 name="version"
-                label={labelWithHint("Version (Optional)", "Semantic version (e.g., 1.0.0)")}
+                label={labelWithHint(
+                  t("skills:form.version", "Version (Optional)"),
+                  t("skills:form.version_hint", "Semantic version (e.g., 1.0.0)"),
+                )}
               >
                 {({ ref, ...field }) => <Input {...field} ref={ref} placeholder="1.0.0" className="rounded-lg" />}
               </FormField>
@@ -394,17 +417,23 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
               <FormField
                 control={form.control}
                 name="authorName"
-                label={labelWithHint("Author Name (Optional)", "Name of the skill author or organization")}
+                label={labelWithHint(
+                  t("skills:form.author_name", "Author Name (Optional)"),
+                  t("skills:form.author_name_hint", "Name of the skill author or organization"),
+                )}
               >
                 {({ ref, ...field }) => (
-                  <Input {...field} ref={ref} placeholder="Your Name or Organization" className="rounded-lg" />
+                  <Input {...field} ref={ref} placeholder={t("skills:form.author_name_placeholder", "Your Name or Organization")} className="rounded-lg" />
                 )}
               </FormField>
 
               <FormField
                 control={form.control}
                 name="authorEmail"
-                label={labelWithHint("Author Email (Optional)", "Contact email for the skill author")}
+                label={labelWithHint(
+                  t("skills:form.author_email", "Author Email (Optional)"),
+                  t("skills:form.author_email_hint", "Contact email for the skill author"),
+                )}
               >
                 {({ ref, ...field }) => (
                   <Input {...field} ref={ref} type="email" placeholder="author@example.com" className="rounded-lg" />
@@ -414,11 +443,11 @@ const AddPluginForm: React.FC<AddPluginFormProps> = ({ visible, onClose, accessT
 
             <div className="mt-6 flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={handleCancel} disabled={isSubmitting}>
-                Cancel
+                {t("skills:form.cancel", "Cancel")}
               </Button>
               <Button type="submit" disabled={isSubmitting} aria-busy={isSubmitting}>
                 {isSubmitting && <UiLoadingSpinner className="size-4" />}
-                {isSubmitting ? "Adding..." : "Add Skill"}
+                {isSubmitting ? t("skills:form.adding", "Adding...") : t("skills:form.add_skill", "Add Skill")}
               </Button>
             </div>
           </form>

@@ -66,10 +66,12 @@ interface TagRowActionsProps {
   tag: Tag;
   onEdit: (tag: Tag) => void;
   onDelete: (tagName: string) => void;
+  tr?: (key: any, options?: any) => any;
 }
 
-function TagRowActions({ tag, onEdit, onDelete }: TagRowActionsProps) {
+function TagRowActions({ tag, onEdit, onDelete, tr }: TagRowActionsProps) {
   const isDynamic = isDynamicSpendTag(tag);
+  const tFn = tr ?? ((key: any, options?: any) => options?.defaultValue ?? key);
 
   return (
     <DropdownMenu>
@@ -88,7 +90,7 @@ function TagRowActions({ tag, onEdit, onDelete }: TagRowActionsProps) {
           onClick={() => onEdit(tag)}
         >
           <Pencil />
-          Edit
+          {tFn("common:edit", { defaultValue: "Edit" })}
         </DropdownMenuItem>
         <DropdownMenuItem
           variant="destructive"
@@ -98,74 +100,83 @@ function TagRowActions({ tag, onEdit, onDelete }: TagRowActionsProps) {
           onClick={() => onDelete(tag.name)}
         >
           <Trash2 />
-          Delete
+          {tFn("common:delete", { defaultValue: "Delete" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
-interface TagTableColumnsDeps {
+export interface TagTableColumnsDeps {
   onSelectTag: (tagName: string) => void;
   onEdit: (tag: Tag) => void;
   onDelete: (tagName: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-export const getTagTableColumns = ({ onSelectTag, onEdit, onDelete }: TagTableColumnsDeps): ColumnDef<Tag>[] => [
-  {
-    id: "name",
-    accessorKey: "name",
-    meta: { title: "Tag Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Tag Name" />,
-    size: 260,
-    enableSorting: true,
-    cell: ({ row }) => <TagNameCell tag={row.original} onSelectTag={onSelectTag} />,
-  },
-  {
-    id: "description",
-    accessorKey: "description",
-    meta: { title: "Description" },
-    header: "Description",
-    size: 300,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const description = row.original.description;
-      return (
-        <span className="block max-w-72 truncate text-sm text-muted-foreground" title={description}>
-          {description || "-"}
-        </span>
-      );
+export const getTagTableColumns = ({ onSelectTag, onEdit, onDelete, t }: TagTableColumnsDeps): ColumnDef<Tag>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+
+  return [
+    {
+      id: "name",
+      accessorKey: "name",
+      meta: { title: tr("models:tags.tag_name", { defaultValue: "Tag Name" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("models:tags.tag_name", { defaultValue: "Tag Name" })} />
+      ),
+      size: 260,
+      enableSorting: true,
+      cell: ({ row }) => <TagNameCell tag={row.original} onSelectTag={onSelectTag} />,
     },
-  },
-  {
-    id: "models",
-    meta: { title: "Allowed Models", skeleton: "chips" },
-    header: "Allowed Models",
-    size: 240,
-    enableSorting: false,
-    cell: ({ row }) => <TagModelsCell tag={row.original} />,
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    sortingFn: "datetime",
-    meta: { title: "Created" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created" />,
-    size: 150,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <TagRowActions tag={row.original} onEdit={onEdit} onDelete={onDelete} />
-      </div>
-    ),
-  },
-];
+    {
+      id: "description",
+      accessorKey: "description",
+      meta: { title: tr("models:tags.desc_column", { defaultValue: "Description" }) },
+      header: tr("models:tags.desc_column", { defaultValue: "Description" }),
+      size: 300,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const description = row.original.description;
+        return (
+          <span className="block max-w-72 truncate text-sm text-muted-foreground" title={description}>
+            {description || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      id: "models",
+      meta: { title: tr("models:tags.allowed_models", { defaultValue: "Allowed Models" }), skeleton: "chips" },
+      header: tr("models:tags.allowed_models", { defaultValue: "Allowed Models" }),
+      size: 240,
+      enableSorting: false,
+      cell: ({ row }) => <TagModelsCell tag={row.original} />,
+    },
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      sortingFn: "datetime",
+      meta: { title: tr("models:tags.created", { defaultValue: "Created" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("models:tags.created", { defaultValue: "Created" })} />
+      ),
+      size: 150,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">{tr("models:tags.actions", { defaultValue: "Actions" })}</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          <TagRowActions tag={row.original} onEdit={onEdit} onDelete={onDelete} tr={tr} />
+        </div>
+      ),
+    },
+  ];
+};

@@ -26,9 +26,11 @@ interface SearchToolRowActionsProps {
   tool: SearchTool;
   onEdit: (searchToolId: string) => void;
   onDelete: (searchToolId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-function SearchToolRowActions({ tool, onEdit, onDelete }: SearchToolRowActionsProps) {
+function SearchToolRowActions({ tool, onEdit, onDelete, t }: SearchToolRowActionsProps) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   const isFromConfig = tool.is_from_config ?? false;
   const toolId = tool.search_tool_id;
 
@@ -49,7 +51,7 @@ function SearchToolRowActions({ tool, onEdit, onDelete }: SearchToolRowActionsPr
           onClick={() => toolId && onEdit(toolId)}
         >
           <Pencil />
-          Edit search tool
+          {tr("tools:search_tools.edit", { defaultValue: "Edit search tool" })}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -60,7 +62,7 @@ function SearchToolRowActions({ tool, onEdit, onDelete }: SearchToolRowActionsPr
           onClick={() => toolId && onDelete(toolId)}
         >
           <Trash2 />
-          Delete search tool
+          {tr("tools:search_tools.delete", { defaultValue: "Delete search tool" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -72,6 +74,7 @@ interface SearchToolTableColumnsDeps {
   onView: (searchToolId: string) => void;
   onEdit: (searchToolId: string) => void;
   onDelete: (searchToolId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getSearchToolTableColumns = ({
@@ -79,90 +82,95 @@ export const getSearchToolTableColumns = ({
   onView,
   onEdit,
   onDelete,
-}: SearchToolTableColumnsDeps): ColumnDef<SearchTool>[] => [
-  {
-    id: "search_tool_id",
-    accessorKey: "search_tool_id",
-    meta: { title: "Search Tool ID" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Search Tool ID" />,
-    size: 200,
-    enableSorting: true,
-    cell: ({ row }) => {
-      const tool = row.original;
-      const toolId = tool.search_tool_id;
-      if (tool.is_from_config || !toolId) {
-        return <span className="text-muted-foreground">-</span>;
-      }
-      return (
-        <IdentityCell title={toolId} titleClassName="font-mono text-xs font-normal" onClick={() => onView(toolId)} />
-      );
+  t,
+}: SearchToolTableColumnsDeps): ColumnDef<SearchTool>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+
+  return [
+    {
+      id: "search_tool_id",
+      accessorKey: "search_tool_id",
+      meta: { title: tr("tools:search_tools.columns.search_tool_id", { defaultValue: "Search Tool ID" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:search_tools.columns.search_tool_id", { defaultValue: "Search Tool ID" })} />,
+      size: 200,
+      enableSorting: true,
+      cell: ({ row }) => {
+        const tool = row.original;
+        const toolId = tool.search_tool_id;
+        if (tool.is_from_config || !toolId) {
+          return <span className="text-muted-foreground">-</span>;
+        }
+        return (
+          <IdentityCell title={toolId} titleClassName="font-mono text-xs font-normal" onClick={() => onView(toolId)} />
+        );
+      },
     },
-  },
-  {
-    id: "search_tool_name",
-    accessorKey: "search_tool_name",
-    meta: { title: "Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Name" />,
-    size: 200,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <span className="block max-w-60 truncate text-sm font-medium" title={row.original.search_tool_name}>
-        {row.original.search_tool_name || "-"}
-      </span>
-    ),
-  },
-  {
-    id: "provider",
-    meta: { title: "Provider" },
-    header: "Provider",
-    size: 160,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const provider = row.original.litellm_params.search_provider;
-      const providerInfo = availableProviders.find((candidate) => candidate.provider_name === provider);
-      return <span className="text-sm">{providerInfo?.ui_friendly_name || provider}</span>;
+    {
+      id: "search_tool_name",
+      accessorKey: "search_tool_name",
+      meta: { title: tr("tools:search_tools.columns.name", { defaultValue: "Name" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:search_tools.columns.name", { defaultValue: "Name" })} />,
+      size: 200,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <span className="block max-w-60 truncate text-sm font-medium" title={row.original.search_tool_name}>
+          {row.original.search_tool_name || "-"}
+        </span>
+      ),
     },
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    meta: { title: "Created At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created At" />,
-    size: 130,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
-  },
-  {
-    id: "updated_at",
-    accessorKey: "updated_at",
-    meta: { title: "Updated At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Updated At" />,
-    size: 130,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.updated_at} precision="date" />,
-  },
-  {
-    id: "source",
-    meta: { title: "Source", skeleton: "badge" },
-    header: "Source",
-    size: 100,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const isFromConfig = row.original.is_from_config ?? false;
-      return <StatusBadge tone={isFromConfig ? "neutral" : "info"} label={isFromConfig ? "Config" : "DB"} />;
+    {
+      id: "provider",
+      meta: { title: tr("tools:search_tools.columns.provider", { defaultValue: "Provider" }) },
+      header: tr("tools:search_tools.columns.provider", { defaultValue: "Provider" }),
+      size: 160,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const provider = row.original.litellm_params.search_provider;
+        const providerInfo = availableProviders.find((candidate) => candidate.provider_name === provider);
+        return <span className="text-sm">{providerInfo?.ui_friendly_name || provider}</span>;
+      },
     },
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <SearchToolRowActions tool={row.original} onEdit={onEdit} onDelete={onDelete} />
-      </div>
-    ),
-  },
-];
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      meta: { title: tr("tools:search_tools.columns.created_at", { defaultValue: "Created At" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:search_tools.columns.created_at", { defaultValue: "Created At" })} />,
+      size: 130,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
+    },
+    {
+      id: "updated_at",
+      accessorKey: "updated_at",
+      meta: { title: tr("tools:search_tools.columns.updated_at", { defaultValue: "Updated At" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:search_tools.columns.updated_at", { defaultValue: "Updated At" })} />,
+      size: 130,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.updated_at} precision="date" />,
+    },
+    {
+      id: "source",
+      meta: { title: tr("tools:search_tools.columns.source", { defaultValue: "Source" }), skeleton: "badge" },
+      header: tr("tools:search_tools.columns.source", { defaultValue: "Source" }),
+      size: 100,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const isFromConfig = row.original.is_from_config ?? false;
+        return <StatusBadge tone={isFromConfig ? "neutral" : "info"} label={isFromConfig ? "Config" : "DB"} />;
+      },
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">{tr("tools:search_tools.columns.actions", { defaultValue: "Actions" })}</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          <SearchToolRowActions tool={row.original} onEdit={onEdit} onDelete={onDelete} t={tr} />
+        </div>
+      ),
+    },
+  ];
+};

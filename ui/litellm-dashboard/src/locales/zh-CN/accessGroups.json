@@ -1,0 +1,29 @@
+{
+  "title": "访问组",
+  "subtitle": "管理组织内各实体的资源访问权限",
+  "create_btn": "创建访问组",
+  "search_placeholder": "按名称、ID 或说明搜索访问组...",
+  "columns": {
+    "name": "访问组名称",
+    "id": "访问组 ID",
+    "description": "说明",
+    "resources": "分配的资源",
+    "created": "创建时间",
+    "actions": "操作",
+    "models": "模型",
+    "mcpServers": "MCP 服务器",
+    "agents": "智能体"
+  },
+  "empty": {
+    "no_match_title": "未找到匹配的访问组",
+    "no_match_desc": "请尝试其他搜索词。",
+    "no_groups_title": "暂无访问组",
+    "no_groups_desc": "创建访问组以集中管理资源权限。",
+    "loading": "正在加载访问组…"
+  },
+  "delete_modal": {
+    "delete": "删除访问组",
+    "title": "删除访问组？",
+    "confirm": "确定要删除此访问组吗？此操作无法撤销。"
+  }
+}

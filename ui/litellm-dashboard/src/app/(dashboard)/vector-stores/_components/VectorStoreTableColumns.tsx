@@ -61,9 +61,11 @@ interface VectorStoreRowActionsProps {
   vectorStore: VectorStore;
   onEdit: (vectorStoreId: string) => void;
   onDelete: (vectorStoreId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-function VectorStoreRowActions({ vectorStore, onEdit, onDelete }: VectorStoreRowActionsProps) {
+function VectorStoreRowActions({ vectorStore, onEdit, onDelete, t }: VectorStoreRowActionsProps) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -76,14 +78,14 @@ function VectorStoreRowActions({ vectorStore, onEdit, onDelete }: VectorStoreRow
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuItem data-testid="vector-store-action-edit" onClick={() => onEdit(vectorStore.vector_store_id)}>
           <Pencil />
-          Edit
+          {tr("tools:vector_stores.columns.edit", { defaultValue: "Edit" })}
         </DropdownMenuItem>
         <DropdownMenuItem
           data-testid="vector-store-action-copy"
-          onClick={() => void copyToClipboard(vectorStore.vector_store_id, "Vector store ID copied")}
+          onClick={() => void copyToClipboard(vectorStore.vector_store_id, tr("tools:vector_stores.columns.copied", { defaultValue: "Vector store ID copied" }))}
         >
           <Copy />
-          Copy vector store ID
+          {tr("tools:vector_stores.columns.copy_id", { defaultValue: "Copy vector store ID" })}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -92,7 +94,7 @@ function VectorStoreRowActions({ vectorStore, onEdit, onDelete }: VectorStoreRow
           onClick={() => onDelete(vectorStore.vector_store_id)}
         >
           <Trash2 />
-          Delete
+          {tr("tools:vector_stores.columns.delete", { defaultValue: "Delete" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -103,109 +105,114 @@ interface VectorStoreTableColumnsDeps {
   onView: (vectorStoreId: string) => void;
   onEdit: (vectorStoreId: string) => void;
   onDelete: (vectorStoreId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getVectorStoreTableColumns = ({
   onView,
   onEdit,
   onDelete,
-}: VectorStoreTableColumnsDeps): ColumnDef<VectorStore>[] => [
-  {
-    id: "vector_store_id",
-    accessorKey: "vector_store_id",
-    meta: { title: "Vector Store ID" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Vector Store ID" />,
-    size: 220,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <IdentityCell
-        title={row.original.vector_store_id}
-        titleClassName="font-mono text-xs font-normal"
-        className="max-w-60"
-        onClick={() => onView(row.original.vector_store_id)}
-      />
-    ),
-  },
-  {
-    id: "vector_store_name",
-    accessorKey: "vector_store_name",
-    meta: { title: "Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Name" />,
-    size: 200,
-    enableSorting: true,
-    cell: ({ row }) => {
-      const name = row.original.vector_store_name;
-      return (
-        <span className="block max-w-60 truncate text-sm font-medium" title={name ?? undefined}>
-          {name || "-"}
-        </span>
-      );
+  t,
+}: VectorStoreTableColumnsDeps): ColumnDef<VectorStore>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+  return [
+    {
+      id: "vector_store_id",
+      accessorKey: "vector_store_id",
+      meta: { title: tr("tools:vector_stores.columns.vector_store_id", { defaultValue: "Vector Store ID" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:vector_stores.columns.vector_store_id", { defaultValue: "Vector Store ID" })} />,
+      size: 220,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <IdentityCell
+          title={row.original.vector_store_id}
+          titleClassName="font-mono text-xs font-normal"
+          className="max-w-60"
+          onClick={() => onView(row.original.vector_store_id)}
+        />
+      ),
     },
-  },
-  {
-    id: "vector_store_description",
-    accessorKey: "vector_store_description",
-    meta: { title: "Description" },
-    header: "Description",
-    size: 280,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const description = row.original.vector_store_description;
-      return (
-        <span className="block max-w-72 truncate text-sm text-muted-foreground" title={description ?? undefined}>
-          {description || "-"}
-        </span>
-      );
+    {
+      id: "vector_store_name",
+      accessorKey: "vector_store_name",
+      meta: { title: tr("tools:vector_stores.columns.name", { defaultValue: "Name" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:vector_stores.columns.name", { defaultValue: "Name" })} />,
+      size: 200,
+      enableSorting: true,
+      cell: ({ row }) => {
+        const name = row.original.vector_store_name;
+        return (
+          <span className="block max-w-60 truncate text-sm font-medium" title={name ?? undefined}>
+            {name || "-"}
+          </span>
+        );
+      },
     },
-  },
-  {
-    id: "files",
-    meta: { title: "Files" },
-    header: "Files",
-    size: 160,
-    enableSorting: false,
-    cell: ({ row }) => <VectorStoreFilesCell vectorStore={row.original} />,
-  },
-  {
-    id: "provider",
-    accessorKey: "custom_llm_provider",
-    meta: { title: "Provider" },
-    header: "Provider",
-    size: 160,
-    enableSorting: false,
-    cell: ({ row }) => <VectorStoreProviderCell provider={row.original.custom_llm_provider} />,
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    sortingFn: "datetime",
-    meta: { title: "Created At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created At" />,
-    size: 150,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
-  },
-  {
-    id: "updated_at",
-    accessorKey: "updated_at",
-    sortingFn: "datetime",
-    meta: { title: "Updated At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Updated At" />,
-    size: 150,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.updated_at} precision="date" />,
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <VectorStoreRowActions vectorStore={row.original} onEdit={onEdit} onDelete={onDelete} />
-      </div>
-    ),
-  },
-];
+    {
+      id: "vector_store_description",
+      accessorKey: "vector_store_description",
+      meta: { title: tr("tools:vector_stores.columns.description", { defaultValue: "Description" }) },
+      header: tr("tools:vector_stores.columns.description", { defaultValue: "Description" }),
+      size: 280,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const description = row.original.vector_store_description;
+        return (
+          <span className="block max-w-72 truncate text-sm text-muted-foreground" title={description ?? undefined}>
+            {description || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      id: "files",
+      meta: { title: tr("tools:vector_stores.columns.files", { defaultValue: "Files" }) },
+      header: tr("tools:vector_stores.columns.files", { defaultValue: "Files" }),
+      size: 160,
+      enableSorting: false,
+      cell: ({ row }) => <VectorStoreFilesCell vectorStore={row.original} />,
+    },
+    {
+      id: "provider",
+      accessorKey: "custom_llm_provider",
+      meta: { title: tr("tools:vector_stores.columns.provider", { defaultValue: "Provider" }) },
+      header: tr("tools:vector_stores.columns.provider", { defaultValue: "Provider" }),
+      size: 160,
+      enableSorting: false,
+      cell: ({ row }) => <VectorStoreProviderCell provider={row.original.custom_llm_provider} />,
+    },
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      sortingFn: "datetime",
+      meta: { title: tr("tools:vector_stores.columns.created_at", { defaultValue: "Created At" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:vector_stores.columns.created_at", { defaultValue: "Created At" })} />,
+      size: 150,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
+    },
+    {
+      id: "updated_at",
+      accessorKey: "updated_at",
+      sortingFn: "datetime",
+      meta: { title: tr("tools:vector_stores.columns.updated_at", { defaultValue: "Updated At" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("tools:vector_stores.columns.updated_at", { defaultValue: "Updated At" })} />,
+      size: 150,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.updated_at} precision="date" />,
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">{tr("tools:vector_stores.columns.actions", { defaultValue: "Actions" })}</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          <VectorStoreRowActions vectorStore={row.original} onEdit={onEdit} onDelete={onDelete} t={tr} />
+        </div>
+      ),
+    },
+  ];
+};

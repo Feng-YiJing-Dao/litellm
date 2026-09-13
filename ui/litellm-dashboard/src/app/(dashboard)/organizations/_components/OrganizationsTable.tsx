@@ -4,6 +4,7 @@ import { SortingState } from "@tanstack/react-table";
 import { Building2, SearchX } from "lucide-react";
 import React, { useMemo, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/shared/DataTable";
 import { Organization } from "@/components/networking";
 
@@ -21,7 +22,7 @@ interface OrganizationsTableProps {
 
 const DEFAULT_SORTING: SortingState = [{ id: "created_at", desc: true }];
 
-function EmptyState({ searchActive }: { searchActive: boolean }) {
+function EmptyState({ searchActive, t }: { searchActive: boolean; t: (key: any, options?: any) => any }) {
   const Icon = searchActive ? SearchX : Building2;
   return (
     <div className="flex flex-col items-center gap-1 py-6">
@@ -29,12 +30,18 @@ function EmptyState({ searchActive }: { searchActive: boolean }) {
         <Icon className="size-5 text-muted-foreground" />
       </div>
       <div className="text-sm font-medium text-foreground">
-        {searchActive ? "No matching organizations" : "No organizations yet"}
+        {searchActive
+          ? t("organizations:empty.no_match_title", { defaultValue: "No matching organizations" })
+          : t("organizations:empty.no_orgs_title", { defaultValue: "No organizations yet" })}
       </div>
       <div className="text-sm text-muted-foreground">
         {searchActive
-          ? "No organizations match your search. Try a different name or ID."
-          : "Create an organization to group teams, models, and budgets."}
+          ? t("organizations:empty.no_match_desc", {
+              defaultValue: "No organizations match your search. Try a different name or ID.",
+            })
+          : t("organizations:empty.no_orgs_desc", {
+              defaultValue: "Create an organization to group teams, models, and budgets.",
+            })}
       </div>
     </div>
   );
@@ -49,12 +56,13 @@ const OrganizationsTable: React.FC<OrganizationsTableProps> = ({
   onEditClick,
   onDeleteClick,
 }) => {
+  const { t } = useTranslation(["organizations", "common"]);
   const [sorting, setSorting] = useState<SortingState>(DEFAULT_SORTING);
 
   const columns = useMemo(() => {
-    const deps = { userRole, onOrganizationClick, onEditClick, onDeleteClick };
+    const deps = { userRole, onOrganizationClick, onEditClick, onDeleteClick, t };
     return getOrganizationsTableColumns(deps);
-  }, [userRole, onOrganizationClick, onEditClick, onDeleteClick]);
+  }, [userRole, onOrganizationClick, onEditClick, onDeleteClick, t]);
 
   return (
     <DataTable
@@ -66,8 +74,8 @@ const OrganizationsTable: React.FC<OrganizationsTableProps> = ({
       sorting={sorting}
       onSortingChange={setSorting}
       isLoading={isLoading}
-      loadingMessage="Loading organizations…"
-      noDataMessage={<EmptyState searchActive={searchActive} />}
+      loadingMessage={t("organizations:empty.loading", { defaultValue: "Loading organizations…" })}
+      noDataMessage={<EmptyState searchActive={searchActive} t={t} />}
       size="compact"
     />
   );

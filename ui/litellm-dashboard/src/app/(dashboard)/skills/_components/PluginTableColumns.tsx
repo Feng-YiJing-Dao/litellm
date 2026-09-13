@@ -30,13 +30,14 @@ const CATEGORY_BADGE_CLASS: Record<ReturnType<typeof getCategoryBadgeColor>, str
   gray: "border-border bg-muted text-muted-foreground",
 };
 
-function PluginCategoryBadge({ category }: { category?: string }) {
+function PluginCategoryBadge({ category, t }: { category?: string; t?: (key: any, options?: any) => any }) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <Badge
       variant="outline"
       className={cn("whitespace-nowrap font-normal", CATEGORY_BADGE_CLASS[getCategoryBadgeColor(category)])}
     >
-      {category || "Uncategorized"}
+      {category || tr("skills:columns.uncategorized", { defaultValue: "Uncategorized" })}
     </Badge>
   );
 }
@@ -45,9 +46,11 @@ interface PluginRowActionsProps {
   plugin: Plugin;
   isAdmin: boolean;
   onDeleteClick: (pluginName: string, displayName: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-function PluginRowActions({ plugin, isAdmin, onDeleteClick }: PluginRowActionsProps) {
+function PluginRowActions({ plugin, isAdmin, onDeleteClick, t }: PluginRowActionsProps) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -60,10 +63,10 @@ function PluginRowActions({ plugin, isAdmin, onDeleteClick }: PluginRowActionsPr
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuItem
           data-testid="plugin-action-copy"
-          onClick={() => void copyToClipboard(plugin.id, "Skill ID copied")}
+          onClick={() => void copyToClipboard(plugin.id, tr("skills:columns.copied", { defaultValue: "Skill ID copied" }))}
         >
           <Copy />
-          Copy skill ID
+          {tr("skills:columns.copy_id", { defaultValue: "Copy skill ID" })}
         </DropdownMenuItem>
         {isAdmin && (
           <>
@@ -74,7 +77,7 @@ function PluginRowActions({ plugin, isAdmin, onDeleteClick }: PluginRowActionsPr
               onClick={() => onDeleteClick(plugin.name, plugin.name)}
             >
               <Trash2 />
-              Delete
+              {tr("skills:columns.delete", { defaultValue: "Delete" })}
             </DropdownMenuItem>
           </>
         )}
@@ -87,95 +90,103 @@ interface PluginTableColumnsDeps {
   isAdmin: boolean;
   onPluginClick: (pluginId: string) => void;
   onDeleteClick: (pluginName: string, displayName: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getPluginTableColumns = ({
   isAdmin,
   onPluginClick,
   onDeleteClick,
-}: PluginTableColumnsDeps): ColumnDef<Plugin>[] => [
-  {
-    id: "name",
-    accessorKey: "name",
-    meta: { title: "Skill Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Skill Name" />,
-    size: 220,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <IdentityCell
-        title={row.original.name}
-        titleClassName="font-mono text-xs font-normal"
-        className="max-w-60"
-        onClick={() => onPluginClick(row.original.id)}
-      />
-    ),
-  },
-  {
-    id: "version",
-    accessorKey: "version",
-    meta: { title: "Version" },
-    header: "Version",
-    size: 100,
-    enableSorting: false,
-    cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.original.version || "N/A"}</span>,
-  },
-  {
-    id: "description",
-    accessorKey: "description",
-    meta: { title: "Description" },
-    header: "Description",
-    size: 300,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const description = row.original.description;
-      return (
-        <span className="block max-w-72 truncate text-sm text-muted-foreground" title={description}>
-          {description || "No description"}
-        </span>
-      );
+  t,
+}: PluginTableColumnsDeps): ColumnDef<Plugin>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+  return [
+    {
+      id: "name",
+      accessorKey: "name",
+      meta: { title: tr("skills:columns.name", { defaultValue: "Skill Name" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("skills:columns.name", { defaultValue: "Skill Name" })} />,
+      size: 220,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <IdentityCell
+          title={row.original.name}
+          titleClassName="font-mono text-xs font-normal"
+          className="max-w-60"
+          onClick={() => onPluginClick(row.original.id)}
+        />
+      ),
     },
-  },
-  {
-    id: "category",
-    accessorKey: "category",
-    meta: { title: "Category", skeleton: "badge" },
-    header: "Category",
-    size: 150,
-    enableSorting: false,
-    cell: ({ row }) => <PluginCategoryBadge category={row.original.category} />,
-  },
-  {
-    id: "enabled",
-    accessorKey: "enabled",
-    meta: { title: "Public", skeleton: "badge" },
-    header: "Public",
-    size: 100,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <StatusBadge tone={row.original.enabled ? "success" : "neutral"} label={row.original.enabled ? "Yes" : "No"} />
-    ),
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    sortingFn: "datetime",
-    meta: { title: "Created At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created At" />,
-    size: 160,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} />,
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <PluginRowActions plugin={row.original} isAdmin={isAdmin} onDeleteClick={onDeleteClick} />
-      </div>
-    ),
-  },
-];
+    {
+      id: "version",
+      accessorKey: "version",
+      meta: { title: tr("skills:columns.version", { defaultValue: "Version" }) },
+      header: tr("skills:columns.version", { defaultValue: "Version" }),
+      size: 100,
+      enableSorting: false,
+      cell: ({ row }) => <span className="text-sm text-muted-foreground">{row.original.version || "N/A"}</span>,
+    },
+    {
+      id: "description",
+      accessorKey: "description",
+      meta: { title: tr("skills:columns.description", { defaultValue: "Description" }) },
+      header: tr("skills:columns.description", { defaultValue: "Description" }),
+      size: 300,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const description = row.original.description;
+        return (
+          <span className="block max-w-72 truncate text-sm text-muted-foreground" title={description}>
+            {description || tr("skills:columns.no_description", { defaultValue: "No description" })}
+          </span>
+        );
+      },
+    },
+    {
+      id: "category",
+      accessorKey: "category",
+      meta: { title: tr("skills:columns.category", { defaultValue: "Category" }), skeleton: "badge" },
+      header: tr("skills:columns.category", { defaultValue: "Category" }),
+      size: 150,
+      enableSorting: false,
+      cell: ({ row }) => <PluginCategoryBadge category={row.original.category} t={tr} />,
+    },
+    {
+      id: "enabled",
+      accessorKey: "enabled",
+      meta: { title: tr("skills:columns.public", { defaultValue: "Public" }), skeleton: "badge" },
+      header: tr("skills:columns.public", { defaultValue: "Public" }),
+      size: 100,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <StatusBadge
+          tone={row.original.enabled ? "success" : "neutral"}
+          label={row.original.enabled ? tr("skills:columns.yes", { defaultValue: "Yes" }) : tr("skills:columns.no", { defaultValue: "No" })}
+        />
+      ),
+    },
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      sortingFn: "datetime",
+      meta: { title: tr("skills:columns.created_at", { defaultValue: "Created At" }) },
+      header: ({ column }) => <DataTableSortHeader column={column} title={tr("skills:columns.created_at", { defaultValue: "Created At" })} />,
+      size: 160,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} />,
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">{tr("skills:columns.actions", { defaultValue: "Actions" })}</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          <PluginRowActions plugin={row.original} isAdmin={isAdmin} onDeleteClick={onDeleteClick} t={tr} />
+        </div>
+      ),
+    },
+  ];
+};

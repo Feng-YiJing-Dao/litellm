@@ -1,0 +1,97 @@
+{
+  "title": "Policies",
+  "subtitle": "Manage security and operational guardrail policies across teams and keys",
+  "tabs": {
+    "templates": "Templates",
+    "policies": "Policies",
+    "attachments": "Attachments",
+    "simulator": "Policy Simulator",
+    "flow": "Visual Flow",
+    "test": "Test Policy"
+  },
+  "buttons": {
+    "add_policy": "+ Add New Policy",
+    "add_attachment": "+ Add New Attachment",
+    "create_policy": "+ Create Policy",
+    "attach_policy": "+ Attach Policy",
+    "ai_suggest": "+ Suggest with AI"
+  },
+  "about": {
+    "title": "About Policies",
+    "desc": "Use policies to group guardrails and control which ones run for specific teams, keys, or models.",
+    "why_title": "Why use policies?",
+    "why_1": "Enable/disable specific guardrails for teams, keys, or models",
+    "why_2": "Group guardrails into a single policy",
+    "why_3": "Inherit from existing policies and override what you need"
+  },
+  "about_attachments": {
+    "title": "About Policy Attachments",
+    "desc": "Policy attachments control where your policies apply. Policies don't do anything until you attach them to specific teams, keys, models, tags, or globally.",
+    "scopes_title": "Attachment Scopes:",
+    "scope_global": "Applies to all requests",
+    "scope_teams": "Applies only to specific teams",
+    "scope_keys": "Applies only to specific API keys (supports wildcards like dev-*)",
+    "scope_models": "Applies only when specific models are used",
+    "scope_tags": "Matches tags from key/team metadata.tags or tags passed dynamically in the request body (metadata.tags). Use this to enforce policies across groups, e.g. \"all keys tagged healthcare get HIPAA guardrails.\" Supports wildcards (prod-*)."
+  },
+  "enterprise_notice": {
+    "title": "Enterprise Feature Notice",
+    "desc": "Parts of policy attachments will be on Enterprise in subsequent releases."
+  },
+  "columns": {
+    "name": "Name",
+    "policy_name": "Policy Name",
+    "description": "Description",
+    "inherit": "Inherits From",
+    "guardrails": "Guardrails",
+    "guardrails_add": "Guardrails (Add)",
+    "guardrails_remove": "Guardrails (Remove)",
+    "model_condition": "Model Condition",
+    "created_at": "Created At",
+    "actions": "Actions",
+    "edit": "Edit policy",
+    "delete": "Delete policy",
+    "config": "Config",
+    "config_hint": "Config policies are defined in the config file and cannot be edited or deleted from the dashboard.",
+    "versions_count": "{{count}} versions",
+    "attachment_id": "Attachment ID",
+    "policy": "Policy",
+    "scope": "Scope",
+    "global_scope": "Global (*)",
+    "teams": "Teams",
+    "keys": "Keys",
+    "models": "Models",
+    "tags": "Tags",
+    "copy_attachment_id": "Copy attachment ID",
+    "attachment_id_copied": "Attachment ID copied",
+    "delete_attachment": "Delete attachment",
+    "config_attachment_hint": "Config attachments are defined in the config file and cannot be deleted from the dashboard."
+  },
+  "table": {
+    "no_policies": "No policies found",
+    "loading_policies": "Loading policies…",
+    "no_attachments": "No attachments found",
+    "loading_attachments": "Loading attachments…"
+  },
+  "delete_modal": {
+    "title": "Delete Policy",
+    "message": "Are you sure you want to delete policy: {{name}}? This action cannot be undone.",
+    "info_title": "Policy Information",
+    "label_name": "Name",
+    "label_id": "ID",
+    "label_description": "Description",
+    "label_inherits": "Inherits From",
+    "success": "Policy deleted successfully",
+    "failed": "Failed to delete policy"
+  },
+  "delete_attachment_modal": {
+    "title": "Delete Attachment",
+    "message": "Are you sure you want to delete this attachment? This action cannot be undone.",
+    "info_title": "Attachment Information",
+    "label_id": "Attachment ID",
+    "label_policy": "Policy",
+    "label_scope": "Scope",
+    "success": "Attachment deleted successfully",
+    "failed": "Failed to delete attachment"
+  }
+}

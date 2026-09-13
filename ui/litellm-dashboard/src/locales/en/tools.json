@@ -1,0 +1,86 @@
+{
+  "search_tools": {
+    "title": "Search Tools",
+    "subtitle": "Configure and manage your search providers",
+    "add_btn": "+ Add New Search Tool",
+    "edit_title": "Edit Search Tool",
+    "delete_title": "Delete Search Tool",
+    "delete_confirm": "Are you sure you want to delete this search tool? This action cannot be undone.",
+    "info_title": "Search Tool Information",
+    "name": "Search Tool Name",
+    "name_label": "Name",
+    "provider": "Search Provider",
+    "provider_label": "Provider",
+    "select_provider": "Select a search provider",
+    "api_key": "API Key",
+    "api_key_desc": "API key for the search provider",
+    "description": "Description",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "edit": "Edit search tool",
+    "delete": "Delete search tool",
+    "columns": {
+      "search_tool_id": "Search Tool ID",
+      "name": "Name",
+      "provider": "Provider",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "source": "Source",
+      "actions": "Actions"
+    },
+    "table": {
+      "loading": "Loading search tools…",
+      "no_tools": "No search tools configured",
+      "no_tools_desc": "Add a search tool to enable web search for your models."
+    },
+    "create": {
+      "title": "Add New Search Tool",
+      "name": "Search Tool Name",
+      "name_hint": "A unique name to identify this search tool configuration (e.g., 'perplexity-search', 'tavily-news-search').",
+      "provider": "Search Provider",
+      "provider_hint": "Select the search provider you want to use. Each provider has different capabilities and pricing.",
+      "api_key": "API Key (Optional)",
+      "api_key_hint": "API key for authenticating with the search provider. Can also be set via environment variables.",
+      "description": "Description (Optional)",
+      "description_hint": "Optional description to help identify this search tool's purpose.",
+      "test_connection": "Test Connection",
+      "submit": "Create Search Tool",
+      "cancel": "Cancel"
+    }
+  },
+  "vector_stores": {
+    "title": "Vector Store Management",
+    "subtitle": "You can use vector stores to store and retrieve LLM embeddings.",
+    "last_refreshed": "Last Refreshed: ",
+    "refresh": "Refresh",
+    "tabs": {
+      "create": "Create Vector Store",
+      "manage": "Manage Vector Stores",
+      "test": "Test Vector Store",
+      "indexes": "Indexes"
+    },
+    "add_btn": "+ Add Vector Store",
+    "delete_title": "Delete Vector Store",
+    "delete_confirm": "Are you sure you want to delete this vector store? This action cannot be undone.",
+    "info_title": "Vector Store Information",
+    "columns": {
+      "vector_store_id": "Vector Store ID",
+      "name": "Name",
+      "description": "Description",
+      "files": "Files",
+      "provider": "Provider",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "actions": "Actions",
+      "edit": "Edit",
+      "copy_id": "Copy vector store ID",
+      "copied": "Vector store ID copied",
+      "delete": "Delete"
+    },
+    "table": {
+      "loading": "Loading vector stores…",
+      "no_stores": "No vector stores",
+      "no_stores_desc": "Connect a vector store to enable retrieval-augmented generation."
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "title": "Admin Settings",
+  "subtitle": "Manage security, SSO, and UI configurations",
+  "admin_access": "Admin Access",
+  "add_admin_prompt": "Go to 'Internal Users' page to add other admins.",
+  "tabs": {
+    "sso": "SSO Settings",
+    "security": "Security Settings",
+    "scim": "SCIM",
+    "ui": "UI Settings",
+    "logging": "Logging Settings",
+    "vault": "Hashicorp Vault",
+    "cyberark": "CyberArk Conjur",
+    "plugins": "Plugins"
+  },
+  "security_card": {
+    "title": "Security Settings",
+    "sso_btn": "Add SSO",
+    "edit_sso_btn": "Edit SSO Settings",
+    "allowed_ips_btn": "Allowed IPs",
+    "ui_access_control_btn": "UI Access Control",
+    "login_without_sso_title": "Login without SSO"
+  },
+  "ip_modal": {
+    "manage_title": "Manage Allowed IP Addresses",
+    "add_title": "Add Allowed IP Address",
+    "ip_column": "IP Address",
+    "action_column": "Action",
+    "delete": "Delete",
+    "add_btn": "Add IP Address",
+    "close": "Close",
+    "confirm_delete_title": "Confirm Delete",
+    "confirm_delete_msg": "Are you sure you want to delete the IP address: {{ip}}?",
+    "yes": "Yes"
+  }
+}

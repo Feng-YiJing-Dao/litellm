@@ -1,0 +1,62 @@
+{
+  "optimization": {
+    "title": "Cost Optimization",
+    "subtitle": "Track and configure the mechanisms that save you money: prompt compression and prompt caching. Auto routers live under Models + Endpoints, on the Auto-Routers tab",
+    "tabs": {
+      "overall": "Overall",
+      "compression": "Prompt Compression",
+      "caching": "Prompt Caching",
+      "autorouter": "Auto-Router"
+    },
+    "experimental_title": "This is an experimental dashboard",
+    "experimental_desc": "Track and monitor your cost optimization mechanisms and savings across all providers.",
+    "savings": "Savings",
+    "cumulative": "Cumulative",
+    "savings_by_driver": "Savings by driver",
+    "spend_by_tool": "Spend by tool",
+    "total_by_tool": "Total by tool",
+    "daily_spend_by_tool": "Daily spend by tool"
+  },
+  "tracking": {
+    "title": "Cost Tracking Settings",
+    "subtitle": "Configure cost discounts and margins for different LLM providers. Changes are saved automatically.",
+    "tabs": {
+      "settings": "Settings",
+      "calculator": "Pricing Calculator",
+      "how_it_works": "How it works",
+      "discounts": "Discounts",
+      "test_it": "Test It"
+    },
+    "discounts_title": "Provider Discounts",
+    "discounts_desc": "Apply percentage-based discounts to reduce costs for specific providers",
+    "add_discount_btn": "+ Add Provider Discount",
+    "no_discounts": "No provider discounts configured",
+    "no_discounts_desc": "Click \"Add Provider Discount\" to get started",
+    "margins_title": "Fee/Price Margin",
+    "margins_desc": "Add fees or margins to LLM costs for internal billing and cost recovery",
+    "add_margin_btn": "+ Add Provider Margin",
+    "no_margins": "No provider margins configured",
+    "no_margins_desc": "Click \"Add Provider Margin\" to get started",
+    "block_unpriced_title": "Block Unpriced Models",
+    "block_unpriced_desc": "Reject requests for models that have no pricing in the cost map instead of logging them as $0 spend",
+    "block_unpriced_switch_label": "Block requests for models without pricing",
+    "block_unpriced_switch_desc": "When enabled, a request whose resolved model has no cost mapping is rejected with a 403 so an admin can add pricing for it. Off by default",
+    "calculator_title": "Pricing Calculator",
+    "calculator_desc": "Estimate LLM costs based on expected token usage and request volume",
+    "remove_discount_title": "Remove Provider Discount",
+    "discount_noun": "discount",
+    "remove_margin_title": "Remove Provider Margin",
+    "margin_noun": "margin",
+    "remove_confirm": "Are you sure you want to remove the {{noun}} for {{displayName}}?",
+    "removing": "Removing…",
+    "add_discount_title": "Add Provider Discount",
+    "add_discount_modal_desc": "Select a provider and set its discount percentage. Enter a value between 0% and 100% (e.g., 5 for a 5% discount).",
+    "add_margin_title": "Add Provider Margin",
+    "add_margin_modal_desc": "Select a provider (or \"Global\" for all providers) and configure the margin. You can use percentage-based or fixed amount.",
+    "provider": "Provider",
+    "discount_percentage": "Discount Percentage",
+    "margin": "Margin",
+    "actions": "Actions",
+    "global_providers": "Global (All Providers)"
+  }
+}

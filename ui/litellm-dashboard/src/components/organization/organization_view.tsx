@@ -22,6 +22,7 @@ import {
   organizationMemberDeleteCall,
   organizationMemberUpdateCall,
 } from "../networking";
+import { useTranslation } from "react-i18next";
 import ObjectPermissionsView from "../object_permissions_view";
 import MemberModal from "../team/EditMembership";
 import { OrgSettingsForm } from "./org-settings/OrgSettingsForm";
@@ -45,6 +46,7 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
   userModels,
   editOrg,
 }) => {
+  const { t } = useTranslation(["organizations", "common"]);
   const queryClient = useQueryClient();
   const { data: orgData, isLoading: loading } = useOrganization(organizationId);
   const [isEditing, setIsEditing] = useState(false);
@@ -148,7 +150,7 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
         <div>
           <Button variant="ghost" onClick={onClose} className="mb-4">
             <ArrowLeft className="size-4" />
-            Back to Organizations
+            {t("organizations:detail.back", { defaultValue: "Back to Organizations" })}
           </Button>
           <h1 className="text-xl font-semibold tracking-tight text-foreground">{orgData.organization_alias}</h1>
           <div className="flex items-center gap-1">
@@ -161,13 +163,13 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
       <Tabs defaultValue={editOrg ? "settings" : "overview"} onValueChange={onTabChange} className="mb-4">
         <TabsList variant="line" className="h-auto w-full justify-start rounded-none border-b p-0">
           <TabsTrigger value="overview" className="flex-none rounded-none px-4 py-2">
-            Overview
+            {t("organizations:detail.overview", { defaultValue: "Overview" })}
           </TabsTrigger>
           <TabsTrigger value="members" className="flex-none rounded-none px-4 py-2">
-            Members
+            {t("organizations:detail.members", { defaultValue: "Members" })}
           </TabsTrigger>
           <TabsTrigger value="settings" className="flex-none rounded-none px-4 py-2">
-            Settings
+            {t("organizations:detail.settings", { defaultValue: "Settings" })}
           </TabsTrigger>
         </TabsList>
 
@@ -175,28 +177,34 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Organization Details</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("organizations:detail.org_details", { defaultValue: "Organization Details" })}
+                </p>
                 <div className="mt-2 text-sm text-foreground">
-                  <p>Created: {new Date(orgData.created_at).toLocaleDateString()}</p>
-                  <p>Updated: {new Date(orgData.updated_at).toLocaleDateString()}</p>
-                  <p>Created By: {orgData.created_by}</p>
+                  <p>{t("organizations:detail.created", { defaultValue: "Created" })}: {new Date(orgData.created_at).toLocaleDateString()}</p>
+                  <p>{t("organizations:detail.updated", { defaultValue: "Updated" })}: {new Date(orgData.updated_at).toLocaleDateString()}</p>
+                  <p>{t("organizations:detail.created_by", { defaultValue: "Created By" })}: {orgData.created_by}</p>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Budget Status</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("organizations:detail.budget_status", { defaultValue: "Budget Status" })}
+                </p>
                 <div className="mt-2 text-sm text-foreground">
                   <p className="text-xl font-semibold">${formatNumberWithCommas(orgData.spend, 4)}</p>
                   <p>
-                    of{" "}
+                    {t("organizations:detail.of", { defaultValue: "of" })}{" "}
                     {orgData.litellm_budget_table.max_budget === null
-                      ? "Unlimited"
+                      ? t("organizations:columns.unlimited", { defaultValue: "Unlimited" })
                       : `$${formatNumberWithCommas(orgData.litellm_budget_table.max_budget, 4)}`}
                   </p>
                   {orgData.litellm_budget_table.budget_duration && (
-                    <p className="text-muted-foreground">Reset: {orgData.litellm_budget_table.budget_duration}</p>
+                    <p className="text-muted-foreground">
+                      {t("organizations:detail.reset", { defaultValue: "Reset" })}: {orgData.litellm_budget_table.budget_duration}
+                    </p>
                   )}
                 </div>
               </CardContent>
@@ -204,10 +212,12 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
 
             <Card>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Rate Limits</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("organizations:detail.rate_limits", { defaultValue: "Rate Limits" })}
+                </p>
                 <div className="mt-2 text-sm text-foreground">
-                  <p>TPM: {orgData.litellm_budget_table.tpm_limit ?? "Unlimited"}</p>
-                  <p>RPM: {orgData.litellm_budget_table.rpm_limit ?? "Unlimited"}</p>
+                  <p>TPM: {orgData.litellm_budget_table.tpm_limit ?? t("organizations:columns.unlimited", { defaultValue: "Unlimited" })}</p>
+                  <p>RPM: {orgData.litellm_budget_table.rpm_limit ?? t("organizations:columns.unlimited", { defaultValue: "Unlimited" })}</p>
                   {orgData.litellm_budget_table.max_parallel_requests && (
                     <p>Max Parallel Requests: {orgData.litellm_budget_table.max_parallel_requests}</p>
                   )}
@@ -217,10 +227,12 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
 
             <Card>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Models</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("organizations:detail.models_title", { defaultValue: "Models" })}
+                </p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {orgData.models.length === 0 ? (
-                    <BadgeLink>All proxy models</BadgeLink>
+                    <BadgeLink>{t("organizations:detail.all_proxy_models", { defaultValue: "All proxy models" })}</BadgeLink>
                   ) : (
                     orgData.models.map((model, index) => <BadgeLink key={index}>{model}</BadgeLink>)
                   )}
@@ -230,7 +242,9 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
 
             <Card>
               <CardContent>
-                <p className="text-sm text-muted-foreground">Teams</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("organizations:detail.teams_title", { defaultValue: "Teams" })}
+                </p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {orgData.teams?.map((team, index) => (
                     <BadgeLink key={index} href={teamDetailHref(team.team_id)}>
@@ -266,7 +280,7 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
               onAddMember={() => setIsAddMemberModalVisible(true)}
               roleColumnTitle="Organization Role"
               extraColumns={orgExtraColumns}
-              emptyText="No members found"
+              emptyText={t("organizations:detail.no_members", { defaultValue: "No members found" })}
             />
           </div>
         </TabsContent>
@@ -275,8 +289,14 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
           <Card className="max-h-[65vh] overflow-y-auto">
             <CardContent>
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-foreground">Organization Settings</h2>
-                {canEditOrg && !isEditing && <Button onClick={() => setIsEditing(true)}>Edit Settings</Button>}
+                <h2 className="text-lg font-semibold text-foreground">
+                  {t("organizations:detail.settings", { defaultValue: "Organization Settings" })}
+                </h2>
+                {canEditOrg && !isEditing && (
+                  <Button onClick={() => setIsEditing(true)}>
+                    {t("organizations:detail.edit_settings", { defaultValue: "Edit Settings" })}
+                  </Button>
+                )}
               </div>
 
               {isEditing ? (

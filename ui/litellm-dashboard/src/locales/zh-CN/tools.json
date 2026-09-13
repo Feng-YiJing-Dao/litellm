@@ -1,0 +1,86 @@
+{
+  "search_tools": {
+    "title": "搜索工具",
+    "subtitle": "配置和管理搜索提供商",
+    "add_btn": "+ 添加新搜索工具",
+    "edit_title": "编辑搜索工具",
+    "delete_title": "删除搜索工具",
+    "delete_confirm": "确定要删除此搜索工具吗？此操作无法撤销。",
+    "info_title": "搜索工具信息",
+    "name": "搜索工具名称",
+    "name_label": "名称",
+    "provider": "搜索提供商",
+    "provider_label": "提供商",
+    "select_provider": "选择搜索提供商",
+    "api_key": "API 密钥",
+    "api_key_desc": "搜索提供商的 API 密钥",
+    "description": "描述",
+    "cancel": "取消",
+    "ok": "确定",
+    "edit": "编辑搜索工具",
+    "delete": "删除搜索工具",
+    "columns": {
+      "search_tool_id": "搜索工具 ID",
+      "name": "名称",
+      "provider": "提供商",
+      "created_at": "创建时间",
+      "updated_at": "更新时间",
+      "source": "来源",
+      "actions": "操作"
+    },
+    "table": {
+      "loading": "加载搜索工具中…",
+      "no_tools": "未配置搜索工具",
+      "no_tools_desc": "添加搜索工具以使模型能够执行网页搜索。"
+    },
+    "create": {
+      "title": "添加新搜索工具",
+      "name": "搜索工具名称",
+      "name_hint": "用于标识此搜索工具配置的唯一名称（例如 'perplexity-search'、'tavily-news-search'）。",
+      "provider": "搜索提供商",
+      "provider_hint": "选择要使用的搜索提供商。每个提供商具有不同的功能和定价。",
+      "api_key": "API 密钥（可选）",
+      "api_key_hint": "用于向搜索提供商验证身份的 API 密钥。也可以通过环境变量设置。",
+      "description": "描述（可选）",
+      "description_hint": "可选的描述，以帮助识别此搜索工具的用途。",
+      "test_connection": "测试连接",
+      "submit": "创建搜索工具",
+      "cancel": "取消"
+    }
+  },
+  "vector_stores": {
+    "title": "向量存储管理",
+    "subtitle": "您可以使用向量存储来存储和检索 LLM 嵌入向量。",
+    "last_refreshed": "上次刷新：",
+    "refresh": "刷新",
+    "tabs": {
+      "create": "创建向量存储",
+      "manage": "管理向量存储",
+      "test": "测试向量存储",
+      "indexes": "索引列表"
+    },
+    "add_btn": "+ 添加向量存储",
+    "delete_title": "删除向量存储",
+    "delete_confirm": "确定要删除此向量存储吗？此操作无法撤销。",
+    "info_title": "向量存储信息",
+    "columns": {
+      "vector_store_id": "向量存储 ID",
+      "name": "名称",
+      "description": "描述",
+      "files": "文件",
+      "provider": "提供商",
+      "created_at": "创建时间",
+      "updated_at": "更新时间",
+      "actions": "操作",
+      "edit": "编辑",
+      "copy_id": "复制向量存储 ID",
+      "copied": "向量存储 ID 已复制",
+      "delete": "删除"
+    },
+    "table": {
+      "loading": "加载向量存储中…",
+      "no_stores": "暂无向量存储",
+      "no_stores_desc": "连接向量存储以启用检索增强生成（RAG）。"
+    }
+  }
+}

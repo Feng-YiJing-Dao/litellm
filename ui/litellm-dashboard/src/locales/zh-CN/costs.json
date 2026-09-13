@@ -1,0 +1,62 @@
+{
+  "optimization": {
+    "title": "成本优化",
+    "subtitle": "跟踪与配置降低模型开销的优化策略：提示词压缩与提示词缓存。自动路由请前往“模型与端点”页面。",
+    "tabs": {
+      "overall": "概览",
+      "compression": "提示词压缩",
+      "caching": "提示词缓存",
+      "autorouter": "自动路由"
+    },
+    "experimental_title": "此看板为实验性功能",
+    "experimental_desc": "跟踪与监控跨各供应商的成本优化机制及实际节省金额。",
+    "savings": "节省金额",
+    "cumulative": "累计值",
+    "savings_by_driver": "按优化驱动因素分布",
+    "spend_by_tool": "按工具支出",
+    "total_by_tool": "各工具总支出",
+    "daily_spend_by_tool": "工具每日支出"
+  },
+  "tracking": {
+    "title": "成本追踪与定价设置",
+    "subtitle": "为不同大模型供应商配置成本折扣与加价策略，配置将自动保存。",
+    "tabs": {
+      "settings": "设置",
+      "calculator": "价格计算器",
+      "how_it_works": "运作原理",
+      "discounts": "折扣设置",
+      "test_it": "测试验证"
+    },
+    "discounts_title": "供应商折扣",
+    "discounts_desc": "应用基于百分比的成本折扣，降低特定供应商的计费支出",
+    "add_discount_btn": "+ 添加供应商折扣",
+    "no_discounts": "尚未配置供应商折扣",
+    "no_discounts_desc": "点击“添加供应商折扣”开始配置",
+    "margins_title": "费用 / 加价 (利润率)",
+    "margins_desc": "在大模型实际成本基础上添加加价或固定手续费，用于内部记账或收回成本",
+    "add_margin_btn": "+ 添加供应商加价",
+    "no_margins": "尚未配置供应商加价",
+    "no_margins_desc": "点击“添加供应商加价”开始配置",
+    "block_unpriced_title": "拦截未定价模型的调用",
+    "block_unpriced_desc": "当请求的模型在成本映射表中无定价时直接拒绝，避免记录为 $0 异常消费",
+    "block_unpriced_switch_label": "拦截未定价模型的调用请求",
+    "block_unpriced_switch_desc": "开启后，若请求模型的成本映射为空将返回 403 错误，以便管理员及时补充定价。默认关闭",
+    "calculator_title": "价格计算器",
+    "calculator_desc": "根据预估的 Token 用量与请求频次估算大模型消费成本",
+    "remove_discount_title": "移除供应商折扣",
+    "discount_noun": "折扣",
+    "remove_margin_title": "移除供应商加价",
+    "margin_noun": "加价",
+    "remove_confirm": "确定要移除 {{displayName}} 的{{noun}}配置吗？",
+    "removing": "正在移除…",
+    "add_discount_title": "添加供应商折扣",
+    "add_discount_modal_desc": "选择供应商并设置折扣百分比，请输入 0% 到 100% 之间的数值（例如输入 5 表示 5% 折扣）。",
+    "add_margin_title": "添加供应商加价",
+    "add_margin_modal_desc": "选择供应商（或选择“全局”以应用至全部供应商），并配置加价比例或固定金额。",
+    "provider": "供应商",
+    "discount_percentage": "折扣百分比",
+    "margin": "加价",
+    "actions": "操作",
+    "global_providers": "全局 (所有供应商)"
+  }
+}

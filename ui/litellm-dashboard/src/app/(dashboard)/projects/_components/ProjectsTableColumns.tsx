@@ -54,91 +54,106 @@ interface ProjectsTableColumnsDeps {
   onProjectClick: (projectId: string) => void;
   teamAliasMap: Map<string, string>;
   isTeamsLoading: boolean;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getProjectsTableColumns = ({
   onProjectClick,
   teamAliasMap,
   isTeamsLoading,
-}: ProjectsTableColumnsDeps): ColumnDef<ProjectResponse>[] => [
-  {
-    id: "project_id",
-    accessorKey: "project_id",
-    meta: { title: "ID" },
-    header: "ID",
-    size: 190,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <IdentityCell
-        title={row.original.project_id}
-        titleClassName="font-mono text-xs font-normal"
-        onClick={() => onProjectClick(row.original.project_id)}
-      />
-    ),
-  },
-  {
-    id: "project_alias",
-    accessorFn: (row) => row.project_alias ?? "",
-    meta: { title: "Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Name" />,
-    size: 200,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <span className="block max-w-60 truncate text-sm font-medium" title={row.original.project_alias ?? undefined}>
-        {row.original.project_alias ?? "—"}
-      </span>
-    ),
-  },
-  {
-    id: "team",
-    accessorFn: (row) => teamAliasMap.get(row.team_id ?? "") ?? "",
-    meta: { title: "Team" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Team" />,
-    size: 180,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <ProjectTeamCell project={row.original} teamAliasMap={teamAliasMap} isTeamsLoading={isTeamsLoading} />
-    ),
-  },
-  {
-    id: "models",
-    meta: { title: "Models", skeleton: "badge" },
-    header: "Models",
-    size: 110,
-    enableSorting: false,
-    cell: ({ row }) => <ProjectModelsCell project={row.original} />,
-  },
-  {
-    id: "status",
-    accessorKey: "blocked",
-    meta: { title: "Status", skeleton: "badge" },
-    header: "Status",
-    size: 110,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <StatusBadge
-        tone={row.original.blocked ? "error" : "success"}
-        label={row.original.blocked ? "Blocked" : "Active"}
-      />
-    ),
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    sortingFn: "datetime",
-    meta: { title: "Created" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created" />,
-    size: 140,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
-  },
-  {
-    id: "updated_at",
-    accessorKey: "updated_at",
-    meta: { title: "Updated" },
-    header: "Updated",
-    size: 140,
-    enableSorting: false,
-    cell: ({ row }) => <DateCell value={row.original.updated_at} precision="date" />,
-  },
-];
+  t,
+}: ProjectsTableColumnsDeps): ColumnDef<ProjectResponse>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+  return [
+    {
+      id: "project_id",
+      accessorKey: "project_id",
+      meta: { title: tr("projects:columns.id", { defaultValue: "ID" }) },
+      header: tr("projects:columns.id", { defaultValue: "ID" }),
+      size: 190,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <IdentityCell
+          title={row.original.project_id}
+          titleClassName="font-mono text-xs font-normal"
+          onClick={() => onProjectClick(row.original.project_id)}
+        />
+      ),
+    },
+    {
+      id: "project_alias",
+      accessorFn: (row) => row.project_alias ?? "",
+      meta: { title: tr("projects:columns.name", { defaultValue: "Name" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("projects:columns.name", { defaultValue: "Name" })} />
+      ),
+      size: 200,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <span className="block max-w-60 truncate text-sm font-medium" title={row.original.project_alias ?? undefined}>
+          {row.original.project_alias ?? "—"}
+        </span>
+      ),
+    },
+    {
+      id: "team",
+      accessorFn: (row) => teamAliasMap.get(row.team_id ?? "") ?? "",
+      meta: { title: tr("projects:columns.team", { defaultValue: "Team" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("projects:columns.team", { defaultValue: "Team" })} />
+      ),
+      size: 180,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <ProjectTeamCell project={row.original} teamAliasMap={teamAliasMap} isTeamsLoading={isTeamsLoading} />
+      ),
+    },
+    {
+      id: "models",
+      meta: { title: tr("projects:columns.models", { defaultValue: "Models" }), skeleton: "badge" },
+      header: tr("projects:columns.models", { defaultValue: "Models" }),
+      size: 110,
+      enableSorting: false,
+      cell: ({ row }) => <ProjectModelsCell project={row.original} />,
+    },
+    {
+      id: "status",
+      accessorKey: "blocked",
+      meta: { title: tr("projects:columns.status", { defaultValue: "Status" }), skeleton: "badge" },
+      header: tr("projects:columns.status", { defaultValue: "Status" }),
+      size: 110,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <StatusBadge
+          tone={row.original.blocked ? "error" : "success"}
+          label={
+            row.original.blocked
+              ? tr("common:status.blocked", { defaultValue: "Blocked" })
+              : tr("common:status.active", { defaultValue: "Active" })
+          }
+        />
+      ),
+    },
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      sortingFn: "datetime",
+      meta: { title: tr("projects:columns.created", { defaultValue: "Created" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader column={column} title={tr("projects:columns.created", { defaultValue: "Created" })} />
+      ),
+      size: 140,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
+    },
+    {
+      id: "updated_at",
+      accessorKey: "updated_at",
+      meta: { title: tr("common:updated", { defaultValue: "Updated" }) },
+      header: tr("common:updated", { defaultValue: "Updated" }),
+      size: 140,
+      enableSorting: false,
+      cell: ({ row }) => <DateCell value={row.original.updated_at} precision="date" />,
+    },
+  ];
+};

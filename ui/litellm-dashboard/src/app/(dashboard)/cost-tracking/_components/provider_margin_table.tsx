@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Check, SquarePen, Trash2, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SimpleTable } from "@/components/common_components/simple_table";
@@ -26,6 +27,7 @@ const ProviderMarginTable: React.FC<ProviderMarginTableProps> = ({
   onMarginChange,
   onRemoveProvider,
 }) => {
+  const { t } = useTranslation(["costs", "common"]);
   const [editingProvider, setEditingProvider] = useState<string | null>(null);
   const [editPercentage, setEditPercentage] = useState<string>("");
   const [editFixedAmount, setEditFixedAmount] = useState<string>("");
@@ -103,12 +105,12 @@ const ProviderMarginTable: React.FC<ProviderMarginTableProps> = ({
       data={data}
       columns={[
         {
-          header: "Provider",
+          header: t("costs:tracking.provider", "Provider"),
           cell: (row) => {
             if (row.provider === "global") {
               return (
                 <div className="flex items-center space-x-2">
-                  <span className="font-medium">Global (All Providers)</span>
+                  <span className="font-medium">{t("costs:tracking.global_providers", "Global (All Providers)")}</span>
                 </div>
               );
             }
@@ -122,7 +124,7 @@ const ProviderMarginTable: React.FC<ProviderMarginTableProps> = ({
           },
         },
         {
-          header: "Margin",
+          header: t("costs:tracking.margin", "Margin"),
           cell: (row) => {
             const displayName = marginRowDisplayName(row.provider);
             return (
@@ -186,7 +188,7 @@ const ProviderMarginTable: React.FC<ProviderMarginTableProps> = ({
           width: "350px",
         },
         {
-          header: "Actions",
+          header: t("costs:tracking.actions", "Actions"),
           cell: (row) => {
             const displayName = marginRowDisplayName(row.provider);
             return (
@@ -205,7 +207,7 @@ const ProviderMarginTable: React.FC<ProviderMarginTableProps> = ({
         },
       ]}
       getRowKey={(row) => row.provider}
-      emptyMessage="No provider margins configured"
+      emptyMessage={t("costs:tracking.no_margins", "No provider margins configured")}
     />
   );
 };

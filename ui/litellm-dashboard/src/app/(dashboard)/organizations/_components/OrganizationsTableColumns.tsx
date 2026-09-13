@@ -38,9 +38,11 @@ interface OrganizationRowActionsProps {
   organization: Organization;
   onEditClick: (organizationId: string) => void;
   onDeleteClick: (organizationId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-function OrganizationRowActions({ organization, onEditClick, onDeleteClick }: OrganizationRowActionsProps) {
+function OrganizationRowActions({ organization, onEditClick, onDeleteClick, t }: OrganizationRowActionsProps) {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -56,7 +58,7 @@ function OrganizationRowActions({ organization, onEditClick, onDeleteClick }: Or
           onClick={() => onEditClick(organization.organization_id)}
         >
           <Pencil />
-          Edit
+          {tr("organizations:actions.edit", { defaultValue: "Edit" })}
         </DropdownMenuItem>
         <DropdownMenuItem
           variant="destructive"
@@ -64,7 +66,7 @@ function OrganizationRowActions({ organization, onEditClick, onDeleteClick }: Or
           onClick={() => onDeleteClick(organization.organization_id)}
         >
           <Trash2 />
-          Delete
+          {tr("organizations:actions.delete", { defaultValue: "Delete" })}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -76,6 +78,7 @@ export interface OrganizationsTableColumnsDeps {
   onOrganizationClick: (organizationId: string) => void;
   onEditClick: (organizationId: string) => void;
   onDeleteClick: (organizationId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getOrganizationsTableColumns = ({
@@ -83,104 +86,142 @@ export const getOrganizationsTableColumns = ({
   onOrganizationClick,
   onEditClick,
   onDeleteClick,
-}: OrganizationsTableColumnsDeps): ColumnDef<Organization>[] => [
-  {
-    id: "organization_id",
-    accessorKey: "organization_id",
-    meta: { title: "Organization ID" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Organization ID" />,
-    size: 220,
-    enableSorting: true,
-    cell: ({ row }) => (
-      <IdentityCell
-        title={row.original.organization_id}
-        titleClassName="font-mono text-xs font-normal"
-        className="max-w-56"
-        onClick={() => onOrganizationClick(row.original.organization_id)}
-      />
-    ),
-  },
-  {
-    id: "organization_alias",
-    accessorKey: "organization_alias",
-    meta: { title: "Organization Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Organization Name" />,
-    size: 200,
-    enableSorting: true,
-    cell: ({ row }) => {
-      const alias = row.original.organization_alias;
-      return (
-        <span className="block max-w-56 truncate text-sm font-medium" title={alias ?? undefined}>
-          {alias || "-"}
-        </span>
-      );
+  t,
+}: OrganizationsTableColumnsDeps): ColumnDef<Organization>[] => {
+  const tr = t ?? ((key: any, options?: any) => options?.defaultValue ?? key);
+  return [
+    {
+      id: "organization_id",
+      accessorKey: "organization_id",
+      meta: { title: tr("organizations:columns.org_id", { defaultValue: "Organization ID" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader
+          column={column}
+          title={tr("organizations:columns.org_id", { defaultValue: "Organization ID" })}
+        />
+      ),
+      size: 220,
+      enableSorting: true,
+      cell: ({ row }) => (
+        <IdentityCell
+          title={row.original.organization_id}
+          titleClassName="font-mono text-xs font-normal"
+          className="max-w-56"
+          onClick={() => onOrganizationClick(row.original.organization_id)}
+        />
+      ),
     },
-  },
-  {
-    id: "created_at",
-    accessorKey: "created_at",
-    sortingFn: "datetime",
-    meta: { title: "Created" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created" />,
-    size: 130,
-    enableSorting: true,
-    cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
-  },
-  {
-    id: "spend",
-    accessorKey: "spend",
-    meta: { title: "Spend (USD)" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Spend (USD)" />,
-    size: 120,
-    enableSorting: true,
-    cell: ({ row }) => <MoneyCell value={row.original.spend} decimals={4} />,
-  },
-  {
-    id: "max_budget",
-    meta: { title: "Budget (USD)" },
-    header: "Budget (USD)",
-    size: 120,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <MoneyCell value={getOrganizationBudget(row.original).max_budget} decimals={2} emptyText="Unlimited" showZero />
-    ),
-  },
-  {
-    id: "models",
-    meta: { title: "Models", skeleton: "chips" },
-    header: "Models",
-    size: 260,
-    enableSorting: false,
-    cell: ({ row }) => <ModelsCell models={row.original.models} />,
-  },
-  {
-    id: "limits",
-    meta: { title: "TPM / RPM Limits" },
-    header: "TPM / RPM Limits",
-    size: 150,
-    enableSorting: false,
-    cell: ({ row }) => <OrganizationLimitsCell organization={row.original} />,
-  },
-  {
-    id: "members",
-    meta: { title: "Members" },
-    header: "Members",
-    size: 100,
-    enableSorting: false,
-    cell: ({ row }) => <span className="text-sm">{row.original.members?.length ?? 0} Members</span>,
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) =>
-      userRole === "Admin" ? (
-        <div className="flex justify-end">
-          <OrganizationRowActions organization={row.original} onEditClick={onEditClick} onDeleteClick={onDeleteClick} />
-        </div>
-      ) : null,
-  },
-];
+    {
+      id: "organization_alias",
+      accessorKey: "organization_alias",
+      meta: { title: tr("organizations:columns.org_alias", { defaultValue: "Organization Name" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader
+          column={column}
+          title={tr("organizations:columns.org_alias", { defaultValue: "Organization Name" })}
+        />
+      ),
+      size: 200,
+      enableSorting: true,
+      cell: ({ row }) => {
+        const alias = row.original.organization_alias;
+        return (
+          <span className="block max-w-56 truncate text-sm font-medium" title={alias ?? undefined}>
+            {alias || "-"}
+          </span>
+        );
+      },
+    },
+    {
+      id: "created_at",
+      accessorKey: "created_at",
+      sortingFn: "datetime",
+      meta: { title: tr("organizations:columns.created_at", { defaultValue: "Created" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader
+          column={column}
+          title={tr("organizations:columns.created_at", { defaultValue: "Created" })}
+        />
+      ),
+      size: 130,
+      enableSorting: true,
+      cell: ({ row }) => <DateCell value={row.original.created_at} precision="date" />,
+    },
+    {
+      id: "spend",
+      accessorKey: "spend",
+      meta: { title: tr("organizations:columns.spend", { defaultValue: "Spend (USD)" }) },
+      header: ({ column }) => (
+        <DataTableSortHeader
+          column={column}
+          title={tr("organizations:columns.spend", { defaultValue: "Spend (USD)" })}
+        />
+      ),
+      size: 120,
+      enableSorting: true,
+      cell: ({ row }) => <MoneyCell value={row.original.spend} decimals={4} />,
+    },
+    {
+      id: "max_budget",
+      meta: { title: tr("organizations:columns.budget", { defaultValue: "Budget (USD)" }) },
+      header: tr("organizations:columns.budget", { defaultValue: "Budget (USD)" }),
+      size: 120,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <MoneyCell
+          value={getOrganizationBudget(row.original).max_budget}
+          decimals={2}
+          emptyText={tr("organizations:columns.unlimited", { defaultValue: "Unlimited" })}
+          showZero
+        />
+      ),
+    },
+    {
+      id: "models",
+      meta: { title: tr("organizations:columns.models", { defaultValue: "Models" }), skeleton: "chips" },
+      header: tr("organizations:columns.models", { defaultValue: "Models" }),
+      size: 260,
+      enableSorting: false,
+      cell: ({ row }) => <ModelsCell models={row.original.models} />,
+    },
+    {
+      id: "limits",
+      meta: { title: tr("organizations:columns.limits", { defaultValue: "TPM / RPM Limits" }) },
+      header: tr("organizations:columns.limits", { defaultValue: "TPM / RPM Limits" }),
+      size: 150,
+      enableSorting: false,
+      cell: ({ row }) => <OrganizationLimitsCell organization={row.original} />,
+    },
+    {
+      id: "members",
+      meta: { title: tr("organizations:columns.members", { defaultValue: "Members" }) },
+      header: tr("organizations:columns.members", { defaultValue: "Members" }),
+      size: 100,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <span className="text-sm">
+          {row.original.members?.length ?? 0} {tr("organizations:columns.members", { defaultValue: "Members" })}
+        </span>
+      ),
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">Actions</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) =>
+        userRole === "Admin" ? (
+          <div className="flex justify-end">
+            <OrganizationRowActions
+              organization={row.original}
+              onEditClick={onEditClick}
+              onDeleteClick={onDeleteClick}
+              t={tr}
+            />
+          </div>
+        ) : null,
+    },
+  ];
+};

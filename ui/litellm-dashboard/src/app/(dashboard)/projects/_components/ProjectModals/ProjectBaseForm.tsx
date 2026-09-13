@@ -16,6 +16,7 @@ import { Alert, AlertTitle } from "@/components/shared/Alert";
 import { SearchSelect } from "@/components/shared/SearchSelect";
 import { FieldGroup } from "@/components/ui/field";
 import { FormField } from "@/components/shared/form/FormField";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ interface ProjectBaseFormProps {
 export type { ProjectFormValues } from "./projectFormSchema";
 
 export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: ProjectBaseFormProps) {
+  const { t } = useTranslation(["projects", "common"]);
   const { accessToken, userId, userRole } = useAuthorized();
   const { data: teams } = useTeams();
 
@@ -110,22 +112,39 @@ export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: Pr
     { value: ALL_TEAM_MODELS, label: "All Team Models" },
     ...modelsToPick.map((model) => ({ value: model, label: getModelDisplayName(model) })),
   ];
-  const modelsPlaceholder = selectedTeam ? "Select models" : "Select a team first";
+  const modelsPlaceholder = selectedTeam
+    ? t("projects:modal.select_models_placeholder", { defaultValue: "Select models" })
+    : t("projects:modal.select_team_first", { defaultValue: "Select a team first" });
 
   return (
     <div className="mt-6">
-      <p className="text-xs font-semibold tracking-[0.05em] text-foreground uppercase">Basic Information</p>
+      <p className="text-xs font-semibold tracking-[0.05em] text-foreground uppercase">
+        {t("projects:modal.basic_info", { defaultValue: "Basic Information" })}
+      </p>
       <Separator className="mt-2 mb-4" />
 
       <FieldGroup>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <FormField control={form.control} name="project_alias" label="Project Name">
+          <FormField
+            control={form.control}
+            name="project_alias"
+            label={t("projects:modal.name", { defaultValue: "Project Name" })}
+          >
             {({ ref, ...field }) => (
-              <Input {...field} value={field.value ?? ""} ref={ref} placeholder="e.g. Customer Support Bot" />
+              <Input
+                {...field}
+                value={field.value ?? ""}
+                ref={ref}
+                placeholder={t("projects:modal.name_placeholder", { defaultValue: "e.g. Customer Support Bot" })}
+              />
             )}
           </FormField>
 
-          <FormField control={form.control} name="team_id" label="Team">
+          <FormField
+            control={form.control}
+            name="team_id"
+            label={t("projects:modal.team", { defaultValue: "Team" })}
+          >
             {({ id, value, onChange, ref: _ref, ...field }) => (
               <SearchSelect
                 {...field}
@@ -136,21 +155,27 @@ export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: Pr
                   onChange(next);
                   handleTeamChange(next);
                 }}
-                placeholder="Search or select a team"
+                placeholder={t("projects:modal.select_team", { defaultValue: "Search or select a team" })}
                 allowClear
               />
             )}
           </FormField>
         </div>
 
-        <FormField control={form.control} name="description" label="Description">
+        <FormField
+          control={form.control}
+          name="description"
+          label={t("projects:modal.description", { defaultValue: "Description" })}
+        >
           {({ ref, ...field }) => (
             <Textarea
               {...field}
               value={field.value ?? ""}
               ref={ref}
               rows={3}
-              placeholder="Describe the purpose of this project"
+              placeholder={t("projects:modal.desc_placeholder", {
+                defaultValue: "Describe the purpose of this project",
+              })}
             />
           )}
         </FormField>
@@ -158,8 +183,14 @@ export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: Pr
         <FormField
           control={form.control}
           name="models"
-          label="Allowed Models (scoped to selected team's models)"
-          description={!selectedTeam ? "Select a team first to see available models" : undefined}
+          label={t("projects:modal.allowed_models_label", {
+            defaultValue: "Allowed Models (scoped to selected team's models)",
+          })}
+          description={
+            !selectedTeam
+              ? t("projects:modal.select_team_first", { defaultValue: "Select a team first to see available models" })
+              : undefined
+          }
         >
           {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }) => (
             <Select
@@ -193,7 +224,11 @@ export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: Pr
         </FormField>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <FormField control={form.control} name="max_budget" label="Max Budget (USD)">
+          <FormField
+            control={form.control}
+            name="max_budget"
+            label={t("projects:modal.budget", { defaultValue: "Max Budget (USD)" })}
+          >
             {({ ref, value, onChange, ...field }) => (
               <InputGroup>
                 <InputGroupAddon>
@@ -225,13 +260,17 @@ export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: Pr
               <ChevronDown
                 className={`size-4 text-muted-foreground transition-transform ${advancedOpen ? "" : "-rotate-90"}`}
               />
-              <span className="text-sm font-semibold text-foreground">Advanced Settings</span>
+              <span className="text-sm font-semibold text-foreground">
+                {t("projects:modal.advanced", { defaultValue: "Advanced Settings" })}
+              </span>
             </button>
           }
         />
         <CollapsibleContent className="px-4 pb-4">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-semibold text-foreground">Block Project</span>
+            <span className="text-sm font-semibold text-foreground">
+              {t("projects:modal.block_project", { defaultValue: "Block Project" })}
+            </span>
             <FormField control={form.control} name="isBlocked" className="w-auto">
               {({ id, value, onChange, ref: _ref, ...field }) => (
                 <Switch {...field} id={id} checked={value} onCheckedChange={onChange} />

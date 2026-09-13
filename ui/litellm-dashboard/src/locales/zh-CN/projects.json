@@ -1,0 +1,61 @@
+{
+  "title": "项目管理",
+  "subtitle": "管理团队内的项目与虚拟密钥",
+  "create_btn": "创建项目",
+  "search_placeholder": "按名称、ID、说明或团队搜索项目...",
+  "clear_search": "清除搜索",
+  "columns": {
+    "id": "项目 ID",
+    "name": "项目名称",
+    "team": "所属团队",
+    "spend": "消费金额",
+    "budget": "预算",
+    "models": "可用模型",
+    "created": "创建时间",
+    "status": "状态",
+    "no_models": "暂无模型",
+    "actions": "操作"
+  },
+  "empty": {
+    "no_match_title": "未找到匹配的项目",
+    "no_match_desc": "请尝试其他搜索词。",
+    "no_projects_title": "暂无项目",
+    "no_projects_desc": "创建项目以在团队内组织和分配虚拟密钥。",
+    "loading": "正在加载项目…"
+  },
+  "modal": {
+    "create_title": "创建项目",
+    "edit_title": "编辑项目",
+    "basic_info": "基本信息",
+    "name": "项目名称",
+    "name_placeholder": "例如：智能客服机器人",
+    "team": "所属团队",
+    "select_team": "选择团队",
+    "description": "项目说明",
+    "desc_placeholder": "描述此项目的用途及背景",
+    "allowed_models_label": "可用模型 (限定于所选团队模型范围)",
+    "select_models_placeholder": "选择模型",
+    "select_team_first": "请先选择团队",
+    "budget": "最高预算 (USD)",
+    "budget_reset": "预算重置周期",
+    "models": "可用模型",
+    "advanced": "高级配置",
+    "guardrails": "安全护栏",
+    "tpm_limit": "每分钟 Token 上限 (TPM)",
+    "rpm_limit": "每分钟请求上限 (RPM)",
+    "block_project": "禁用项目",
+    "cancel": "取消",
+    "save": "保存修改",
+    "create": "创建项目",
+    "creating": "创建中...",
+    "saving": "保存中..."
+  },
+  "detail": {
+    "back": "返回项目列表",
+    "overview": "概览",
+    "keys": "虚拟密钥",
+    "settings": "设置",
+    "edit": "编辑",
+    "delete": "删除"
+  }
+}

@@ -1,6 +1,7 @@
 import { isAdminRole } from "@/utils/roles";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { z } from "zod/v4";
 import DeleteResourceModal from "@/components/common_components/DeleteResourceModal";
 import { toast } from "@/lib/toast";
@@ -46,6 +47,7 @@ type EditSearchToolFormValues = z.infer<typeof editSearchToolSchema>;
 const EMPTY_EDIT_VALUES: EditSearchToolFormValues = { search_tool_name: "", search_provider: "" };
 
 const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID }) => {
+  const { t } = useTranslation(["tools", "common"]);
   const {
     data: searchTools,
     isLoading: isLoadingTools,
@@ -169,11 +171,11 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
   const renderEditForm = () => (
     <form onSubmit={(event) => event.preventDefault()}>
       <FieldGroup>
-        <FormField control={form.control} name="search_tool_name" label="Search Tool Name">
+        <FormField control={form.control} name="search_tool_name" label={t("tools:search_tools.name", "Search Tool Name")}>
           {({ ref, ...field }) => <Input {...field} ref={ref} placeholder="e.g., my-perplexity-search" />}
         </FormField>
 
-        <FormField control={form.control} name="search_provider" label="Search Provider">
+        <FormField control={form.control} name="search_provider" label={t("tools:search_tools.provider", "Search Provider")}>
           {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }) => (
             <Select
               items={availableProviders.map((provider) => ({
@@ -184,7 +186,7 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
               onValueChange={(provider: string | null) => onChange(provider ?? "")}
             >
               <SelectTrigger id={id} aria-invalid={ariaInvalid} aria-describedby={ariaDescribedBy} className="w-full">
-                <SelectValue placeholder="Select a search provider" />
+                <SelectValue placeholder={t("tools:search_tools.select_provider", "Select a search provider")} />
                 {isLoadingProviders && <UiLoadingSpinner className="size-4" />}
               </SelectTrigger>
               <SelectContent>
@@ -198,13 +200,13 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
           )}
         </FormField>
 
-        <FormField control={form.control} name="api_key" label="API Key" description="API key for the search provider">
+        <FormField control={form.control} name="api_key" label={t("tools:search_tools.api_key", "API Key")} description={t("tools:search_tools.api_key_desc", "API key for the search provider")}>
           {({ ref, value, ...field }) => (
             <PasswordInput {...field} ref={ref} value={value ?? ""} placeholder="Enter API key" />
           )}
         </FormField>
 
-        <FormField control={form.control} name="description" label="Description">
+        <FormField control={form.control} name="description" label={t("tools:search_tools.description", "Description")}>
           {({ ref, value, ...field }) => (
             <Textarea {...field} ref={ref} value={value ?? ""} rows={3} placeholder="Description of this search tool" />
           )}
@@ -255,19 +257,19 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
     <div className="w-full h-full p-6">
       <DeleteResourceModal
         isOpen={isDeleteModalOpen}
-        title="Delete Search Tool"
-        message="Are you sure you want to delete this search tool? This action cannot be undone."
-        resourceInformationTitle="Search Tool Information"
+        title={t("tools:search_tools.delete_title", "Delete Search Tool")}
+        message={t("tools:search_tools.delete_confirm", "Are you sure you want to delete this search tool? This action cannot be undone.")}
+        resourceInformationTitle={t("tools:search_tools.info_title", "Search Tool Information")}
         resourceInformation={
           toolToDelete
             ? [
-                { label: "Name", value: toolToDelete.search_tool_name },
+                { label: t("tools:search_tools.name_label", "Name"), value: toolToDelete.search_tool_name },
                 { label: "ID", value: toolToDelete.search_tool_id, code: true },
                 {
-                  label: "Provider",
+                  label: t("tools:search_tools.provider_label", "Provider"),
                   value: providerInfo?.ui_friendly_name || toolToDelete.litellm_params.search_provider,
                 },
-                { label: "Description", value: toolToDelete.search_tool_info?.description || "-" },
+                { label: t("tools:search_tools.description", "Description"), value: toolToDelete.search_tool_info?.description || "-" },
               ]
             : []
         }
@@ -296,7 +298,7 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
       >
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Edit Search Tool</DialogTitle>
+            <DialogTitle>{t("tools:search_tools.edit_title", "Edit Search Tool")}</DialogTitle>
           </DialogHeader>
           {renderEditForm()}
           <DialogFooter>
@@ -308,18 +310,18 @@ const SearchTools: React.FC<SearchToolsProps> = ({ accessToken, userRole, userID
                 setSelectedToolId(null);
               }}
             >
-              Cancel
+              {t("tools:search_tools.cancel", "Cancel")}
             </Button>
-            <Button onClick={handleEditSubmit}>OK</Button>
+            <Button onClick={handleEditSubmit}>{t("tools:search_tools.ok", "OK")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <h1 className="text-lg font-semibold text-foreground">Search Tools</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Configure and manage your search providers</p>
+      <h1 className="text-lg font-semibold text-foreground">{t("tools:search_tools.title", "Search Tools")}</h1>
+      <p className="mt-2 text-sm text-muted-foreground">{t("tools:search_tools.subtitle", "Configure and manage your search providers")}</p>
       {isAdminRole(userRole) && (
         <Button className="mt-4 mb-4" variant="outline" onClick={() => setCreateModalVisible(true)}>
-          + Add New Search Tool
+          {t("tools:search_tools.add_btn", "+ Add New Search Tool")}
         </Button>
       )}
 

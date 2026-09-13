@@ -1,0 +1,61 @@
+{
+  "title": "Projects",
+  "subtitle": "Manage projects within your teams",
+  "create_btn": "Create Project",
+  "search_placeholder": "Search projects by name, ID, description, or team...",
+  "clear_search": "Clear search",
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "team": "Team",
+    "spend": "Spend",
+    "budget": "Budget",
+    "models": "Models",
+    "created": "Created",
+    "status": "Status",
+    "no_models": "No models",
+    "actions": "Actions"
+  },
+  "empty": {
+    "no_match_title": "No matching projects",
+    "no_match_desc": "Try a different search term.",
+    "no_projects_title": "No projects yet",
+    "no_projects_desc": "Create a project to organize keys within your teams.",
+    "loading": "Loading projects…"
+  },
+  "modal": {
+    "create_title": "Create Project",
+    "edit_title": "Edit Project",
+    "basic_info": "Basic Information",
+    "name": "Project Name",
+    "name_placeholder": "e.g. Customer Support Bot",
+    "team": "Team",
+    "select_team": "Select team",
+    "description": "Description",
+    "desc_placeholder": "Describe the purpose of this project",
+    "allowed_models_label": "Allowed Models (scoped to selected team's models)",
+    "select_models_placeholder": "Select models",
+    "select_team_first": "Select a team first",
+    "budget": "Max Budget (USD)",
+    "budget_reset": "Reset Budget",
+    "models": "Models",
+    "advanced": "Advanced Settings",
+    "guardrails": "Guardrails",
+    "tpm_limit": "Tokens per minute Limit (TPM)",
+    "rpm_limit": "Requests per minute Limit (RPM)",
+    "block_project": "Block Project",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "create": "Create Project",
+    "creating": "Creating...",
+    "saving": "Saving..."
+  },
+  "detail": {
+    "back": "Back to Projects",
+    "overview": "Overview",
+    "keys": "Virtual Keys",
+    "settings": "Settings",
+    "edit": "Edit",
+    "delete": "Delete"
+  }
+}

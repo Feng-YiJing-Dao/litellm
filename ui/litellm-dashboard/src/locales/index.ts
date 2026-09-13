@@ -21,6 +21,14 @@ import zhGuardrails from "./zh-CN/guardrails.json";
 import zhCaching from "./zh-CN/caching.json";
 import zhBudgets from "./zh-CN/budgets.json";
 import zhRouter from "./zh-CN/router.json";
+import zhOrganizations from "./zh-CN/organizations.json";
+import zhProjects from "./zh-CN/projects.json";
+import zhAccessGroups from "./zh-CN/accessGroups.json";
+import zhSkills from "./zh-CN/skills.json";
+import zhPolicies from "./zh-CN/policies.json";
+import zhTools from "./zh-CN/tools.json";
+import zhCosts from "./zh-CN/costs.json";
+import zhAdmin from "./zh-CN/admin.json";
 
 import enCommon from "./en/common.json";
 import enNav from "./en/nav.json";
@@ -41,6 +49,14 @@ import enGuardrails from "./en/guardrails.json";
 import enCaching from "./en/caching.json";
 import enBudgets from "./en/budgets.json";
 import enRouter from "./en/router.json";
+import enOrganizations from "./en/organizations.json";
+import enProjects from "./en/projects.json";
+import enAccessGroups from "./en/accessGroups.json";
+import enSkills from "./en/skills.json";
+import enPolicies from "./en/policies.json";
+import enTools from "./en/tools.json";
+import enCosts from "./en/costs.json";
+import enAdmin from "./en/admin.json";
 
 export const defaultNS = "common";
 export const resources = {
@@ -64,6 +80,14 @@ export const resources = {
     caching: zhCaching,
     budgets: zhBudgets,
     router: zhRouter,
+    organizations: zhOrganizations,
+    projects: zhProjects,
+    accessGroups: zhAccessGroups,
+    skills: zhSkills,
+    policies: zhPolicies,
+    tools: zhTools,
+    costs: zhCosts,
+    admin: zhAdmin,
   },
   en: {
     common: enCommon,
@@ -85,6 +109,14 @@ export const resources = {
     caching: enCaching,
     budgets: enBudgets,
     router: enRouter,
+    organizations: enOrganizations,
+    projects: enProjects,
+    accessGroups: enAccessGroups,
+    skills: enSkills,
+    policies: enPolicies,
+    tools: enTools,
+    costs: enCosts,
+    admin: enAdmin,
   },
 } as const;
 

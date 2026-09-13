@@ -1,0 +1,36 @@
+{
+  "title": "管理员设置",
+  "subtitle": "管理系统安全、SSO 单点登录与界面访问配置",
+  "admin_access": "管理员权限",
+  "add_admin_prompt": "如需添加其他管理员，请前往“内部用户”页面。",
+  "tabs": {
+    "sso": "SSO 设置",
+    "security": "安全设置",
+    "scim": "SCIM 同步",
+    "ui": "界面设置",
+    "logging": "日志设置",
+    "vault": "Vault 密钥库",
+    "cyberark": "CyberArk 密钥管理",
+    "plugins": "插件管理"
+  },
+  "security_card": {
+    "title": "安全设置",
+    "sso_btn": "添加 SSO",
+    "edit_sso_btn": "编辑 SSO 设置",
+    "allowed_ips_btn": "IP 白名单",
+    "ui_access_control_btn": "界面访问控制",
+    "login_without_sso_title": "非 SSO 备用登录"
+  },
+  "ip_modal": {
+    "manage_title": "管理 IP 白名单",
+    "add_title": "添加 IP 白名单",
+    "ip_column": "IP 地址",
+    "action_column": "操作",
+    "delete": "删除",
+    "add_btn": "添加 IP 地址",
+    "close": "关闭",
+    "confirm_delete_title": "确认删除",
+    "confirm_delete_msg": "确定要删除 IP 地址 {{ip}} 吗？",
+    "yes": "确认"
+  }
+}

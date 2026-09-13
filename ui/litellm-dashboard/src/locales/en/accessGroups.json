@@ -1,0 +1,29 @@
+{
+  "title": "Access Groups",
+  "subtitle": "Manage resource permissions for your organization",
+  "create_btn": "Create Access Group",
+  "search_placeholder": "Search groups by name, ID, or description...",
+  "columns": {
+    "name": "Name",
+    "id": "ID",
+    "description": "Description",
+    "resources": "Assigned Resources",
+    "created": "Created",
+    "actions": "Actions",
+    "models": "Models",
+    "mcpServers": "MCP Servers",
+    "agents": "Agents"
+  },
+  "empty": {
+    "no_match_title": "No matching access groups",
+    "no_match_desc": "Try a different search term.",
+    "no_groups_title": "No access groups yet",
+    "no_groups_desc": "Create an access group to manage permissions.",
+    "loading": "Loading access groups…"
+  },
+  "delete_modal": {
+    "delete": "Delete access group",
+    "title": "Delete Access Group?",
+    "confirm": "Are you sure you want to delete this access group? This action cannot be undone."
+  }
+}

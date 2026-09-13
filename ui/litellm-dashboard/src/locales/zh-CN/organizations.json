@@ -1,0 +1,81 @@
+{
+  "title": "组织管理",
+  "click_id_prompt": "点击组织 ID 查看详细信息。",
+  "create_btn": "+ 创建新组织",
+  "enterprise_feature": "这是 LiteLLM 企业版功能，需要有效密钥才能使用。获取试用密钥请前往",
+  "columns": {
+    "org_id": "组织 ID",
+    "org_alias": "组织名称",
+    "created_at": "创建时间",
+    "spend": "消费金额 (USD)",
+    "budget": "预算 (USD)",
+    "models": "可用模型",
+    "limits": "TPM / RPM 限制",
+    "members": "成员数",
+    "actions": "操作",
+    "unlimited": "无限制"
+  },
+  "actions": {
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "delete_modal": {
+    "title": "删除组织？",
+    "message": "确定要删除此组织吗？此操作无法撤销。",
+    "info_title": "组织信息",
+    "success": "组织删除成功",
+    "failed": "删除组织失败"
+  },
+  "empty": {
+    "no_match_title": "未找到匹配的组织",
+    "no_match_desc": "没有组织符合您的搜索条件。请尝试其他名称或 ID。",
+    "no_orgs_title": "暂无组织",
+    "no_orgs_desc": "创建组织以分组团队、模型和预算。",
+    "loading": "正在加载组织…"
+  },
+  "filters": {
+    "search_name": "按组织名称搜索",
+    "search_id": "按组织 ID 搜索"
+  },
+  "create_dialog": {
+    "title": "创建组织",
+    "name": "组织名称",
+    "models": "可用模型",
+    "max_budget": "最高预算 (USD)",
+    "reset_budget": "重置预算周期",
+    "tpm_limit": "每分钟 Token 上限 (TPM)",
+    "rpm_limit": "每分钟请求上限 (RPM)",
+    "vector_stores": "允许的向量库",
+    "vector_stores_desc": "选择此组织可以访问的向量库。留空则允许访问全部向量库",
+    "mcp": "允许的 MCP 服务器",
+    "mcp_desc": "选择此组织可以访问的 MCP 服务器、访问组和工具集。留空则允许访问全部",
+    "metadata": "元数据 (JSON)",
+    "cancel": "取消",
+    "submit": "创建组织",
+    "submitting": "创建中...",
+    "success": "组织创建成功"
+  },
+  "detail": {
+    "back": "返回组织列表",
+    "overview": "概览",
+    "members": "成员",
+    "settings": "设置",
+    "org_details": "组织详情",
+    "budget_status": "预算状态",
+    "rate_limits": "速率限制",
+    "models_title": "可用模型",
+    "teams_title": "所属团队",
+    "all_proxy_models": "所有代理模型",
+    "edit_settings": "编辑设置",
+    "no_members": "未找到成员",
+    "add_member": "添加组织成员",
+    "edit_member": "编辑成员",
+    "created": "创建时间",
+    "updated": "更新时间",
+    "created_by": "创建者",
+    "of": "限额",
+    "reset": "重置周期",
+    "never": "永不",
+    "no_limit": "无限制"
+  }
+}
