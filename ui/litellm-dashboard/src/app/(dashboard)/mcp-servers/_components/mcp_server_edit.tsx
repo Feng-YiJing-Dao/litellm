@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { MultiSelect } from "@/components/shared/MultiSelect";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SimpleTooltip } from "@/components/ui/tooltip";
@@ -101,6 +102,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
   onSuccess,
   availableAccessGroups,
 }) => {
+  const { t } = useTranslation(["mcp", "common"]);
   const initialStaticHeaders = React.useMemo(() => {
     if (!mcpServer.static_headers) {
       return [];
@@ -774,16 +776,22 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
           }
         } catch (error: unknown) {
           const message = error instanceof Error ? error.message : "";
-          toast.fromError("MCP Server updated, but failed to persist OAuth token" + (message ? `: ${message}` : ""));
+          toast.fromError(
+            t("mcp:edit_server.server_updated_persist_token_fail", { defaultValue: "MCP Server updated, but failed to persist OAuth token" }) +
+              (message ? `: ${message}` : ""),
+          );
           return;
         }
       }
 
-      toast.success("MCP Server updated successfully");
+      toast.success(t("mcp:edit_server.server_updated_success", { defaultValue: "MCP Server updated successfully" }));
       setAppMayNotMatchUpstream(false);
       onSuccess(updated);
     } catch (error: any) {
-      toast.fromError("Failed to update MCP Server" + (error?.message ? `: ${error.message}` : ""));
+      toast.fromError(
+        t("mcp:edit_server.server_update_failed", { defaultValue: "Failed to update MCP Server" }) +
+          (error?.message ? `: ${error.message}` : ""),
+      );
     }
   };
 
@@ -791,10 +799,10 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
     <Tabs defaultValue="server">
       <TabsList variant="line" className="grid h-auto w-full grid-cols-2 rounded-none border-b p-0">
         <TabsTrigger value="server" className="rounded-none py-2">
-          Server Configuration
+          {t("mcp:edit_server.server_config_tab", { defaultValue: "Server Configuration" })}
         </TabsTrigger>
         <TabsTrigger value="cost" className="rounded-none py-2">
-          Cost Configuration
+          {t("mcp:edit_server.cost_config_tab", { defaultValue: "Cost Configuration" })}
         </TabsTrigger>
       </TabsList>
       <div className="mt-6">
@@ -808,7 +816,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                 }}
               >
                 <MountedFormField
-                  label="MCP Server Name"
+                  label={t("mcp:create_server.server_name", { defaultValue: "MCP Server Name" })}
                   name="server_name"
                   rules={{ validate: validatorRules({ validator: (_, value) => validateMCPServerName(value) }) }}
                 >
@@ -820,7 +828,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                   )}
                 </MountedFormField>
                 <MountedFormField
-                  label="Alias"
+                  label={t("mcp:create_server.alias", { defaultValue: "Alias" })}
                   name="alias"
                   rules={{ validate: validatorRules({ validator: (_, value) => validateMCPServerName(value) }) }}
                 >
@@ -835,7 +843,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                     />
                   )}
                 </MountedFormField>
-                <MountedFormField label="Description" name="description">
+                <MountedFormField label={t("mcp:create_server.description", { defaultValue: "Description" })} name="description">
                   {(control) => (
                     <Input
                       {...textControl(control)}
@@ -845,7 +853,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                 </MountedFormField>
                 <MCPLogoSelector value={logoUrl} onChange={setLogoUrl} />
                 <MountedFormField
-                  label="Transport Type"
+                  label={t("mcp:create_server.transport_type", { defaultValue: "Transport Type" })}
                   name="transport"
                   required
                   rules={{ validate: { required: requiredRule("Transport Type is required") } }}
@@ -873,7 +881,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                 {/* URL field - only for HTTP/SSE */}
                 {isMCPTransport && (
                   <MountedFormField
-                    label="MCP Server URL"
+                    label={t("mcp:create_server.url", { defaultValue: "MCP Server URL" })}
                     name="url"
                     required
                     rules={{
@@ -886,7 +894,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                     {(control) => (
                       <Input
                         {...textControl(control)}
-                        placeholder="https://your-mcp-server.com"
+                        placeholder={t("mcp:create_server.url_placeholder", { defaultValue: "https://your-mcp-server.com" })}
                         className="rounded-lg border-border focus:border-info focus:ring-ring"
                       />
                     )}
@@ -898,8 +906,8 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                   <MountedFormField
                     label={
                       <span className="text-sm font-medium text-foreground flex items-center">
-                        OpenAPI Spec URL
-                        <SimpleTooltip content="URL to an OpenAPI specification (JSON or YAML). MCP tools will be automatically generated from the API endpoints defined in the spec.">
+                        {t("mcp:edit_server.openapi_spec_url", { defaultValue: "OpenAPI Spec URL" })}
+                        <SimpleTooltip content={t("mcp:edit_server.openapi_spec_tooltip", { defaultValue: "URL to an OpenAPI specification (JSON or YAML). MCP tools will be automatically generated from the API endpoints defined in the spec." })}>
                           <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                         </SimpleTooltip>
                       </span>
@@ -921,8 +929,8 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                 <MountedFormField
                   label={
                     <span className="text-sm font-medium text-foreground flex items-center">
-                      Max Concurrent Requests (optional)
-                      <SimpleTooltip content="Maximum number of tool calls LiteLLM will run against this server at the same time. Additional calls wait for a free slot. Leave blank for no limit.">
+                      {t("mcp:create_server.max_concurrent_requests", { defaultValue: "Max Concurrent Requests (optional)" })}
+                      <SimpleTooltip content={t("mcp:create_server.max_concurrent_tooltip", { defaultValue: "Maximum number of tool calls LiteLLM will run against this server at the same time. Additional calls wait for a free slot. Leave blank for no limit." })}>
                         <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                       </SimpleTooltip>
                     </span>
@@ -944,7 +952,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                 {!isStdioTransport && (
                   <>
                     <MountedFormField
-                      label="Authentication"
+                      label={t("mcp:create_server.auth_type", { defaultValue: "Authentication" })}
                       name="auth_type"
                       required
                       rules={{ validate: { required: requiredRule("Authentication is required") } }}
@@ -985,12 +993,11 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                 {isStdioTransport && (
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <p className="text-sm text-muted-foreground">
-                      Configure the stdio transport used to launch the MCP server process. You can either fill in the
-                      fields below or paste a JSON configuration.
+                      {t("mcp:edit_server.stdio_desc", { defaultValue: "Configure the stdio transport used to launch the MCP server process. You can either fill in the fields below or paste a JSON configuration." })}
                     </p>
 
                     <MountedFormField
-                      label="Command"
+                      label={t("mcp:edit_server.stdio_command", { defaultValue: "Command" })}
                       name="command"
                       required
                       rules={{ validate: { required: requiredRule("Please enter a command for stdio transport") } }}
@@ -998,24 +1005,24 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                       {(control) => (
                         <Input
                           {...textControl(control)}
-                          placeholder="e.g., npx"
+                          placeholder={t("mcp:edit_server.stdio_command_placeholder", { defaultValue: "e.g., npx" })}
                           className="rounded-lg border-border focus:border-info focus:ring-ring"
                         />
                       )}
                     </MountedFormField>
 
-                    <MountedFormField label="Args" name="args">
+                    <MountedFormField label={t("mcp:edit_server.stdio_args", { defaultValue: "Args" })} name="args">
                       {(control) => (
                         <MultiSelect
                           {...tagsControl(control)}
-                          placeholder="Add args (press enter or comma)"
+                          placeholder={t("mcp:edit_server.stdio_args_placeholder", { defaultValue: "Add args (press enter or comma)" })}
                           className="rounded-lg"
                         />
                       )}
                     </MountedFormField>
 
                     <MountedFormField
-                      label="Environment (JSON object)"
+                      label={t("mcp:edit_server.stdio_env", { defaultValue: "Environment (JSON object)" })}
                       name="env_json"
                       rules={{
                         validate: {
@@ -1042,8 +1049,8 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                   <MountedFormField
                     label={
                       <span className="text-sm font-medium text-foreground flex items-center">
-                        Authentication Value
-                        <SimpleTooltip content="Token, password, or header value to send with each request for the selected auth type.">
+                        {t("mcp:create_server.auth_value", { defaultValue: "Authentication Value" })}
+                        <SimpleTooltip content={t("mcp:create_server.auth_value_tooltip", { defaultValue: "Token, password, or header value to send with each request for the selected auth type." })}>
                           <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                         </SimpleTooltip>
                       </span>
@@ -1054,7 +1061,7 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                     {(control) => (
                       <PasswordInput
                         {...textControl(control)}
-                        placeholder="Enter token or secret (leave blank to keep existing)"
+                        placeholder={t("mcp:edit_server.auth_value_placeholder_edit", { defaultValue: "Enter token or secret (leave blank to keep existing)" })}
                         groupClassName="rounded-lg border-border focus:border-info focus:ring-ring"
                       />
                     )}
@@ -1066,11 +1073,9 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
                     {!oauthFlowTypeValue && !isDelegateAuth && (
                       <Alert variant="warning" className="mb-4 rounded-lg">
                         <TriangleAlert />
-                        <AlertTitle>This server has no OAuth flow set</AlertTitle>
+                        <AlertTitle>{t("mcp:edit_server.no_oauth_flow", { defaultValue: "This server has no OAuth flow set" })}</AlertTitle>
                         <AlertDescription>
-                          Choose Machine-to-Machine (M2M) or Interactive (PKCE) so LiteLLM authenticates it the way you
-                          intend, then save. Until it is set, LiteLLM falls back to interactive per-user auth and treats
-                          a machine-to-machine credential shape conservatively.
+                          {t("mcp:edit_server.no_oauth_flow_desc", { defaultValue: "Choose Machine-to-Machine (M2M) or Interactive (PKCE) so LiteLLM authenticates it the way you intend, then save. Until it is set, LiteLLM falls back to interactive per-user auth and treats a machine-to-machine credential shape conservatively." })}
                         </AlertDescription>
                       </Alert>
                     )}
@@ -1294,9 +1299,9 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
 
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" onClick={onCancel}>
-                    Cancel
+                    {t("mcp:edit_server.cancel", { defaultValue: "Cancel" })}
                   </Button>
-                  <Button type="submit">Save Changes</Button>
+                  <Button type="submit">{t("mcp:edit_server.save_changes", { defaultValue: "Save Changes" })}</Button>
                 </div>
               </form>
             </MountedFormProvider>
@@ -1309,9 +1314,9 @@ const MCPServerEdit: React.FC<MCPServerEditProps> = ({
 
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={onCancel}>
-                Cancel
+                {t("mcp:edit_server.cancel", { defaultValue: "Cancel" })}
               </Button>
-              <Button onClick={() => void submitForm()}>Save Changes</Button>
+              <Button onClick={() => void submitForm()}>{t("mcp:edit_server.save_changes", { defaultValue: "Save Changes" })}</Button>
             </div>
           </div>
         </TabsContent>

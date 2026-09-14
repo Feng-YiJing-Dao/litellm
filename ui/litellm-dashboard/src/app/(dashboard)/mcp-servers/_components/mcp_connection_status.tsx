@@ -128,7 +128,7 @@ const MCPConnectionStatus: React.FC<MCPConnectionStatusProps> = ({
             {toolsError && !isPreviewForbidden && (
               <Alert variant="destructive">
                 <CircleAlert />
-                <AlertTitle>{t("connection_status.failed", { defaultValue: "Connection Failed" })}</AlertTitle>
+                <AlertTitle>{t("connection_status.failed_title", { defaultValue: "Connection Failed" })}</AlertTitle>
                 <AlertDescription>
                   <div>{toolsError}</div>
                   {toolsErrorStackTrace && (

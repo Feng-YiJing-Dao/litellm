@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +25,7 @@ const PLACEHOLDER = `{
 }`;
 
 const ImportMCPServers: React.FC<ImportMCPServersProps> = ({ accessToken, open, onClose, onImported }) => {
+  const { t } = useTranslation("mcp");
   const [configText, setConfigText] = useState("");
   const [parseError, setParseError] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
@@ -48,12 +50,21 @@ const ImportMCPServers: React.FC<ImportMCPServersProps> = ({ accessToken, open, 
       const response = (await importMCPServers(accessToken, parsed.payload)) as MCPConnectorImportResponse;
       setResult(response);
       if (response.imported.length > 0) {
-        toast.success(`Imported ${response.imported.length} MCP server${response.imported.length === 1 ? "" : "s"}`);
+        toast.success(
+          t("import_connectors.imported_toast", {
+            count: response.imported.length,
+            defaultValue: `Imported ${response.imported.length} MCP server${response.imported.length === 1 ? "" : "s"}`,
+          }),
+        );
         onImported();
       }
     } catch (error) {
       console.error("Failed to import MCP servers:", error);
-      setParseError("Import request failed. Check the proxy logs for details.");
+      setParseError(
+        t("import_connectors.failed_request", {
+          defaultValue: "Import request failed. Check the proxy logs for details.",
+        }),
+      );
     } finally {
       setIsImporting(false);
     }
@@ -63,12 +74,14 @@ const ImportMCPServers: React.FC<ImportMCPServersProps> = ({ accessToken, open, 
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Import MCP Connectors</DialogTitle>
+          <DialogTitle>{t("import_connectors.title", { defaultValue: "Import MCP Connectors" })}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Paste an Anthropic connector configuration: the <code>mcpServers</code> mapping from a Claude Desktop /
-            Claude Code config file, or the <code>mcp_servers</code> array from the Anthropic Messages API.
+            {t("import_connectors.desc", {
+              defaultValue:
+                "Paste an Anthropic connector configuration: the mcpServers mapping from a Claude Desktop / Claude Code config file, or the mcp_servers array from the Anthropic Messages API.",
+            })}
           </p>
           <Textarea
             aria-label="Connector JSON"
@@ -87,13 +100,17 @@ const ImportMCPServers: React.FC<ImportMCPServersProps> = ({ accessToken, open, 
             <div className="space-y-2 text-sm">
               {result.imported.length > 0 && (
                 <div>
-                  <span className="font-semibold">Imported:</span>{" "}
+                  <span className="font-semibold">
+                    {t("import_connectors.imported", { defaultValue: "Imported:" })}
+                  </span>{" "}
                   {result.imported.map((entry) => entry.alias || entry.name).join(", ")}
                 </div>
               )}
               {result.skipped.length > 0 && (
                 <div>
-                  <span className="font-semibold">Skipped:</span>
+                  <span className="font-semibold">
+                    {t("import_connectors.skipped", { defaultValue: "Skipped:" })}
+                  </span>
                   <ul className="ml-4 list-disc">
                     {result.skipped.map((entry) => (
                       <li key={entry.name}>
@@ -105,7 +122,9 @@ const ImportMCPServers: React.FC<ImportMCPServersProps> = ({ accessToken, open, 
               )}
               {result.errors.length > 0 && (
                 <div>
-                  <span className="font-semibold">Failed:</span>
+                  <span className="font-semibold">
+                    {t("import_connectors.failed", { defaultValue: "Failed:" })}
+                  </span>
                   <ul className="ml-4 list-disc">
                     {result.errors.map((entry) => (
                       <li key={entry.name}>
@@ -119,10 +138,12 @@ const ImportMCPServers: React.FC<ImportMCPServersProps> = ({ accessToken, open, 
           )}
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={handleClose} disabled={isImporting}>
-              Close
+              {t("import_connectors.close", { defaultValue: "Close" })}
             </Button>
             <Button onClick={handleImport} disabled={isImporting}>
-              {isImporting ? "Importing..." : "Import"}
+              {isImporting
+                ? t("import_connectors.importing", { defaultValue: "Importing..." })
+                : t("import_connectors.import", { defaultValue: "Import" })}
             </Button>
           </div>
         </div>

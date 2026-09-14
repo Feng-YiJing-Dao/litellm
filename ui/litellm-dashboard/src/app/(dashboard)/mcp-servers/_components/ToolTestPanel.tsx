@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { CircleHelp, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ export function ToolTestPanel({
   error: Error | null;
   onClose: () => void;
 }) {
+  const { t } = useTranslation("mcp");
   const [viewMode, setViewMode] = React.useState<"formatted" | "json">("formatted");
   const [startTime, setStartTime] = React.useState<number | null>(null);
   const [duration, setDuration] = React.useState<number | null>(null);
@@ -118,18 +120,18 @@ export function ToolTestPanel({
   const handleCopyResult = async () => {
     const success = await copyToClipboard(JSON.stringify(result, null, 2));
     if (success) {
-      toast.success("Result copied to clipboard");
+      toast.success(t("toolsets.result_copied", { defaultValue: "Result copied to clipboard" }));
     } else {
-      toast.fromError("Failed to copy result");
+      toast.fromError(t("toolsets.result_copy_failed", { defaultValue: "Failed to copy result" }));
     }
   };
 
   const handleCopyToolName = async () => {
     const success = await copyToClipboard(tool.name);
     if (success) {
-      toast.success("Tool name copied to clipboard");
+      toast.success(t("toolsets.name_copied", { defaultValue: "Tool name copied to clipboard" }));
     } else {
-      toast.fromError("Failed to copy tool name");
+      toast.fromError(t("toolsets.name_copy_failed", { defaultValue: "Failed to copy tool name" }));
     }
   };
 
@@ -148,11 +150,13 @@ export function ToolTestPanel({
           )}
           <div className="flex-1 min-w-0">
             <div className="flex items-center space-x-2 mb-1">
-              <h2 className="text-lg font-semibold text-foreground">Test Tool:</h2>
+              <h2 className="text-lg font-semibold text-foreground">
+                {t("toolsets.test_tool", { defaultValue: "Test Tool" })}:
+              </h2>
               <div
                 className="group inline-flex items-center space-x-1 bg-muted hover:bg-accent px-3 py-1 rounded-md cursor-pointer transition-colors border border-border"
                 onClick={handleCopyToolName}
-                title="Click to copy tool name"
+                title={t("toolsets.click_to_copy_name", { defaultValue: "Click to copy tool name" })}
               >
                 <span className="font-mono text-foreground font-medium text-sm">{tool.name}</span>
                 <svg
@@ -171,7 +175,9 @@ export function ToolTestPanel({
               </div>
             </div>
             <p className="text-xs text-muted-foreground">{tool.description}</p>
-            <p className="text-xs text-muted-foreground">Provider: {tool.mcp_info.server_name}</p>
+            <p className="text-xs text-muted-foreground">
+              {t("toolsets.provider", { defaultValue: "Provider" })}: {tool.mcp_info.server_name}
+            </p>
           </div>
         </div>
         <Button
@@ -191,13 +197,19 @@ export function ToolTestPanel({
         <div className="bg-card border border-border rounded-lg">
           <div className="border-b border-border px-4 py-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-foreground">Input Parameters</h3>
+              <h3 className="text-sm font-semibold text-foreground">
+                {t("toolsets.input_parameters", { defaultValue: "Input Parameters" })}
+              </h3>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger
                     render={<CircleHelp className="size-4 cursor-help text-muted-foreground hover:text-foreground" />}
                   />
-                  <TooltipContent>Configure the input parameters for this tool call</TooltipContent>
+                  <TooltipContent>
+                    {t("toolsets.configure_params_tooltip", {
+                      defaultValue: "Configure the input parameters for this tool call",
+                    })}
+                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
@@ -218,7 +230,9 @@ export function ToolTestPanel({
         {/* Right Column - Tool Result */}
         <div className="bg-card border border-border rounded-lg">
           <div className="border-b border-border px-4 py-2">
-            <h3 className="text-sm font-semibold text-foreground">Tool Result</h3>
+            <h3 className="text-sm font-semibold text-foreground">
+              {t("toolsets.test_result", { defaultValue: "Tool Result" })}
+            </h3>
           </div>
 
           <div className="p-4">
@@ -241,9 +255,13 @@ export function ToolTestPanel({
                       />
                     </svg>
                   </div>
-                  <h4 className="text-sm font-medium text-foreground mb-1">Ready to Call Tool</h4>
+                  <h4 className="text-sm font-medium text-foreground mb-1">
+                    {t("toolsets.ready_to_call", { defaultValue: "Ready to Call Tool" })}
+                  </h4>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Configure the input parameters and click &quot;Call Tool&quot; to see the results here.
+                    {t("toolsets.ready_to_call_desc", {
+                      defaultValue: 'Configure the input parameters and click "Call Tool" to see the results here.',
+                    })}
                   </p>
                 </div>
               </div>
@@ -262,7 +280,9 @@ export function ToolTestPanel({
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <h4 className="text-xs font-medium text-success">Tool executed successfully</h4>
+                        <h4 className="text-xs font-medium text-success">
+                          {t("toolsets.executed_success", { defaultValue: "Tool executed successfully" })}
+                        </h4>
                         {duration !== null && (
                           <span className="text-xs text-success ml-1">• {(duration / 1000).toFixed(2)}s</span>
                         )}
@@ -278,7 +298,7 @@ export function ToolTestPanel({
                                 : "text-success hover:text-success/80"
                             }`}
                           >
-                            Formatted
+                            {t("toolsets.formatted_view", { defaultValue: "Formatted" })}
                           </button>
                           <button
                             onClick={() => setViewMode("json")}
@@ -286,14 +306,14 @@ export function ToolTestPanel({
                               viewMode === "json" ? "bg-success/15 text-success" : "text-success hover:text-success/80"
                             }`}
                           >
-                            JSON
+                            {t("toolsets.json_view", { defaultValue: "JSON" })}
                           </button>
                         </div>
 
                         <button
                           onClick={handleCopyResult}
                           className="p-1 hover:bg-success/15 rounded-sm text-success"
-                          title="Copy response"
+                          title={t("toolsets.copy_response", { defaultValue: "Copy response" })}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -322,8 +342,12 @@ export function ToolTestPanel({
                         <div className="animate-spin rounded-full h-8 w-8 border-2 border-border"></div>
                         <div className="animate-spin rounded-full h-8 w-8 border-2 border-info border-t-transparent absolute top-0"></div>
                       </div>
-                      <p className="text-sm font-medium mt-3">Calling tool...</p>
-                      <p className="text-xs text-muted-foreground mt-1">Please wait while we process your request</p>
+                      <p className="text-sm font-medium mt-3">
+                        {t("toolsets.calling_tool", { defaultValue: "Calling tool..." })}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {t("toolsets.calling_tool_desc", { defaultValue: "Please wait while we process your request" })}
+                      </p>
                     </div>
                   )}
 
@@ -347,7 +371,9 @@ export function ToolTestPanel({
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-1">
-                            <h4 className="text-xs font-medium text-destructive">Tool Call Failed</h4>
+                            <h4 className="text-xs font-medium text-destructive">
+                              {t("toolsets.execution_failed", { defaultValue: "Tool Call Failed" })}
+                            </h4>
                             {duration !== null && (
                               <span className="text-xs text-destructive">• {(duration / 1000).toFixed(2)}s</span>
                             )}
@@ -374,7 +400,7 @@ export function ToolTestPanel({
                               <div>
                                 <div className="bg-muted px-3 py-1 border-b border-border">
                                   <span className="text-xs font-medium text-foreground uppercase tracking-wide">
-                                    Text Response
+                                    {t("toolsets.text_response", { defaultValue: "Text Response" })}
                                   </span>
                                 </div>
                                 <div className="p-3">
@@ -463,7 +489,7 @@ export function ToolTestPanel({
                               <div>
                                 <div className="bg-muted px-3 py-1 border-b border-border">
                                   <span className="text-xs font-medium text-foreground uppercase tracking-wide">
-                                    Image Response
+                                    {t("toolsets.image_response", { defaultValue: "Image Response" })}
                                   </span>
                                 </div>
                                 <div className="p-3">
@@ -483,7 +509,7 @@ export function ToolTestPanel({
                               <div>
                                 <div className="bg-muted px-3 py-1 border-b border-border">
                                   <span className="text-xs font-medium text-foreground uppercase tracking-wide">
-                                    Embedded Resource
+                                    {t("toolsets.embedded_resource", { defaultValue: "Embedded Resource" })}
                                   </span>
                                 </div>
                                 <div className="p-3">
@@ -505,7 +531,8 @@ export function ToolTestPanel({
                                     </div>
                                     <div className="flex-1">
                                       <p className="text-xs font-medium text-info">
-                                        Resource Type: {content.resource_type}
+                                        {t("toolsets.resource_type", { defaultValue: "Resource Type" })}:{" "}
+                                        {content.resource_type}
                                       </p>
                                       {content.url && (
                                         <a
@@ -514,7 +541,7 @@ export function ToolTestPanel({
                                           rel="noopener noreferrer"
                                           className="inline-flex items-center text-xs text-info hover:underline mt-1"
                                         >
-                                          View Resource
+                                          {t("toolsets.view_resource", { defaultValue: "View Resource" })}
                                           <svg className="ml-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
                                             <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />

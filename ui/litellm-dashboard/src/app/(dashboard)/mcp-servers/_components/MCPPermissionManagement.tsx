@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { MultiSelect } from "@/components/shared/MultiSelect";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { ChevronRight, CircleMinus, Info, Plus, TriangleAlert, X } from "lucide-react";
@@ -102,6 +103,7 @@ const MCPPermissionManagement: React.FC<MCPPermissionManagementProps> = ({
   mcpServer,
   mountedAuthType,
 }) => {
+  const { t } = useTranslation("mcp");
   const { setValue } = useFormContext<MountedFormValues>();
   const isOAuth2 = mountedAuthType === AUTH_TYPE.OAUTH2;
   const isNoneAuth = mountedAuthType === AUTH_TYPE.NONE || mountedAuthType == null;
@@ -186,10 +188,14 @@ const MCPPermissionManagement: React.FC<MCPPermissionManagementProps> = ({
         <span className="flex items-center">
           <span className="flex items-center space-x-2">
             <span className="w-2 h-2 bg-info rounded-full"></span>
-            <span className="text-lg font-semibold text-foreground">Permission Management / Access Control</span>
+            <span className="text-lg font-semibold text-foreground">
+              {t("permission_management.title", { defaultValue: "Permission Management / Access Control" })}
+            </span>
           </span>
           <span className="text-sm text-muted-foreground ml-4">
-            Configure access permissions and security settings (Optional)
+            {t("permission_management.subtitle", {
+              defaultValue: "Configure access permissions and security settings (Optional)",
+            })}
           </span>
         </span>
         <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-data-panel-open:rotate-90" />
@@ -199,13 +205,19 @@ const MCPPermissionManagement: React.FC<MCPPermissionManagementProps> = ({
           <div className="flex items-start justify-between gap-4">
             <div>
               <span className="text-sm font-medium text-foreground flex items-center">
-                Allow All LiteLLM Keys
-                <SimpleTooltip content="When enabled, every API key can access this MCP server.">
+                {t("permission_management.allow_all_keys", { defaultValue: "Allow All LiteLLM Keys" })}
+                <SimpleTooltip
+                  content={t("permission_management.allow_all_keys_tooltip", {
+                    defaultValue: "When enabled, every API key can access this MCP server.",
+                  })}
+                >
                   <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                 </SimpleTooltip>
               </span>
               <p className="text-sm text-muted-foreground mt-1">
-                Enable if this server should be &quot;public&quot; to all keys.
+                {t("permission_management.allow_all_keys_desc", {
+                  defaultValue: 'Enable if this server should be "public" to all keys.',
+                })}
               </p>
             </div>
             <MountedFormField name="allow_all_keys" defaultValue={mcpServer?.allow_all_keys ?? false} className="mb-0">
@@ -216,13 +228,20 @@ const MCPPermissionManagement: React.FC<MCPPermissionManagementProps> = ({
           <div className="flex items-start justify-between gap-4">
             <div>
               <span className="text-sm font-medium text-foreground flex items-center">
-                Internal network only
-                <SimpleTooltip content="When on, only requests from within your internal network are accepted. Turn off to allow external clients (other clusters, ChatGPT, etc). API key authentication is always required regardless of this setting.">
+                {t("permission_management.internal_network_only", { defaultValue: "Internal network only" })}
+                <SimpleTooltip
+                  content={t("permission_management.internal_network_tooltip", {
+                    defaultValue:
+                      "When on, only requests from within your internal network are accepted. Turn off to allow external clients (other clusters, ChatGPT, etc). API key authentication is always required regardless of this setting.",
+                  })}
+                >
                   <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                 </SimpleTooltip>
               </span>
               <p className="text-sm text-muted-foreground mt-1">
-                Turn on to restrict access to callers within your internal network only.
+                {t("permission_management.internal_network_desc", {
+                  defaultValue: "Turn on to restrict access to callers within your internal network only.",
+                })}
               </p>
             </div>
             <MountedFormField name="available_on_public_internet" defaultValue={true} className="mb-0">
@@ -234,13 +253,18 @@ const MCPPermissionManagement: React.FC<MCPPermissionManagementProps> = ({
             <div className="flex items-start justify-between gap-4">
               <div>
                 <span className="text-sm font-medium text-foreground flex items-center">
-                  Delegate auth to upstream (PKCE passthrough)
+                  {t("permission_management.delegate_auth", {
+                    defaultValue: "Delegate auth to upstream (PKCE passthrough)",
+                  })}
                   <SimpleTooltip content="When on, LiteLLM skips its own API key/SSO check for this server and lets the client complete PKCE directly with the upstream MCP server. Only honored when Auth Type is oauth2. No spend tracking or per-key rate limiting will run on this route.">
                     <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                   </SimpleTooltip>
                 </span>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Bypass LiteLLM auth so clients authenticate directly with the upstream OAuth MCP server.
+                  {t("permission_management.delegate_auth_desc", {
+                    defaultValue:
+                      "Bypass LiteLLM auth so clients authenticate directly with the upstream OAuth MCP server.",
+                  })}
                 </p>
               </div>
               <MountedFormField
@@ -259,14 +283,16 @@ const MCPPermissionManagement: React.FC<MCPPermissionManagementProps> = ({
             <div className="flex items-start justify-between gap-4">
               <div>
                 <span className="text-sm font-medium text-foreground flex items-center">
-                  OAuth pass-through
+                  {t("permission_management.oauth_passthrough", { defaultValue: "OAuth pass-through" })}
                   <SimpleTooltip content="When on, this server is treated as an OAuth pass-through: the gateway proxies the upstream /.well-known/oauth-protected-resource metadata, emits spec-compliant 401 challenges when no bearer is supplied, and propagates upstream 401/403 responses. Only honored when Auth Type is None and 'Authorization' is in Extra Headers.">
                     <Info className="ml-2 size-4 text-info hover:text-info/80 cursor-help" />
                   </SimpleTooltip>
                 </span>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Forward upstream OAuth discovery and 401 challenges so clients negotiate OAuth directly with the
-                  upstream MCP server.
+                  {t("permission_management.oauth_passthrough_desc", {
+                    defaultValue:
+                      "Forward upstream OAuth discovery and 401 challenges so clients negotiate OAuth directly with the upstream MCP server.",
+                  })}
                 </p>
               </div>
               <MountedFormField
