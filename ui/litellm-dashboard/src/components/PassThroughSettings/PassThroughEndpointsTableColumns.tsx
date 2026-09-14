@@ -30,7 +30,7 @@ function HeaderWithTooltip({ title, tooltip }: { title: string; tooltip: string 
   );
 }
 
-function HeadersCell({ value }: { value: object }) {
+function HeadersCell({ value, t }: { value: object; t?: (key: any, options?: any) => any }) {
   const [showHeaders, setShowHeaders] = useState(false);
   const headerString = JSON.stringify(value);
 
@@ -40,7 +40,15 @@ function HeadersCell({ value }: { value: object }) {
       <button
         type="button"
         onClick={() => setShowHeaders(!showHeaders)}
-        aria-label={showHeaders ? "Hide headers" : "Show headers"}
+        aria-label={
+          showHeaders
+            ? t
+              ? t("models:passthrough.hide_headers", { defaultValue: "Hide headers" })
+              : "Hide headers"
+            : t
+              ? t("models:passthrough.show_headers", { defaultValue: "Show headers" })
+              : "Show headers"
+        }
         className="rounded-sm p-1 hover:bg-muted"
       >
         {showHeaders ? (
@@ -53,9 +61,19 @@ function HeadersCell({ value }: { value: object }) {
   );
 }
 
-function MethodsCell({ methods }: { methods: string[] | undefined }) {
+function MethodsCell({
+  methods,
+  t,
+}: {
+  methods: string[] | undefined;
+  t?: (key: any, options?: any) => any;
+}) {
   if (!methods || methods.length === 0) {
-    return <Badge variant="secondary">ALL</Badge>;
+    return (
+      <Badge variant="secondary">
+        {t ? t("models:passthrough.table.all_methods", { defaultValue: "ALL" }) : "ALL"}
+      </Badge>
+    );
   }
   return (
     <div className="flex flex-wrap gap-1">
@@ -72,15 +90,23 @@ interface EndpointRowActionsProps {
   endpoint: passThroughItem;
   onEndpointClick: (endpointId: string) => void;
   onDeleteClick: (endpointId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
-function EndpointRowActions({ endpoint, onEndpointClick, onDeleteClick }: EndpointRowActionsProps) {
+function EndpointRowActions({ endpoint, onEndpointClick, onDeleteClick, t }: EndpointRowActionsProps) {
   const endpointId = endpoint.id;
   const isFromConfig = endpoint.is_from_config ?? false;
+  const configHint = t
+    ? t("models:passthrough.config_endpoint_hint", { defaultValue: CONFIG_ENDPOINT_HINT })
+    : CONFIG_ENDPOINT_HINT;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open endpoint actions"
+        aria-label={
+          t
+            ? t("models:passthrough.open_endpoint_actions", { defaultValue: "Open endpoint actions" })
+            : "Open endpoint actions"
+        }
         data-testid={`endpoint-actions-${endpointId || endpoint.path}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >
@@ -93,7 +119,7 @@ function EndpointRowActions({ endpoint, onEndpointClick, onDeleteClick }: Endpoi
           onClick={() => !isFromConfig && endpointId && onEndpointClick(endpointId)}
         >
           <Pencil />
-          Edit
+          {t ? t("models:passthrough.edit", { defaultValue: "Edit" }) : "Edit"}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -103,11 +129,11 @@ function EndpointRowActions({ endpoint, onEndpointClick, onDeleteClick }: Endpoi
           onClick={() => !isFromConfig && endpointId && onDeleteClick(endpointId)}
         >
           <Trash2 />
-          Delete
+          {t ? t("models:passthrough.delete", { defaultValue: "Delete" }) : "Delete"}
         </DropdownMenuItem>
         {isFromConfig && (
           <div data-testid="endpoint-config-hint" className="px-2 py-1.5 text-xs text-muted-foreground">
-            {CONFIG_ENDPOINT_HINT}
+            {configHint}
           </div>
         )}
       </DropdownMenuContent>
@@ -118,108 +144,144 @@ function EndpointRowActions({ endpoint, onEndpointClick, onDeleteClick }: Endpoi
 interface PassThroughEndpointsTableColumnsDeps {
   onEndpointClick: (endpointId: string) => void;
   onDeleteClick: (endpointId: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getPassThroughEndpointsTableColumns = ({
   onEndpointClick,
   onDeleteClick,
-}: PassThroughEndpointsTableColumnsDeps): ColumnDef<passThroughItem>[] => [
-  {
-    id: "id",
-    accessorKey: "id",
-    meta: { title: "ID" },
-    header: "ID",
-    size: 190,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const endpointId = row.original.id;
-      if (!endpointId || row.original.is_from_config) {
-        return <span className="font-mono text-xs text-muted-foreground">—</span>;
-      }
-      return (
-        <IdentityCell
-          title={endpointId}
-          titleClassName="font-mono text-xs font-normal"
-          onClick={() => onEndpointClick(endpointId)}
+  t,
+}: PassThroughEndpointsTableColumnsDeps): ColumnDef<passThroughItem>[] => {
+  const tr = (key: string, def: string, opts?: any) => (t ? t(key, { defaultValue: def, ...opts }) : def);
+  return [
+    {
+      id: "id",
+      accessorKey: "id",
+      meta: { title: "ID" },
+      header: "ID",
+      size: 190,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const endpointId = row.original.id;
+        if (!endpointId || row.original.is_from_config) {
+          return <span className="font-mono text-xs text-muted-foreground">—</span>;
+        }
+        return (
+          <IdentityCell
+            title={endpointId}
+            titleClassName="font-mono text-xs font-normal"
+            onClick={() => onEndpointClick(endpointId)}
+          />
+        );
+      },
+    },
+    {
+      id: "source",
+      meta: { title: tr("models:passthrough.table.col_source", "Source"), skeleton: "badge" },
+      header: tr("models:passthrough.table.col_source", "Source"),
+      size: 100,
+      enableSorting: false,
+      cell: ({ row }) => {
+        const isFromConfig = row.original.is_from_config ?? false;
+        return (
+          <StatusBadge
+            tone={isFromConfig ? "neutral" : "info"}
+            label={
+              isFromConfig
+                ? tr("models:passthrough.table.source_config", "Config")
+                : tr("models:passthrough.table.source_db", "DB")
+            }
+          />
+        );
+      },
+    },
+    {
+      id: "path",
+      accessorKey: "path",
+      meta: { title: tr("models:passthrough.table.col_path", "Path Prefix") },
+      header: tr("models:passthrough.table.col_path", "Path Prefix"),
+      size: 200,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <span className="block max-w-60 truncate text-sm font-medium" title={row.original.path}>
+          {row.original.path}
+        </span>
+      ),
+    },
+    {
+      id: "target",
+      accessorKey: "target",
+      meta: { title: tr("models:passthrough.table.col_target", "Target URL") },
+      header: tr("models:passthrough.table.col_target", "Target URL"),
+      size: 240,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <span className="block max-w-72 truncate text-sm" title={row.original.target}>
+          {row.original.target}
+        </span>
+      ),
+    },
+    {
+      id: "methods",
+      meta: { title: tr("models:passthrough.table.col_methods", "Methods"), skeleton: "chips" },
+      header: () => (
+        <HeaderWithTooltip
+          title={tr("models:passthrough.table.col_methods", "Methods")}
+          tooltip={tr("models:passthrough.methods_hint", "HTTP methods supported by this endpoint")}
         />
-      );
+      ),
+      size: 150,
+      enableSorting: false,
+      cell: ({ row }) => <MethodsCell methods={row.original.methods} t={t} />,
     },
-  },
-  {
-    id: "source",
-    meta: { title: "Source", skeleton: "badge" },
-    header: "Source",
-    size: 100,
-    enableSorting: false,
-    cell: ({ row }) => {
-      const isFromConfig = row.original.is_from_config ?? false;
-      return <StatusBadge tone={isFromConfig ? "neutral" : "info"} label={isFromConfig ? "Config" : "DB"} />;
+    {
+      id: "auth",
+      accessorKey: "auth",
+      meta: { title: tr("models:passthrough.table.col_auth", "Authentication"), skeleton: "badge" },
+      header: () => (
+        <HeaderWithTooltip
+          title={tr("models:passthrough.table.col_auth", "Authentication")}
+          tooltip={tr("models:passthrough.security_desc", "LiteLLM Virtual Key required to call endpoint")}
+        />
+      ),
+      size: 140,
+      enableSorting: false,
+      cell: ({ row }) => (
+        <StatusBadge
+          tone={row.original.auth ? "success" : "neutral"}
+          label={
+            row.original.auth
+              ? tr("models:passthrough.table.yes", "Yes")
+              : tr("models:passthrough.table.no", "No")
+          }
+        />
+      ),
     },
-  },
-  {
-    id: "path",
-    accessorKey: "path",
-    meta: { title: "Path" },
-    header: "Path",
-    size: 200,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <span className="block max-w-60 truncate text-sm font-medium" title={row.original.path}>
-        {row.original.path}
-      </span>
-    ),
-  },
-  {
-    id: "target",
-    accessorKey: "target",
-    meta: { title: "Target" },
-    header: "Target",
-    size: 240,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <span className="block max-w-72 truncate text-sm" title={row.original.target}>
-        {row.original.target}
-      </span>
-    ),
-  },
-  {
-    id: "methods",
-    meta: { title: "Methods", skeleton: "chips" },
-    header: () => <HeaderWithTooltip title="Methods" tooltip="HTTP methods supported by this endpoint" />,
-    size: 150,
-    enableSorting: false,
-    cell: ({ row }) => <MethodsCell methods={row.original.methods} />,
-  },
-  {
-    id: "auth",
-    accessorKey: "auth",
-    meta: { title: "Authentication", skeleton: "badge" },
-    header: () => <HeaderWithTooltip title="Authentication" tooltip="LiteLLM Virtual Key required to call endpoint" />,
-    size: 140,
-    enableSorting: false,
-    cell: ({ row }) => (
-      <StatusBadge tone={row.original.auth ? "success" : "neutral"} label={row.original.auth ? "Yes" : "No"} />
-    ),
-  },
-  {
-    id: "headers",
-    meta: { title: "Headers" },
-    header: "Headers",
-    size: 180,
-    enableSorting: false,
-    cell: ({ row }) => <HeadersCell value={row.original.headers || {}} />,
-  },
-  {
-    id: "actions",
-    meta: { className: "text-right", headerClassName: "text-right" },
-    header: () => <span className="sr-only">Actions</span>,
-    size: 64,
-    enableSorting: false,
-    enableHiding: false,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <EndpointRowActions endpoint={row.original} onEndpointClick={onEndpointClick} onDeleteClick={onDeleteClick} />
-      </div>
-    ),
-  },
-];
+    {
+      id: "headers",
+      meta: { title: tr("models:passthrough.table.col_headers", "Headers") },
+      header: tr("models:passthrough.table.col_headers", "Headers"),
+      size: 180,
+      enableSorting: false,
+      cell: ({ row }) => <HeadersCell value={row.original.headers || {}} t={t} />,
+    },
+    {
+      id: "actions",
+      meta: { className: "text-right", headerClassName: "text-right" },
+      header: () => <span className="sr-only">{tr("models:passthrough.table.actions", "Actions")}</span>,
+      size: 64,
+      enableSorting: false,
+      enableHiding: false,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          <EndpointRowActions
+            endpoint={row.original}
+            onEndpointClick={onEndpointClick}
+            onDeleteClick={onDeleteClick}
+            t={t}
+          />
+        </div>
+      ),
+    },
+  ];
+};

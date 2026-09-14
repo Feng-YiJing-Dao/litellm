@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FormProvider, useWatch, type UseFormReturn } from "react-hook-form";
 import { getSSOSettings, updateSSOSettings } from "./networking";
 import { toast } from "@/lib/toast";
@@ -55,6 +56,7 @@ const SSOModals: React.FC<SSOModalsProps> = ({
   accessToken,
   ssoConfigured = false, // Default to false if not provided
 }) => {
+  const { t } = useTranslation(["settings", "admin", "common"]);
   const [isClearConfirmModalVisible, setIsClearConfirmModalVisible] = useState(false);
   const provider = useWatch({ control: form.control, name: "sso_provider" });
   const useRoleMappings = useWatch({ control: form.control, name: "use_role_mappings" });
@@ -237,10 +239,15 @@ const SSOModals: React.FC<SSOModalsProps> = ({
       // Close the main SSO modal and trigger refresh
       handleAddSSOOk();
 
-      toast.success("SSO settings cleared successfully");
+      toast.success(
+        t("settings:sso.clear_success", { defaultValue: "SSO settings cleared successfully" }),
+      );
     } catch (error) {
       console.error("Failed to clear SSO settings:", error);
-      toast.fromError("Failed to clear SSO settings");
+      toast.fromError(
+        t("settings:sso.clear_failed", { defaultValue: "Failed to clear SSO settings: " }) +
+          parseErrorMessage(error),
+      );
     }
   };
 
@@ -250,7 +257,11 @@ const SSOModals: React.FC<SSOModalsProps> = ({
       <Dialog open={isAddSSOModalVisible} onOpenChange={(open) => !open && handleAddSSOCancel()}>
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[800px]">
           <DialogHeader>
-            <DialogTitle>{ssoConfigured ? "Edit SSO Settings" : "Add SSO"}</DialogTitle>
+            <DialogTitle>
+              {ssoConfigured
+                ? t("admin:tabs.edit_sso_btn", { defaultValue: "Edit SSO Settings" })
+                : t("admin:tabs.sso_btn", { defaultValue: "Add SSO" })}
+            </DialogTitle>
           </DialogHeader>
           <FormProvider {...form}>
             <form
@@ -264,7 +275,12 @@ const SSOModals: React.FC<SSOModalsProps> = ({
                 {provider ? renderProviderFields(provider) : null}
                 <ProxyAdminEmailField />
                 <ProxyBaseUrlField />
-                {showRoleMappingToggle && <MappingToggleField name="use_role_mappings" label="Use Role Mappings" />}
+                {showRoleMappingToggle && (
+                  <MappingToggleField
+                    name="use_role_mappings"
+                    label={t("settings:sso.use_role_mappings", { defaultValue: "Use Role Mappings" })}
+                  />
+                )}
                 {useRoleMappings && (
                   <>
                     <GroupClaimField />
@@ -275,10 +291,10 @@ const SSOModals: React.FC<SSOModalsProps> = ({
               <div className="mt-4 flex items-center justify-end gap-2">
                 {ssoConfigured && (
                   <Button type="button" variant="secondary" onClick={() => setIsClearConfirmModalVisible(true)}>
-                    Clear
+                    {t("common:clear", { defaultValue: "Clear" })}
                   </Button>
                 )}
-                <Button type="submit">Save</Button>
+                <Button type="submit">{t("common:save", { defaultValue: "Save" })}</Button>
               </div>
             </form>
           </FormProvider>
@@ -289,16 +305,26 @@ const SSOModals: React.FC<SSOModalsProps> = ({
       <Dialog open={isClearConfirmModalVisible} onOpenChange={(open) => !open && setIsClearConfirmModalVisible(false)}>
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Confirm Clear SSO Settings</DialogTitle>
+            <DialogTitle>
+              {t("settings:sso.delete_modal_title", { defaultValue: "Confirm Clear SSO Settings" })}
+            </DialogTitle>
           </DialogHeader>
-          <p>Are you sure you want to clear all SSO settings? This action cannot be undone.</p>
-          <p>Users will no longer be able to login using SSO after this change.</p>
+          <p>
+            {t("settings:sso.clear_confirm_message_1", {
+              defaultValue: "Are you sure you want to clear all SSO settings? This action cannot be undone.",
+            })}
+          </p>
+          <p>
+            {t("settings:sso.clear_confirm_message_2", {
+              defaultValue: "Users will no longer be able to login using SSO after this change.",
+            })}
+          </p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsClearConfirmModalVisible(false)}>
-              Cancel
+              {t("common:cancel", { defaultValue: "Cancel" })}
             </Button>
             <Button onClick={handleClearSSO} variant="destructive">
-              Yes, Clear
+              {t("settings:sso.yes_clear", { defaultValue: "Yes, Clear" })}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -307,16 +333,26 @@ const SSOModals: React.FC<SSOModalsProps> = ({
       <Dialog open={isInstructionsModalVisible} onOpenChange={(open) => !open && handleInstructionsCancel()}>
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[800px]">
           <DialogHeader>
-            <DialogTitle>SSO Setup Instructions</DialogTitle>
+            <DialogTitle>
+              {t("common:sso_setup_instructions", { defaultValue: "SSO Setup Instructions" })}
+            </DialogTitle>
           </DialogHeader>
-          <p>Follow these steps to complete the SSO setup:</p>
-          <p className="text-sm mt-2">1. DO NOT Exit this TAB</p>
-          <p className="text-sm mt-2">2. Open a new tab, visit your proxy base url</p>
-          <p className="text-sm mt-2">3. Confirm your SSO is configured correctly and you can login on the new Tab</p>
-          <p className="text-sm mt-2">4. If Step 3 is successful, you can close this tab</p>
+          <p>{t("settings:sso.instructions_intro", { defaultValue: "Follow these steps to complete the SSO setup:" })}</p>
+          <p className="text-sm mt-2">{t("settings:sso.step_1", { defaultValue: "1. DO NOT Exit this TAB" })}</p>
+          <p className="text-sm mt-2">
+            {t("settings:sso.step_2", { defaultValue: "2. Open a new tab, visit your proxy base url" })}
+          </p>
+          <p className="text-sm mt-2">
+            {t("settings:sso.step_3", {
+              defaultValue: "3. Confirm your SSO is configured correctly and you can login on the new Tab",
+            })}
+          </p>
+          <p className="text-sm mt-2">
+            {t("settings:sso.step_4", { defaultValue: "4. If Step 3 is successful, you can close this tab" })}
+          </p>
           <div style={{ textAlign: "right", marginTop: "10px" }}>
             <Button type="button" onClick={handleInstructionsOk}>
-              Done
+              {t("common:done", { defaultValue: "Done" })}
             </Button>
           </div>
         </DialogContent>

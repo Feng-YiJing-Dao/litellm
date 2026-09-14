@@ -207,7 +207,16 @@
     "default_role": "Default Role",
     "role_column": "Role",
     "mapped_groups_column": "Mapped Groups",
-    "no_groups_mapped": "No groups mapped"
+    "no_groups_mapped": "No groups mapped",
+    "use_role_mappings": "Use Role Mappings",
+    "clear_confirm_message_1": "Are you sure you want to clear all SSO settings? This action cannot be undone.",
+    "clear_confirm_message_2": "Users will no longer be able to login using SSO after this change.",
+    "yes_clear": "Yes, Clear",
+    "instructions_intro": "Follow these steps to complete the SSO setup:",
+    "step_1": "1. DO NOT Exit this TAB",
+    "step_2": "2. Open a new tab, visit your proxy base url",
+    "step_3": "3. Confirm your SSO is configured correctly and you can login on the new Tab",
+    "step_4": "4. If Step 3 is successful, you can close this tab"
   },
   "cyberark": {
     "title": "CyberArk Conjur",
@@ -232,5 +241,25 @@
     "empty_title": "No CyberArk Configuration Found",
     "empty_desc": "Configure CyberArk Conjur to securely manage provider API keys and secrets for your LiteLLM deployment.",
     "configure_button": "Configure CyberArk"
+  },
+  "scim": {
+    "title": "SCIM Configuration",
+    "description": "System for Cross-domain Identity Management (SCIM) allows you to automatically provision and manage users and groups in LiteLLM.",
+    "tenant_url_title": "SCIM Tenant URL",
+    "tenant_url_desc": "Use this URL in your identity provider SCIM integration settings.",
+    "url_copied": "URL copied to clipboard",
+    "auth_token_title": "Authentication Token",
+    "alert_title": "Using SCIM",
+    "alert_desc": "You need a SCIM token to authenticate with the SCIM API. Create one below and use it in your SCIM provider configuration.",
+    "token_name": "Token Name",
+    "token_placeholder": "SCIM Access Token",
+    "create_token_btn": "Create SCIM Token",
+    "your_token_title": "Your SCIM Token",
+    "copy_token_warning": "Make sure to copy this token now. You will not be able to see it again.",
+    "token_copied": "Token copied to clipboard",
+    "create_another_token": "Create Another Token",
+    "login_required": "You need to be logged in to create a SCIM token",
+    "token_created_success": "SCIM token created successfully",
+    "token_create_failed": "Failed to create SCIM token: "
   }
 }

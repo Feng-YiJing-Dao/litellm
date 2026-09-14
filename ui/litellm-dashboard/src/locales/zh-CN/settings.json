@@ -207,7 +207,16 @@
     "default_role": "默认角色",
     "role_column": "角色",
     "mapped_groups_column": "已映射的用户组",
-    "no_groups_mapped": "未映射任何用户组"
+    "no_groups_mapped": "未映射任何用户组",
+    "use_role_mappings": "启用角色映射",
+    "clear_confirm_message_1": "确定要清除所有 SSO 配置吗？此操作无法撤销。",
+    "clear_confirm_message_2": "清除后，用户将无法再使用 SSO 单点登录。",
+    "yes_clear": "确定清除",
+    "instructions_intro": "请按照以下步骤完成 SSO 验证与配置：",
+    "step_1": "1. 请勿关闭当前标签页",
+    "step_2": "2. 打开新的浏览器标签页，访问您的 Proxy Base URL",
+    "step_3": "3. 验证 SSO 是否已正确配置，并确认可以在新标签页中成功登录",
+    "step_4": "4. 若步骤 3 登录成功，即可安全关闭本引导标签页"
   },
   "cyberark": {
     "title": "CyberArk Conjur 凭证管理",
@@ -232,5 +241,25 @@
     "empty_title": "未找到 CyberArk 配置",
     "empty_desc": "配置 CyberArk Conjur 以安全管理您的 LiteLLM 部署的提供商 API 密钥和机密信息。",
     "configure_button": "配置 CyberArk"
+  },
+  "scim": {
+    "title": "SCIM 目录同步配置",
+    "description": "跨域身份管理系统 (SCIM) 允许您在 LiteLLM 中通过企业身份源自动同步和管理用户与群组。",
+    "tenant_url_title": "SCIM 租户 URL",
+    "tenant_url_desc": "在您的身份提供商 (IdP) 的 SCIM 集成设置中使用此 URL。",
+    "url_copied": "URL 已复制到剪贴板",
+    "auth_token_title": "身份认证令牌",
+    "alert_title": "关于 SCIM",
+    "alert_desc": "您需要一个 SCIM 令牌来向 SCIM API 进行身份认证。在下方创建一个令牌并将其配置到您的 SCIM 身份提供商中。",
+    "token_name": "令牌名称",
+    "token_placeholder": "SCIM Access Token",
+    "create_token_btn": "创建 SCIM 令牌",
+    "your_token_title": "您的 SCIM 访问令牌",
+    "copy_token_warning": "请务必立即复制此令牌。离开本页面后将无法再次查看该明文令牌。",
+    "token_copied": "令牌已复制到剪贴板",
+    "create_another_token": "创建新令牌",
+    "login_required": "您需要先登录才能创建 SCIM 令牌",
+    "token_created_success": "SCIM 令牌创建成功",
+    "token_create_failed": "创建 SCIM 令牌失败: "
   }
 }
