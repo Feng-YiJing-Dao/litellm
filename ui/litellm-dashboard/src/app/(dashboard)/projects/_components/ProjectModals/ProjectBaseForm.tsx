@@ -188,7 +188,9 @@ export function ProjectBaseForm({ form, advancedOpen, onAdvancedOpenChange }: Pr
           })}
           description={
             !selectedTeam
-              ? t("projects:modal.select_team_first", { defaultValue: "Select a team first to see available models" })
+              ? t("projects:modal.select_team_first_desc", {
+                  defaultValue: "Select a team first to see available models",
+                })
               : undefined
           }
         >

@@ -24,7 +24,7 @@
     "loading": "正在加载项目…"
   },
   "modal": {
-    "create_title": "创建项目",
+    "create_title": "创建新项目",
     "edit_title": "编辑项目",
     "basic_info": "基本信息",
     "name": "项目名称",
@@ -36,6 +36,7 @@
     "allowed_models_label": "可用模型 (限定于所选团队模型范围)",
     "select_models_placeholder": "选择模型",
     "select_team_first": "请先选择团队",
+    "select_team_first_desc": "请先选择团队以查看可用模型",
     "budget": "最高预算 (USD)",
     "budget_reset": "预算重置周期",
     "models": "可用模型",
@@ -48,7 +49,11 @@
     "save": "保存修改",
     "create": "创建项目",
     "creating": "创建中...",
-    "saving": "保存中..."
+    "saving": "保存中...",
+    "create_success": "项目创建成功",
+    "create_failed": "创建项目失败",
+    "update_success": "项目更新成功",
+    "update_failed": "更新项目失败"
   },
   "detail": {
     "back": "返回项目列表",
@@ -56,6 +61,33 @@
     "keys": "虚拟密钥",
     "settings": "设置",
     "edit": "编辑",
-    "delete": "删除"
+    "delete": "删除",
+    "not_found": "未找到该项目",
+    "loading": "加载中",
+    "loading_team": "正在加载团队",
+    "copy_id": "复制项目 ID",
+    "copy_team_id": "复制团队 ID",
+    "project_details": "项目详情",
+    "description": "项目说明",
+    "created": "创建时间",
+    "last_updated": "最后更新",
+    "by": "由",
+    "budget": "预算",
+    "of_budget": "最高预算 ${{budget}}",
+    "no_limit": "无预算上限",
+    "utilized": "已使用 {{percent}}%",
+    "spend_by_model": "按模型消费明细",
+    "no_model_spend": "暂无模型消费记录",
+    "team": "所属团队",
+    "all_models": "所有模型",
+    "unlimited": " (不限)",
+    "members": "成员数",
+    "no_team": "未分配所属团队",
+    "keys_title": "项目密钥",
+    "filter_keys_placeholder": "按密钥名称过滤...",
+    "clear_key_filter": "清除密钥过滤",
+    "no_keys_found": "暂无密钥",
+    "no_keys_desc": "在此项目中创建的密钥将在此处显示。",
+    "loading_keys": "正在加载密钥…"
   }
 }

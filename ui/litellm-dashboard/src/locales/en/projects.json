@@ -24,7 +24,7 @@
     "loading": "Loading projects…"
   },
   "modal": {
-    "create_title": "Create Project",
+    "create_title": "Create New Project",
     "edit_title": "Edit Project",
     "basic_info": "Basic Information",
     "name": "Project Name",
@@ -36,6 +36,7 @@
     "allowed_models_label": "Allowed Models (scoped to selected team's models)",
     "select_models_placeholder": "Select models",
     "select_team_first": "Select a team first",
+    "select_team_first_desc": "Select a team first to see available models",
     "budget": "Max Budget (USD)",
     "budget_reset": "Reset Budget",
     "models": "Models",
@@ -48,7 +49,11 @@
     "save": "Save Changes",
     "create": "Create Project",
     "creating": "Creating...",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "create_success": "Project created successfully",
+    "create_failed": "Failed to create project",
+    "update_success": "Project updated successfully",
+    "update_failed": "Failed to update project"
   },
   "detail": {
     "back": "Back to Projects",
@@ -56,6 +61,33 @@
     "keys": "Virtual Keys",
     "settings": "Settings",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "not_found": "Project not found",
+    "loading": "Loading",
+    "loading_team": "Loading team",
+    "copy_id": "Copy project ID",
+    "copy_team_id": "Copy team ID",
+    "project_details": "Project Details",
+    "description": "Description",
+    "created": "Created",
+    "last_updated": "Last Updated",
+    "by": "by",
+    "budget": "Budget",
+    "of_budget": "of ${{budget}} budget",
+    "no_limit": "No budget limit",
+    "utilized": "{{percent}}% utilized",
+    "spend_by_model": "Spend by Model",
+    "no_model_spend": "No model spend recorded yet",
+    "team": "Team",
+    "all_models": "All models",
+    "unlimited": " (Unlimited)",
+    "members": "Members",
+    "no_team": "No team assigned",
+    "keys_title": "Keys",
+    "filter_keys_placeholder": "Filter by key name...",
+    "clear_key_filter": "Clear key filter",
+    "no_keys_found": "No keys found",
+    "no_keys_desc": "Keys created in this project will show up here.",
+    "loading_keys": "Loading keys…"
   }
 }

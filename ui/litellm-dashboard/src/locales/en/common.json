@@ -43,6 +43,7 @@
   "pending": "Pending",
   "blocked": "Blocked",
   "all": "All",
+  "never": "Never",
   "name": "Name",
   "description": "Description",
   "created_at": "Created At",

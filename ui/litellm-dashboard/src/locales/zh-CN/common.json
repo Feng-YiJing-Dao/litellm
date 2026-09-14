@@ -43,6 +43,7 @@
   "pending": "待处理",
   "blocked": "已阻止",
   "all": "全部",
+  "never": "从不",
   "name": "名称",
   "description": "描述",
   "created_at": "创建时间",
