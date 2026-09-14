@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { EyeOff, Filter, Info, Ban, X } from "lucide-react";
 import { PiiEntityCategory } from "@/components/guardrails/types";
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +43,7 @@ export interface CategoryFilterProps {
 }
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, selectedCategories, onChange }) => {
+  const { t } = useTranslation("guardrails");
   const anchor = useComboboxAnchor();
   const categoryNames = categories.map((cat) => cat.category);
 
@@ -49,7 +51,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, sele
     <div>
       <div className="mb-2 flex items-center">
         <Filter className="mr-1 size-4 text-muted-foreground" />
-        <span className="font-medium text-muted-foreground">Filter by category</span>
+        <span className="font-medium text-muted-foreground">{t("pii.filter_by_category", { defaultValue: "Filter by category" })}</span>
       </div>
       <Combobox items={categoryNames} value={selectedCategories} onValueChange={onChange} multiple>
         <ComboboxChips render={<div ref={anchor} />} className="mb-4 w-full">
@@ -63,7 +65,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ categories, sele
           />
         </ComboboxChips>
         <ComboboxContent anchor={anchor}>
-          <ComboboxEmpty>No matching categories</ComboboxEmpty>
+          <ComboboxEmpty>{t("pii.no_matching_categories", { defaultValue: "No matching categories" })}</ComboboxEmpty>
           <ComboboxList>
             {(category: string) => (
               <ComboboxItem key={category} value={category}>
@@ -85,11 +87,12 @@ export interface QuickActionsProps {
 }
 
 export const QuickActions: React.FC<QuickActionsProps> = ({ onSelectAll, onUnselectAll, hasSelectedEntities }) => {
+  const { t } = useTranslation("guardrails");
   return (
     <div className="mb-6 rounded-lg border border-border bg-muted/40 p-5 shadow-xs">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center">
-          <span className="text-base font-semibold">Quick Actions</span>
+          <span className="text-base font-semibold">{t("pii.quick_actions", { defaultValue: "Quick Actions" })}</span>
           <Tooltip>
             <TooltipTrigger
               render={
@@ -98,7 +101,7 @@ export const QuickActions: React.FC<QuickActionsProps> = ({ onSelectAll, onUnsel
                 </span>
               }
             />
-            <TooltipContent>Apply action to all PII types at once</TooltipContent>
+            <TooltipContent>{t("pii.apply_to_all", { defaultValue: "Apply action to all PII types at once" })}</TooltipContent>
           </Tooltip>
         </div>
         <Button variant="outline" onClick={onUnselectAll} disabled={!hasSelectedEntities}>

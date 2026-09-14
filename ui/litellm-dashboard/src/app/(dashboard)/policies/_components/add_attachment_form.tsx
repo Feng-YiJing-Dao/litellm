@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { CircleHelp } from "lucide-react";
 import { z } from "zod/v4";
 import { Policy } from "@/components/policies/types";
@@ -90,6 +91,7 @@ const AddAttachmentForm: React.FC<AddAttachmentFormProps> = ({
   policies,
   createAttachment,
 }) => {
+  const { t } = useTranslation("policies");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [scopeType, setScopeType] = useState<ScopeType>("global");
   const [availableTeams, setAvailableTeams] = useState<string[]>([]);
@@ -234,7 +236,7 @@ const AddAttachmentForm: React.FC<AddAttachmentFormProps> = ({
     <Dialog open={visible} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Create Policy Attachment</DialogTitle>
+          <DialogTitle>{t("attachments.create_title", { defaultValue: "Create Policy Attachment" })}</DialogTitle>
         </DialogHeader>
         <TooltipProvider>
           <form onSubmit={(event) => event.preventDefault()} noValidate>
@@ -253,7 +255,7 @@ const AddAttachmentForm: React.FC<AddAttachmentFormProps> = ({
                     value={value}
                     onValueChange={onChange}
                     onBlur={onBlur}
-                    placeholder="Select policies to attach"
+                    placeholder={t("attachments.select_policies_placeholder", { defaultValue: "Select policies to attach" })}
                     options={policyOptions}
                     emptyText="No matching policies"
                     ariaInvalid={ariaInvalid}
@@ -263,12 +265,12 @@ const AddAttachmentForm: React.FC<AddAttachmentFormProps> = ({
               </FormField>
 
               <div className="flex items-center gap-3">
-                <span className="text-sm font-semibold">Scope</span>
+                <span className="text-sm font-semibold">{t("attachments.scope_label", { defaultValue: "Scope" })}</span>
                 <Separator className="flex-1" />
               </div>
 
               <div>
-                <FieldTitle className="mb-2">Scope Type</FieldTitle>
+                <FieldTitle className="mb-2">{t("attachments.scope_type_label", { defaultValue: "Scope Type" })}</FieldTitle>
                 <RadioGroup value={scopeType} onValueChange={(value: unknown) => setScopeType(value as ScopeType)}>
                   <FieldLabel className="font-normal">
                     <RadioGroupItem value="specific" />

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { CheckCircle2, ChevronRight, Code, ExternalLink, PlayCircle, Save, Users, XCircle } from "lucide-react";
 import { createGuardrailCall, updateGuardrailCall, testCustomCodeGuardrail } from "@/components/networking";
 import { toast } from "@/lib/toast";
@@ -194,6 +195,7 @@ interface CustomCodeModalProps {
 const CustomCodeModal: React.FC<CustomCodeModalProps> = ({ visible, onClose, onSuccess, accessToken, editData }) => {
   const anchor = useComboboxAnchor();
   const isEditMode = !!editData;
+  const { t } = useTranslation("guardrails");
   const [guardrailName, setGuardrailName] = useState("");
   const [mode, setMode] = useState<string[]>(["pre_call"]);
   const [defaultOn, setDefaultOn] = useState(false);
@@ -512,7 +514,7 @@ const CustomCodeModal: React.FC<CustomCodeModalProps> = ({ visible, onClose, onS
         {/* Top Controls */}
         <div className="flex items-center gap-4 border-b border-border py-4">
           <div className="max-w-[200px] flex-1">
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Guardrail Name</label>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">{t("custom_code.name_label", { defaultValue: "Guardrail Name" })}</label>
             <Input
               value={guardrailName}
               onChange={(e) => setGuardrailName(e.target.value)}
@@ -520,7 +522,7 @@ const CustomCodeModal: React.FC<CustomCodeModalProps> = ({ visible, onClose, onS
             />
           </div>
           <div className="w-[280px]">
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Mode (can select multiple)</label>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">{t("custom_code.mode_label", { defaultValue: "Mode (can select multiple)" })}</label>
             <Combobox
               items={MODE_OPTIONS}
               value={selectedModeOptions}

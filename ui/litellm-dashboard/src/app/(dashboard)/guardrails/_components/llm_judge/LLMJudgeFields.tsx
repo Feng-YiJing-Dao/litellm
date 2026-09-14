@@ -2,6 +2,7 @@
 
 import { Plus, X } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useController } from "react-hook-form";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
@@ -82,6 +83,7 @@ const LLMJudgeFields: React.FC<LLMJudgeFieldsProps> = ({ availableModels, contro
   const setCriteria = field.onChange;
 
   const weightTotal = criteria.reduce((sum, entry) => sum + (Number(entry?.weight) || 0), 0);
+  const { t } = useTranslation("guardrails");
   const weightOk = weightTotal === 100;
 
   return (
@@ -106,11 +108,11 @@ const LLMJudgeFields: React.FC<LLMJudgeFieldsProps> = ({ availableModels, contro
               id={id}
               aria-invalid={ariaInvalid}
               aria-describedby={ariaDescribedBy}
-              placeholder="Select a model"
+              placeholder={t("llm_judge.select_model", { defaultValue: "Select a model" })}
               className="w-full"
             />
             <ComboboxContent>
-              <ComboboxEmpty>No matching models</ComboboxEmpty>
+              <ComboboxEmpty>{t("llm_judge.no_matching_models", { defaultValue: "No matching models" })}</ComboboxEmpty>
               <ComboboxList>
                 {(model: string) => (
                   <ComboboxItem key={model} value={model} title={model}>
@@ -147,7 +149,7 @@ const LLMJudgeFields: React.FC<LLMJudgeFieldsProps> = ({ availableModels, contro
         {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }) => (
           <Select items={ON_FAILURE_ITEMS} value={asText(value) || null} onValueChange={onChange}>
             <SelectTrigger id={id} aria-invalid={ariaInvalid} aria-describedby={ariaDescribedBy} className="w-full">
-              <SelectValue placeholder="Select an action" />
+              <SelectValue placeholder={t("llm_judge.select_action", { defaultValue: "Select an action" })} />
             </SelectTrigger>
             <SelectContent>
               {ON_FAILURE_ITEMS.map((item) => (
@@ -182,7 +184,7 @@ const LLMJudgeFields: React.FC<LLMJudgeFieldsProps> = ({ availableModels, contro
                     {...field}
                     ref={ref}
                     value={asText(value)}
-                    placeholder="Criterion name (e.g. Policy accuracy)"
+                    placeholder={t("llm_judge.criterion_name_placeholder", { defaultValue: "Criterion name (e.g. Policy accuracy)" })}
                   />
                 )}
               </GuardrailField>

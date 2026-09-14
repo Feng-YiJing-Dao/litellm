@@ -1,6 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { CircleDollarSign } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import type { GuardrailUsageDetail } from "@/app/(dashboard)/hooks/guardrails/useGuardrailsUsage";
 import { CalcPopover, MathTable } from "@/components/GuardrailsMonitor/CalcPopover";
 import { MetricCard } from "@/components/GuardrailsMonitor/MetricCard";
@@ -113,13 +114,17 @@ const groupColumns = (label: string, emptyLabel: string): ColumnDef<GroupRow>[] 
 const teamColumns = groupColumns("Team", "No team");
 const keyColumns = groupColumns("Key", "No key");
 
-const CostMath = ({ counters, detail }: { counters: CounterRow[]; detail: GuardrailUsageDetail }) => (
-  <CalcPopover title="How this cost is calculated" formula="priced units × price per unit = cost, per counter">
+const CostMath = ({ counters, detail }: { counters: CounterRow[]; detail: GuardrailUsageDetail }) => {
+  const { t } = useTranslation("guardrails");
+  return (
+
+  <CalcPopover title={t("monitor.usage_breakdown.how_cost_calculated", { defaultValue: "How this cost is calculated" })} formula="priced units × price per unit = cost, per counter">
     <MathTable rows={counters.map(counterMathRow)} total={formatCost(detail.cost)} />
-    <p className="text-xs text-muted-foreground">Per-unit prices come from the cost map LiteLLM ships with.</p>
+    <p className="text-xs text-muted-foreground">{t("monitor.usage_breakdown.cost_map_note", { defaultValue: "Per-unit prices come from the cost map LiteLLM ships with." })}</p>
     <UnpricedNote unpriced={detail.untracked_usage_units} provider={detail.provider} />
   </CalcPopover>
-);
+  );
+};
 
 const UnitsMath = ({ units }: { units: GuardrailUsageDetail["usage_units"] }) => (
   <CalcPopover title="How usage units add up" formula="counter + counter + … = usage units">
@@ -135,11 +140,12 @@ const TableHeading = ({ title }: { title: string }) => (
 );
 
 export function GuardrailUsageBreakdown({ detail }: { detail: GuardrailUsageDetail }) {
+  const { t } = useTranslation("guardrails");
   const counters = counterRows(detail);
   const unpriced = unpricedSummary(detail.untracked_usage_units);
 
   return (
-    <section className="space-y-4" aria-label="Usage and cost">
+    <section className="space-y-4" aria-label={t("monitor.usage_breakdown.usage_and_cost", { defaultValue: "Usage and cost" })}>
       <div>
         <h5 className="mb-0 text-base font-semibold text-foreground">Usage &amp; Cost</h5>
         <p className="mt-0.5 text-xs text-muted-foreground">

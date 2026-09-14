@@ -179,7 +179,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
         setSelectedPiiActions({});
       }
     } catch (error) {
-      toast.fromError("Failed to load guardrail information");
+      toast.fromError(t("info.toast_load_failed", { defaultValue: "Failed to load guardrail information" }));
       console.error("Error fetching guardrail info:", error);
     } finally {
       setLoading(false);
@@ -455,19 +455,19 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
 
       // Only proceed with update if there are actual changes
       if (Object.keys(updateData).length === 0) {
-        toast.info("No changes detected");
+        toast.info(t("info.toast_no_changes", { defaultValue: "No changes detected" }));
         setIsEditing(false);
         return;
       }
 
       await updateGuardrailCall(accessToken, guardrailId, updateData);
-      toast.success("Guardrail updated successfully");
+      toast.success(t("info.toast_update_success", { defaultValue: "Guardrail updated successfully" }));
       setHasUnsavedContentFilterChanges(false);
       fetchGuardrailInfo();
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating guardrail:", error);
-      toast.fromError("Failed to update guardrail");
+      toast.fromError(t("info.toast_update_failed", { defaultValue: "Failed to update guardrail" }));
     }
   };
 
@@ -715,7 +715,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
                         <GuardrailField
                           control={form.control}
                           name="guardrail_name"
-                          label="Guardrail Name"
+                          label={t("info.guardrail_name", { defaultValue: "Guardrail Name" })}
                           rules={requiredRule("Please input a guardrail name")}
                         >
                           {({ ref, value, ...field }) => (
@@ -723,7 +723,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
                           )}
                         </GuardrailField>
 
-                        <GuardrailField control={form.control} name="default_on" label="Default On">
+                        <GuardrailField control={form.control} name="default_on" label={t("info.default_on_label", { defaultValue: "Default On" })}>
                           {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": describedBy }) => (
                             <Select
                               items={DEFAULT_ON_ITEMS}
@@ -736,7 +736,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
                                 aria-describedby={describedBy}
                                 className="w-full"
                               >
-                                <SelectValue placeholder="Select an option" />
+                                <SelectValue placeholder={t("info.select_option", { defaultValue: "Select an option" })} />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value={true}>Yes</SelectItem>
@@ -841,7 +841,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
                         )}
 
                         <SectionHeading>Advanced Settings</SectionHeading>
-                        <GuardrailField control={form.control} name="guardrail_info" label="Guardrail Information">
+                        <GuardrailField control={form.control} name="guardrail_info" label={t("info.guardrail_info_label", { defaultValue: "Guardrail Information" })}>
                           {({ ref, value, ...field }) => (
                             <Textarea {...field} ref={ref} value={asText(value)} rows={5} />
                           )}
@@ -859,7 +859,7 @@ const GuardrailInfoView: React.FC<GuardrailInfoProps> = ({ guardrailId, onClose,
                           >
                             Cancel
                           </Button>
-                          <Button type="submit">Save Changes</Button>
+                          <Button type="submit">{t("info.save_changes", { defaultValue: "Save Changes" })}</Button>
                         </div>
                       </FieldGroup>
                     </form>

@@ -37,7 +37,7 @@ const KeywordModal: React.FC<KeywordModalProps> = ({
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>
-            {t("content_filter.keywords_title", { defaultValue: "Add blocked keyword" })}
+            {t("content_filter.add_blocked_keyword", { defaultValue: "Add blocked keyword" })}
           </DialogTitle>
         </DialogHeader>
 

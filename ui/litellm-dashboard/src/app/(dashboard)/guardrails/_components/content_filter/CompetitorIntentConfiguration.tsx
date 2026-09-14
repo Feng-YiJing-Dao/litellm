@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { getMajorAirlines } from "@/components/networking";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -71,6 +72,7 @@ const THRESHOLDS = [
 ] as const;
 
 const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps> = ({
+
   enabled,
   config,
   onChange,
@@ -79,6 +81,7 @@ const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps
   const effectiveConfig = config ?? DEFAULT_CONFIG;
   const [airlineOptions, setAirlineOptions] = useState<MajorAirline[]>([]);
   const [loadingAirlines, setLoadingAirlines] = useState(false);
+  const { t } = useTranslation("guardrails");
   const fieldId = useId();
 
   useEffect(() => {
@@ -139,7 +142,7 @@ const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps
 
   const header = (
     <CardHeader className="gap-0">
-      <CardTitle className="text-base">Competitor Intent Filter</CardTitle>
+      <CardTitle className="text-base">{t("competitor_intent.title", { defaultValue: "Competitor Intent Filter" })}</CardTitle>
       <CardAction>
         <Switch checked={enabled} onCheckedChange={handleEnabledChange} />
       </CardAction>
@@ -185,7 +188,7 @@ const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps
         </p>
         <FieldGroup>
           <Field>
-            <FieldLabel htmlFor={`${fieldId}-type`}>Type</FieldLabel>
+            <FieldLabel htmlFor={`${fieldId}-type`}>{t("competitor_intent.type", { defaultValue: "Type" })}</FieldLabel>
             <Select
               items={INTENT_TYPES}
               value={effectiveConfig.competitor_intent_type}
@@ -205,7 +208,7 @@ const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps
           </Field>
 
           <Field>
-            <FieldLabel htmlFor={`${fieldId}-brand-self`}>Your Brand (brand_self)</FieldLabel>
+            <FieldLabel htmlFor={`${fieldId}-brand-self`}>{t("competitor_intent.brand_self", { defaultValue: "Your Brand (brand_self)" })}</FieldLabel>
             <TagsInput
               id={`${fieldId}-brand-self`}
               value={effectiveConfig.brand_self}
@@ -232,13 +235,13 @@ const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps
 
           {effectiveConfig.competitor_intent_type === "airline" && (
             <Field>
-              <FieldLabel htmlFor={`${fieldId}-locations`}>Locations (optional)</FieldLabel>
+              <FieldLabel htmlFor={`${fieldId}-locations`}>{t("competitor_intent.locations", { defaultValue: "Locations (optional)" })}</FieldLabel>
               <TagsInput
                 id={`${fieldId}-locations`}
                 value={effectiveConfig.locations ?? []}
                 onValueChange={(v) => handleNestedArrayChange("locations", v)}
                 tokenSeparators={[","]}
-                placeholder="Type and press Enter to add"
+                placeholder={t("competitor_intent.locations_placeholder", { defaultValue: "Type and press Enter to add" })}
               />
               <FieldDescription>Countries, cities, airports for disambiguation (e.g. qatar, doha)</FieldDescription>
             </Field>
@@ -246,13 +249,13 @@ const CompetitorIntentConfiguration: React.FC<CompetitorIntentConfigurationProps
 
           {effectiveConfig.competitor_intent_type === "generic" && (
             <Field>
-              <FieldLabel htmlFor={`${fieldId}-competitors`}>Competitors</FieldLabel>
+              <FieldLabel htmlFor={`${fieldId}-competitors`}>{t("competitor_intent.competitors", { defaultValue: "Competitors" })}</FieldLabel>
               <TagsInput
                 id={`${fieldId}-competitors`}
                 value={effectiveConfig.competitors ?? []}
                 onValueChange={(v) => handleNestedArrayChange("competitors", v)}
                 tokenSeparators={[","]}
-                placeholder="Type and press Enter to add"
+                placeholder={t("competitor_intent.locations_placeholder", { defaultValue: "Type and press Enter to add" })}
               />
               <FieldDescription>Competitor names to detect (required for generic type)</FieldDescription>
             </Field>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { CircleAlert, Inbox } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/shared/Alert";
@@ -92,6 +93,7 @@ const ContextCombobox: React.FC<ContextComboboxProps> = ({ id, value, onChange, 
 );
 
 const PolicyTestPanel: React.FC<PolicyTestPanelProps> = ({ accessToken }) => {
+  const { t } = useTranslation("policies");
   const form = useForm<PolicyTestFormValues>({ defaultValues: EMPTY_VALUES });
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<ResolveResult | null>(null);
@@ -162,7 +164,7 @@ const PolicyTestPanel: React.FC<PolicyTestPanelProps> = ({ accessToken }) => {
     <div>
       <div className="bg-card border border-border rounded-lg p-6 mb-6">
         <div className="mb-5">
-          <h3 className="text-base font-semibold mb-1">Policy Simulator</h3>
+          <h3 className="text-base font-semibold mb-1">{t("test_panel.title", { defaultValue: "Policy Simulator" })}</h3>
           <span className="text-muted-foreground">
             Simulate a request to see which policies and guardrails would apply. Select a team, key, model, or tags
             below and click &quot;Simulate&quot; to see the results.
@@ -177,7 +179,7 @@ const PolicyTestPanel: React.FC<PolicyTestPanelProps> = ({ accessToken }) => {
                   id={id}
                   value={value}
                   onChange={onChange}
-                  placeholder="Select or type a team alias"
+                  placeholder={t("test_panel.team_alias_placeholder", { defaultValue: "Select or type a team alias" })}
                   options={availableTeams}
                 />
               )}
@@ -188,7 +190,7 @@ const PolicyTestPanel: React.FC<PolicyTestPanelProps> = ({ accessToken }) => {
                   id={id}
                   value={value}
                   onChange={onChange}
-                  placeholder="Select or type a key alias"
+                  placeholder={t("test_panel.key_alias_placeholder", { defaultValue: "Select or type a key alias" })}
                   options={availableKeys}
                 />
               )}
@@ -199,7 +201,7 @@ const PolicyTestPanel: React.FC<PolicyTestPanelProps> = ({ accessToken }) => {
                   id={id}
                   value={value}
                   onChange={onChange}
-                  placeholder="Select or type a model"
+                  placeholder={t("test_panel.model_placeholder", { defaultValue: "Select or type a model" })}
                   options={availableModels}
                 />
               )}

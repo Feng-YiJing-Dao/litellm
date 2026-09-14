@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useDebouncedValue } from "@tanstack/react-pacer/debouncer";
 import { DEBOUNCE_WAIT_MS } from "@/utils/debounceConstants";
 import {
@@ -811,6 +812,7 @@ interface TeamGuardrailsTabProps {
 }
 
 export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
+  const { t } = useTranslation("guardrails");
   const { userRole } = useAuthorized();
   const isAdmin = userRole ? isProxyAdminRole(userRole) : false;
   const [guardrails, setGuardrails] = useState<TeamGuardrail[]>([]);
@@ -987,17 +989,17 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
     <div className="flex h-full">
       <div className={`flex-1 min-w-0 p-6 overflow-auto ${selected ? "border-r border-border" : ""}`}>
         <div className="grid grid-cols-4 gap-4 mb-6">
-          <StatCard label="Total Submitted" value={totalCount} color="text-foreground" />
-          <StatCard label="Pending Review" value={pendingCount} color="text-warning" />
-          <StatCard label="Active" value={activeCount} color="text-success" />
-          <StatCard label="Rejected" value={rejectedCount} color="text-destructive" />
+          <StatCard label={t("team_guardrails.stat_total_submitted", { defaultValue: "Total Submitted" })} value={totalCount} color="text-foreground" />
+          <StatCard label={t("team_guardrails.stat_pending_review", { defaultValue: "Pending Review" })} value={pendingCount} color="text-warning" />
+          <StatCard label={t("team_guardrails.stat_active", { defaultValue: "Active" })} value={activeCount} color="text-success" />
+          <StatCard label={t("team_guardrails.stat_rejected", { defaultValue: "Rejected" })} value={rejectedCount} color="text-destructive" />
         </div>
         <div className="flex items-center gap-3 mb-5">
           <div className="relative flex-1 max-w-xs">
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search guardrails..."
+              placeholder={t("team_guardrails.search_placeholder", { defaultValue: "Search guardrails..." })}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-9 pr-4 py-2 border border-border rounded-md text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-ring focus:border-info"
@@ -1009,10 +1011,10 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
             onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
             className="border border-border rounded-md px-3 py-2 text-sm text-foreground focus:outline-hidden focus:ring-1 focus:ring-ring focus:border-info bg-background"
           >
-            <option value="all">All Status</option>
-            <option value="pending">Pending Review</option>
-            <option value="active">Active</option>
-            <option value="rejected">Rejected</option>
+            <option value="all">{t("team_guardrails.status_all", { defaultValue: "All Status" })}</option>
+            <option value="pending">{t("team_guardrails.status_pending", { defaultValue: "Pending Review" })}</option>
+            <option value="active">{t("team_guardrails.status_active", { defaultValue: "Active" })}</option>
+            <option value="rejected">{t("team_guardrails.status_rejected", { defaultValue: "Rejected" })}</option>
           </select>
           <button
             type="button"
@@ -1020,7 +1022,7 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
             className="ml-auto flex items-center gap-2 bg-info hover:bg-info/80 text-info-foreground text-sm font-medium px-4 py-2 rounded-md transition-colors"
           >
             <PlusIcon className="h-4 w-4" />
-            Add Guardrail
+            {t("team_guardrails.add_guardrail", { defaultValue: "Add Guardrail" })}
           </button>
         </div>
         <div className="space-y-3">
@@ -1081,7 +1083,7 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
       >
         <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Submit Guardrail for Review</DialogTitle>
+            <DialogTitle>{t("team_guardrails.submit_modal.title", { defaultValue: "Submit Guardrail for Review" })}</DialogTitle>
           </DialogHeader>
           <div className="rounded-md bg-info/10 border border-info/20 px-4 py-3 text-sm text-info mb-4">
             Your guardrail will be sent for admin review before it becomes active.
@@ -1089,13 +1091,13 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
           <TooltipProvider>
             <form onSubmit={handleSubmitGuardrail}>
               <FieldGroup>
-                <FormField control={submitForm.control} name="team_id" label="Team">
+                <FormField control={submitForm.control} name="team_id" label={t("team_guardrails.submit_modal.team_label", { defaultValue: "Team" })}>
                   {({ id, value, onChange }) => <TeamDropdown id={id} value={value} onChange={onChange} />}
                 </FormField>
-                <FormField control={submitForm.control} name="guardrail_name" label="Guardrail Name">
-                  {({ ref, ...field }) => <Input {...field} ref={ref} placeholder="e.g. pii-detection" />}
+                <FormField control={submitForm.control} name="guardrail_name" label={t("team_guardrails.submit_modal.name_label", { defaultValue: "Guardrail Name" })}>
+                  {({ ref, ...field }) => <Input {...field} ref={ref} placeholder={t("team_guardrails.submit_modal.name_placeholder", { defaultValue: "e.g. pii-detection" })} />}
                 </FormField>
-                <FormField control={submitForm.control} name="mode" label="Mode">
+                <FormField control={submitForm.control} name="mode" label={t("team_guardrails.submit_modal.mode_label", { defaultValue: "Mode" })}>
                   {({ id, value, onChange, "aria-invalid": ariaInvalid, "aria-describedby": ariaDescribedBy }) => (
                     <Select items={GUARDRAIL_MODES} value={value} onValueChange={onChange}>
                       <SelectTrigger
@@ -1116,12 +1118,12 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
                     </Select>
                   )}
                 </FormField>
-                <FormField control={submitForm.control} name="api_base" label="API Base URL">
+                <FormField control={submitForm.control} name="api_base" label={t("team_guardrails.submit_modal.api_base_label", { defaultValue: "API Base URL" })}>
                   {({ ref, ...field }) => (
                     <Input
                       {...field}
                       ref={ref}
-                      placeholder="https://your-guardrail-api.com/v1/check"
+                      placeholder={t("team_guardrails.submit_modal.api_base_placeholder", { defaultValue: "https://your-guardrail-api.com/v1/check" })}
                       className="font-mono"
                     />
                   )}
@@ -1168,7 +1170,7 @@ export function TeamGuardrailsTab({ accessToken }: TeamGuardrailsTabProps) {
             >
               Cancel
             </Button>
-            <Button onClick={handleSubmitGuardrail}>Submit for Review</Button>
+            <Button onClick={handleSubmitGuardrail}>{t("team_guardrails.submit_modal.submit_button", { defaultValue: "Submit for Review" })}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

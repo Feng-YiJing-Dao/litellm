@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Eye, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ const ImpactPopover: React.FC<{ attachment: PolicyAttachment; accessToken: strin
   attachment,
   accessToken,
 }) => {
+  const { t } = useTranslation("policies");
   const [impact, setImpact] = useState<ImpactResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -55,19 +57,19 @@ const ImpactPopover: React.FC<{ attachment: PolicyAttachment; accessToken: strin
             render={
               <PopoverTrigger
                 render={
-                  <Button variant="ghost" size="icon-xs" aria-label="View blast radius">
+                  <Button variant="ghost" size="icon-xs" aria-label={t("impact.view_blast_radius", { defaultValue: "View blast radius" })}>
                     <Eye />
                   </Button>
                 }
               />
             }
           />
-          <TooltipContent>View blast radius</TooltipContent>
+          <TooltipContent>{t("impact.view_blast_radius", { defaultValue: "View blast radius" })}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
       <PopoverContent className="w-72 gap-2">
-        <PopoverTitle>Blast Radius</PopoverTitle>
+        <PopoverTitle>{t("impact.blast_radius", { defaultValue: "Blast Radius" })}</PopoverTitle>
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-2 text-xs text-muted-foreground">
             <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
@@ -76,7 +78,7 @@ const ImpactPopover: React.FC<{ attachment: PolicyAttachment; accessToken: strin
         ) : impact ? (
           <div className="text-xs">
             {impact.affected_keys_count === -1 ? (
-              <p className="font-medium text-foreground">Global scope — affects all keys and teams</p>
+              <p className="font-medium text-foreground">{t("impact.global_scope_desc", { defaultValue: "Global scope — affects all keys and teams" })}</p>
             ) : (
               <>
                 <p className="mb-1">

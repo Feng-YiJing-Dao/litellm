@@ -539,19 +539,19 @@ const PoliciesPanel: React.FC<PoliciesPanelProps> = ({ accessToken, userRole }) 
             <p className="mb-2 font-semibold">{t("policies:about_attachments.scopes_title", "Attachment Scopes:")}</p>
             <ul className="mb-3 ml-2 list-inside list-disc space-y-1">
               <li>
-                <strong>Global (*)</strong> - {t("policies:about_attachments.scope_global", "Applies to all requests")}
+                <strong>{t("policies:about_attachments.scope_global_title", "Global (*)")}</strong> - {t("policies:about_attachments.scope_global", "Applies to all requests")}
               </li>
               <li>
-                <strong>Teams</strong> - {t("policies:about_attachments.scope_teams", "Applies only to specific teams")}
+                <strong>{t("policies:about_attachments.scope_teams_title", "Teams")}</strong> - {t("policies:about_attachments.scope_teams", "Applies only to specific teams")}
               </li>
               <li>
-                <strong>Keys</strong> - {t("policies:about_attachments.scope_keys", "Applies only to specific API keys (supports wildcards like dev-*)")}
+                <strong>{t("policies:about_attachments.scope_keys_title", "Keys")}</strong> - {t("policies:about_attachments.scope_keys", "Applies only to specific API keys (supports wildcards like dev-*)")}
               </li>
               <li>
-                <strong>Models</strong> - {t("policies:about_attachments.scope_models", "Applies only when specific models are used")}
+                <strong>{t("policies:about_attachments.scope_models_title", "Models")}</strong> - {t("policies:about_attachments.scope_models", "Applies only when specific models are used")}
               </li>
               <li>
-                <strong>Tags</strong> - {t("policies:about_attachments.scope_tags", "Matches tags from key/team metadata.tags or tags passed dynamically in the request body (metadata.tags).")}
+                <strong>{t("policies:about_attachments.scope_tags_title", "Tags")}</strong> - {t("policies:about_attachments.scope_tags", "Matches tags from key/team metadata.tags or tags passed dynamically in the request body (metadata.tags).")}
               </li>
             </ul>
           </DismissibleAlert>

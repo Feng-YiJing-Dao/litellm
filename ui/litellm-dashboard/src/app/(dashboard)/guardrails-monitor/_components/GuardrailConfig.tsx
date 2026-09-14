@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface GuardrailConfigProps {
   guardrailName: string;
@@ -47,7 +48,9 @@ const GUARDRAIL_TYPE_ITEMS = [
   { value: "custom", label: "Custom" },
 ];
 
-export function GuardrailConfig({ guardrailName, guardrailType, provider }: GuardrailConfigProps) {
+export function GuardrailConfig({
+ guardrailName, guardrailType, provider }: GuardrailConfigProps) {
+  const { t } = useTranslation("guardrails");
   const [action, setAction] = useState("block");
   const [enabled, setEnabled] = useState(true);
   const [customCode, setCustomCode] = useState("");
@@ -71,7 +74,7 @@ export function GuardrailConfig({ guardrailName, guardrailType, provider }: Guar
       <div className="bg-card border border-border rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-foreground">Version:</span>
+            <span className="text-sm font-medium text-foreground">{t("monitor.config.version", { defaultValue: "Version:" })}</span>
             <Select
               items={versions.map((v) => ({ value: v.id, label: v.label }))}
               value={version}
@@ -133,12 +136,12 @@ export function GuardrailConfig({ guardrailName, guardrailType, provider }: Guar
 
       {/* Parameters */}
       <div className="bg-card border border-border rounded-lg p-6">
-        <h3 className="text-base font-semibold text-foreground mb-1">Parameters</h3>
+        <h3 className="text-base font-semibold text-foreground mb-1">{t("monitor.config.parameters", { defaultValue: "Parameters" })}</h3>
         <p className="text-xs text-muted-foreground mb-5">Configure {guardrailName} behavior</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Action on Failure</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">{t("monitor.config.action_on_failure", { defaultValue: "Action on Failure" })}</label>
             <Select
               items={ACTION_ITEMS}
               value={action}
@@ -158,7 +161,7 @@ export function GuardrailConfig({ guardrailName, guardrailType, provider }: Guar
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Provider</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">{t("monitor.config.provider", { defaultValue: "Provider" })}</label>
             <Select items={PROVIDER_ITEMS} defaultValue={provider}>
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -174,7 +177,7 @@ export function GuardrailConfig({ guardrailName, guardrailType, provider }: Guar
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Guardrail Type</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">{t("monitor.config.guardrail_type", { defaultValue: "Guardrail Type" })}</label>
             <Select items={GUARDRAIL_TYPE_ITEMS} defaultValue={guardrailType}>
               <SelectTrigger className="w-full">
                 <SelectValue />

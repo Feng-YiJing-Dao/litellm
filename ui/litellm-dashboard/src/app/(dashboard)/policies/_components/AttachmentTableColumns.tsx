@@ -53,7 +53,7 @@ function AttachmentRowActions({ attachment, isAdmin, onDeleteClick, t }: Attachm
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open attachment actions"
+        aria-label={tr("policies:columns.actions", { defaultValue: "Open attachment actions" })}
         data-testid={`attachment-actions-${attachment.attachment_id}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >

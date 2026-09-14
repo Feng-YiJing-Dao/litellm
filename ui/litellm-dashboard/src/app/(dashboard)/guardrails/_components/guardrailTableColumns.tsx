@@ -66,17 +66,21 @@ function GuardrailRowActions({ guardrail, onDeleteClick }: GuardrailRowActionsPr
 interface GuardrailTableColumnsDeps {
   onGuardrailClick: (guardrailId: string) => void;
   onDeleteClick: (guardrailId: string, guardrailName: string) => void;
+  t?: (key: any, options?: any) => any;
 }
 
 export const getGuardrailTableColumns = ({
   onGuardrailClick,
   onDeleteClick,
-}: GuardrailTableColumnsDeps): ColumnDef<Guardrail>[] => [
+  t,
+}: GuardrailTableColumnsDeps): ColumnDef<Guardrail>[] => {
+  const tr = (key: string, fallback: string, options?: any) => (t ? t(key, options) ?? fallback : fallback);
+  return [
   {
     id: "guardrail_id",
     accessorKey: "guardrail_id",
-    meta: { title: "Guardrail ID" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Guardrail ID" />,
+    meta: { title: tr("table_columns.guardrail_id", "Guardrail ID") },
+    header: ({ column }) => <DataTableSortHeader column={column} title={tr("table_columns.guardrail_id", "Guardrail ID")} />,
     size: 200,
     enableSorting: true,
     cell: ({ row }) => (
@@ -90,8 +94,8 @@ export const getGuardrailTableColumns = ({
   {
     id: "guardrail_name",
     accessorKey: "guardrail_name",
-    meta: { title: "Name" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Name" />,
+    meta: { title: tr("table_columns.name", "Name") },
+    header: ({ column }) => <DataTableSortHeader column={column} title={tr("table_columns.name", "Name")} />,
     size: 200,
     enableSorting: true,
     cell: ({ row }) => {
@@ -142,8 +146,8 @@ export const getGuardrailTableColumns = ({
   {
     id: "created_at",
     accessorKey: "created_at",
-    meta: { title: "Created At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Created At" />,
+    meta: { title: tr("table_columns.created_at", "Created At") },
+    header: ({ column }) => <DataTableSortHeader column={column} title={tr("table_columns.created_at", "Created At")} />,
     size: 150,
     enableSorting: true,
     cell: ({ row }) => <DateCell value={row.original.created_at} />,
@@ -151,8 +155,8 @@ export const getGuardrailTableColumns = ({
   {
     id: "updated_at",
     accessorKey: "updated_at",
-    meta: { title: "Updated At" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Updated At" />,
+    meta: { title: tr("table_columns.updated_at", "Updated At") },
+    header: ({ column }) => <DataTableSortHeader column={column} title={tr("table_columns.updated_at", "Updated At")} />,
     size: 150,
     enableSorting: true,
     cell: ({ row }) => <DateCell value={row.original.updated_at} />,
@@ -171,3 +175,4 @@ export const getGuardrailTableColumns = ({
     ),
   },
 ];
+};

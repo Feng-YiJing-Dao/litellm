@@ -56,7 +56,7 @@ function PolicyRowActions({ policy, onEditClick, onDeleteClick, t }: PolicyRowAc
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open policy actions"
+        aria-label={tr("policies:columns.actions", { defaultValue: "Open policy actions" })}
         data-testid={`policy-actions-${policy.policy_id}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >

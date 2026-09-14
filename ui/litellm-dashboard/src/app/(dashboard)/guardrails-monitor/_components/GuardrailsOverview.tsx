@@ -81,8 +81,9 @@ function TotalCostMath({
   total: number | null;
   untracked: UsageUnits;
 }) {
+  const { t } = useTranslation("guardrails");
   return (
-    <CalcPopover title="How this cost is calculated" formula="guardrail + guardrail + … = guardrail cost">
+    <CalcPopover title={t("monitor.usage_breakdown.how_cost_calculated", { defaultValue: "How this cost is calculated" })} formula="guardrail + guardrail + … = guardrail cost">
       <MathTable
         rows={rows
           .filter((row) => row.cost != null)

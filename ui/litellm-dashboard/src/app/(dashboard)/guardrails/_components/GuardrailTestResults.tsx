@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Check, ChevronDown, ChevronRight, Clock, Copy } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ interface GuardrailTestResultsProps {
 }
 
 export function GuardrailTestResults({ results, errors }: GuardrailTestResultsProps) {
+  const { t } = useTranslation("guardrails");
   const [collapsedResults, setCollapsedResults] = useState<Set<string>>(new Set());
 
   const toggleResultCollapse = (guardrailName: string) => {
@@ -68,7 +70,7 @@ export function GuardrailTestResults({ results, errors }: GuardrailTestResultsPr
 
   return (
     <div className="space-y-3 border-t border-border pt-4">
-      <h3 className="text-sm font-semibold">Results</h3>
+      <h3 className="text-sm font-semibold">{t("test_playground.results", { defaultValue: "Results" })}</h3>
 
       {/* Success Results */}
       {results &&
@@ -117,7 +119,7 @@ export function GuardrailTestResults({ results, errors }: GuardrailTestResultsPr
                 {!isCollapsed && (
                   <>
                     <div className="rounded-sm border border-success/20 bg-background p-3">
-                      <label className="mb-2 block text-xs font-medium text-muted-foreground">Output Text</label>
+                      <label className="mb-2 block text-xs font-medium text-muted-foreground">{t("test_playground.output_text", { defaultValue: "Output Text" })}</label>
                       <div className="font-mono text-sm whitespace-pre-wrap wrap-break-word">
                         {result.response_text}
                       </div>

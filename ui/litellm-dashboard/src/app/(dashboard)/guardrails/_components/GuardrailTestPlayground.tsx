@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlaskConical, Search } from "lucide-react";
 import GuardrailTestPanel from "./GuardrailTestPanel";
 import { applyGuardrail } from "@/components/networking";
@@ -47,6 +48,7 @@ const GuardrailTestPlayground: React.FC<GuardrailTestPlaygroundProps> = ({
   accessToken,
   onClose,
 }) => {
+  const { t } = useTranslation("guardrails");
   const [selectedGuardrails, setSelectedGuardrails] = useState<Set<string>>(new Set());
   const [searchQuery, setSearchQuery] = useState("");
   const [testResults, setTestResults] = useState<TestResult[]>([]);
@@ -123,13 +125,13 @@ const GuardrailTestPlayground: React.FC<GuardrailTestPlaygroundProps> = ({
             <div className="flex w-1/4 flex-col overflow-hidden border-r border-border">
               <div className="border-b border-border p-4">
                 <div className="mb-3">
-                  <h3 className="mb-3 text-lg font-semibold">Guardrails</h3>
+                  <h3 className="mb-3 text-lg font-semibold">{t("test_playground.guardrails_title", { defaultValue: "Guardrails" })}</h3>
                   <InputGroup>
                     <InputGroupAddon>
                       <Search className="size-4 text-muted-foreground" />
                     </InputGroupAddon>
                     <InputGroupInput
-                      placeholder="Search guardrails..."
+                      placeholder={t("test_playground.search_guardrails", { defaultValue: "Search guardrails..." })}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -168,11 +170,11 @@ const GuardrailTestPlayground: React.FC<GuardrailTestPlaygroundProps> = ({
                         </div>
                         <div className="mt-1 space-y-1 text-xs">
                           <div>
-                            <span className="font-medium">Type: </span>
+                            <span className="font-medium">{t("test_playground.type", { defaultValue: "Type:" })} </span>
                             <span className="text-muted-foreground">{guardrail.litellm_params.guardrail}</span>
                           </div>
                           <div>
-                            <span className="font-medium">Mode: </span>
+                            <span className="font-medium">{t("test_playground.mode", { defaultValue: "Mode:" })} </span>
                             <span className="text-muted-foreground">
                               {formatGuardrailMode(guardrail.litellm_params.mode)}
                             </span>
@@ -194,7 +196,7 @@ const GuardrailTestPlayground: React.FC<GuardrailTestPlaygroundProps> = ({
             {/* Right Panel - Test Area */}
             <div className="flex w-3/4 flex-col">
               <div className="flex items-center justify-between border-b border-border p-4">
-                <h2 className="mb-0 text-xl font-semibold">Guardrail Testing Playground</h2>
+                <h2 className="mb-0 text-xl font-semibold">{t("test_playground.title", { defaultValue: "Guardrail Testing Playground" })}</h2>
               </div>
 
               <div className="flex-1 overflow-auto p-4">

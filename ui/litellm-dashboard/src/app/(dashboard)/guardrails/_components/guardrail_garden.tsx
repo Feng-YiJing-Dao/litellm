@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, Search } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { GuardrailCardInfo, ALL_CARDS } from "./guardrail_garden_data";
@@ -11,6 +12,7 @@ interface GuardrailGardenProps {
 }
 
 const GuardrailGarden: React.FC<GuardrailGardenProps> = ({ accessToken, onGuardrailCreated }) => {
+  const { t } = useTranslation("guardrails");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCard, setSelectedCard] = useState<GuardrailCardInfo | null>(null);
   const [showAllLitellm, setShowAllLitellm] = useState(false);
@@ -23,7 +25,7 @@ const GuardrailGarden: React.FC<GuardrailGardenProps> = ({ accessToken, onGuardr
     return (
       card.name.toLowerCase().includes(q) ||
       card.description.toLowerCase().includes(q) ||
-      card.tags.some((t) => t.toLowerCase().includes(q))
+      card.tags.some((tag) => tag.toLowerCase().includes(q))
     );
   });
 
@@ -49,7 +51,7 @@ const GuardrailGarden: React.FC<GuardrailGardenProps> = ({ accessToken, onGuardr
             <Search className="size-4 text-muted-foreground" />
           </InputGroupAddon>
           <InputGroupInput
-            placeholder="Search guardrails"
+            placeholder={t("garden.search_placeholder", { defaultValue: "Search guardrails" })}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -58,17 +60,17 @@ const GuardrailGarden: React.FC<GuardrailGardenProps> = ({ accessToken, onGuardr
 
       <div className="mb-10">
         <div className="mb-1 flex items-center justify-between">
-          <h2 className="m-0 text-xl font-semibold text-foreground">LiteLLM Content Filter</h2>
+          <h2 className="m-0 text-xl font-semibold text-foreground">{t("garden.content_filter", { defaultValue: "LiteLLM Content Filter" })}</h2>
           <span
             className="inline-flex cursor-pointer items-center gap-1.5 text-sm text-primary"
             onClick={() => setShowAllLitellm(!showAllLitellm)}
           >
             {showAllLitellm ? (
-              <>Show less</>
+              <>{t("garden.show_less", { defaultValue: "Show less" })}</>
             ) : (
               <>
                 <ArrowRight className="size-3" />
-                {`Show all (${litellmCards.length})`}
+                {t("garden.show_more", { defaultValue: `Show all (${litellmCards.length})` })}
               </>
             )}
           </span>
@@ -84,7 +86,7 @@ const GuardrailGarden: React.FC<GuardrailGardenProps> = ({ accessToken, onGuardr
       </div>
 
       <div className="mb-10">
-        <h2 className="mt-0 mb-1 text-xl font-semibold text-foreground">Partner Guardrails</h2>
+        <h2 className="mt-0 mb-1 text-xl font-semibold text-foreground">{t("garden.partner_guardrails", { defaultValue: "Partner Guardrails" })}</h2>
         <p className="mt-1 mb-5 text-[13px] text-muted-foreground">
           Third-party guardrail integrations from leading AI security providers.
         </p>

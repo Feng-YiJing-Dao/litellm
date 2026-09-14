@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { BarChart } from "@/components/shared/charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -11,12 +12,13 @@ interface ScoreChartProps {
 }
 
 export function ScoreChart({ data }: ScoreChartProps) {
+  const { t } = useTranslation("guardrails");
   const chartData = data && data.length > 0 ? data : [];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base font-semibold">Request Outcomes Over Time</CardTitle>
+        <CardTitle className="text-base font-semibold">{t("monitor.charts.request_outcomes", { defaultValue: "Request Outcomes Over Time" })}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-80 min-h-[280px]">

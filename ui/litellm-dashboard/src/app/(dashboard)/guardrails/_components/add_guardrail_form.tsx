@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useForm, type UseFormReturn } from "react-hook-form";
 import { toast } from "@/lib/toast";
 import {
@@ -198,6 +199,7 @@ interface ProviderParamsResponse {
 }
 
 const AddGuardrailForm: React.FC<AddGuardrailFormProps> = ({ visible, onClose, accessToken, onSuccess, preset }) => {
+  const { t } = useTranslation("guardrails");
   const form = useForm<GuardrailFormValues>({ defaultValues: INITIAL_VALUES });
   const [loading, setLoading] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
@@ -681,7 +683,7 @@ const AddGuardrailForm: React.FC<AddGuardrailFormProps> = ({ visible, onClose, a
           rules={requiredRule("Please enter a guardrail name")}
         >
           {({ ref, value, ...field }) => (
-            <Input {...field} ref={ref} value={asText(value)} placeholder="Enter a name for this guardrail" />
+            <Input {...field} ref={ref} value={asText(value)} placeholder={t("form.enter_name", { defaultValue: "Enter a name for this guardrail" })} />
           )}
         </GuardrailField>
 
@@ -707,11 +709,11 @@ const AddGuardrailForm: React.FC<AddGuardrailFormProps> = ({ visible, onClose, a
                 id={id}
                 aria-invalid={ariaInvalid}
                 aria-describedby={ariaDescribedBy}
-                placeholder="Select a guardrail provider"
+                placeholder={t("form.select_provider", { defaultValue: "Select a guardrail provider" })}
                 className="w-full"
               />
               <ComboboxContent>
-                <ComboboxEmpty>No matching providers</ComboboxEmpty>
+                <ComboboxEmpty>{t("form.no_matching_providers", { defaultValue: "No matching providers" })}</ComboboxEmpty>
                 <ComboboxList>
                   {(key: string) => (
                     <ComboboxItem key={key} value={key}>
@@ -764,7 +766,7 @@ const AddGuardrailForm: React.FC<AddGuardrailFormProps> = ({ visible, onClose, a
               onValueChange={(next: boolean | null) => onChange(next)}
             >
               <SelectTrigger id={id} aria-invalid={ariaInvalid} aria-describedby={ariaDescribedBy} className="w-full">
-                <SelectValue placeholder="Select an option" />
+                <SelectValue placeholder={t("form.select_option", { defaultValue: "Select an option" })} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={true}>Yes</SelectItem>

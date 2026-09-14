@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronRight, FileText, Plus, Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { getCategoryYaml } from "@/components/networking";
@@ -45,6 +46,7 @@ interface ContentCategoryConfigurationProps {
 }
 
 const ContentCategoryConfiguration: React.FC<ContentCategoryConfigurationProps> = ({
+
   availableCategories,
   selectedCategories,
   onCategoryAdd,
@@ -54,6 +56,7 @@ const ContentCategoryConfiguration: React.FC<ContentCategoryConfigurationProps> 
   pendingSelection,
   onPendingSelectionChange,
 }) => {
+  const { t } = useTranslation("guardrails");
   // Use controlled state if parent provides it, otherwise use local state
   const [localSelectedCategoryName, setLocalSelectedCategoryName] = React.useState<string>("");
   const selectedCategoryName = pendingSelection !== undefined ? pendingSelection : localSelectedCategoryName;
@@ -256,7 +259,7 @@ const ContentCategoryConfiguration: React.FC<ContentCategoryConfigurationProps> 
     <Card>
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle>Blocked topics</CardTitle>
+          <CardTitle>{t("form.blocked_topics", { defaultValue: "Blocked topics" })}</CardTitle>
           <p className="text-xs font-normal text-muted-foreground">
             Select topics to block using keyword and semantic analysis
           </p>
@@ -270,9 +273,9 @@ const ContentCategoryConfiguration: React.FC<ContentCategoryConfigurationProps> 
             onValueChange={(category: ContentCategory | null) => setSelectedCategoryName(category?.name ?? "")}
             itemToStringLabel={(category: ContentCategory) => category.display_name}
           >
-            <ComboboxInput className="w-full" placeholder="Select a content category" />
+            <ComboboxInput className="w-full" placeholder={t("form.select_content_category", { defaultValue: "Select a content category" })} />
             <ComboboxContent>
-              <ComboboxEmpty>No matching categories</ComboboxEmpty>
+              <ComboboxEmpty>{t("form.no_matching_categories", { defaultValue: "No matching categories" })}</ComboboxEmpty>
               <ComboboxList>
                 {(cat: ContentCategory) => (
                   <ComboboxItem key={cat.name} value={cat}>

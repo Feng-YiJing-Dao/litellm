@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "@/lib/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -274,6 +275,7 @@ const StepCard: React.FC<StepCardProps> = ({
   onDelete,
   availableGuardrails,
 }) => {
+  const { t } = useTranslation("policies");
   const guardrailOptions = availableGuardrails.map((g) => ({
     label: g.guardrail_name || g.guardrail_id,
     value: g.guardrail_name || g.guardrail_id,
@@ -307,7 +309,7 @@ const StepCard: React.FC<StepCardProps> = ({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span style={{ fontSize: 13, color: "var(--color-muted-foreground)" }}>Step {stepIndex + 1}</span>
+          <span style={{ fontSize: 13, color: "var(--color-muted-foreground)" }}>{t("flow_builder.step", { index: stepIndex + 1, defaultValue: `Step ${stepIndex + 1}` })}</span>
           <button
             onClick={onDelete}
             disabled={totalSteps <= 1}
@@ -344,7 +346,7 @@ const StepCard: React.FC<StepCardProps> = ({
           options={guardrailOptions}
           value={step.guardrail || undefined}
           onValueChange={(value) => onChange({ guardrail: value })}
-          placeholder="Select a guardrail"
+          placeholder={t("flow_builder.select_guardrail", { defaultValue: "Select a guardrail" })}
           emptyText="No guardrails found"
         />
       </div>
@@ -1472,6 +1474,7 @@ export const FlowBuilderPage: React.FC<FlowBuilderPageProps> = ({
   onSelectVersion,
   onVersionStatusUpdated,
 }) => {
+  const { t } = useTranslation("policies");
   const isEditing = !!editingPolicy?.policy_id;
   const showVersionsSidebar = !!editingPolicy?.policy_name;
 
@@ -1577,17 +1580,17 @@ export const FlowBuilderPage: React.FC<FlowBuilderPageProps> = ({
 
   const handleSave = async () => {
     if (!policyName.trim()) {
-      toast.error("Please enter a policy name");
+      toast.error(t("flow_builder.toast_name_required", { defaultValue: "Please enter a policy name" }));
       return;
     }
     if (!accessToken) {
-      toast.error("No access token available");
+      toast.error(t("flow_builder.toast_token_required", { defaultValue: "No access token available" }));
       return;
     }
 
     const emptySteps = pipeline.steps.filter((s) => !s.guardrail);
     if (emptySteps.length > 0) {
-      toast.error("Please select a guardrail for all steps");
+      toast.error(t("flow_builder.toast_guardrail_required", { defaultValue: "Please select a guardrail for all steps" }));
       return;
     }
 
@@ -1605,11 +1608,11 @@ export const FlowBuilderPage: React.FC<FlowBuilderPageProps> = ({
 
       if (isEditing && editingPolicy) {
         await updatePolicy(accessToken, editingPolicy.policy_id, data as PolicyUpdateRequest);
-        toast.success("Policy updated successfully");
+        toast.success(t("flow_builder.toast_update_success", { defaultValue: "Policy updated successfully" }));
         onSuccess();
       } else {
         await createPolicy(accessToken, data as PolicyCreateRequest);
-        toast.success("Policy created successfully");
+        toast.success(t("flow_builder.toast_create_success", { defaultValue: "Policy created successfully" }));
         onSuccess();
         onBack();
       }
@@ -1652,7 +1655,7 @@ export const FlowBuilderPage: React.FC<FlowBuilderPageProps> = ({
           <span style={{ fontSize: 14, color: "var(--color-muted-foreground)" }}>Policies</span>
           <span style={{ fontSize: 14, color: "var(--color-border)" }}>/</span>
           <Input
-            placeholder="Policy name..."
+            placeholder={t("flow_builder.policy_name_placeholder", { defaultValue: "Policy name..." })}
             value={policyName}
             onChange={(e) => setPolicyName(e.target.value)}
             disabled={isEditing}
@@ -1695,7 +1698,7 @@ export const FlowBuilderPage: React.FC<FlowBuilderPageProps> = ({
         }}
       >
         <Input
-          placeholder="Add a description (optional)..."
+          placeholder={t("flow_builder.description_placeholder", { defaultValue: "Add a description (optional)..." })}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           style={{ maxWidth: 500 }}
