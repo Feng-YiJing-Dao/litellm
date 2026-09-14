@@ -5,6 +5,7 @@
  */
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronDown, ChevronUp, MessageSquare, Mic, Settings, Volume2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -82,6 +83,7 @@ export function isRealtimeResponse(response: any): boolean {
 }
 
 export function RealtimePrettyView({ response, metrics }: RealtimePrettyViewProps) {
+  const { t } = useTranslation(["logs"]);
   const events: RealtimeEvent[] = response?.results || [];
   const usage = response?.usage;
 
@@ -114,7 +116,7 @@ export function RealtimePrettyView({ response, metrics }: RealtimePrettyViewProp
             fontSize: 13,
           }}
         >
-          No recognized realtime events found
+          {t("logs:realtime.no_events", "No recognized realtime events found")}
         </div>
       )}
     </div>
@@ -122,6 +124,7 @@ export function RealtimePrettyView({ response, metrics }: RealtimePrettyViewProp
 }
 
 function SessionCard({ session, turnCount }: { session: RealtimeSession; turnCount: number }) {
+  const { t } = useTranslation(["logs"]);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
@@ -162,14 +165,16 @@ function SessionCard({ session, turnCount }: { session: RealtimeSession; turnCou
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <Settings className="size-3.5 text-muted-foreground" />
-            <span style={{ fontWeight: 500, fontSize: 14 }}>Session</span>
+            <span style={{ fontWeight: 500, fontSize: 14 }}>{t("logs:realtime.session", "Session")}</span>
           </div>
           <span className="text-muted-foreground" style={{ fontSize: 12 }}>
             {session.model}
           </span>
           {turnCount > 0 && (
             <Badge variant="secondary" style={{ margin: 0, fontWeight: 500 }}>
-              {turnCount} {turnCount === 1 ? "turn" : "turns"}
+              {turnCount === 1
+                ? t("logs:realtime.turn", "1 turn", { count: 1 })
+                : t("logs:realtime.turn_other", `${turnCount} turns`, { count: turnCount })}
             </Badge>
           )}
           {session.voice && (
@@ -230,7 +235,7 @@ function SessionCard({ session, turnCount }: { session: RealtimeSession; turnCou
                   marginBottom: 4,
                 }}
               >
-                Instructions
+                {t("logs:realtime.instructions", "Instructions")}
               </span>
               <div
                 style={{
@@ -440,6 +445,7 @@ function OutputMessage({ output }: { output: RealtimeOutputItem }) {
 }
 
 function TokenBreakdown({ label, details }: { label: string; details: Record<string, any> }) {
+  const { t } = useTranslation(["logs"]);
   const entries = Object.entries(details).filter(
     ([, v]) => typeof v === "number" || (typeof v === "object" && v !== null),
   );
@@ -452,7 +458,7 @@ function TokenBreakdown({ label, details }: { label: string; details: Record<str
         className="text-muted-foreground"
         style={{ fontSize: 10, letterSpacing: "0.5px", textTransform: "uppercase" }}
       >
-        {label} Token Breakdown
+        {t("logs:realtime.token_breakdown", "{{label}} Token Breakdown", { label })}
       </span>
       <div
         style={{

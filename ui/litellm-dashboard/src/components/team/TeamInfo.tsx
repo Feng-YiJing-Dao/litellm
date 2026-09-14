@@ -2202,8 +2202,13 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
               name: "max_budget_in_team",
               label: (
                 <span>
-                  Team Member Budget (USD){" "}
-                  <SimpleTooltip content="Maximum amount in USD this member can spend within this team. This is separate from any global user budget limits">
+                  {t("teams:team_member_budget_usd", "Team Member Budget (USD)")}{" "}
+                  <SimpleTooltip
+                    content={t(
+                      "teams:team_member_budget_desc",
+                      "Maximum amount in USD this member can spend within this team. This is separate from any global user budget limits",
+                    )}
+                  >
                     <Info className="ml-1 inline size-3.5 align-text-bottom" />
                   </SimpleTooltip>
                 </span>
@@ -2211,14 +2216,22 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
               type: "numerical" as const,
               step: 0.01,
               min: 0,
-              placeholder: "Budget limit for this member within this team",
+              placeholder: t(
+                "teams:team_member_budget_placeholder",
+                "Budget limit for this member within this team",
+              ),
             },
             {
               name: "budget_duration",
               label: (
                 <span>
-                  Budget Reset Period{" "}
-                  <SimpleTooltip content="How often this member's budget resets within the team. Leave unset and the budget never resets.">
+                  {t("teams:budget_reset_period", "Budget Reset Period")}{" "}
+                  <SimpleTooltip
+                    content={t(
+                      "teams:budget_reset_period_desc",
+                      "How often this member's budget resets within the team. Leave unset and the budget never resets.",
+                    )}
+                  >
                     <Info className="ml-1 inline size-3.5 align-text-bottom" />
                   </SimpleTooltip>
                 </span>
@@ -2229,8 +2242,13 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
               name: "tpm_limit",
               label: (
                 <span>
-                  Team Member TPM Limit{" "}
-                  <SimpleTooltip content="Maximum tokens per minute this member can use within this team. This is separate from any global user TPM limit">
+                  {t("teams:team_member_tpm_limit", "Team Member TPM Limit")}{" "}
+                  <SimpleTooltip
+                    content={t(
+                      "teams:team_member_tpm_limit_desc",
+                      "Maximum tokens per minute this member can use within this team. This is separate from any global user TPM limit",
+                    )}
+                  >
                     <Info className="ml-1 inline size-3.5 align-text-bottom" />
                   </SimpleTooltip>
                 </span>
@@ -2238,14 +2256,22 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
               type: "numerical" as const,
               step: 1,
               min: 0,
-              placeholder: "Tokens per minute limit for this member in this team",
+              placeholder: t(
+                "teams:team_member_tpm_limit_placeholder",
+                "Tokens per minute limit for this member in this team",
+              ),
             },
             {
               name: "rpm_limit",
               label: (
                 <span>
-                  Team Member RPM Limit{" "}
-                  <SimpleTooltip content="Maximum requests per minute this member can make within this team. This is separate from any global user RPM limit">
+                  {t("teams:team_member_rpm_limit", "Team Member RPM Limit")}{" "}
+                  <SimpleTooltip
+                    content={t(
+                      "teams:team_member_rpm_limit_desc",
+                      "Maximum requests per minute this member can make within this team. This is separate from any global user RPM limit",
+                    )}
+                  >
                     <Info className="ml-1 inline size-3.5 align-text-bottom" />
                   </SimpleTooltip>
                 </span>
@@ -2253,21 +2279,32 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
               type: "numerical" as const,
               step: 1,
               min: 0,
-              placeholder: "Requests per minute limit for this member in this team",
+              placeholder: t(
+                "teams:team_member_rpm_limit_placeholder",
+                "Requests per minute limit for this member in this team",
+              ),
             },
             {
               name: "allowed_models",
               label: (
                 <span>
-                  Allowed Models{" "}
-                  <SimpleTooltip content="Models this member can access within this team. Leave empty to inherit all team models.">
+                  {t("teams:allowed_models", "Allowed Models")}{" "}
+                  <SimpleTooltip
+                    content={t(
+                      "teams:allowed_models_member_desc",
+                      "Models this member can access within this team. Leave empty to inherit all team models.",
+                    )}
+                  >
                     <Info className="ml-1 inline size-3.5 align-text-bottom" />
                   </SimpleTooltip>
                 </span>
               ),
               type: "multi-select" as const,
               options: (info.models || []).map((m: string) => ({ label: m, value: m })),
-              placeholder: "Leave empty to inherit all team models",
+              placeholder: t(
+                "teams:allowed_models_member_placeholder",
+                "Leave empty to inherit all team models",
+              ),
             },
           ],
         }}

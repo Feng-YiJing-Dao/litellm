@@ -2,6 +2,7 @@
 
 import { Globe } from "lucide-react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   Combobox,
@@ -51,9 +52,12 @@ export const GuardrailsSelect: React.FC<GuardrailsSelectProps> = ({
   globalGuardrails,
   otherGuardrails,
   globalGuardrailNames,
-  placeholder = "Select guardrails",
-  emptyText = "No guardrails found",
+  placeholder,
+  emptyText,
 }) => {
+  const { t } = useTranslation("teams");
+  const effectivePlaceholder = placeholder ?? t("teams:select_guardrails_placeholder", "Select guardrails");
+  const effectiveEmptyText = emptyText ?? t("teams:no_guardrails_found", "No guardrails found");
   const anchor = useComboboxAnchor();
   const [query, setQuery] = useState("");
 
@@ -62,8 +66,8 @@ export const GuardrailsSelect: React.FC<GuardrailsSelectProps> = ({
   const grouped = globalGuardrails.length > 0 && otherGuardrails.length > 0;
   const groups: GuardrailGroup[] = grouped
     ? [
-        { label: "Global", icon: true, items: [...globalGuardrails] },
-        { label: "Other", icon: false, items: [...otherGuardrails] },
+        { label: t("teams:guardrails_global", "Global"), icon: true, items: [...globalGuardrails] },
+        { label: t("teams:guardrails_other", "Other"), icon: false, items: [...otherGuardrails] },
       ]
     : [{ label: "", icon: false, items: known }];
 
@@ -93,13 +97,18 @@ export const GuardrailsSelect: React.FC<GuardrailsSelectProps> = ({
                   {option.name}
                 </ComboboxChip>
               ))}
-              <ComboboxChipsInput id={id} placeholder={placeholder} className="min-w-24" aria-label={placeholder} />
+              <ComboboxChipsInput
+                id={id}
+                placeholder={effectivePlaceholder}
+                className="min-w-24"
+                aria-label={effectivePlaceholder}
+              />
             </>
           )}
         </ComboboxValue>
       </ComboboxChips>
       <ComboboxContent anchor={anchor}>
-        <ComboboxEmpty>{emptyText}</ComboboxEmpty>
+        <ComboboxEmpty>{effectiveEmptyText}</ComboboxEmpty>
         <ComboboxList>
           {(group: GuardrailGroup) => (
             <ComboboxGroup key={group.label} items={group.items}>

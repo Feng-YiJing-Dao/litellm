@@ -1,5 +1,6 @@
 import { Check, Copy } from "lucide-react";
 import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { AuditLogEntry, AUDIT_TABLE_NAME_DISPLAY } from "../AuditLogsTableColumns";
 import DefaultProxyAdminTag from "../../common_components/DefaultProxyAdminTag";
@@ -72,6 +73,7 @@ function MetadataRow({ label, value }: { label: string; value: React.ReactNode }
 }
 
 function DiffSection({ log }: { log: AuditLogEntry }) {
+  const { t } = useTranslation(["logs"]);
   const { action, table_name, before_value, updated_values } = log;
   const isKeyTable = table_name === "LiteLLM_VerificationToken";
   const isUpdateAction = action === "updated" || action === "rotated";
@@ -109,8 +111,9 @@ function DiffSection({ log }: { log: AuditLogEntry }) {
       }
     });
 
-    displayBefore = Object.keys(changedBefore).length > 0 ? changedBefore : { note: "No differing fields detected" };
-    displayAfter = Object.keys(changedAfter).length > 0 ? changedAfter : { note: "No differing fields detected" };
+    const noDiffText = t("logs:audit_drawer.no_diff", "No differing fields detected");
+    displayBefore = Object.keys(changedBefore).length > 0 ? changedBefore : { note: noDiffText };
+    displayAfter = Object.keys(changedAfter).length > 0 ? changedAfter : { note: noDiffText };
   }
 
   const renderValue = (label: string, value: Record<string, any> | null | undefined) => {
@@ -138,17 +141,17 @@ function DiffSection({ log }: { log: AuditLogEntry }) {
             <div className="space-y-1 px-3 py-3 text-xs">
               {value.token !== undefined && (
                 <p>
-                  <span className="text-muted-foreground">Token:</span> {value.token ?? "N/A"}
+                  <span className="text-muted-foreground">{t("logs:audit_drawer.token", "Token:")}</span> {value.token ?? "N/A"}
                 </p>
               )}
               {value.spend !== undefined && (
                 <p>
-                  <span className="text-muted-foreground">Spend:</span> ${Number(value.spend).toFixed(6)}
+                  <span className="text-muted-foreground">{t("logs:audit_drawer.spend", "Spend:")}</span> ${Number(value.spend).toFixed(6)}
                 </p>
               )}
               {value.max_budget !== undefined && (
                 <p>
-                  <span className="text-muted-foreground">Max Budget:</span> ${Number(value.max_budget).toFixed(6)}
+                  <span className="text-muted-foreground">{t("logs:audit_drawer.max_budget", "Max Budget:")}</span> ${Number(value.max_budget).toFixed(6)}
                 </p>
               )}
             </div>
@@ -162,13 +165,14 @@ function DiffSection({ log }: { log: AuditLogEntry }) {
 
   return (
     <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-      {renderValue("Before", displayBefore)}
-      {renderValue("After", displayAfter)}
+      {renderValue(t("logs:audit_drawer.before", "Before"), displayBefore)}
+      {renderValue(t("logs:audit_drawer.after", "After"), displayAfter)}
     </div>
   );
 }
 
 export function AuditLogDrawer({ open, onClose, log }: AuditLogDrawerProps) {
+  const { t } = useTranslation(["logs"]);
   if (!log) return null;
 
   const tableDisplay = AUDIT_TABLE_NAME_DISPLAY[log.table_name] ?? log.table_name;
@@ -176,7 +180,7 @@ export function AuditLogDrawer({ open, onClose, log }: AuditLogDrawerProps) {
   return (
     <Sheet open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
       <SheetContent side="right" className="w-[60%] gap-0 overflow-y-auto p-0 sm:max-w-none">
-        <SheetTitle className="sr-only">Audit log details</SheetTitle>
+        <SheetTitle className="sr-only">{t("logs:audit_drawer.title", "Audit log details")}</SheetTitle>
 
         <div className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-6 py-4">
           <StatusBadge tone={ACTION_TONE[log.action] ?? "neutral"} label={log.action} />
@@ -187,10 +191,12 @@ export function AuditLogDrawer({ open, onClose, log }: AuditLogDrawerProps) {
 
         <div className="px-6 py-5">
           <div className="mb-5 rounded-lg border border-border bg-muted p-4">
-            <p className="mb-2 text-xs font-semibold tracking-wide text-foreground uppercase">Details</p>
-            <MetadataRow label="Table" value={tableDisplay} />
+            <p className="mb-2 text-xs font-semibold tracking-wide text-foreground uppercase">
+              {t("logs:audit_drawer.details", "Details")}
+            </p>
+            <MetadataRow label={t("logs:audit_drawer.table", "Table")} value={tableDisplay} />
             <MetadataRow
-              label="Object ID"
+              label={t("logs:audit_drawer.object_id", "Object ID")}
               value={
                 <span className="inline-flex items-center gap-1 font-mono text-xs">
                   {log.object_id}
@@ -198,9 +204,12 @@ export function AuditLogDrawer({ open, onClose, log }: AuditLogDrawerProps) {
                 </span>
               }
             />
-            <MetadataRow label="Changed By" value={<DefaultProxyAdminTag userId={log.changed_by} />} />
             <MetadataRow
-              label="API Key (Hash)"
+              label={t("logs:audit_drawer.changed_by", "Changed By")}
+              value={<DefaultProxyAdminTag userId={log.changed_by} />}
+            />
+            <MetadataRow
+              label={t("logs:audit_drawer.api_key_hash", "API Key (Hash)")}
               value={
                 log.changed_by_api_key ? (
                   <span className="inline-flex items-center gap-1 font-mono text-xs break-all">

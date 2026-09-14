@@ -17,6 +17,7 @@ import { getSpendString } from "@/utils/dataUtils";
 import { normalizeGuardrailEntries, sortSessionLogs, SessionLogSortMode } from "./utils";
 import { DRAWER_WIDTH } from "./constants";
 import { useLogDetails } from "@/app/(dashboard)/hooks/logDetails/useLogDetails";
+import { useTranslation } from "react-i18next";
 
 export interface LogDetailsDrawerProps {
   open: boolean;
@@ -119,6 +120,7 @@ export function LogDetailsDrawer({
   onSelectLog,
   startTime,
 }: LogDetailsDrawerProps) {
+  const { t } = useTranslation(["logs", "common"]);
   const isSessionMode = Boolean(sessionId);
   const [selectedSessionRequestId, setSelectedSessionRequestId] = useState<string | null>(null);
   const [sessionSortMode, setSessionSortMode] = useState<SessionLogSortMode>("duration");
@@ -326,7 +328,7 @@ export function LogDetailsDrawer({
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      {isSessionMode ? "Session" : "Trace"}
+                      {isSessionMode ? t("logs:details_drawer.session", "Session") : t("logs:details_drawer.trace", "Trace")}
                     </div>
                     <div className="font-mono text-[12px] text-foreground leading-tight flex items-center gap-1">
                       <span className="truncate">{leftPanelDisplayId}</span>
@@ -334,7 +336,7 @@ export function LogDetailsDrawer({
                         type="button"
                         onClick={handleCopyLeftPanelId}
                         className="text-muted-foreground hover:text-foreground"
-                        aria-label="Copy trace id"
+                        aria-label={t("logs:details_drawer.copy_trace_id", "Copy trace id")}
                       >
                         {copiedLeftPanelId ? <Check className="size-3" /> : <Copy className="size-3" />}
                       </button>
@@ -392,10 +394,10 @@ export function LogDetailsDrawer({
                   >
                     <TabsList className="w-full">
                       <TabsTrigger value="duration" className="text-[11px]">
-                        Duration
+                        {t("logs:details_drawer.duration", "Duration")}
                       </TabsTrigger>
                       <TabsTrigger value="start_time" className="text-[11px]">
-                        Start time
+                        {t("logs:details_drawer.start_time", "Start time")}
                       </TabsTrigger>
                     </TabsList>
                   </Tabs>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Check, ChevronDown, ChevronRight, CircleAlert, Copy, Info } from "lucide-react";
 import moment from "moment";
 import { Badge } from "@/components/ui/badge";
@@ -67,6 +68,7 @@ export interface LogDetailContentProps {
  * be reused for both single-log and session-mode views.
  */
 export function LogDetailContent({ logEntry, isLoadingDetails = false, accessToken }: LogDetailContentProps) {
+  const { t } = useTranslation(["logs", "common"]);
   const metadata = logEntry.metadata || {};
   const hasError = metadata.status === "failure";
   const errorInfo = hasError ? metadata.error_information : null;
@@ -120,7 +122,7 @@ export function LogDetailContent({ logEntry, isLoadingDetails = false, accessTok
         >
           <CircleAlert className="size-4 shrink-0 text-destructive" />
           <div>
-            <div className="font-medium text-destructive">Request Failed</div>
+            <div className="font-medium text-destructive">{t("logs:details_drawer.request_failed", "Request Failed")}</div>
             <ErrorDescription errorInfo={errorInfo} />
           </div>
         </div>
@@ -135,24 +137,24 @@ export function LogDetailContent({ logEntry, isLoadingDetails = false, accessTok
       <div className="bg-card rounded-lg shadow-sm w-full max-w-full overflow-hidden mb-6">
         <Card size="sm" style={{ marginBottom: 0 }}>
           <CardHeader>
-            <CardTitle>Request Details</CardTitle>
+            <CardTitle>{t("logs:details_drawer.request_details", "Request Details")}</CardTitle>
           </CardHeader>
           <CardContent>
             <DescriptionList>
-              <DescriptionItem label="Model">{logEntry.model}</DescriptionItem>
-              <DescriptionItem label="Provider">{logEntry.custom_llm_provider || "-"}</DescriptionItem>
-              <DescriptionItem label="Call Type">{logEntry.call_type}</DescriptionItem>
-              <DescriptionItem label="Model ID">
+              <DescriptionItem label={t("logs:details_drawer.model", "Model")}>{logEntry.model}</DescriptionItem>
+              <DescriptionItem label={t("logs:details_drawer.provider", "Provider")}>{logEntry.custom_llm_provider || "-"}</DescriptionItem>
+              <DescriptionItem label={t("logs:details_drawer.call_type", "Call Type")}>{logEntry.call_type}</DescriptionItem>
+              <DescriptionItem label={t("logs:details_drawer.model_id", "Model ID")}>
                 <TruncatedValue value={logEntry.model_id} />
               </DescriptionItem>
-              <DescriptionItem label="API Base">
+              <DescriptionItem label={t("logs:details_drawer.api_base", "API Base")}>
                 <TruncatedValue value={logEntry.api_base} maxWidth={API_BASE_MAX_WIDTH} />
               </DescriptionItem>
               {logEntry.requester_ip_address && (
-                <DescriptionItem label="IP Address">{logEntry.requester_ip_address}</DescriptionItem>
+                <DescriptionItem label={t("logs:details_drawer.ip_address", "IP Address")}>{logEntry.requester_ip_address}</DescriptionItem>
               )}
               {hasGuardrailData && (
-                <DescriptionItem label="Guardrail">
+                <DescriptionItem label={t("logs:details_drawer.guardrail", "Guardrail")}>
                   <GuardrailLabel label={primaryGuardrailLabel} maskedCount={totalMaskedEntities} />
                 </DescriptionItem>
               )}
@@ -197,7 +199,7 @@ export function LogDetailContent({ logEntry, isLoadingDetails = false, accessTok
         <div className="bg-card rounded-lg shadow-sm w-full max-w-full overflow-hidden mb-6 p-8 text-center">
           <UiLoadingSpinner className="inline-block size-5" />
           <div style={{ marginTop: 8, color: "var(--color-muted-foreground)" }}>
-            Loading request &amp; response data...
+            {t("logs:details_drawer.loading_data", "Loading request & response data...")}
           </div>
         </div>
       ) : null}
@@ -300,16 +302,17 @@ function CopyButton({
 }
 
 function ErrorDescription({ errorInfo }: { errorInfo: any }) {
+  const { t } = useTranslation(["logs", "common"]);
   return (
     <div>
       {errorInfo.error_code && (
         <div>
-          <span className="font-semibold">Error Code:</span> {errorInfo.error_code}
+          <span className="font-semibold">{t("logs:details_drawer.error_code", "Error Code:")}</span> {errorInfo.error_code}
         </div>
       )}
       {errorInfo.error_message && (
         <div>
-          <span className="font-semibold">Message:</span> {errorInfo.error_message}
+          <span className="font-semibold">{t("logs:details_drawer.message", "Message:")}</span> {errorInfo.error_message}
         </div>
       )}
     </div>
@@ -317,10 +320,11 @@ function ErrorDescription({ errorInfo }: { errorInfo: any }) {
 }
 
 function TagsSection({ tags }: { tags: Record<string, any> }) {
+  const { t } = useTranslation(["logs", "common"]);
   return (
     <div className="bg-card rounded-lg shadow-sm w-full max-w-full overflow-hidden p-4 mb-6">
       <span className="font-semibold" style={{ display: "block", marginBottom: 8, fontSize: 16 }}>
-        Tags
+        {t("logs:details_drawer.tags", "Tags")}
       </span>
       <div className="flex flex-wrap items-center gap-2">
         {Object.entries(tags).map(([key, value]) => (
@@ -334,6 +338,7 @@ function TagsSection({ tags }: { tags: Record<string, any> }) {
 }
 
 function GuardrailLabel({ label, maskedCount }: { label: string; maskedCount: number }) {
+  const { t } = useTranslation(["logs", "common"]);
   const handleClick = () => {
     const el = document.getElementById("guardrail-section");
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -344,7 +349,11 @@ function GuardrailLabel({ label, maskedCount }: { label: string; maskedCount: nu
       <a onClick={handleClick} style={{ cursor: "pointer" }}>
         {label}
       </a>
-      {maskedCount > 0 && <Badge variant="secondary">{maskedCount} masked</Badge>}
+      {maskedCount > 0 && (
+        <Badge variant="secondary">
+          {t("logs:details_drawer.masked_count", `${maskedCount} masked`, { count: maskedCount })}
+        </Badge>
+      )}
     </span>
   );
 }
@@ -397,6 +406,7 @@ function MetricLabel({ label, tooltip, docsUrl }: { label: string; tooltip: stri
  * from the parsed output and error files, and the models the batch actually ran on.
  */
 function BatchResultsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: Record<string, unknown> }) {
+  const { t } = useTranslation(["logs", "common"]);
   const counts = getBatchRequestCounts(metadata);
   const batchId = getBatchIdFromRequestId(logEntry.request_id);
   const batchModels = getBatchModels(metadata);
@@ -406,21 +416,21 @@ function BatchResultsSection({ logEntry, metadata }: { logEntry: LogEntry; metad
     <div className="bg-card rounded-lg shadow-sm w-full max-w-full overflow-hidden mb-6">
       <Card size="sm" style={{ marginBottom: 0 }}>
         <CardHeader>
-          <CardTitle>Batch Results</CardTitle>
+          <CardTitle>{t("logs:details_drawer.batch_results", "Batch Results")}</CardTitle>
         </CardHeader>
         <CardContent>
           <DescriptionList>
             {batchId && (
-              <DescriptionItem label="Batch ID">
+              <DescriptionItem label={t("logs:details_drawer.batch_id", "Batch ID")}>
                 <TruncatedValue value={batchId} />
               </DescriptionItem>
             )}
             {counts && (
               <>
-                <DescriptionItem label="Successful Requests">
+                <DescriptionItem label={t("logs:details_drawer.successful_requests", "Successful Requests")}>
                   {formatNumberWithCommas(counts.successful)}
                 </DescriptionItem>
-                <DescriptionItem label="Failed Requests">
+                <DescriptionItem label={t("logs:details_drawer.failed_requests", "Failed Requests")}>
                   {counts.failed > 0 ? (
                     <Badge variant="secondary" className="bg-destructive/15 text-destructive">
                       {formatNumberWithCommas(counts.failed)}
@@ -431,7 +441,7 @@ function BatchResultsSection({ logEntry, metadata }: { logEntry: LogEntry; metad
                 </DescriptionItem>
               </>
             )}
-            {batchModels && <DescriptionItem label="Models">{batchModels.join(", ")}</DescriptionItem>}
+            {batchModels && <DescriptionItem label={t("logs:details_drawer.models", "Models")}>{batchModels.join(", ")}</DescriptionItem>}
           </DescriptionList>
         </CardContent>
       </Card>
@@ -440,6 +450,7 @@ function BatchResultsSection({ logEntry, metadata }: { logEntry: LogEntry; metad
 }
 
 function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: Record<string, any> }) {
+  const { t } = useTranslation(["logs", "common"]);
   const completionStartTime = logEntry.completionStartTime;
   const ttftMs =
     completionStartTime && completionStartTime !== logEntry.endTime
@@ -462,19 +473,19 @@ function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: 
     <div className="bg-card rounded-lg shadow-sm w-full max-w-full overflow-hidden mb-6">
       <Card size="sm" style={{ marginBottom: 0 }}>
         <CardHeader>
-          <CardTitle>Metrics</CardTitle>
+          <CardTitle>{t("logs:details_drawer.metrics", "Metrics")}</CardTitle>
         </CardHeader>
         <CardContent>
           <DescriptionList>
             {showAnthropicMessagesInputOutput ? (
               <>
-                <DescriptionItem label="Input Tokens">{formatNumberWithCommas(uncachedInputTokens)}</DescriptionItem>
-                <DescriptionItem label="Output Tokens">
+                <DescriptionItem label={t("logs:details_drawer.input_tokens", "Input Tokens")}>{formatNumberWithCommas(uncachedInputTokens)}</DescriptionItem>
+                <DescriptionItem label={t("logs:details_drawer.output_tokens", "Output Tokens")}>
                   {formatNumberWithCommas(logEntry.completion_tokens)}
                 </DescriptionItem>
               </>
             ) : (
-              <DescriptionItem label="Tokens">
+              <DescriptionItem label={t("logs:details_drawer.tokens", "Tokens")}>
                 <TokenFlow
                   prompt={logEntry.prompt_tokens}
                   completion={logEntry.completion_tokens}
@@ -483,34 +494,34 @@ function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: 
               </DescriptionItem>
             )}
             {reasoningTokens !== undefined && reasoningTokens > 0 && (
-              <DescriptionItem label="Reasoning Tokens">{formatNumberWithCommas(reasoningTokens)}</DescriptionItem>
+              <DescriptionItem label={t("logs:details_drawer.reasoning_tokens", "Reasoning Tokens")}>{formatNumberWithCommas(reasoningTokens)}</DescriptionItem>
             )}
-            <DescriptionItem label="Cost">${formatNumberWithCommas(logEntry.spend || 0, 8)}</DescriptionItem>
-            <DescriptionItem label="Duration">
+            <DescriptionItem label={t("logs:details_drawer.cost", "Cost")}>${formatNumberWithCommas(logEntry.spend || 0, 8)}</DescriptionItem>
+            <DescriptionItem label={t("logs:details_drawer.duration", "Duration")}>
               {logEntry.request_duration_ms != null ? (logEntry.request_duration_ms / 1000).toFixed(3) : "-"} s
             </DescriptionItem>
             {ttftMs != null && ttftMs > 0 && (
-              <DescriptionItem label="Time to First Token">{(ttftMs / 1000).toFixed(3)} s</DescriptionItem>
+              <DescriptionItem label={t("logs:details_drawer.time_to_first_token", "Time to First Token")}>{(ttftMs / 1000).toFixed(3)} s</DescriptionItem>
             )}
 
             {showResponseCache && (
               <DescriptionItem
                 label={
                   <MetricLabel
-                    label="Response Cache"
+                    label={t("logs:details_drawer.response_cache", "Response Cache")}
                     tooltip={RESPONSE_CACHE_TOOLTIP}
                     docsUrl={RESPONSE_CACHE_DOCS_URL}
                   />
                 }
               >
                 <Badge variant="secondary" className={isResponseCacheHit ? "bg-success/15 text-success" : undefined}>
-                  {isResponseCacheHit ? "Hit" : "Miss"}
+                  {isResponseCacheHit ? t("logs:details_drawer.cache_hit", "Hit") : t("logs:details_drawer.cache_miss", "Miss")}
                 </Badge>
               </DescriptionItem>
             )}
             {responseCacheKey && (
               <DescriptionItem
-                label={<MetricLabel label="Cache Key" tooltip={CACHE_KEY_TOOLTIP} docsUrl={RESPONSE_CACHE_DOCS_URL} />}
+                label={<MetricLabel label={t("logs:details_drawer.cache_key", "Cache Key")} tooltip={CACHE_KEY_TOOLTIP} docsUrl={RESPONSE_CACHE_DOCS_URL} />}
               >
                 <TruncatedValue value={responseCacheKey} />
               </DescriptionItem>
@@ -519,7 +530,7 @@ function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: 
               <DescriptionItem
                 label={
                   <MetricLabel
-                    label="Prompt Cache Read Tokens"
+                    label={t("logs:details_drawer.prompt_cache_read_tokens", "Prompt Cache Read Tokens")}
                     tooltip={PROMPT_CACHE_READ_TOOLTIP}
                     docsUrl={PROMPT_CACHE_DOCS_URL}
                   />
@@ -532,7 +543,7 @@ function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: 
               <DescriptionItem
                 label={
                   <MetricLabel
-                    label="Prompt Cache Creation Tokens"
+                    label={t("logs:details_drawer.prompt_cache_creation_tokens", "Prompt Cache Creation Tokens")}
                     tooltip={PROMPT_CACHE_CREATION_TOOLTIP}
                     docsUrl={PROMPT_CACHE_DOCS_URL}
                   />
@@ -543,12 +554,12 @@ function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: 
             )}
 
             {metadata?.litellm_overhead_time_ms !== undefined && metadata.litellm_overhead_time_ms !== null && (
-              <DescriptionItem label="LiteLLM Overhead">
+              <DescriptionItem label={t("logs:details_drawer.litellm_overhead", "LiteLLM Overhead")}>
                 {metadata.litellm_overhead_time_ms.toFixed(2)} ms
               </DescriptionItem>
             )}
 
-            <DescriptionItem label="Retries">
+            <DescriptionItem label={t("logs:details_drawer.retries", "Retries")}>
               {metadata?.attempted_retries != null && metadata.attempted_retries > 0 && (
                 <>
                   {metadata.attempted_retries}
@@ -559,16 +570,16 @@ function MetricsSection({ logEntry, metadata }: { logEntry: LogEntry; metadata: 
               )}
               {metadata?.attempted_retries != null && metadata.attempted_retries <= 0 && (
                 <Badge variant="secondary" className="bg-success/15 text-success">
-                  None
+                  {t("logs:details_drawer.retries_none", "None")}
                 </Badge>
               )}
               {metadata?.attempted_retries == null && "-"}
             </DescriptionItem>
 
-            <DescriptionItem label="Start Time">
+            <DescriptionItem label={t("logs:details_drawer.start_time_label", "Start Time")}>
               {moment(logEntry.startTime).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")}
             </DescriptionItem>
-            <DescriptionItem label="End Time">
+            <DescriptionItem label={t("logs:details_drawer.end_time", "End Time")}>
               {moment(logEntry.endTime).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")}
             </DescriptionItem>
           </DescriptionList>
@@ -593,6 +604,7 @@ function RequestResponseSection({
   getFormattedResponse,
   logEntry,
 }: RequestResponseSectionProps) {
+  const { t } = useTranslation(["logs", "common"]);
   const [open, setOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<typeof TAB_REQUEST | typeof TAB_RESPONSE>(TAB_REQUEST);
   const [viewMode, setViewMode] = useState<"pretty" | "json">("pretty");
@@ -625,12 +637,12 @@ function RequestResponseSection({
                 <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
               )}
               <h3 className="text-lg font-medium text-foreground" style={{ margin: 0 }}>
-                Request & Response
+                {t("logs:details_drawer.request_response", "Request & Response")}
               </h3>
             </CollapsibleTrigger>
             <TabsList className="mr-4">
-              <TabsTrigger value="pretty">Pretty</TabsTrigger>
-              <TabsTrigger value="json">JSON</TabsTrigger>
+              <TabsTrigger value="pretty">{t("logs:details_drawer.pretty", "Pretty")}</TabsTrigger>
+              <TabsTrigger value="json">{t("logs:details_drawer.json", "JSON")}</TabsTrigger>
             </TabsList>
           </div>
           <CollapsibleContent>
@@ -654,12 +666,12 @@ function RequestResponseSection({
                 >
                   <div className="flex items-center justify-between">
                     <TabsList>
-                      <TabsTrigger value={TAB_REQUEST}>Request</TabsTrigger>
-                      <TabsTrigger value={TAB_RESPONSE}>Response</TabsTrigger>
+                      <TabsTrigger value={TAB_REQUEST}>{t("logs:details_drawer.request", "Request")}</TabsTrigger>
+                      <TabsTrigger value={TAB_RESPONSE}>{t("logs:details_drawer.response", "Response")}</TabsTrigger>
                     </TabsList>
                     <CopyButton
                       getText={getCopyText}
-                      label="Copy JSON"
+                      label={t("logs:details_drawer.copy_json", "Copy JSON")}
                       disabled={activeTab === TAB_RESPONSE && !hasResponse && !hasError}
                     />
                   </div>
@@ -681,7 +693,7 @@ function RequestResponseSection({
                             fontStyle: "italic",
                           }}
                         >
-                          Response data not available
+                          {t("logs:details_drawer.no_response_data", "Response data not available")}
                         </div>
                       )}
                     </div>
@@ -712,6 +724,7 @@ const guardrailJumpLinkOutcome = (statuses: unknown[]): keyof typeof GUARDRAIL_J
 };
 
 export function GuardrailJumpLink({ guardrailEntries }: { guardrailEntries: any[] }) {
+  const { t } = useTranslation(["logs", "common"]);
   const outcome = guardrailJumpLinkOutcome(guardrailEntries.map((e) => e?.guardrail_status || e?.status));
   const { className, glyph } = GUARDRAIL_JUMP_LINK_STYLE[outcome];
 
@@ -736,8 +749,7 @@ export function GuardrailJumpLink({ guardrailEntries }: { guardrailEntries: any[
           fontWeight: 500,
         }}
       >
-        {glyph} {guardrailEntries.length} guardrail
-        {guardrailEntries.length !== 1 ? "s" : ""} evaluated
+        {glyph} {t("logs:details_drawer.guardrails_evaluated", { count: guardrailEntries.length, defaultValue: `${guardrailEntries.length} guardrail${guardrailEntries.length !== 1 ? "s" : ""} evaluated` })}
         <span style={{ fontSize: 11, opacity: 0.7 }}>{"\u2193"}</span>
       </div>
     </div>
@@ -745,6 +757,7 @@ export function GuardrailJumpLink({ guardrailEntries }: { guardrailEntries: any[
 }
 
 function MetadataSection({ metadata }: { metadata: Record<string, any> }) {
+  const { t } = useTranslation(["logs", "common"]);
   const [open, setOpen] = useState(true);
 
   return (
@@ -756,12 +769,12 @@ function MetadataSection({ metadata }: { metadata: Record<string, any> }) {
           ) : (
             <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
           )}
-          <h3 className="text-lg font-medium text-foreground">Metadata</h3>
+          <h3 className="text-lg font-medium text-foreground">{t("logs:details_drawer.metadata", "Metadata")}</h3>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div>
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
-              <CopyButton getText={() => JSON.stringify(metadata, null, 2)} label="Copy Metadata" />
+              <CopyButton getText={() => JSON.stringify(metadata, null, 2)} label={t("logs:details_drawer.copy_metadata", "Copy Metadata")} />
             </div>
             <pre
               style={{

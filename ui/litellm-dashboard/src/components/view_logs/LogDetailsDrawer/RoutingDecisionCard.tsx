@@ -4,6 +4,7 @@ import { Waypoints } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/cva.config";
+import { useTranslation } from "react-i18next";
 
 export interface RoutingDecisionTierBoundaries {
   simple_medium?: number;
@@ -157,6 +158,7 @@ export function RoutingDecisionCard({
   decision?: RoutingDecision | null;
   className?: string;
 }) {
+  const { t } = useTranslation(["logs", "common"]);
   if (!decision || !decision.cause) return null;
 
   const {
@@ -183,7 +185,7 @@ export function RoutingDecisionCard({
 
   return (
     <div className={cn("mb-6 w-full max-w-full overflow-hidden rounded-lg bg-card shadow-sm", className)}>
-      <div className="border-b px-4 py-2.5 text-sm font-medium">Routing</div>
+      <div className="border-b px-4 py-2.5 text-sm font-medium">{t("logs:routing.title", "Routing")}</div>
       <div className="px-4 py-3">
         {routerModelName && (
           <div className="mb-2 flex items-center gap-2 text-sm font-medium">
@@ -198,30 +200,30 @@ export function RoutingDecisionCard({
         )}
 
         {tier && (
-          <Row label="Tier">
+          <Row label={t("logs:routing.tier", "Tier")}>
             <Badge variant="secondary" className="font-normal">
               {tierLabel ?? tier}
             </Badge>
           </Row>
         )}
 
-        {requestType && <Row label="Request type">{requestType}</Row>}
+        {requestType && <Row label={t("logs:routing.request_type", "Request type")}>{requestType}</Row>}
 
-        <Row label="Decided by">{describeCause(decision)}</Row>
+        <Row label={t("logs:routing.decided_by", "Decided by")}>{describeCause(decision)}</Row>
 
         {score !== undefined && (
-          <Row label="Score">
+          <Row label={t("logs:routing.score", "Score")}>
             <span className="tabular-nums">{score.toFixed(2)}</span>
             {scoreExplanation && <span className="ml-2 text-muted-foreground">({scoreExplanation})</span>}
           </Row>
         )}
 
-        {routedModel && <Row label="Routed to">{routedModel}</Row>}
+        {routedModel && <Row label={t("logs:routing.routed_to", "Routed to")}>{routedModel}</Row>}
 
-        {escalated !== undefined && <Row label="Escalated">{describeEscalation(escalated, escalationKeyword)}</Row>}
+        {escalated !== undefined && <Row label={t("logs:routing.escalated", "Escalated")}>{describeEscalation(escalated, escalationKeyword)}</Row>}
 
         {signals && signals.length > 0 && (
-          <Row label="Signals">
+          <Row label={t("logs:routing.signals", "Signals")}>
             <span className="flex flex-wrap gap-1">
               {signals.map((signal) => (
                 <Badge key={signal} variant="outline" className="font-normal">
