@@ -1,5 +1,6 @@
 import { TriangleAlert } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { z } from "zod/v4";
 import { modelPatchUpdateCall } from "./networking";
 import { toast } from "@/lib/toast";
@@ -35,6 +36,7 @@ export default function UpdateModelCredentialsModal({
   modelId,
   onUpdated,
 }: UpdateModelCredentialsModalProps) {
+  const { t } = useTranslation(["models", "common"]);
   const form = useZodForm(updateCredentialsSchema, { defaultValues: EMPTY_VALUES });
   const [isSaving, setIsSaving] = useState(false);
 
@@ -46,7 +48,7 @@ export default function UpdateModelCredentialsModal({
   const handleSubmit = async (values: UpdateCredentialsValues) => {
     const apiKey = values.api_key?.trim();
     if (!apiKey) {
-      toast.fromError("Enter a new API key");
+      toast.fromError(t("models:update_credentials.required", { defaultValue: "Enter a new API key" }));
       return;
     }
     setIsSaving(true);
@@ -56,13 +58,13 @@ export default function UpdateModelCredentialsModal({
         { litellm_params: { api_key: apiKey }, model_info: { id: modelId } },
         modelId,
       );
-      toast.success("API key updated");
+      toast.success(t("models:update_credentials.success", { defaultValue: "API key updated" }));
       form.reset(EMPTY_VALUES);
       onUpdated();
       onCancel();
     } catch (error) {
       console.error("Error updating API key:", error);
-      toast.fromError("Failed to update API key");
+      toast.fromError(t("models:update_credentials.failed", { defaultValue: "Failed to update API key" }));
     } finally {
       setIsSaving(false);
     }
@@ -72,35 +74,47 @@ export default function UpdateModelCredentialsModal({
     <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && close()}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[520px]">
         <DialogHeader>
-          <DialogTitle>Update API Key</DialogTitle>
+          <DialogTitle>{t("models:update_credentials.title", { defaultValue: "Update API Key" })}</DialogTitle>
         </DialogHeader>
         <span className="block mb-4 text-sm text-muted-foreground">
-          Update this model&apos;s API key. Only the new key is sent; the rest of the deployment configuration is left
-          untouched.
+          {t("models:update_credentials.desc", {
+            defaultValue:
+              "Update this model's API key. Only the new key is sent; the rest of the deployment configuration is left untouched.",
+          })}
         </span>
         <Alert variant="warning" className="mb-4">
           <TriangleAlert />
           <AlertTitle>
-            Only the API key is rotated here. Models that authenticate with an Azure AD token, AWS credentials, or a
-            Vertex service-account JSON aren&apos;t supported yet; update those from the model&apos;s LiteLLM Params for
-            now.
+            {t("models:update_credentials.warning", {
+              defaultValue:
+                "Only the API key is rotated here. Models that authenticate with an Azure AD token, AWS credentials, or a Vertex service-account JSON aren't supported yet; update those from the model's LiteLLM Params for now.",
+            })}
           </AlertTitle>
         </Alert>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FieldGroup>
-            <FormField control={form.control} name="api_key" label="New API Key">
+            <FormField
+              control={form.control}
+              name="api_key"
+              label={t("models:update_credentials.new_api_key", { defaultValue: "New API Key" })}
+            >
               {({ ref, ...field }) => (
-                <PasswordInput {...field} ref={ref} placeholder="Enter the new API key" autoComplete="new-password" />
+                <PasswordInput
+                  {...field}
+                  ref={ref}
+                  placeholder={t("models:update_credentials.placeholder", { defaultValue: "Enter the new API key" })}
+                  autoComplete="new-password"
+                />
               )}
             </FormField>
           </FieldGroup>
           <div className="flex justify-end items-center mt-4 gap-2.5">
             <Button type="button" variant="outline" onClick={close}>
-              Cancel
+              {t("common:cancel", { defaultValue: "Cancel" })}
             </Button>
             <Button type="submit" disabled={isSaving}>
               {isSaving && <UiLoadingSpinner className="size-4" />}
-              Update API Key
+              {t("models:update_credentials.btn", { defaultValue: "Update API Key" })}
             </Button>
           </div>
         </form>
