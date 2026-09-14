@@ -164,6 +164,7 @@ const columns: ColumnDef<ModelMapping>[] = [
 ];
 
 const ConditionalPublicModelName: React.FC = () => {
+  const { t } = useTranslation(["models"]);
   const form = useFormContext<MountedFormValues>();
 
   const modelValue = useWatch({ control: form.control, name: "model" }) || [];
@@ -250,8 +251,6 @@ const ConditionalPublicModelName: React.FC = () => {
   }, [selectedModels, customModelName, selectedProvider, form]);
 
   if (!showPublicModelName) return null;
-
-  const { t } = useTranslation(["models"]);
 
   return (
     <MountedFormField

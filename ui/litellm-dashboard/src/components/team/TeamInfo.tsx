@@ -101,7 +101,6 @@ import {
   getTeamInfoTabLabel,
   getTeamInfoVisibleTabs,
   TEAM_INFO_TAB_KEYS,
-  TEAM_INFO_TAB_LABELS,
 } from "./tabVisibilityUtils";
 import TeamMembersComponent from "./TeamMemberTab";
 import { TeamVirtualKeysTable } from "./TeamVirtualKeysTable";

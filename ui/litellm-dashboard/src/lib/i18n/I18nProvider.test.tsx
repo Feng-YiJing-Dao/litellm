@@ -3,7 +3,7 @@ import { render, act } from "@testing-library/react";
 import React from "react";
 import I18nProvider from "./I18nProvider";
 import i18n from "@/locales";
-import { LOCAL_STORAGE_EVENT, setLocalStorageItem, emitLocalStorageChange } from "@/utils/localStorageUtils";
+import { setLocalStorageItem, emitLocalStorageChange } from "@/utils/localStorageUtils";
 
 describe("I18nProvider", () => {
   it("synchronizes language when LOCAL_STORAGE_EVENT is emitted", async () => {

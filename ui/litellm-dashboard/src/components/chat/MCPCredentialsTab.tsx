@@ -45,52 +45,56 @@ function relativeTime(isoString: string | null | undefined): string {
   }
 }
 
+function getExpiryLabel(
+  isoString: string | null | undefined,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): {
+  text: string;
+  variant: "secondary" | "destructive" | "outline";
+} {
+  if (!isoString)
+    return {
+      text: t("mcp_credentials.does_not_expire", { defaultValue: "Does not expire" }),
+      variant: "secondary",
+    };
+  try {
+    const exp = new Date(isoString);
+    const diffMs = exp.getTime() - Date.now();
+    if (diffMs <= 0)
+      return {
+        text: t("mcp_credentials.expired", { defaultValue: "Expired" }),
+        variant: "destructive",
+      };
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHr = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHr / 24);
+    if (diffDay > 0)
+      return {
+        text: t("mcp_credentials.expires_in_days", { count: diffDay, defaultValue: `Expires in ${diffDay}d` }),
+        variant: "outline",
+      };
+    if (diffHr > 0)
+      return {
+        text: t("mcp_credentials.expires_in_hours", { count: diffHr, defaultValue: `Expires in ${diffHr}h` }),
+        variant: "outline",
+      };
+    return {
+      text: t("mcp_credentials.expires_in_minutes", { count: diffMin, defaultValue: `Expires in ${diffMin}m` }),
+      variant: "outline",
+    };
+  } catch {
+    return {
+      text: t("mcp_credentials.unknown", { defaultValue: "Unknown" }),
+      variant: "secondary",
+    };
+  }
+}
+
 const MCPCredentialsTab: React.FC<Props> = ({ accessToken }) => {
   const { t } = useTranslation("chat");
   const queryClient = useQueryClient();
   const [revoking, setRevoking] = useState<Set<string>>(new Set());
-
-  const getExpiryLabel = (
-    isoString: string | null | undefined,
-  ): {
-    text: string;
-    variant: "secondary" | "destructive" | "outline";
-  } => {
-    if (!isoString)
-      return {
-        text: t("mcp_credentials.does_not_expire", { defaultValue: "Does not expire" }),
-        variant: "secondary",
-      };
-    try {
-      const exp = new Date(isoString);
-      const diffMs = exp.getTime() - Date.now();
-      if (diffMs <= 0)
-        return {
-          text: t("mcp_credentials.expired", { defaultValue: "Expired" }),
-          variant: "destructive",
-        };
-      const diffSec = Math.floor(diffMs / 1000);
-      const diffMin = Math.floor(diffSec / 60);
-      const diffHr = Math.floor(diffMin / 60);
-      const diffDay = Math.floor(diffHr / 24);
-      if (diffDay > 0)
-        return {
-          text: t("mcp_credentials.expires_in_days", { count: diffDay, defaultValue: `Expires in ${diffDay}d` }),
-          variant: "outline",
-        };
-      if (diffHr > 0)
-        return {
-          text: t("mcp_credentials.expires_in_hours", { count: diffHr, defaultValue: `Expires in ${diffHr}h` }),
-          variant: "outline",
-        };
-      return {
-        text: t("mcp_credentials.expires_in_minutes", { count: diffMin, defaultValue: `Expires in ${diffMin}m` }),
-        variant: "outline",
-      };
-    } catch {
-      return { text: "", variant: "outline" };
-    }
-  };
 
   const { data: credentials = [], isLoading: loading } = useQuery({
     queryKey: [MCP_CREDENTIALS_QUERY_KEY, accessToken],
@@ -204,7 +208,7 @@ const MCPCredentialsTab: React.FC<Props> = ({ accessToken }) => {
             <TableBody>
               {credentials.map((cred) => {
                 const isRevoking = revoking.has(cred.server_id);
-                const exp = getExpiryLabel(cred.expires_at);
+                const exp = getExpiryLabel(cred.expires_at, t);
                 return (
                   <TableRow key={cred.server_id}>
                     <TableCell className="text-sm font-medium">{displayName(cred)}</TableCell>
