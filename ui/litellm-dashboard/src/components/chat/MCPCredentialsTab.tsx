@@ -45,49 +45,35 @@ function relativeTime(isoString: string | null | undefined): string {
   }
 }
 
-function getExpiryLabel(
-  isoString: string | null | undefined,
-  t: (key: string, options?: Record<string, unknown>) => string,
-): {
-  text: string;
+interface ExpiryInfo {
+  status: "never" | "expired" | "days" | "hours" | "minutes" | "unknown";
+  count?: number;
   variant: "secondary" | "destructive" | "outline";
-} {
-  if (!isoString)
-    return {
-      text: t("mcp_credentials.does_not_expire", { defaultValue: "Does not expire" }),
-      variant: "secondary",
-    };
+}
+
+function getExpiryInfo(isoString: string | null | undefined): ExpiryInfo {
+  if (!isoString) {
+    return { status: "never", variant: "secondary" };
+  }
   try {
     const exp = new Date(isoString);
     const diffMs = exp.getTime() - Date.now();
-    if (diffMs <= 0)
-      return {
-        text: t("mcp_credentials.expired", { defaultValue: "Expired" }),
-        variant: "destructive",
-      };
+    if (diffMs <= 0) {
+      return { status: "expired", variant: "destructive" };
+    }
     const diffSec = Math.floor(diffMs / 1000);
     const diffMin = Math.floor(diffSec / 60);
     const diffHr = Math.floor(diffMin / 60);
     const diffDay = Math.floor(diffHr / 24);
-    if (diffDay > 0)
-      return {
-        text: t("mcp_credentials.expires_in_days", { count: diffDay, defaultValue: `Expires in ${diffDay}d` }),
-        variant: "outline",
-      };
-    if (diffHr > 0)
-      return {
-        text: t("mcp_credentials.expires_in_hours", { count: diffHr, defaultValue: `Expires in ${diffHr}h` }),
-        variant: "outline",
-      };
-    return {
-      text: t("mcp_credentials.expires_in_minutes", { count: diffMin, defaultValue: `Expires in ${diffMin}m` }),
-      variant: "outline",
-    };
+    if (diffDay > 0) {
+      return { status: "days", count: diffDay, variant: "outline" };
+    }
+    if (diffHr > 0) {
+      return { status: "hours", count: diffHr, variant: "outline" };
+    }
+    return { status: "minutes", count: diffMin, variant: "outline" };
   } catch {
-    return {
-      text: t("mcp_credentials.unknown", { defaultValue: "Unknown" }),
-      variant: "secondary",
-    };
+    return { status: "unknown", variant: "secondary" };
   }
 }
 
@@ -208,7 +194,28 @@ const MCPCredentialsTab: React.FC<Props> = ({ accessToken }) => {
             <TableBody>
               {credentials.map((cred) => {
                 const isRevoking = revoking.has(cred.server_id);
-                const exp = getExpiryLabel(cred.expires_at, t);
+                const exp = getExpiryInfo(cred.expires_at);
+                const expText =
+                  exp.status === "never"
+                    ? t("mcp_credentials.does_not_expire", { defaultValue: "Does not expire" })
+                    : exp.status === "expired"
+                      ? t("mcp_credentials.expired", { defaultValue: "Expired" })
+                      : exp.status === "days"
+                        ? t("mcp_credentials.expires_in_days", {
+                            count: exp.count,
+                            defaultValue: `Expires in ${exp.count}d`,
+                          })
+                        : exp.status === "hours"
+                          ? t("mcp_credentials.expires_in_hours", {
+                              count: exp.count,
+                              defaultValue: `Expires in ${exp.count}h`,
+                            })
+                          : exp.status === "minutes"
+                            ? t("mcp_credentials.expires_in_minutes", {
+                                count: exp.count,
+                                defaultValue: `Expires in ${exp.count}m`,
+                              })
+                            : t("mcp_credentials.unknown", { defaultValue: "Unknown" });
                 return (
                   <TableRow key={cred.server_id}>
                     <TableCell className="text-sm font-medium">{displayName(cred)}</TableCell>
@@ -216,7 +223,7 @@ const MCPCredentialsTab: React.FC<Props> = ({ accessToken }) => {
                       {relativeTime(cred.connected_at) || "\u2014"}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={exp.variant}>{exp.text}</Badge>
+                      <Badge variant={exp.variant}>{expText}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <AlertDialog>
