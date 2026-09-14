@@ -757,5 +757,60 @@
     "azure_desc": "Your deployment name will be saved as the public model name, and LiteLLM will use \"azure/deployment-name\" internally"
   },
   "no_access_groups_found": "No access groups found",
-  "access_groups_placeholder": "Select existing groups or type to create new ones"
+  "access_groups_placeholder": "Select existing groups or type to create new ones",
+  "adaptive_routing": {
+    "enable_toggle": "Enable adaptive bandit selection",
+    "disabled_hint": "When disabled, each request always uses the model assigned to its classified tier.",
+    "how_it_works_title": "How Adaptive Routing Works",
+    "how_it_works_desc": "It learns from how each conversation actually goes: does the user have to rephrase or correct the model, does it get stuck repeating itself, does it run out of tool calls, does the user seem satisfied. Combined with cost, this live feedback shifts future routing toward the models that are actually working well, and improves as more conversations come in. Until there's enough feedback, it defaults to the classified tier's model.",
+    "quality_cost_title": "Quality vs. Cost ({{quality}}% quality / {{cost}}% cost)",
+    "quality_cost_desc": "Higher quality weight favors more capable (pricier) models; higher cost weight favors cheaper models when the bandit has feedback to act on. Recommended: 30% quality / 70% cost split.",
+    "eligible_model_pool": "Eligible Model Pool",
+    "all_tiers_title": "All tiers (soft floor)",
+    "all_tiers_desc": "— router can pick across tiers, depending on the best fit for the prompt",
+    "classified_tier_title": "Classified tier only",
+    "classified_tier_desc": "— router can only pick models within tier",
+    "tier_distance_penalty": "Tier Distance Penalty",
+    "tier_distance_penalty_desc": "Score penalty applied per tier-step away from the classified tier."
+  },
+  "compression_controls": {
+    "routing_decision": "Routing decision",
+    "routing_decision_tooltip": "Compression applied to the classifier's own call that picks a tier, separate from the model the request routes to.",
+    "inherit_placeholder": "Inherit from the request's own compression guardrails",
+    "no_guardrails_found": "No compression guardrails found",
+    "none_option": "None (no compression)",
+    "model_call": "Model call",
+    "same_as_routing": "Same as the routing decision",
+    "different_compression": "Use a different compression"
+  },
+  "route_preview": {
+    "title": "Route Preview",
+    "description": "How your requests will be routed",
+    "basic_routing": "Basic routing:",
+    "your_endpoint": "Your endpoint",
+    "forwards_to": "Forwards to",
+    "with_subpaths": "With subpaths:",
+    "your_endpoint_subpath": "Your endpoint + subpath",
+    "subpath_appended": "Any path after {{pathValue}} will be appended to the target URL",
+    "not_seeing_wanted": "<strong className='font-medium'>Not seeing the routing you wanted?</strong> Try enabling - Include Subpaths - above - this allows subroutes like <code className='rounded-sm bg-primary/10 px-1 py-0.5 font-mono text-xs'>/api/v1/models</code> to be forwarded automatically."
+  },
+  "health_checks": {
+    "model_id": "Model ID",
+    "model_name": "Model Name",
+    "team_alias": "Team Alias",
+    "health_status": "Health Status",
+    "error_details": "Error Details",
+    "last_check": "Last Check",
+    "last_success": "Last Success",
+    "actions": "Actions",
+    "checking": "Checking...",
+    "check_in_progress": "Check in progress...",
+    "run_check": "Run Health Check",
+    "rerun_check": "Re-run Health Check",
+    "view_response_details": "View response details",
+    "view_full_error": "View full error details",
+    "no_errors": "No errors",
+    "never_checked": "Never checked",
+    "never_succeeded": "Never succeeded"
+  }
 }

@@ -80,5 +80,14 @@
     },
     "created_success": "预算创建成功",
     "updated_success": "预算更新成功"
+  },
+  "durations": {
+    "never_resets": "永不重置",
+    "hourly": "每小时",
+    "daily": "每日",
+    "weekly": "每周",
+    "monthly": "每月",
+    "yearly": "每年",
+    "not_set": "未设置"
   }
 }

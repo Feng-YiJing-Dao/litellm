@@ -171,5 +171,11 @@
     "only_openai_toast": "Code Interpreter is only available for OpenAI models",
     "switch_aria": "Enable Code Interpreter",
     "info_aria": "About Code Interpreter"
+  },
+  "compare": {
+    "you": "You",
+    "assistant": "Assistant",
+    "generating_response": "Generating response...",
+    "waiting_response": "Waiting for a response..."
   }
 }

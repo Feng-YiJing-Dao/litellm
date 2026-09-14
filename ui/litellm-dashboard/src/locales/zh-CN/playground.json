@@ -171,5 +171,11 @@
     "only_openai_toast": "代码解释器仅适用于 OpenAI 模型",
     "switch_aria": "启用代码解释器",
     "info_aria": "关于代码解释器"
+  },
+  "compare": {
+    "you": "您",
+    "assistant": "助手",
+    "generating_response": "正在生成响应...",
+    "waiting_response": "等待响应中..."
   }
 }

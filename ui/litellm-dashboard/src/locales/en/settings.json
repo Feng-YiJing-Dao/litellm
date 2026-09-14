@@ -208,5 +208,29 @@
     "role_column": "Role",
     "mapped_groups_column": "Mapped Groups",
     "no_groups_mapped": "No groups mapped"
+  },
+  "cyberark": {
+    "title": "CyberArk Conjur",
+    "manage_desc": "Manage secret manager configuration",
+    "test_connection": "Test Connection",
+    "testing": "Testing...",
+    "edit_configuration": "Edit Configuration",
+    "delete_configuration": "Delete Configuration",
+    "auth_method": "Auth Method",
+    "not_configured": "Not configured",
+    "loading": "Loading CyberArk configuration",
+    "load_error": "Could not load CyberArk configuration",
+    "hot_reloaded": "Configuration changes are hot-reloaded across all proxy instances",
+    "view_documentation": "View documentation",
+    "delete_modal_title": "Delete CyberArk Configuration?",
+    "delete_modal_message": "Models using CyberArk secrets will lose access to their API keys until a new configuration is saved.",
+    "resource_title": "CyberArk Configuration",
+    "server_url": "Conjur Server URL",
+    "clear_field_title": "Clear {{field}}?",
+    "clear_field_message": "This will remove the stored value.",
+    "field": "Field",
+    "empty_title": "No CyberArk Configuration Found",
+    "empty_desc": "Configure CyberArk Conjur to securely manage provider API keys and secrets for your LiteLLM deployment.",
+    "configure_button": "Configure CyberArk"
   }
 }

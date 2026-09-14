@@ -80,5 +80,14 @@
     },
     "created_success": "Budget Created",
     "updated_success": "Budget Updated"
+  },
+  "durations": {
+    "never_resets": "Never resets",
+    "hourly": "hourly",
+    "daily": "daily",
+    "weekly": "weekly",
+    "monthly": "monthly",
+    "yearly": "yearly",
+    "not_set": "Not set"
   }
 }

@@ -208,5 +208,29 @@
     "role_column": "角色",
     "mapped_groups_column": "已映射的用户组",
     "no_groups_mapped": "未映射任何用户组"
+  },
+  "cyberark": {
+    "title": "CyberArk Conjur 凭证管理",
+    "manage_desc": "管理机密管理器配置",
+    "test_connection": "测试连接",
+    "testing": "测试中...",
+    "edit_configuration": "编辑配置",
+    "delete_configuration": "删除配置",
+    "auth_method": "认证方式",
+    "not_configured": "未配置",
+    "loading": "正在加载 CyberArk 配置",
+    "load_error": "无法加载 CyberArk 配置",
+    "hot_reloaded": "配置变更将在所有代理实例间热重载同步生效",
+    "view_documentation": "查看文档",
+    "delete_modal_title": "确定要删除 CyberArk 配置吗？",
+    "delete_modal_message": "使用 CyberArk 机密信息的模型将失去对其 API 密钥的访问权限，直到保存新配置为止。",
+    "resource_title": "CyberArk 配置",
+    "server_url": "Conjur 服务器地址",
+    "clear_field_title": "清除 {{field}}？",
+    "clear_field_message": "这将清除当前存储的值。",
+    "field": "字段",
+    "empty_title": "未找到 CyberArk 配置",
+    "empty_desc": "配置 CyberArk Conjur 以安全管理您的 LiteLLM 部署的提供商 API 密钥和机密信息。",
+    "configure_button": "配置 CyberArk"
   }
 }

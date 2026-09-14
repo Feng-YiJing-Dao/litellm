@@ -757,5 +757,60 @@
     "azure_desc": "您的部署名称将保存为公共模型名称，LiteLLM 内部将使用 \"azure/部署名\""
   },
   "no_access_groups_found": "未找到模型访问组",
-  "access_groups_placeholder": "选择现有访问组或输入以新建"
+  "access_groups_placeholder": "选择现有访问组或输入以新建",
+  "adaptive_routing": {
+    "enable_toggle": "启用自适应多臂老虎机 (Bandit) 路由选择",
+    "disabled_hint": "禁用时，每个请求始终使用与其分类层级绑定的模型。",
+    "how_it_works_title": "自适应路由的工作原理",
+    "how_it_works_desc": "它会根据每次对话的实际表现自主学习：用户是否需要重新组织语言或纠正模型、模型是否陷入自我重复、工具调用是否耗尽、用户是否满意等。结合成本考量，这种实时反馈会将后续请求动态调度至实际表现更优的模型，并随着对话量积累持续优化。在收集到足够的反馈样本前，默认采用分类层级所指定的模型。",
+    "quality_cost_title": "质量与成本平衡 ({{quality}}% 质量 / {{cost}}% 成本)",
+    "quality_cost_desc": "提高质量权重将倾向于调用能力更强（较贵）的模型；提高成本权重则在有可用反馈时倾向于选择成本更低的模型。推荐配置：30% 质量 / 70% 成本比例。",
+    "eligible_model_pool": "候选模型池",
+    "all_tiers_title": "所有层级（软下限）",
+    "all_tiers_desc": "— 路由器可根据 Prompt 的契合度跨层级挑选最佳模型",
+    "classified_tier_title": "仅限分类层级",
+    "classified_tier_desc": "— 路由器仅在判定的层级内部选择候选模型",
+    "tier_distance_penalty": "层级距离惩罚",
+    "tier_distance_penalty_desc": "偏离判定层级时，每个层级步长所施加的分数惩罚值。"
+  },
+  "compression_controls": {
+    "routing_decision": "路由决策压缩",
+    "routing_decision_tooltip": "应用于分类器在决定层级时的单独压缩策略，独立于请求最终路由的目标模型。",
+    "inherit_placeholder": "继承请求自带的压缩护栏规则",
+    "no_guardrails_found": "未找到可用的压缩护栏",
+    "none_option": "无（不使用压缩）",
+    "model_call": "模型调用压缩",
+    "same_as_routing": "与路由决策相同",
+    "different_compression": "使用不同的压缩策略"
+  },
+  "route_preview": {
+    "title": "路由效果预览",
+    "description": "查看请求如何被转发和路由",
+    "basic_routing": "基础路由转发:",
+    "your_endpoint": "访问端点",
+    "forwards_to": "转发目标",
+    "with_subpaths": "包含子路径时:",
+    "your_endpoint_subpath": "访问端点 + 子路径",
+    "subpath_appended": "{{pathValue}} 后续的所有子路径都将追加到目标 URL 之后",
+    "not_seeing_wanted": "<strong className='font-medium'>未获得预期的路由效果？</strong> 请尝试开启上方的「包含子路径」选项 — 这将允许如 <code className='rounded-sm bg-primary/10 px-1 py-0.5 font-mono text-xs'>/api/v1/models</code> 等子路由被自动转发。"
+  },
+  "health_checks": {
+    "model_id": "模型 ID",
+    "model_name": "模型名称",
+    "team_alias": "团队别名",
+    "health_status": "健康状态",
+    "error_details": "错误详情",
+    "last_check": "最近检查",
+    "last_success": "最近成功",
+    "actions": "操作",
+    "checking": "检查中...",
+    "check_in_progress": "正在执行检查...",
+    "run_check": "运行健康检查",
+    "rerun_check": "重新运行健康检查",
+    "view_response_details": "查看响应详情",
+    "view_full_error": "查看完整错误信息",
+    "no_errors": "无错误",
+    "never_checked": "从未检查",
+    "never_succeeded": "从未成功"
+  }
 }

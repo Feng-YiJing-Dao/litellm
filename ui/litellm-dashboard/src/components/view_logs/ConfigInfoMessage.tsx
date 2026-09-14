@@ -1,10 +1,12 @@
 import React from "react";
+import { useTranslation, Trans } from "react-i18next";
 
 interface ConfigInfoMessageProps {
   show: boolean;
 }
 
 export const ConfigInfoMessage: React.FC<ConfigInfoMessageProps> = ({ show }) => {
+  const { t } = useTranslation(["logs"]);
   if (!show) return null;
 
   return (
@@ -27,11 +29,15 @@ export const ConfigInfoMessage: React.FC<ConfigInfoMessageProps> = ({ show }) =>
         </svg>
       </div>
       <div>
-        <h4 className="text-sm font-medium text-info">Request/Response Data Not Available</h4>
+        <h4 className="text-sm font-medium text-info">
+          {t("logs:config_info.data_not_available", "Request/Response Data Not Available")}
+        </h4>
         <p className="text-sm text-info mt-1">
-          To view request and response details, enable prompt storage in your LiteLLM configuration by adding the
-          following to your <code className="bg-info/15 px-1 py-0.5 rounded-sm">proxy_config.yaml</code> file, or toggle
-          the setting in <strong>Admin Settings → Logging Settings</strong>.
+          <Trans i18nKey="logs:config_info.instructions">
+            To view request and response details, enable prompt storage in your LiteLLM configuration by adding the
+            following to your <code className="bg-info/15 px-1 py-0.5 rounded-sm">proxy_config.yaml</code> file, or toggle
+            the setting in <strong>Admin Settings → Logging Settings</strong>.
+          </Trans>
         </p>
         <pre className="mt-2 bg-card p-3 rounded-sm border border-info/20 text-xs font-mono overflow-auto">
           {`general_settings:
@@ -39,7 +45,7 @@ export const ConfigInfoMessage: React.FC<ConfigInfoMessageProps> = ({ show }) =>
   store_prompts_in_spend_logs: true`}
         </pre>
         <p className="text-xs text-info mt-2">
-          Note: This will only affect new requests after the configuration change.
+          {t("logs:config_info.note", "Note: This will only affect new requests after the configuration change.")}
         </p>
       </div>
     </div>
