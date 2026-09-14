@@ -367,5 +367,14 @@
     "data_not_available": "Request/Response Data Not Available",
     "instructions": "To view request and response details, enable prompt storage in your LiteLLM configuration by adding the following to your <code className='bg-info/15 px-1 py-0.5 rounded-sm'>proxy_config.yaml</code> file, or toggle the setting in <strong>Admin Settings → Logging Settings</strong>.",
     "note": "Note: This will only affect new requests after the configuration change."
+  },
+  "compliance_panel": {
+    "regulatory_compliance": "Regulatory Compliance",
+    "compliant": "COMPLIANT",
+    "non_compliant": "NON-COMPLIANT",
+    "unavailable": "UNAVAILABLE",
+    "checking_compliance": "Checking compliance...",
+    "eu_ai_act": "EU AI Act",
+    "gdpr": "GDPR"
   }
 }

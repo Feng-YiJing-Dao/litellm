@@ -515,7 +515,7 @@ export default function AgentBuilderView({
               variant="ghost"
               size="icon-sm"
               onClick={handleAddAgent}
-              aria-label={t("playground:agent_builder.new_agent_button", { defaultValue: "Add agent" })}
+              aria-label={t("playground:agent_builder.add_agent_button", { defaultValue: "Add agent" })}
             >
               <Plus />
             </Button>
