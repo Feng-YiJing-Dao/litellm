@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import type { ColumnDef, OnChangeFn, PaginationState } from "@tanstack/react-table";
 import { BarChart } from "@/components/shared/charts";
 import { DataTable } from "@/components/shared/DataTable";
@@ -31,6 +32,7 @@ interface PerUserUsageProps {
 }
 
 const PerUserUsage: React.FC<PerUserUsageProps> = ({ accessToken, selectedTags, formatAbbreviatedNumber }) => {
+  const { t } = useTranslation(["usage", "common"]);
   // Maximum number of user agent categories to show in charts to prevent color palette overflow
   const MAX_USER_AGENTS = 8;
   const [perUserData, setPerUserData] = useState<PerUserAnalyticsResponse>({
@@ -77,60 +79,67 @@ const PerUserUsage: React.FC<PerUserUsageProps> = ({ accessToken, selectedTags, 
     });
   }, []);
 
-  const columns: ColumnDef<PerUserMetrics>[] = [
-    {
-      header: "User ID",
-      accessorKey: "user_id",
-      cell: ({ row }) => <span className="font-medium">{row.original.user_id}</span>,
-    },
-    {
-      header: "User Email",
-      accessorKey: "user_email",
-      cell: ({ row }) => row.original.user_email || "N/A",
-    },
-    {
-      header: "User Agent",
-      accessorKey: "user_agent",
-      cell: ({ row }) => row.original.user_agent || "Unknown",
-    },
-    {
-      header: "Success Generations",
-      accessorKey: "successful_requests",
-      meta: { numeric: true },
-      cell: ({ row }) => formatAbbreviatedNumber(row.original.successful_requests),
-    },
-    {
-      header: "Total Tokens",
-      accessorKey: "total_tokens",
-      meta: { numeric: true },
-      cell: ({ row }) => formatAbbreviatedNumber(row.original.total_tokens),
-    },
-    {
-      header: "Failed Requests",
-      accessorKey: "failed_requests",
-      meta: { numeric: true },
-      cell: ({ row }) => formatAbbreviatedNumber(row.original.failed_requests),
-    },
-    {
-      header: "Total Cost",
-      accessorKey: "spend",
-      meta: { numeric: true },
-      cell: ({ row }) => `$${formatAbbreviatedNumber(row.original.spend, 4)}`,
-    },
-  ];
+  const columns: ColumnDef<PerUserMetrics>[] = useMemo(
+    () => [
+      {
+        header: t("usage:per_user.col_user_id", { defaultValue: "User ID" }),
+        accessorKey: "user_id",
+        cell: ({ row }) => <span className="font-medium">{row.original.user_id}</span>,
+      },
+      {
+        header: t("usage:per_user.col_user_email", { defaultValue: "User Email" }),
+        accessorKey: "user_email",
+        cell: ({ row }) => row.original.user_email || "N/A",
+      },
+      {
+        header: t("usage:per_user.col_user_agent", { defaultValue: "User Agent" }),
+        accessorKey: "user_agent",
+        cell: ({ row }) => row.original.user_agent || "Unknown",
+      },
+      {
+        header: t("usage:per_user.col_success_generations", { defaultValue: "Success Generations" }),
+        accessorKey: "successful_requests",
+        meta: { numeric: true },
+        cell: ({ row }) => formatAbbreviatedNumber(row.original.successful_requests),
+      },
+      {
+        header: t("usage:per_user.col_total_tokens", { defaultValue: "Total Tokens" }),
+        accessorKey: "total_tokens",
+        meta: { numeric: true },
+        cell: ({ row }) => formatAbbreviatedNumber(row.original.total_tokens),
+      },
+      {
+        header: t("usage:per_user.col_failed_requests", { defaultValue: "Failed Requests" }),
+        accessorKey: "failed_requests",
+        meta: { numeric: true },
+        cell: ({ row }) => formatAbbreviatedNumber(row.original.failed_requests),
+      },
+      {
+        header: t("usage:per_user.col_total_cost", { defaultValue: "Total Cost" }),
+        accessorKey: "spend",
+        meta: { numeric: true },
+        cell: ({ row }) => `$${formatAbbreviatedNumber(row.original.spend, 4)}`,
+      },
+    ],
+    [t, formatAbbreviatedNumber],
+  );
 
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-medium text-foreground">Per User Usage</h3>
-      <p className="text-sm text-muted-foreground">Individual developer usage metrics</p>
+      <h3 className="text-lg font-medium text-foreground">
+        {t("usage:per_user.title", { defaultValue: "Per User Usage" })}
+      </h3>
+      <p className="text-sm text-muted-foreground">
+        {t("usage:per_user.desc", { defaultValue: "Individual developer usage metrics" })}
+      </p>
 
       <Tabs defaultValue="details">
         <TabsList variant="line" className="mb-6 h-auto w-full justify-start rounded-none border-b p-0">
           <TabsTrigger value="details" className="flex-none rounded-none px-4 py-2">
-            User Details
+            {t("usage:per_user.user_details_tab", { defaultValue: "User Details" })}
           </TabsTrigger>
           <TabsTrigger value="distribution" className="flex-none rounded-none px-4 py-2">
-            Usage Distribution
+            {t("usage:per_user.distribution_tab", { defaultValue: "Usage Distribution" })}
           </TabsTrigger>
         </TabsList>
 
@@ -144,7 +153,7 @@ const PerUserUsage: React.FC<PerUserUsageProps> = ({ accessToken, selectedTags, 
             pagination={pagination}
             onPaginationChange={handlePaginationChange}
             rowCount={perUserData.total_count}
-            noDataMessage="No per-user usage data"
+            noDataMessage={t("usage:per_user.no_data", { defaultValue: "No per-user usage data" })}
             size="compact"
           />
         </TabsContent>
@@ -152,8 +161,14 @@ const PerUserUsage: React.FC<PerUserUsageProps> = ({ accessToken, selectedTags, 
         {/* Tab 2: Usage Distribution Histogram */}
         <TabsContent value="distribution" keepMounted>
           <div className="mb-4">
-            <h4 className="text-lg font-medium text-foreground">User Usage Distribution</h4>
-            <p className="text-sm text-muted-foreground">Number of users by successful request frequency</p>
+            <h4 className="text-lg font-medium text-foreground">
+              {t("usage:per_user.distribution_title", { defaultValue: "User Usage Distribution" })}
+            </h4>
+            <p className="text-sm text-muted-foreground">
+              {t("usage:per_user.distribution_desc", {
+                defaultValue: "Number of users by successful request frequency",
+              })}
+            </p>
           </div>
 
           <BarChart
@@ -226,7 +241,9 @@ const PerUserUsage: React.FC<PerUserUsageProps> = ({ accessToken, selectedTags, 
                 .map(([agent]) => agent);
             })()}
             colors={["blue", "green", "orange", "red", "purple", "yellow", "pink", "indigo"]}
-            valueFormatter={(value: number) => `${value} users`}
+            valueFormatter={(value: number) =>
+              t("usage:per_user.users_count", { defaultValue: "{{value}} users", value })
+            }
             yAxisWidth={80}
             showLegend={true}
             stack={true}

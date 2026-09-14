@@ -108,5 +108,15 @@
   "adding": "Adding...",
   "add_to_team": "Add to Team",
   "hint_sso_id": "SSO ID is the ID of the user in the SSO provider. If the user is not using SSO, this will be null.",
-  "hint_scim_inactive": "Deactivated via SCIM (external identity provider). The user's virtual keys are blocked."
+  "hint_scim_inactive": "Deactivated via SCIM (external identity provider). The user's virtual keys are blocked.",
+  "invitation_modal": {
+    "invitation_title": "Invitation Link",
+    "reset_password_title": "Reset Password Link",
+    "invitation_desc": "Copy and send the generated link to onboard this user to the proxy.",
+    "reset_password_desc": "Copy and send the generated link to the user to reset their password.",
+    "user_id": "User ID",
+    "copy_invitation": "Copy invitation link",
+    "copy_reset_password": "Copy password reset link",
+    "copied": "Copied!"
+  }
 }

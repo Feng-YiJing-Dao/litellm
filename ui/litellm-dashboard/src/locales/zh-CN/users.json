@@ -108,5 +108,15 @@
   "adding": "正在添加...",
   "add_to_team": "添加到团队",
   "hint_sso_id": "SSO ID 是用户在 SSO 提供商中的 ID。若未使用 SSO，此项为空。",
-  "hint_scim_inactive": "已通过 SCIM（外部身份提供商）停用。该用户的虚拟密钥已被封禁。"
+  "hint_scim_inactive": "已通过 SCIM（外部身份提供商）停用。该用户的虚拟密钥已被封禁。",
+  "invitation_modal": {
+    "invitation_title": "邀请链接",
+    "reset_password_title": "重置密码链接",
+    "invitation_desc": "复制并发送生成的链接，以引导此用户接入代理系统。",
+    "reset_password_desc": "复制并发送生成的链接给用户，以便其重置密码。",
+    "user_id": "用户 ID",
+    "copy_invitation": "复制邀请链接",
+    "copy_reset_password": "复制密码重置链接",
+    "copied": "已复制！"
+  }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "@/lib/toast";
@@ -58,6 +59,8 @@ export default function OnboardingModal({
   invitationLinkData,
   modalType = "invitation",
 }: OnboardingProps) {
+  const { t } = useTranslation(["users", "common"]);
+
   const handleInvitationCancel = () => {
     setIsInvitationLinkModalVisible(false);
   };
@@ -70,28 +73,46 @@ export default function OnboardingModal({
       resetPassword: modalType === "resetPassword",
     });
 
+  const title =
+    modalType === "invitation"
+      ? t("users:invitation_modal.invitation_title", { defaultValue: "Invitation Link" })
+      : t("users:invitation_modal.reset_password_title", { defaultValue: "Reset Password Link" });
+
+  const desc =
+    modalType === "invitation"
+      ? t("users:invitation_modal.invitation_desc", {
+          defaultValue: "Copy and send the generated link to onboard this user to the proxy.",
+        })
+      : t("users:invitation_modal.reset_password_desc", {
+          defaultValue: "Copy and send the generated link to the user to reset their password.",
+        });
+
+  const buttonLabel =
+    modalType === "invitation"
+      ? t("users:invitation_modal.copy_invitation", { defaultValue: "Copy invitation link" })
+      : t("users:invitation_modal.copy_reset_password", { defaultValue: "Copy password reset link" });
+
   return (
     <Dialog open={isInvitationLinkModalVisible} onOpenChange={(open) => !open && handleInvitationCancel()}>
       <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-[800px]">
         <DialogHeader>
-          <DialogTitle>{modalType === "invitation" ? "Invitation Link" : "Reset Password Link"}</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <p className="text-sm text-foreground">
-          {modalType === "invitation"
-            ? "Copy and send the generated link to onboard this user to the proxy."
-            : "Copy and send the generated link to the user to reset their password."}
-        </p>
+        <p className="text-sm text-foreground">{desc}</p>
         <div className="flex justify-between pt-5 pb-2">
-          <p className="text-base">User ID</p>
+          <p className="text-base">{t("users:invitation_modal.user_id", { defaultValue: "User ID" })}</p>
           <p className="text-sm">{invitationLinkData?.user_id}</p>
         </div>
         <div className="flex justify-between pt-5 pb-2">
-          <p className="text-sm">{modalType === "invitation" ? "Invitation Link" : "Reset Password Link"}</p>
+          <p className="text-sm">{title}</p>
           <p className="text-sm">{getInvitationUrl()}</p>
         </div>
         <div className="flex justify-end mt-5">
-          <CopyToClipboard text={getInvitationUrl()} onCopy={() => toast.success("Copied!")}>
-            <Button>{modalType === "invitation" ? "Copy invitation link" : "Copy password reset link"}</Button>
+          <CopyToClipboard
+            text={getInvitationUrl()}
+            onCopy={() => toast.success(t("users:invitation_modal.copied", { defaultValue: "Copied!" }))}
+          >
+            <Button>{buttonLabel}</Button>
           </CopyToClipboard>
         </div>
       </DialogContent>
