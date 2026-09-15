@@ -11,7 +11,9 @@
     "logging": "日志设置",
     "vault": "Vault 密钥库",
     "cyberark": "CyberArk 密钥管理",
-    "plugins": "插件管理"
+    "plugins": "插件管理",
+    "sso_btn": "添加 SSO",
+    "edit_sso_btn": "编辑 SSO 设置"
   },
   "security_card": {
     "title": "安全设置",

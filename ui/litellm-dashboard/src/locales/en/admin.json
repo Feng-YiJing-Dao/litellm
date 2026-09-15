@@ -11,7 +11,9 @@
     "logging": "Logging Settings",
     "vault": "Hashicorp Vault",
     "cyberark": "CyberArk Conjur",
-    "plugins": "Plugins"
+    "plugins": "Plugins",
+    "sso_btn": "Add SSO",
+    "edit_sso_btn": "Edit SSO Settings"
   },
   "security_card": {
     "title": "Security Settings",

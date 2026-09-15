@@ -66,6 +66,21 @@
       "avg_latency_added": "Avg. latency added",
       "usage_units": "Usage Units",
       "cost": "Cost"
+    },
+    "usage_breakdown": {
+      "how_cost_calculated": "How this cost is calculated",
+      "cost_map_note": "Per-unit prices come from the cost map LiteLLM ships with.",
+      "usage_and_cost": "Usage and cost"
+    },
+    "config": {
+      "version": "Version:",
+      "parameters": "Parameters",
+      "action_on_failure": "Action on Failure",
+      "provider": "Provider",
+      "guardrail_type": "Guardrail Type"
+    },
+    "charts": {
+      "request_outcomes": "Request Outcomes Over Time"
     }
   },
   "garden_detail": {

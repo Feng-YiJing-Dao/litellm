@@ -223,9 +223,9 @@
     "categories_count": "{{count}} category/categories",
     "discovered_competitors": "AI-Discovered Competitors ({{count}})",
     "discovered_tip": "These competitor names will be automatically blocked by the competitor-name-blocker guardrail.",
-    "will_be_created": "{{count}} guardrail{{plural}} will be created",
+    "will_be_created": "{{count}} guardrail(s) will be created",
     "select_at_least_one": "Select at least one guardrail to create, or click \"Use Template\" to proceed without creating new guardrails.",
-    "create_and_use": "Create {{count}} Guardrail{{plural}} & Use Template",
+    "create_and_use": "Create {{count}} Guardrail(s) & Use Template",
     "use_template": "Use Template"
   },
   "info": {

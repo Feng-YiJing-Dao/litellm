@@ -66,6 +66,21 @@
       "avg_latency_added": "平均增加延迟",
       "usage_units": "使用单位",
       "cost": "消耗费用"
+    },
+    "usage_breakdown": {
+      "how_cost_calculated": "此成本如何计算",
+      "cost_map_note": "单位价格来源于 LiteLLM 内置的价格映射表。",
+      "usage_and_cost": "用量与成本"
+    },
+    "config": {
+      "version": "版本：",
+      "parameters": "参数设置",
+      "action_on_failure": "失败时动作",
+      "provider": "提供商",
+      "guardrail_type": "安全护栏类型"
+    },
+    "charts": {
+      "request_outcomes": "请求处理结果趋势"
     }
   },
   "garden_detail": {

@@ -83,7 +83,8 @@
     "expires_in_hours": "{{count}} 小时后过期",
     "expires_in_minutes": "{{count}} 分钟后过期",
     "revoke_success": "已撤销连接",
-    "revoke_failed": "撤销连接失败，请重试。"
+    "revoke_failed": "撤销连接失败，请重试。",
+    "unknown": "未知"
   },
   "logs": {
     "title": "您的日志",

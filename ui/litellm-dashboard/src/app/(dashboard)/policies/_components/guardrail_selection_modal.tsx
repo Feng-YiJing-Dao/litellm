@@ -224,8 +224,10 @@ const GuardrailSelectionModal: React.FC<GuardrailSelectionModalProps> = ({
           <div className="text-sm text-muted-foreground">
             {selectedCount > 0 ? (
               <p>
-                <span className="font-medium text-foreground">{selectedCount}</span>{" "}
-                {selectedCount > 1 ? "guardrails will be created" : "guardrail will be created"}
+                {t("policies:templates.will_be_created", {
+                  count: selectedCount,
+                  defaultValue: `${selectedCount} guardrail(s) will be created`,
+                })}
               </p>
             ) : existingCount > 0 ? (
               <p className="text-success">{t("policies:templates.all_exist", "All guardrails already exist. You can proceed to use this template.")}</p>
@@ -243,9 +245,9 @@ const GuardrailSelectionModal: React.FC<GuardrailSelectionModalProps> = ({
           </Button>
           <Button onClick={handleConfirm} disabled={isLoading || (selectedCount === 0 && existingCount === 0)}>
             {selectedCount > 0
-              ? t("policies:templates.create_and_use", "Create {{count}} Guardrail{{plural}} & Use Template", {
+              ? t("policies:templates.create_and_use", {
                   count: selectedCount,
-                  plural: selectedCount > 1 ? "s" : "",
+                  defaultValue: `Create ${selectedCount} Guardrail(s) & Use Template`,
                 })
               : t("policies:templates.use_template", "Use Template")}
           </Button>

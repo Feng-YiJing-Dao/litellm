@@ -475,6 +475,14 @@
       "error": "Error"
     }
   },
+  "clear": "Clear",
+  "sso_setup_instructions": "SSO Setup Instructions",
+  "done": "Done",
+  "team": "Team",
+  "unlimited": "Unlimited",
+  "models": "Models",
+  "optional": "Optional",
+  "learn_more": "Learn More",
   "click_to_upload": "Click to Upload",
   "or": "OR"
 }

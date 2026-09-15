@@ -83,7 +83,8 @@
     "expires_in_hours": "Expires in {{count}}h",
     "expires_in_minutes": "Expires in {{count}}m",
     "revoke_success": "Revoked connection",
-    "revoke_failed": "Failed to revoke connection. Please try again."
+    "revoke_failed": "Failed to revoke connection. Please try again.",
+    "unknown": "Unknown"
   },
   "logs": {
     "title": "Your Logs",
