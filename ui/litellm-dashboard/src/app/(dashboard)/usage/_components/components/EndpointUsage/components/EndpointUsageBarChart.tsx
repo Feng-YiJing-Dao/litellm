@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { BarChart, CustomLegend, CustomTooltip } from "@/components/shared/charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MetricWithMetadata } from "@/components/UsagePage/types";
@@ -8,6 +9,8 @@ interface EndpointUsageBarChartProps {
 }
 
 const EndpointUsageBarChart: React.FC<EndpointUsageBarChartProps> = ({ endpointData }) => {
+  const { t } = useTranslation(["usage", "common"]);
+
   // Transform endpoint data into chart format
   const chartData = React.useMemo(() => {
     return Object.entries(endpointData || {}).map(([endpoint, data]) => ({
@@ -27,7 +30,9 @@ const EndpointUsageBarChart: React.FC<EndpointUsageBarChartProps> = ({ endpointD
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className="text-base font-semibold">Success vs Failed Requests by Endpoint</CardTitle>
+          <CardTitle className="text-base font-semibold">
+            {t("usage:endpoint_usage.bar_chart_title", { defaultValue: "Success vs Failed Requests by Endpoint" })}
+          </CardTitle>
           <CustomLegend
             categories={["metrics.successful_requests", "metrics.failed_requests"]}
             colors={["green", "red"]}

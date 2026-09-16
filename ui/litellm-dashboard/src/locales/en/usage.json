@@ -191,5 +191,19 @@
   "no_entity_spend": "No {{entity}} spend data",
   "entity_spend_overview": "{{entity}} Spend Overview",
   "provider_usage": "Provider Usage",
-  "no_provider_usage": "No provider usage data"
+  "no_provider_usage": "No provider usage data",
+  "endpoint_usage": {
+    "table": {
+      "endpoint": "Endpoint",
+      "successful_failed": "Successful / Failed",
+      "successful_requests_aria": "Successful requests",
+      "total_request": "Total Request",
+      "success_rate": "Success Rate",
+      "total_tokens": "Total Tokens",
+      "spend": "Spend",
+      "no_data": "No endpoint usage data"
+    },
+    "bar_chart_title": "Success vs Failed Requests by Endpoint",
+    "line_chart_title": "Endpoint Usage Trends"
+  }
 }

@@ -191,5 +191,19 @@
   "no_entity_spend": "暂无 {{entity}} 支出数据",
   "entity_spend_overview": "{{entity}} 支出概览",
   "provider_usage": "提供商用量",
-  "no_provider_usage": "暂无提供商用量数据"
+  "no_provider_usage": "暂无提供商用量数据",
+  "endpoint_usage": {
+    "table": {
+      "endpoint": "终端",
+      "successful_failed": "成功 / 失败",
+      "successful_requests_aria": "成功请求",
+      "total_request": "总请求数",
+      "success_rate": "成功率",
+      "total_tokens": "总 Token 数",
+      "spend": "支出",
+      "no_data": "暂无终端使用数据"
+    },
+    "bar_chart_title": "各终端成功与失败请求对比",
+    "line_chart_title": "终端用量走势"
+  }
 }
