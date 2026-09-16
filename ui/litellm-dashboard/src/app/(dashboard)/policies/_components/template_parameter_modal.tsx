@@ -245,7 +245,7 @@ const TemplateParameterModal: React.FC<TemplateParameterModalProps> = ({
     <Dialog open={visible} onOpenChange={(open) => !open && onCancel()}>
       <DialogContent className="sm:max-w-175">
         <DialogHeader>
-          <DialogTitle className="text-lg">{template?.title}</DialogTitle>
+          <DialogTitle className="text-lg">{template?.id ? t(`templates_data.${template.id}.title`, { defaultValue: template.title }) : template?.title}</DialogTitle>
           <DialogDescription>{t("policies:templates.configure_competitor", "Configure competitor blocking for your brand")}</DialogDescription>
         </DialogHeader>
 

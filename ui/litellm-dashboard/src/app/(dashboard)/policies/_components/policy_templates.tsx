@@ -10,6 +10,7 @@ import { ShieldCheck, ShieldAlert, FlaskConical, CircleDollarSign, CheckCircle2 
 import { getPolicyTemplates } from "@/components/networking";
 
 interface PolicyTemplateCardProps {
+  id?: string;
   title: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -23,6 +24,7 @@ interface PolicyTemplateCardProps {
 }
 
 const PolicyTemplateCard: React.FC<PolicyTemplateCardProps> = ({
+  id,
   title,
   description,
   icon: Icon,
@@ -35,6 +37,10 @@ const PolicyTemplateCard: React.FC<PolicyTemplateCardProps> = ({
   onUseTemplate,
 }) => {
   const { t } = useTranslation("policies");
+  const displayTitle = id ? t(`templates_data.${id}.title`, { defaultValue: title }) : title;
+  const displayDescription = id ? t(`templates_data.${id}.description`, { defaultValue: description }) : description;
+  const complexityLabel = t(`templates.complexity_${complexity.toLowerCase()}`, { defaultValue: `${complexity} Complexity` });
+
   return (
     <Card className="h-full transition-shadow hover:shadow-md">
       <CardContent className="flex h-full flex-col">
@@ -42,19 +48,22 @@ const PolicyTemplateCard: React.FC<PolicyTemplateCardProps> = ({
           <div className={`rounded-lg p-2 ${iconBg}`}>
             <Icon className={`size-6 ${iconColor}`} />
           </div>
-          <Badge variant="outline">{complexity} Complexity</Badge>
+          <Badge variant="outline">{complexityLabel}</Badge>
         </div>
 
-        <h3 className="mb-2 text-base font-semibold">{title}</h3>
-        <p className="mb-4 grow text-sm text-muted-foreground">{description}</p>
+        <h3 className="mb-2 text-base font-semibold">{displayTitle}</h3>
+        <p className="mb-4 grow text-sm text-muted-foreground">{displayDescription}</p>
 
         {tags.length > 0 && (
           <div className="mb-4 flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
+            {tags.map((tag) => {
+              const tagKey = tag.toLowerCase().replace(/[^a-z0-9]/g, "_");
+              return (
+                <Badge key={tag} variant="secondary">
+                  {t(`templates_tags.${tagKey}`, { defaultValue: tag })}
+                </Badge>
+              );
+            })}
           </div>
         )}
 
@@ -79,7 +88,7 @@ const PolicyTemplateCard: React.FC<PolicyTemplateCardProps> = ({
         </div>
 
         <Button className="mt-auto w-full" onClick={onUseTemplate}>
-          Use Template
+          {t("templates.use_template", { defaultValue: "Use Template" })}
         </Button>
       </CardContent>
     </Card>
@@ -169,7 +178,7 @@ const PolicyTemplates: React.FC<PolicyTemplatesProps> = ({
     };
 
     fetchTemplates();
-  }, [accessToken, t]);
+  }, [accessToken]);
 
   if (isLoading) {
     return (
@@ -215,20 +224,27 @@ const PolicyTemplates: React.FC<PolicyTemplatesProps> = ({
                 )}
               </div>
               <div className="space-y-1">
-                {tagCounts.map(([tag, count]) => (
-                  <label
-                    key={tag}
-                    className={`flex items-center justify-between px-2 py-1.5 rounded-md cursor-pointer transition-colors ${
-                      selectedTags.has(tag) ? "bg-accent" : "hover:bg-muted"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Checkbox checked={selectedTags.has(tag)} onCheckedChange={() => handleTagToggle(tag)} />
-                      <span className="text-sm">{tag}</span>
-                    </div>
-                    <span className="text-xs font-medium text-muted-foreground">{count}</span>
-                  </label>
-                ))}
+                {tagCounts.map(([tag, count]) => {
+                  const tagKey = tag.toLowerCase().replace(/[^a-z0-9]/g, "_");
+                  return (
+                    <label
+                      key={tag}
+                      className={`flex items-center justify-between px-2 py-1.5 rounded-md cursor-pointer transition-colors ${
+                        selectedTags.has(tag) ? "bg-accent" : "hover:bg-muted"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          aria-label={tag}
+                          checked={selectedTags.has(tag)}
+                          onCheckedChange={() => handleTagToggle(tag)}
+                        />
+                        <span className="text-sm">{t(`templates_tags.${tagKey}`, { defaultValue: tag })}</span>
+                      </div>
+                      <span className="text-xs font-medium text-muted-foreground">{count}</span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -249,6 +265,7 @@ const PolicyTemplates: React.FC<PolicyTemplatesProps> = ({
             {filteredTemplates.map((template, index) => (
               <PolicyTemplateCard
                 key={template.id || index}
+                id={template.id}
                 title={template.title}
                 description={template.description}
                 icon={iconMap[template.icon] || ShieldCheck}

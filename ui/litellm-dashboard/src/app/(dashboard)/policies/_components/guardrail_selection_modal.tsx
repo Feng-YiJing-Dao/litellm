@@ -97,7 +97,7 @@ const GuardrailSelectionModal: React.FC<GuardrailSelectionModalProps> = ({
       <DialogContent className="sm:max-w-175">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
-            {template?.title}
+            {template?.id ? t(`templates_data.${template.id}.title`, { defaultValue: template.title }) : template?.title}
             {progressInfo && (
               <Badge variant="secondary">
                 {t("policies:templates.template_progress", "Template {{current}} of {{total}}", { current: progressInfo.current, total: progressInfo.total })}
@@ -247,7 +247,7 @@ const GuardrailSelectionModal: React.FC<GuardrailSelectionModalProps> = ({
             {selectedCount > 0
               ? t("policies:templates.create_and_use", {
                   count: selectedCount,
-                  defaultValue: `Create ${selectedCount} Guardrail(s) & Use Template`,
+                  defaultValue: `Create ${selectedCount} Guardrail${selectedCount === 1 ? "" : "s"} & Use Template`,
                 })
               : t("policies:templates.use_template", "Use Template")}
           </Button>
