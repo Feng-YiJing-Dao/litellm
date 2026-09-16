@@ -588,5 +588,125 @@
     "tooltip": "Paste your stdio MCP server configuration in JSON format. You can use the full mcpServers structure from config.yaml or just the inner server configuration.",
     "required": "Please enter stdio configuration",
     "invalid_json": "Please enter valid JSON"
+  },
+  "semantic_filter": {
+    "login_required": "Please log in to configure semantic filter settings.",
+    "load_error_title": "Could not load MCP Semantic Filter settings",
+    "info_title": "Semantic Tool Filtering",
+    "info_desc": "Filter MCP tools semantically based on query relevance. This reduces context window size and improves tool selection accuracy. Click 'Save Settings' to apply changes across all pods (takes effect within 10 seconds).",
+    "saved_success_title": "Settings saved successfully",
+    "update_success_toast": "Settings updated successfully. Changes will be applied across all pods within 10 seconds.",
+    "update_error_title": "Could not update settings",
+    "enable_label": "Enable Semantic Filtering",
+    "enable_hint": "When enabled, only the most relevant MCP tools will be included in requests based on semantic similarity",
+    "config_title": "Configuration",
+    "embedding_model_label": "Embedding Model",
+    "embedding_model_hint": "The model used to generate embeddings for semantic matching",
+    "select_embedding_model_placeholder": "Select embedding model",
+    "loading_models": "Loading models...",
+    "no_models_available": "No embedding models available",
+    "top_k_label": "Top K Results",
+    "top_k_hint": "Maximum number of tools to return after filtering",
+    "similarity_threshold_label": "Similarity Threshold",
+    "similarity_threshold_hint": "Minimum similarity score (0-1) for a tool to be included",
+    "save_settings": "Save Settings"
+  },
+  "network_settings": {
+    "title": "Private IP Ranges",
+    "description": "Define which IP ranges are part of your private network. Callers from these IPs can see all MCP servers. Callers from any other IP can only see servers marked \"Available on Public Internet\".",
+    "current_ip": "Your current IP:",
+    "suggested_range": "Suggested range:",
+    "private_network_ranges": "Your Private Network Ranges",
+    "remove_range": "Remove {{range}}",
+    "placeholder": "Leave empty to use defaults: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8",
+    "hint": "Enter CIDR ranges (e.g., 10.0.0.0/8). When empty, standard private IP ranges are used.",
+    "save": "Save",
+    "saving": "Saving..."
+  },
+  "submissions": {
+    "status": {
+      "active": "Active",
+      "pending_review": "Pending Review",
+      "rejected": "Rejected",
+      "all": "All Status"
+    },
+    "stats": {
+      "total_submitted": "Total Submitted",
+      "pending_review": "Pending Review",
+      "active": "Active",
+      "rejected": "Rejected"
+    },
+    "search_placeholder": "Search MCP servers...",
+    "loading": "Loading submissions…",
+    "failed_to_load": "Failed to load submissions",
+    "no_matching": "No MCP server submissions match your filters.",
+    "dialog": {
+      "approve_title": "Approve MCP Server",
+      "reject_title": "Reject MCP Server",
+      "confirm_prompt": "Are you sure you want to {{action}} \"{{name}}\"?",
+      "approve_desc": "This will activate the server. The submitting user will see it in their MCP Servers list once approved.",
+      "reject_active_desc": "This server is currently live. Rejecting it will immediately remove it from the proxy runtime.",
+      "reject_desc": "This will mark the submission as rejected.",
+      "reason_placeholder": "Reason for rejection (optional)",
+      "cancel": "Cancel",
+      "approve": "Approve",
+      "reject": "Reject",
+      "reapprove": "Re-approve"
+    },
+    "rules_panel": {
+      "title": "Submission Rules",
+      "required_field_count": "({{count}} required field)",
+      "required_field_count_plural": "({{count}} required fields)",
+      "no_rules_set": "no rules set",
+      "description": "Select which fields must be filled in before a submission is considered compliant. LiteLLM will show ✓ / ✗ for each rule on every submission card below.",
+      "save_rules": "Save Rules",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "rules_saved": "Submission rules saved",
+      "rules_save_failed": "Failed to save submission rules"
+    },
+    "groups": {
+      "documentation": "Documentation",
+      "source": "Source",
+      "connection": "Connection",
+      "security": "Security"
+    },
+    "fields": {
+      "description": {
+        "label": "Description",
+        "desc": "Must have a non-empty description"
+      },
+      "alias": {
+        "label": "Alias",
+        "desc": "Must have a display alias"
+      },
+      "source_url": {
+        "label": "GitHub / Source URL",
+        "desc": "Must link to a source repository"
+      },
+      "url": {
+        "label": "Server URL",
+        "desc": "Must have a URL configured"
+      },
+      "auth_type": {
+        "label": "Auth configured",
+        "desc": "Must use authentication (not 'none')"
+      }
+    },
+    "card": {
+      "transport": "Transport: {{transport}}",
+      "submitted_by": "Submitted by: {{name}}",
+      "rejection_reason": "Rejection reason: {{reason}}",
+      "all_passed": "All checks passed",
+      "checks_failed": "{{count}} check failed",
+      "checks_failed_plural": "{{count}} checks failed",
+      "passing_and_failing": "{{passCount}} passing, {{failCount}} failing",
+      "passes": "Passes",
+      "missing": "Missing",
+      "approve_success": "MCP server \"{{name}}\" approved",
+      "approve_failed": "Failed to approve MCP server",
+      "reject_success": "MCP server \"{{name}}\" rejected",
+      "reject_failed": "Failed to reject MCP server"
+    }
   }
 }

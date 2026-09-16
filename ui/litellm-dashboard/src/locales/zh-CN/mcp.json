@@ -588,5 +588,125 @@
     "tooltip": "以 JSON 格式粘贴您的 Stdio MCP 服务器配置。可以使用 config.yaml 中的完整 mcpServers 结构，也可以仅粘贴内部服务器配置。",
     "required": "请输入 Stdio 配置",
     "invalid_json": "请输入有效的 JSON 格式"
+  },
+  "semantic_filter": {
+    "login_required": "请登录后配置语义过滤设置。",
+    "load_error_title": "无法加载 MCP 语义过滤设置",
+    "info_title": "工具语义过滤",
+    "info_desc": "根据查询相关性对 MCP 工具进行语义过滤。这可以减少上下文窗口大小并提高工具选择准确性。点击“保存设置”可将更改应用到所有 Pod（10 秒内生效）。",
+    "saved_success_title": "设置保存成功",
+    "update_success_toast": "设置更新成功。更改将在 10 秒内应用到所有 Pod。",
+    "update_error_title": "无法更新设置",
+    "enable_label": "启用语义过滤",
+    "enable_hint": "启用后，将仅根据语义相似度在请求中包含最相关的 MCP 工具",
+    "config_title": "参数配置",
+    "embedding_model_label": "嵌入模型",
+    "embedding_model_hint": "用于生成语义匹配嵌入向量的模型",
+    "select_embedding_model_placeholder": "选择嵌入模型",
+    "loading_models": "正在加载模型...",
+    "no_models_available": "没有可用的嵌入模型",
+    "top_k_label": "Top K 结果数量",
+    "top_k_hint": "过滤后返回的最大工具数量",
+    "similarity_threshold_label": "相似度阈值",
+    "similarity_threshold_hint": "包含工具所需的最低相似度得分 (0-1)",
+    "save_settings": "保存设置"
+  },
+  "network_settings": {
+    "title": "私有 IP 范围",
+    "description": "定义属于您私有网络的 IP 地址段。来自这些 IP 的调用方可以看到所有 MCP 服务器。来自任何其他 IP 的调用方只能看到标记为“在公网上可用”的服务器。",
+    "current_ip": "您当前的 IP：",
+    "suggested_range": "建议范围：",
+    "private_network_ranges": "您的私有网络范围",
+    "remove_range": "移除 {{range}}",
+    "placeholder": "留空以使用默认值：10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 127.0.0.0/8",
+    "hint": "输入 CIDR 范围（例如：10.0.0.0/8）。留空时将使用标准私有 IP 范围。",
+    "save": "保存",
+    "saving": "保存中..."
+  },
+  "submissions": {
+    "status": {
+      "active": "已激活",
+      "pending_review": "待审核",
+      "rejected": "已拒绝",
+      "all": "全部状态"
+    },
+    "stats": {
+      "total_submitted": "提交总数",
+      "pending_review": "待审核",
+      "active": "已激活",
+      "rejected": "已拒绝"
+    },
+    "search_placeholder": "搜索 MCP 服务器...",
+    "loading": "正在加载提交记录…",
+    "failed_to_load": "加载提交记录失败",
+    "no_matching": "没有与筛选条件匹配的 MCP 服务器提交记录。",
+    "dialog": {
+      "approve_title": "批准 MCP 服务器",
+      "reject_title": "拒绝 MCP 服务器",
+      "confirm_prompt": "确定要{{action}} “{{name}}” 吗？",
+      "approve_desc": "这将激活该服务器。提交者在获得批准后即可在其 MCP 服务器列表中看到它。",
+      "reject_active_desc": "该服务器目前处于上线运行状态。拒绝它将立即将其从代理运行时中移除。",
+      "reject_desc": "这会将提交标记为已拒绝。",
+      "reason_placeholder": "拒绝原因 (可选)",
+      "cancel": "取消",
+      "approve": "批准",
+      "reject": "拒绝",
+      "reapprove": "重新批准"
+    },
+    "rules_panel": {
+      "title": "提交规范",
+      "required_field_count": "({{count}} 项必填字段)",
+      "required_field_count_plural": "({{count}} 项必填字段)",
+      "no_rules_set": "未设置规范",
+      "description": "选择在提交被视为合规之前必须填写的字段。LiteLLM 将在下方每个提交卡片上显示各规范的 ✓ / ✗ 状态。",
+      "save_rules": "保存规范",
+      "saving": "保存中…",
+      "cancel": "取消",
+      "rules_saved": "提交规范已保存",
+      "rules_save_failed": "保存提交规范失败"
+    },
+    "groups": {
+      "documentation": "文档",
+      "source": "源码",
+      "connection": "连接",
+      "security": "安全"
+    },
+    "fields": {
+      "description": {
+        "label": "描述",
+        "desc": "必须包含非空描述"
+      },
+      "alias": {
+        "label": "别名",
+        "desc": "必须包含显示别名"
+      },
+      "source_url": {
+        "label": "GitHub / 源码地址",
+        "desc": "必须链接到源码仓库"
+      },
+      "url": {
+        "label": "服务器地址",
+        "desc": "必须配置服务器地址"
+      },
+      "auth_type": {
+        "label": "认证配置",
+        "desc": "必须使用身份认证（不能为 'none'）"
+      }
+    },
+    "card": {
+      "transport": "传输协议: {{transport}}",
+      "submitted_by": "提交者: {{name}}",
+      "rejection_reason": "拒绝原因: {{reason}}",
+      "all_passed": "所有检查均已通过",
+      "checks_failed": "{{count}} 项检查未通过",
+      "checks_failed_plural": "{{count}} 项检查未通过",
+      "passing_and_failing": "{{passCount}} 项通过，{{failCount}} 项未通过",
+      "passes": "通过",
+      "missing": "缺失",
+      "approve_success": "MCP 服务器 “{{name}}” 已批准",
+      "approve_failed": "批准 MCP 服务器失败",
+      "reject_success": "MCP 服务器 “{{name}}” 已拒绝",
+      "reject_failed": "拒绝 MCP 服务器失败"
+    }
   }
 }
