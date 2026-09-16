@@ -46,7 +46,7 @@ function ToolsetRowActions({ toolset, isAdmin, onEditClick, onDeleteClick, t }: 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="Open toolset actions"
+        aria-label={tr("mcp:toolsets.open_actions", { defaultValue: "Open toolset actions" })}
         data-testid={`toolset-actions-${toolset.toolset_id}`}
         className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-muted-foreground")}
       >

@@ -234,6 +234,86 @@
       "failed": "创建向量存储出错：{{error}}",
       "cancel": "取消",
       "create": "创建"
+    },
+    "provider_guides": {
+      "pg_vector": {
+        "title": "需要配置 PG Vector",
+        "desc": "LiteLLM 提供了连接 PG Vector 的服务端。若要使用此提供商：",
+        "step_1": "部署 litellm-pgvector 服务",
+        "step_2": "为您的 PostgreSQL 数据库配置 pgvector 扩展",
+        "step_3": "启动服务并记录 API 基础 URL 及 API 密钥",
+        "step_4": "在下方输入相关配置信息"
+      },
+      "valkey": {
+        "title": "需要配置 Valkey",
+        "desc": "LiteLLM 检索已存储在 Valkey 中的文档，它不会为您创建索引或上传文档。在创建此向量存储前，请确保：",
+        "step_1": "您的 Valkey 服务器已启用向量检索（valkey-search 模块，内置于 valkey-bundle 镜像及 AWS ElastiCache / MemoryDB for Valkey 中）",
+        "step_2": "您已创建检索索引并将文档及其嵌入加载至其中。将该索引名称作为向量存储 ID 输入",
+        "step_3": "您已知晓生成这些已存储嵌入的模型。该模型必须已添加到此代理的“模型”中，以便在下方选择。使用不同的模型将导致错误结果",
+        "step_4": "您已知晓文档中文本和嵌入字段的字段名。若非 \"text\" 和 \"embedding\"，请在下方设置",
+        "footer": "当收到查询请求时，LiteLLM 将使用下方选定的模型将其转换为嵌入，并从您的索引中返回最匹配的文档。"
+      },
+      "vertex_rag_engine": {
+        "title": "Vertex AI RAG Engine 配置",
+        "desc": "若要使用 Vertex AI RAG Engine：",
+        "note": "提示：Google Cloud 在控制台中将其更名为 \"RAG Engine\" —— 以下步骤依然适用。",
+        "step_1": "在 Google Cloud 控制台中设置 Vertex AI RAG Engine 语料库",
+        "step_2": "在您的 Google Cloud 项目中创建一个语料库",
+        "step_3": "从 Vertex AI 控制台（Google Cloud 中标记为 \"RAG Engine\"）记录语料库 ID",
+        "step_4": "在下方的向量存储 ID 字段中输入语料库 ID"
+      },
+      "vertex_search": {
+        "title": "Vertex AI Search 配置",
+        "desc": "若要使用 Vertex AI Search (Discovery Engine)：",
+        "note": "提示：Google Cloud 在控制台中将其更名为 \"Agent Search\" —— 以下步骤依然适用。",
+        "step_1": "在您的 Google Cloud 项目中启用 Discovery Engine API 并创建数据存储",
+        "step_2": "选择支持的区域：global、us 或 eu",
+        "step_3": "对于大多数数据存储类型（Cloud Storage、BigQuery、Media）：复制数据存储 ID 并输入到下方的向量存储 ID 字段中。",
+        "step_4": "对于网站、医疗及基于连接器的来源（Drive、Gmail、Slack、Jira 等）：在数据存储上创建检索应用，然后复制 Engine ID 并填入 Engine ID 字段。向量存储 ID 仍需作为此记录在 LiteLLM 侧的名称，但设置 Engine ID 后它不会用于 GCP URL。"
+      }
+    },
+    "indexes": {
+      "no_indexes": "暂无已注册的索引",
+      "no_indexes_desc": "在此代理上注册的索引将显示在此处。",
+      "loading": "正在加载索引…",
+      "columns": {
+        "index_name": "索引名称",
+        "vector_store": "向量存储",
+        "provider_index": "提供商索引",
+        "created_by": "创建者",
+        "created_at": "创建时间"
+      }
+    },
+    "documents": {
+      "no_documents": "尚未上传任何文档",
+      "no_documents_desc": "请在上方上传文档以开始使用。",
+      "columns": {
+        "actions": "操作",
+        "open_actions": "打开文档操作"
+      }
+    },
+    "s3_vectors": {
+      "setup_title": "AWS S3 Vectors 配置",
+      "setup_desc": "AWS S3 Vectors 允许您直接在 S3 中存储和查询向量嵌入：",
+      "point_dimensions": "向量维度将根据您选择的嵌入模型自动检测",
+      "point_permissions": "请确保您的 AWS 凭证具备 S3 Vectors 操作权限",
+      "select_model": "选择一个嵌入模型"
+    },
+    "info": {
+      "not_found": "未找到向量存储",
+      "load_failed_desc": "无法加载向量存储 {{id}}。它可能已被删除。",
+      "back_to_stores": "返回向量存储列表",
+      "loading": "正在加载...",
+      "edit_store": "编辑向量存储",
+      "no_description": "无描述",
+      "tabs_details": "详情",
+      "tabs_test": "测试向量存储",
+      "metadata_json": "元数据 (JSON)",
+      "metadata_hint": "与向量存储关联的键值元数据",
+      "cancel": "取消",
+      "save_changes": "保存更改",
+      "updated_success": "向量存储更新成功",
+      "updated_failed": "更新向量存储失败："
     }
   },
   "policies": {

@@ -21,6 +21,7 @@ import PaginationStatusAlerts from "@/components/shared/PaginationStatusAlerts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import React, { type ReactNode, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import TeamMultiSelect from "@/components/common_components/team_multi_select";
 import UserDropdown from "@/components/common_components/UserDropdown";
 import { ActivityMetrics, processActivityData } from "@/components/activity_metrics";
@@ -118,6 +119,7 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
   dateValue,
   isOrgAdmin = false,
 }) => {
+  const { t } = useTranslation(["usage", "common"]);
   const { teams } = useTeams();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [modelViewType, setModelViewType] = useState<ModelViewType>("groups");
@@ -386,14 +388,22 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
   const breakdownTiles = showFlatCost && showCostBreakdown ? buildCostBreakdownTiles(spendData.metadata) : [];
   const summaryTiles = [...buildSummaryTiles(spendData.metadata, showFlatCost), ...breakdownTiles];
 
-  const modelViewTitle = modelViewType === "groups" ? "Top Public Model Names" : "Top Litellm Models";
+  const modelViewTitle =
+    modelViewType === "groups"
+      ? t("usage:top_public_model_names", "Top Public Model Names")
+      : t("usage:top_litellm_models", "Top Litellm Models");
 
   const costPanel = (
     <div className="grid grid-cols-2 gap-2 w-full">
       <div className="col-span-2">
         <ShadcnCard>
           <CardContent>
-            <h3 className="text-lg font-medium text-foreground">{capitalizedEntityLabel} Spend Overview</h3>
+            <h3 className="text-lg font-medium text-foreground">
+              {t("usage:entity_spend_overview", {
+                entity: capitalizedEntityLabel,
+                defaultValue: `${capitalizedEntityLabel} Spend Overview`,
+              })}
+            </h3>
             <div className="grid grid-cols-5 gap-4 mt-4">{summaryTiles.map(renderSummaryTile)}</div>
           </CardContent>
         </ShadcnCard>
@@ -403,7 +413,7 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
       <div className="col-span-2">
         <ShadcnCard>
           <CardHeader>
-            <CardTitle className="text-base font-semibold">Daily Spend</CardTitle>
+            <CardTitle className="text-base font-semibold">{t("usage:daily_spend", "Daily Spend")}</CardTitle>
           </CardHeader>
           <CardContent>
             <BarChart
@@ -483,15 +493,27 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
         <ShadcnCard>
           <CardContent className="flex flex-col space-y-4">
             <div className="flex flex-col space-y-2">
-              <h3 className="text-lg font-medium text-foreground">Spend Per {capitalizedEntityLabel}</h3>
-              <p className="text-xs text-muted-foreground">Showing Top 5 by Spend</p>
+              <h3 className="text-lg font-medium text-foreground">
+                {t("usage:spend_per_entity", {
+                  entity: capitalizedEntityLabel,
+                  defaultValue: `Spend Per ${capitalizedEntityLabel}`,
+                })}
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                {t("usage:showing_top_5_by_spend", "Showing Top 5 by Spend")}
+              </p>
               <div className="flex items-center text-sm text-muted-foreground">
-                <span>Get Started by Tracking cost per {capitalizedEntityLabel} </span>
+                <span>
+                  {t("usage:get_started_tracking", {
+                    entity: capitalizedEntityLabel,
+                    defaultValue: `Get Started by Tracking cost per ${capitalizedEntityLabel} `,
+                  })}
+                </span>
                 <a
                   href="https://docs.litellm.ai/docs/proxy/enterprise#spend-tracking"
                   className="text-info hover:text-info/80 ml-1"
                 >
-                  here
+                  {t("usage:here", "here")}
                 </a>
               </div>
             </div>
@@ -529,7 +551,10 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
                   data={getEntityBreakdown().filter((entity) => entity.metrics.spend > 0)}
                   getRowId={(row) => row.metadata.id}
                   maxBodyHeight={208}
-                  noDataMessage={`No ${entityType} spend data`}
+                  noDataMessage={t("usage:no_entity_spend", {
+                    entity: entityType,
+                    defaultValue: `No ${entityType} spend data`,
+                  })}
                   size="compact"
                 />
               </div>
@@ -553,7 +578,9 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
       <div>
         <ShadcnCard>
           <CardContent>
-            <h3 className="text-lg font-medium text-foreground">Top Virtual Keys</h3>
+            <h3 className="text-lg font-medium text-foreground">
+              {t("usage:top_virtual_keys", "Top Virtual Keys")}
+            </h3>
             <TopKeyView
               topKeys={getTopAPIKeys(spendData.results, topKeysLimit)}
               teams={null}
@@ -571,7 +598,7 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
           <CardContent>
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-medium text-foreground">
-                {entityType === "agent" ? "Top Agents" : modelViewTitle}
+                {entityType === "agent" ? t("usage:top_agents", "Top Agents") : modelViewTitle}
               </h3>
               <ModelViewToggle value={modelViewType} onChange={setModelViewType} />
             </div>
@@ -588,7 +615,9 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
         <div className="col-span-2">
           <ShadcnCard>
             <CardContent>
-              <h3 className="text-lg font-medium text-foreground">Top Agents Driving Spend</h3>
+              <h3 className="text-lg font-medium text-foreground">
+                {t("usage:top_agents_driving_spend", "Top Agents Driving Spend")}
+              </h3>
               <TopModelView
                 topModels={getTopAgents(agentSpendData.results, topAgentsLimit)}
                 topModelsLimit={topAgentsLimit}
@@ -603,7 +632,9 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
       <div className="col-span-2">
         <ShadcnCard>
           <CardContent className="flex flex-col space-y-4">
-            <h3 className="text-lg font-medium text-foreground">Provider Usage</h3>
+            <h3 className="text-lg font-medium text-foreground">
+              {t("usage:provider_usage", "Provider Usage")}
+            </h3>
             <div className="grid grid-cols-2">
               <div>
                 <DonutChart
@@ -623,7 +654,7 @@ const EntityUsage: React.FC<EntityUsageProps> = ({
                   columns={providerSpendColumns}
                   data={providerSpend}
                   getRowId={(row) => row.provider}
-                  noDataMessage="No provider usage data"
+                  noDataMessage={t("usage:no_provider_usage", "No provider usage data")}
                   size="compact"
                 />
               </div>

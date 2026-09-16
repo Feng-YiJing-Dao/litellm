@@ -257,5 +257,49 @@
   "team_member_rpm_limit_placeholder": "Requests per minute limit for this member in this team",
   "allowed_models": "Allowed Models",
   "allowed_models_member_desc": "Models this member can access within this team. Leave empty to inherit all team models.",
-  "allowed_models_member_placeholder": "Leave empty to inherit all team models"
+  "allowed_models_member_placeholder": "Leave empty to inherit all team models",
+  "permissions_settings": {
+    "mcp_settings": "MCP Settings",
+    "mcp_settings_desc": "Select which MCP servers or access groups this team can access",
+    "agent_settings": "Agent Settings",
+    "agent_settings_desc": "Select which agents this team can access",
+    "search_tool_settings": "Search Tool Settings",
+    "search_tool_settings_desc": "Select which search tools this team can access",
+    "skill_settings": "Skill Settings",
+    "logging_settings": "Logging Settings",
+    "router_settings": "Router Settings",
+    "secret_manager_settings": "Secret Manager Settings",
+    "secret_manager_hint": "Enter secret manager configuration as a JSON object.",
+    "secret_manager_premium_hint": "Premium feature - Upgrade to manage secret manager settings.",
+    "team_member_settings": "Team Member Settings",
+    "mcp_servers_and_groups": "MCP Servers / Access Groups",
+    "agents_and_groups": "Agents / Access Groups",
+    "team_member_settings_desc": "Optional defaults applied when members join this team. All fields can be overridden per member.",
+    "default_model_access": "Default Model Access",
+    "default_budget_usd": "Default Budget (USD)",
+    "default_budget_duration": "Default Budget Duration",
+    "default_key_duration": "Default Key Duration (eg: 1d, 1mo)",
+    "default_tpm_limit": "Default TPM Limit",
+    "default_rpm_limit": "Default RPM Limit",
+    "model_aliases": "Model Aliases",
+    "model_aliases_desc": "Create custom aliases for models that can be used by team members in API calls. This allows you to create shortcuts for specific models."
+  },
+  "deleted_teams": {
+    "enterprise_alert_title": "Coming soon to Enterprise",
+    "enterprise_alert_desc": "Deleted team auditing is graduating from beta into our Enterprise audit & compliance suite.",
+    "no_deleted_teams": "No deleted teams found",
+    "no_deleted_teams_desc": "Teams deleted from this proxy will show up here.",
+    "loading": "Loading deleted teams…",
+    "columns": {
+      "team_name": "Team Name",
+      "team_id": "Team ID",
+      "created": "Created",
+      "spend": "Spend (USD)",
+      "budget": "Budget (USD)",
+      "models": "Models",
+      "organization": "Organization",
+      "deleted_at": "Deleted At",
+      "deleted_by": "Deleted By"
+    }
+  }
 }

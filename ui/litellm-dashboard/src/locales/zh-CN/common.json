@@ -45,6 +45,7 @@
   "all": "全部",
   "never": "从不",
   "name": "名称",
+  "here": "此处",
   "description": "描述",
   "created_at": "创建时间",
   "updated_at": "更新时间",
@@ -484,5 +485,15 @@
   "optional": "可选",
   "learn_more": "了解更多",
   "click_to_upload": "点击上传",
-  "or": "或"
+  "or": "或",
+  "cannot_be_undone": "此操作无法撤销。",
+  "download_csv": "下载 CSV",
+  "requests": "请求数",
+  "successful": "成功",
+  "failed": "失败",
+  "tokens": "Token 数",
+  "model": "模型",
+  "user": "用户",
+  "spend": "支出",
+  "spend_usd": "支出 (美元)"
 }

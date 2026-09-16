@@ -1414,19 +1414,19 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                     className="mt-4 mb-4 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Team Member Settings</b>
+                      <b>{t("teams:permissions_settings.team_member_settings", { defaultValue: "Team Member Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
                       <p className="mb-4 text-xs text-muted-foreground">
-                        Optional defaults applied when members join this team. All fields can be overridden per member.
+                        {t("teams:permissions_settings.team_member_settings_desc", { defaultValue: "Optional defaults applied when members join this team. All fields can be overridden per member." })}
                       </p>
                       <FieldGroup>
                         <FormField
                           control={form.control}
                           name="default_team_member_models"
                           label={labelWithHint(
-                            "Default Model Access",
+                            t("teams:permissions_settings.default_model_access", { defaultValue: "Default Model Access" }),
                             "Optional. If set, new members can only access these models by default. Must be a subset of the team's models above. Leave empty to give all members access to all team models.",
                           )}
                         >
@@ -1447,7 +1447,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                           control={form.control}
                           name="team_member_budget"
                           label={labelWithHint(
-                            "Default Budget (USD)",
+                            t("teams:permissions_settings.default_budget_usd", { defaultValue: "Default Budget (USD)" }),
                             "Default spend budget for each member in this team.",
                           )}
                         >
@@ -1458,7 +1458,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                         <FormField
                           control={form.control}
                           name="team_member_budget_duration"
-                          label="Default Budget Duration"
+                          label={t("teams:permissions_settings.default_budget_duration", { defaultValue: "Default Budget Duration" })}
                         >
                           {({ id, value, onChange }) => (
                             <BudgetDurationDropdown
@@ -1474,7 +1474,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                           control={form.control}
                           name="team_member_key_duration"
                           label={labelWithHint(
-                            "Default Key Duration (eg: 1d, 1mo)",
+                            t("teams:permissions_settings.default_key_duration", { defaultValue: "Default Key Duration (eg: 1d, 1mo)" }),
                             "Set a limit to the duration of a team member's key. Format: 30s (seconds), 30m (minutes), 30h (hours), 30d (days), 1mo (month)",
                           )}
                         >
@@ -1486,7 +1486,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                           control={form.control}
                           name="team_member_tpm_limit"
                           label={labelWithHint(
-                            "Default TPM Limit",
+                            t("teams:permissions_settings.default_tpm_limit", { defaultValue: "Default TPM Limit" }),
                             "Default tokens per minute limit for each member. Can be overridden per member.",
                           )}
                         >
@@ -1504,7 +1504,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                           control={form.control}
                           name="team_member_rpm_limit"
                           label={labelWithHint(
-                            "Default RPM Limit",
+                            t("teams:permissions_settings.default_rpm_limit", { defaultValue: "Default RPM Limit" }),
                             "Default requests per minute limit for each member. Can be overridden per member.",
                           )}
                         >
@@ -1660,7 +1660,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                   </FormField>
 
                   <Field>
-                    <FieldLabel>Router Settings</FieldLabel>
+                    <FieldLabel>{t("teams:permissions_settings.router_settings", { defaultValue: "Router Settings" })}</FieldLabel>
                     <RouterSettingsAccordion
                       ref={routerSettingsRef}
                       accessToken={accessToken || ""}
@@ -1794,7 +1794,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                     )}
                   </FormField>
 
-                  <FormField control={form.control} name="mcp_servers_and_groups" label="MCP Servers / Access Groups">
+                  <FormField control={form.control} name="mcp_servers_and_groups" label={t("teams:permissions_settings.mcp_servers_and_groups", { defaultValue: "MCP Servers / Access Groups" })}>
                     {({ value, onChange }) => (
                       <MCPServerSelector
                         onChange={onChange}
@@ -1817,7 +1817,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                     />
                   </div>
 
-                  <FormField control={form.control} name="agents_and_groups" label="Agents / Access Groups">
+                  <FormField control={form.control} name="agents_and_groups" label={t("teams:permissions_settings.agents_and_groups", { defaultValue: "Agents / Access Groups" })}>
                     {({ value, onChange }) => (
                       <AgentSelector
                         onChange={onChange}
@@ -1834,7 +1834,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                     className="mt-4 mb-4 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Search Tool Settings</b>
+                      <b>{t("teams:permissions_settings.search_tool_settings", { defaultValue: "Search Tool Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1892,7 +1892,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                     )}
                   </FormField>
 
-                  <FormField control={form.control} name="logging_settings" label="Logging Settings">
+                  <FormField control={form.control} name="logging_settings" label={t("teams:permissions_settings.logging_settings", { defaultValue: "Logging Settings" })}>
                     {({ value, onChange }) => (
                       <EditLoggingSettings value={(value as unknown[]) ?? []} onChange={onChange} />
                     )}
@@ -1901,11 +1901,11 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                   <FormField
                     control={form.control}
                     name="secret_manager_settings"
-                    label="Secret Manager Settings"
+                    label={t("teams:permissions_settings.secret_manager_settings", { defaultValue: "Secret Manager Settings" })}
                     description={
                       premiumUser
-                        ? "Enter secret manager configuration as a JSON object."
-                        : "Premium feature - Upgrade to manage secret manager settings."
+                        ? t("teams:permissions_settings.secret_manager_hint", { defaultValue: "Enter secret manager configuration as a JSON object." })
+                        : t("teams:permissions_settings.secret_manager_premium_hint", { defaultValue: "Premium feature - Upgrade to manage secret manager settings." })
                     }
                   >
                     {({ ref, value, ...field }) => (

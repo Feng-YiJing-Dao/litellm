@@ -355,14 +355,41 @@ const VectorStoreForm: React.FC<VectorStoreFormProps> = ({
               {selectedProvider === "pg_vector" && (
                 <Alert variant="info">
                   <Info />
-                  <AlertTitle>PG Vector Setup Required</AlertTitle>
+                  <AlertTitle>
+                    {t("tools:vector_stores.provider_guides.pg_vector.title", "PG Vector Setup Required")}
+                  </AlertTitle>
                   <AlertDescription>
-                    <p>LiteLLM provides a server to connect to PG Vector. To use this provider:</p>
+                    <p>
+                      {t(
+                        "tools:vector_stores.provider_guides.pg_vector.desc",
+                        "LiteLLM provides a server to connect to PG Vector. To use this provider:"
+                      )}
+                    </p>
                     <ol style={{ marginLeft: "16px", marginTop: "8px", listStyleType: "decimal" }}>
-                      <li>Deploy the litellm-pgvector server</li>
-                      <li>Configure your PostgreSQL database with pgvector extension</li>
-                      <li>Start the server and note the API base URL and API key</li>
-                      <li>Enter those details in the fields below</li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.pg_vector.step_1",
+                          "Deploy the litellm-pgvector server"
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.pg_vector.step_2",
+                          "Configure your PostgreSQL database with pgvector extension"
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.pg_vector.step_3",
+                          "Start the server and note the API base URL and API key"
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.pg_vector.step_4",
+                          "Enter those details in the fields below"
+                        )}
+                      </li>
                     </ol>
                   </AlertDescription>
                 </Alert>
@@ -371,33 +398,47 @@ const VectorStoreForm: React.FC<VectorStoreFormProps> = ({
               {selectedProvider === "valkey" && (
                 <Alert variant="info">
                   <Info />
-                  <AlertTitle>Valkey Setup Required</AlertTitle>
+                  <AlertTitle>
+                    {t("tools:vector_stores.provider_guides.valkey.title", "Valkey Setup Required")}
+                  </AlertTitle>
                   <AlertDescription>
                     <p>
-                      LiteLLM searches documents you have already stored in Valkey. It does not create the index or
-                      upload documents for you. Before creating this vector store, make sure:
+                      {t(
+                        "tools:vector_stores.provider_guides.valkey.desc",
+                        "LiteLLM searches documents you have already stored in Valkey. It does not create the index or upload documents for you. Before creating this vector store, make sure:"
+                      )}
                     </p>
                     <ol style={{ marginLeft: "16px", marginTop: "8px", listStyleType: "decimal" }}>
                       <li>
-                        Your Valkey server has vector search enabled (the valkey-search module, included in the
-                        valkey-bundle image and in AWS ElastiCache / MemoryDB for Valkey)
+                        {t(
+                          "tools:vector_stores.provider_guides.valkey.step_1",
+                          "Your Valkey server has vector search enabled (the valkey-search module, included in the valkey-bundle image and in AWS ElastiCache / MemoryDB for Valkey)"
+                        )}
                       </li>
                       <li>
-                        You have already created a search index and loaded your documents and their embeddings into it.
-                        Enter that index name as the Vector Store ID
+                        {t(
+                          "tools:vector_stores.provider_guides.valkey.step_2",
+                          "You have already created a search index and loaded your documents and their embeddings into it. Enter that index name as the Vector Store ID"
+                        )}
                       </li>
                       <li>
-                        You know which embedding model created those stored embeddings. That model must be added to this
-                        proxy under Models so you can pick it below. Using a different model returns wrong results
+                        {t(
+                          "tools:vector_stores.provider_guides.valkey.step_3",
+                          "You know which embedding model created those stored embeddings. That model must be added to this proxy under Models so you can pick it below. Using a different model returns wrong results"
+                        )}
                       </li>
                       <li>
-                        You know the field names your documents use for their text and their embedding. If they are not
-                        &quot;text&quot; and &quot;embedding&quot;, set them below
+                        {t(
+                          "tools:vector_stores.provider_guides.valkey.step_4",
+                          "You know the field names your documents use for their text and their embedding. If they are not \"text\" and \"embedding\", set them below"
+                        )}
                       </li>
                     </ol>
                     <p style={{ marginTop: "8px" }}>
-                      When a query comes in, LiteLLM converts it to an embedding with the model below and returns the
-                      closest matching documents from your index.
+                      {t(
+                        "tools:vector_stores.provider_guides.valkey.footer",
+                        "When a query comes in, LiteLLM converts it to an embedding with the model below and returns the closest matching documents from your index."
+                      )}
                     </p>
                   </AlertDescription>
                 </Alert>
@@ -406,21 +447,47 @@ const VectorStoreForm: React.FC<VectorStoreFormProps> = ({
               {selectedProvider === "vertex_rag_engine" && (
                 <Alert variant="info">
                   <Info />
-                  <AlertTitle>Vertex AI RAG Engine Setup</AlertTitle>
+                  <AlertTitle>
+                    {t("tools:vector_stores.provider_guides.vertex_rag_engine.title", "Vertex AI RAG Engine Setup")}
+                  </AlertTitle>
                   <AlertDescription>
-                    <p>To use Vertex AI RAG Engine:</p>
+                    <p>
+                      {t(
+                        "tools:vector_stores.provider_guides.vertex_rag_engine.desc",
+                        "To use Vertex AI RAG Engine:"
+                      )}
+                    </p>
                     <p style={{ marginTop: "4px", fontStyle: "italic" }}>
-                      Note: Google Cloud has renamed this to &quot;RAG Engine&quot; in its console — the steps below
-                      still apply.
+                      {t(
+                        "tools:vector_stores.provider_guides.vertex_rag_engine.note",
+                        "Note: Google Cloud has renamed this to \"RAG Engine\" in its console — the steps below still apply."
+                      )}
                     </p>
                     <ol style={{ marginLeft: "16px", marginTop: "8px", listStyleType: "decimal" }}>
-                      <li>Set up your Vertex AI RAG Engine corpus in your Google Cloud console</li>
-                      <li>Create a corpus in your Google Cloud project</li>
                       <li>
-                        Note the corpus ID from the Vertex AI console (now labeled &quot;RAG Engine&quot; in Google
-                        Cloud)
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_rag_engine.step_1",
+                          "Set up your Vertex AI RAG Engine corpus in your Google Cloud console"
+                        )}
                       </li>
-                      <li>Enter the corpus ID in the Vector Store ID field below</li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_rag_engine.step_2",
+                          "Create a corpus in your Google Cloud project"
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_rag_engine.step_3",
+                          "Note the corpus ID from the Vertex AI console (now labeled \"RAG Engine\" in Google Cloud)"
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_rag_engine.step_4",
+                          "Enter the corpus ID in the Vector Store ID field below"
+                        )}
+                      </li>
                     </ol>
                   </AlertDescription>
                 </Alert>
@@ -429,25 +496,46 @@ const VectorStoreForm: React.FC<VectorStoreFormProps> = ({
               {selectedProvider === "vertex_ai/search_api" && (
                 <Alert variant="info">
                   <Info />
-                  <AlertTitle>Vertex AI Search Setup</AlertTitle>
+                  <AlertTitle>
+                    {t("tools:vector_stores.provider_guides.vertex_search.title", "Vertex AI Search Setup")}
+                  </AlertTitle>
                   <AlertDescription>
-                    <p>To use Vertex AI Search (Discovery Engine):</p>
+                    <p>
+                      {t(
+                        "tools:vector_stores.provider_guides.vertex_search.desc",
+                        "To use Vertex AI Search (Discovery Engine):"
+                      )}
+                    </p>
                     <p style={{ marginTop: "4px", fontStyle: "italic" }}>
-                      Note: Google Cloud has renamed this to &quot;Agent Search&quot; in its console — the steps below
-                      still apply.
+                      {t(
+                        "tools:vector_stores.provider_guides.vertex_search.note",
+                        "Note: Google Cloud has renamed this to \"Agent Search\" in its console — the steps below still apply."
+                      )}
                     </p>
                     <ol style={{ marginLeft: "16px", marginTop: "8px", listStyleType: "decimal" }}>
-                      <li>Enable the Discovery Engine API on your Google Cloud project and create a data store</li>
-                      <li>Pick a supported location: global, us, or eu</li>
                       <li>
-                        For most data store types (Cloud Storage, BigQuery, Media): copy the data store ID and enter it
-                        in the Vector Store ID field below.
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_search.step_1",
+                          "Enable the Discovery Engine API on your Google Cloud project and create a data store"
+                        )}
                       </li>
                       <li>
-                        For website, healthcare, and connector-based sources (Drive, Gmail, Slack, Jira, etc.): create a
-                        search app on top of the data store, then copy the <strong>Engine ID</strong> and enter it in
-                        the Engine ID field. The Vector Store ID is still required as the LiteLLM-side name for this
-                        record, but it isn&apos;t used in the GCP URL when Engine ID is set.
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_search.step_2",
+                          "Pick a supported location: global, us, or eu"
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_search.step_3",
+                          "For most data store types (Cloud Storage, BigQuery, Media): copy the data store ID and enter it in the Vector Store ID field below."
+                        )}
+                      </li>
+                      <li>
+                        {t(
+                          "tools:vector_stores.provider_guides.vertex_search.step_4",
+                          "For website, healthcare, and connector-based sources (Drive, Gmail, Slack, Jira, etc.): create a search app on top of the data store, then copy the Engine ID and enter it in the Engine ID field. The Vector Store ID is still required as the LiteLLM-side name for this record, but it isn't used in the GCP URL when Engine ID is set."
+                        )}
                       </li>
                     </ol>
                   </AlertDescription>

@@ -8,19 +8,26 @@ import { DocumentUpload } from "@/components/vector_store_management/types";
 
 import { getDocumentsTableColumns } from "./DocumentsTableColumns";
 
+import { useTranslation } from "react-i18next";
+
 interface DocumentsTableProps {
   documents: DocumentUpload[];
   onRemove: (uid: string) => void;
 }
 
 function EmptyState() {
+  const { t } = useTranslation(["tools", "common"]);
   return (
     <div className="flex flex-col items-center gap-1 py-6">
       <div className="mb-1 flex size-10 items-center justify-center rounded-lg bg-muted">
         <Inbox className="size-5 text-muted-foreground" />
       </div>
-      <div className="text-sm font-medium text-foreground">No documents uploaded yet</div>
-      <div className="text-sm text-muted-foreground">Upload documents above to get started.</div>
+      <div className="text-sm font-medium text-foreground">
+        {t("tools:vector_stores.documents.no_documents", "No documents uploaded yet")}
+      </div>
+      <div className="text-sm text-muted-foreground">
+        {t("tools:vector_stores.documents.no_documents_desc", "Upload documents above to get started.")}
+      </div>
     </div>
   );
 }

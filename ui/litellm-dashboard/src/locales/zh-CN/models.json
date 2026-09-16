@@ -811,7 +811,30 @@
     "view_full_error": "查看完整错误信息",
     "no_errors": "无错误",
     "never_checked": "从未检查",
-    "never_succeeded": "从未成功"
+    "never_succeeded": "从未成功",
+    "title": "模型健康状态",
+    "desc": "对单独的模型运行健康检查以验证其是否正常工作",
+    "clear_selection": "清除已选",
+    "run_selected": "运行所选检查",
+    "run_all": "运行全部检查",
+    "error_modal_title": "健康检查错误 - {{modelName}}",
+    "error_details_title": "错误详情",
+    "error_modal_desc": "模型健康检查返回的详细信息。",
+    "error_label": "错误：",
+    "full_error_details_label": "完整错误详情：",
+    "close_btn": "关闭",
+    "success_modal_title": "健康检查响应 - {{modelName}}",
+    "response_details_title": "响应详情",
+    "success_modal_desc": "模型健康检查成功返回的响应。",
+    "status_label": "状态：",
+    "health_check_passed": "健康检查顺利通过",
+    "response_details_label": "响应详情：",
+    "status_healthy": "健康",
+    "status_unhealthy": "异常",
+    "status_checking": "检查中",
+    "status_none": "未检查",
+    "status_unknown": "未知",
+    "none_sentinel": "无"
   },
   "passthrough": {
     "title": "穿透网关端点",
@@ -1084,5 +1107,36 @@
     "custom_technical_keywords_desc": "可选：向内置列表添加专有术语，以提高技术维度的分类准确率（例如 udp、kafka、terraform）。",
     "custom_technical_keywords_placeholder": "输入关键词并按回车",
     "custom_technical_keywords_empty": "输入以添加关键词"
-  }
+  },
+  "retry_settings": {
+    "scope_label": "重试策略作用域：",
+    "global_scope": "全局默认",
+    "global_title": "全局重试策略",
+    "global_desc": "适用于所有模型组的默认重试设置（除非单独覆盖）",
+    "model_title": "{{modelGroup}} 的重试策略",
+    "model_desc": "针对特定模型的重试设置。若未单独设置，则回退至全局默认值。",
+    "global_inherited": "(全局: {{value}})",
+    "retry_count_aria": "{{exceptionType}} 重试次数",
+    "reset_btn": "重置",
+    "save_btn": "保存",
+    "saving": "正在保存...",
+    "all_other_errors": "所有其他错误",
+    "save_success": "重试设置已成功保存",
+    "save_error": "保存重试设置失败"
+  },
+  "access_group_budgets": {
+    "no_access_groups": "暂无模型访问组",
+    "clear_budget": "清除预算",
+    "clear_budget_confirm": "确定要清除此访问组的预算吗？已记录的共享消费也将随之清除，该组的模型仍将保持可用。",
+    "access_group": "访问组",
+    "shared_spend": "共享消费",
+    "all_proxy_models": "all-proxy-models (所有模型)"
+  },
+  "price_management": {
+    "title": "价格数据管理",
+    "desc": "管理模型价格数据并配置自动重新加载计划",
+    "reload_btn": "重新加载价格数据"
+  },
+  "delete_model_confirm_dialog": "确定要删除此模型吗？",
+  "current_team_badge": "当前团队"
 }

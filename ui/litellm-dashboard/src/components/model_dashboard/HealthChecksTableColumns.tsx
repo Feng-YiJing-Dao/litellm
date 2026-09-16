@@ -53,11 +53,20 @@ const NEVER_SUCCEEDED = "Never succeeded";
 const NONE = "None";
 
 function HealthStatusBadge({ status }: { status: string }) {
+  const { t } = useTranslation(["models"]);
   const tone = HEALTH_STATUS_TONES[status];
+  const statusLabels: Record<string, string> = {
+    healthy: t("models:health_checks.status_healthy", "Healthy"),
+    unhealthy: t("models:health_checks.status_unhealthy", "Unhealthy"),
+    checking: t("models:health_checks.status_checking", "Checking"),
+    none: t("models:health_checks.status_none", "None"),
+    unknown: t("models:health_checks.status_unknown", "Unknown"),
+  };
+  const label = statusLabels[status] ?? status;
   if (!tone) {
-    return <StatusBadge tone="neutral" label="unknown" />;
+    return <StatusBadge tone="neutral" label={label} />;
   }
-  return <StatusBadge tone={tone} label={status} />;
+  return <StatusBadge tone={tone} label={label} />;
 }
 
 function DotPulse({ className }: { className: string }) {
@@ -387,13 +396,15 @@ export const getHealthChecksTableColumns = ({
       const sentinel = compareSentinels(rawA, rawB, [NEVER_CHECKED], [CHECK_IN_PROGRESS]);
       return sentinel ?? compareDatesDesc(rawA, rawB);
     },
-    cell: ({ row }) => (
-      <span className="text-sm text-muted-foreground">
-        {row.original.health_loading
-          ? i18n.t("models:health_checks.check_in_progress", CHECK_IN_PROGRESS)
-          : row.original.last_check}
-      </span>
-    ),
+    cell: ({ row }) => {
+      let displayLastCheck = row.original.last_check;
+      if (row.original.health_loading) {
+        displayLastCheck = i18n.t("models:health_checks.check_in_progress", CHECK_IN_PROGRESS);
+      } else if (displayLastCheck === NEVER_CHECKED) {
+        displayLastCheck = i18n.t("models:health_checks.never_checked", "Never checked");
+      }
+      return <span className="text-sm text-muted-foreground">{displayLastCheck}</span>;
+    },
   },
   {
     id: "last_success",
@@ -413,7 +424,13 @@ export const getHealthChecksTableColumns = ({
     cell: ({ row }) => {
       const modelId = row.original.model_info?.id ?? "";
       const lastSuccess = modelHealthStatuses[modelId]?.lastSuccess || NONE;
-      return <span className="text-sm text-muted-foreground">{lastSuccess}</span>;
+      let displayLastSuccess = lastSuccess;
+      if (displayLastSuccess === NEVER_SUCCEEDED) {
+        displayLastSuccess = i18n.t("models:health_checks.never_succeeded", "Never succeeded");
+      } else if (displayLastSuccess === NONE) {
+        displayLastSuccess = i18n.t("models:health_checks.none_sentinel", "None");
+      }
+      return <span className="text-sm text-muted-foreground">{displayLastSuccess}</span>;
     },
   },
   {

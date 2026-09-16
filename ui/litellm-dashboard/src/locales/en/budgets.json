@@ -89,5 +89,6 @@
     "monthly": "monthly",
     "yearly": "yearly",
     "not_set": "Not set"
-  }
+  },
+  "max_budget": "Max Budget"
 }

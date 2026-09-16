@@ -182,7 +182,7 @@
   "templates": {
     "title": "策略模板",
     "categories": "类别",
-    "inherits_from": "继承自:",
+    "inherits_from": "继承自：",
     "no_templates": "没有符合选定筛选条件的模板。",
     "configure_competitor": "为您的品牌配置竞品拦截",
     "competitor_discovery": "竞品发现",
@@ -226,7 +226,16 @@
     "will_be_created": "将创建 {{count}} 个护栏",
     "select_at_least_one": "请至少选择一个要创建的护栏，或点击“使用模板”在不创建新护栏的情况下继续。",
     "create_and_use": "创建 {{count}} 个护栏并使用模板",
-    "use_template": "使用模板"
+    "use_template": "使用模板",
+    "included_guardrails": "包含的护栏规则",
+    "desc": "可直接采用与自定义的预配置策略模板。",
+    "no_matching": "没有符合所选过滤条件的模板。",
+    "description": "从预配置的策略模板开始，快速为您的组织建立安全护栏。",
+    "use_ai_btn": "使用 AI 查找模板",
+    "clear_all": "清除全部",
+    "showing_count": "显示 {{count}} / {{total}} 个模板",
+    "clear_filters": "清除所有筛选条件",
+    "fetch_failed": "获取策略模板失败"
   },
   "info": {
     "not_found": "未找到策略",
@@ -234,6 +243,18 @@
     "none": "无",
     "pipeline_flow": "流程管线",
     "guardrails_applied": "已应用的护栏",
-    "target_models": "目标模型"
+    "target_models": "目标模型",
+    "policy_id": "策略 ID",
+    "updated_at": "更新时间",
+    "guardrails_config": "护栏规则配置",
+    "resolved_guardrails": "已生效的护栏规则",
+    "resolved_guardrails_desc": "最终将应用的护栏规则（包含继承属性）：",
+    "guardrails_to_add": "新增的护栏规则",
+    "guardrails_to_remove": "移除的护栏规则",
+    "go_back": "返回",
+    "back_to_policies": "返回策略列表",
+    "edit_policy": "编辑策略",
+    "conditions": "条件规则",
+    "no_model_condition": "无模型条件（适用于所有模型）"
   }
 }

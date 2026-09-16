@@ -97,7 +97,7 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
         <CardContent>
           <p className="text-destructive">{t("info.not_found", { defaultValue: "Policy not found" })}</p>
           <Button variant="secondary" onClick={onClose} className="mt-4">
-            Go Back
+            {t("info.go_back", { defaultValue: "Go Back" })}
           </Button>
         </CardContent>
       </Card>
@@ -111,12 +111,12 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
           <div className="flex items-center justify-between">
             <Button variant="secondary" onClick={onClose}>
               <ArrowLeft />
-              Back to Policies
+              {t("info.back_to_policies", { defaultValue: "Back to Policies" })}
             </Button>
             {isAdmin && (
               <Button onClick={() => onEdit(policy)}>
                 <Pencil />
-                Edit Policy
+                {t("info.edit_policy", { defaultValue: "Edit Policy" })}
               </Button>
             )}
           </div>
@@ -124,17 +124,17 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
           <h4 className="text-lg font-semibold">{policy.policy_name}</h4>
 
           <dl className="rounded-md border border-border">
-            <DetailRow label="Policy ID">
+            <DetailRow label={t("info.policy_id", { defaultValue: "Policy ID" })}>
               <code className="rounded-sm bg-muted px-2 py-1 text-xs">{policy.policy_id}</code>
             </DetailRow>
-            <DetailRow label="Description">{policy.description || <Muted>{t("info.no_description", { defaultValue: "No description" })}</Muted>}</DetailRow>
-            <DetailRow label="Inherits From">
+            <DetailRow label={t("columns.description", { defaultValue: "Description" })}>{policy.description || <Muted>{t("info.no_description", { defaultValue: "No description" })}</Muted>}</DetailRow>
+            <DetailRow label={t("columns.inherit", { defaultValue: "Inherits From" })}>
               {policy.inherit ? <Badge variant="secondary">{policy.inherit}</Badge> : <Muted>{t("info.none", { defaultValue: "None" })}</Muted>}
             </DetailRow>
-            <DetailRow label="Created At">
+            <DetailRow label={t("columns.created_at", { defaultValue: "Created At" })}>
               {policy.created_at ? new Date(policy.created_at).toLocaleString() : "-"}
             </DetailRow>
-            <DetailRow label="Updated At">
+            <DetailRow label={t("info.updated_at", { defaultValue: "Updated At" })}>
               {policy.updated_at ? new Date(policy.updated_at).toLocaleString() : "-"}
             </DetailRow>
           </dl>
@@ -153,14 +153,14 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
             </>
           )}
 
-          <SectionHeading>Guardrails Configuration</SectionHeading>
+          <SectionHeading>{t("info.guardrails_config", { defaultValue: "Guardrails Configuration" })}</SectionHeading>
 
           {resolvedGuardrails.length > 0 && (
             <Alert className="mb-4">
               <Info />
-              <AlertTitle>Resolved Guardrails</AlertTitle>
+              <AlertTitle>{t("info.resolved_guardrails", { defaultValue: "Resolved Guardrails" })}</AlertTitle>
               <AlertDescription>
-                <span className="mb-2 block">Final guardrails that will be applied (including inheritance):</span>
+                <span className="mb-2 block">{t("info.resolved_guardrails_desc", { defaultValue: "Final guardrails that will be applied (including inheritance):" })}</span>
                 <div className="flex flex-wrap gap-1">
                   {resolvedGuardrails.map((g) => (
                     <Badge key={g} variant="secondary">
@@ -173,7 +173,7 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
           )}
 
           <dl className="rounded-md border border-border">
-            <DetailRow label="Guardrails to Add">
+            <DetailRow label={t("info.guardrails_to_add", { defaultValue: "Guardrails to Add" })}>
               <div className="flex flex-wrap gap-1">
                 {policy.guardrails_add && policy.guardrails_add.length > 0 ? (
                   policy.guardrails_add.map((g) => (
@@ -182,11 +182,11 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
                     </Badge>
                   ))
                 ) : (
-                  <Muted>None</Muted>
+                  <Muted>{t("info.none", { defaultValue: "None" })}</Muted>
                 )}
               </div>
             </DetailRow>
-            <DetailRow label="Guardrails to Remove">
+            <DetailRow label={t("info.guardrails_to_remove", { defaultValue: "Guardrails to Remove" })}>
               <div className="flex flex-wrap gap-1">
                 {policy.guardrails_remove && policy.guardrails_remove.length > 0 ? (
                   policy.guardrails_remove.map((g) => (
@@ -195,16 +195,16 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
                     </Badge>
                   ))
                 ) : (
-                  <Muted>None</Muted>
+                  <Muted>{t("info.none", { defaultValue: "None" })}</Muted>
                 )}
               </div>
             </DetailRow>
           </dl>
 
-          <SectionHeading>Conditions</SectionHeading>
+          <SectionHeading>{t("info.conditions", { defaultValue: "Conditions" })}</SectionHeading>
 
           <dl className="rounded-md border border-border">
-            <DetailRow label="Model Condition">
+            <DetailRow label={t("columns.model_condition", { defaultValue: "Model Condition" })}>
               {policy.condition?.model ? (
                 <Badge variant="secondary">
                   {typeof policy.condition.model === "string"
@@ -212,7 +212,7 @@ const PolicyInfoView: React.FC<PolicyInfoViewProps> = ({
                     : JSON.stringify(policy.condition.model)}
                 </Badge>
               ) : (
-                <Muted>No model condition (applies to all models)</Muted>
+                <Muted>{t("info.no_model_condition", { defaultValue: "No model condition (applies to all models)" })}</Muted>
               )}
             </DetailRow>
           </dl>

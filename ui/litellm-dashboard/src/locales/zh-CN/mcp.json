@@ -375,7 +375,8 @@
     "how_toolsets_work": "工具集的工作原理",
     "how_toolsets_work_desc": "创建工具集，通过“API 密钥 → 编辑密钥 → MCP 服务器”将其分配给密钥，然后将您的 MCP 客户端指向工具集 URL。客户端仅能看到您选取的工具。",
     "client_config_label": "Claude Code / Cursor 配置",
-    "copy": "复制"
+    "copy": "复制",
+    "open_actions": "打开工具集操作菜单"
   },
   "card": {
     "actions": "服务器操作",
@@ -542,5 +543,50 @@
     "header_filter_example": "示例：10→3",
     "header_tools_info": "x-litellm-semantic-filter-tools：选中的工具名称列表 (CSV 格式)",
     "header_tools_example": "示例：wikipedia-fetch,github-search,slack-post"
+  },
+  "advanced_auth": {
+    "id_jag_leg1_label": "身份提供商令牌端点 (第 1 阶段)",
+    "id_jag_leg1_tooltip": "您的 IdP 机构授权服务器的令牌端点。LiteLLM 在此将用户的身份断言交换为 ID-JAG 断言。",
+    "id_jag_leg1_required": "ID-JAG 必须填写机构令牌端点",
+    "id_jag_leg2_label": "资源令牌端点 (第 2 阶段)",
+    "id_jag_leg2_tooltip": "上游资源授权服务器的令牌端点。LiteLLM 在此通过 RFC 7523 jwt-bearer 授权提交 ID-JAG 断言以获取 MCP 服务器接受的访问令牌。",
+    "id_jag_leg2_required": "ID-JAG 必须填写资源令牌端点",
+    "client_id_label": "客户端 ID",
+    "client_id_tooltip": "LiteLLM 在两个阶段进行身份验证所使用的 OAuth2 客户端 ID。",
+    "client_id_required": "ID-JAG 必须提供客户端 ID",
+    "client_secret_label": "客户端密钥 (Client Secret)",
+    "client_secret_tooltip": "通过 client_secret_post 将 LiteLLM 验证为 OAuth 客户端。使用私钥时留空；私钥优先于此密钥。",
+    "client_private_key_label": "客户端私钥 (PEM)",
+    "client_private_key_tooltip": "用于签署 RFC 7523 private_key_jwt 客户端断言的 PEM 私钥。Okta 跨应用访问通常需要此项。设置后优先级高于客户端密钥。",
+    "private_key_id_label": "私钥 ID (可选)",
+    "private_key_id_tooltip": "客户端断言 JWT 头部中声明的 kid，以便 IdP 选择正确的已注册密钥。",
+    "signing_alg_label": "客户端断言签名算法 (可选)",
+    "signing_alg_tooltip": "签署客户端断言 JWT 的算法。默认为 RS256。",
+    "token_exchange_profile_label": "规范配置文件",
+    "token_exchange_profile_tooltip": "令牌交换协议方言。RFC 8693 是标准令牌交换授权。Microsoft Entra OBO 使用 Entra 的代管 (On-Behalf-Of) 方言（携带 requested_token_use=on_behalf_of 的 RFC 7523 jwt-bearer 授权），并在形如 api://<app-id>/.default 的作用域中传递目标资源。",
+    "token_exchange_profile_rfc8693": "RFC 8693（标准）",
+    "token_exchange_profile_entra": "Microsoft Entra OBO",
+    "token_exchange_endpoint_label": "令牌交换端点（可选）",
+    "token_exchange_endpoint_tooltip": "RFC 8693 令牌端点。代理在此处将用户传入的令牌交换为用于调用上游 MCP 服务的作用域令牌。留空将自动从上游受保护资源元数据（RFC 9728 及 RFC 8414）中探测。",
+    "token_exchange_client_id_required": "令牌交换需要客户端 ID",
+    "token_exchange_client_secret_required": "令牌交换需要客户端密钥",
+    "token_exchange_audience_label": "目标受众 Audience（可选）",
+    "token_exchange_audience_tooltip": "交换后令牌的目标受众（RFC 8693 audience）。标识该令牌所属的上游 MCP 服务器。",
+    "token_exchange_subject_token_type_label": "主体令牌类型（可选）",
+    "token_exchange_subject_token_type_tooltip": "用户传入令牌的类型（RFC 8693 subject_token_type）。默认为 urn:ietf:params:oauth:token-type:access_token。",
+    "token_exchange_scopes_label": "作用域（可选）",
+    "token_exchange_scopes_label_required": "作用域",
+    "token_exchange_scopes_tooltip_entra": "Microsoft Entra OBO 将目标资源承载在作用域中，因此必须提供至少一个（例如 api://<app-id>/.default）。",
+    "token_exchange_scopes_tooltip_rfc": "令牌交换期间请求的可选作用域。",
+    "token_exchange_entra_scope_required": "Microsoft Entra OBO 需要作用域，例如 api://<app-id>/.default",
+    "token_exchange_add_scopes": "添加作用域",
+    "token_header_label": "令牌请求头（可选）",
+    "token_header_tooltip": "LiteLLM 为此服务器解析的令牌通过哪个上游请求头传递。留空则作为默认的 'Authorization: Bearer <token>' 发送（大部分服务器的预期行为）。当上游需要在其他请求头中接收时设置此名称，例如在 'esb-oauth' 上终止自身凭据的 API 网关，而来自静态请求头的单独 Authorization 则透传给其背后的服务器。"
+  },
+  "stdio": {
+    "label": "Stdio 配置 (JSON)",
+    "tooltip": "以 JSON 格式粘贴您的 Stdio MCP 服务器配置。可以使用 config.yaml 中的完整 mcpServers 结构，也可以仅粘贴内部服务器配置。",
+    "required": "请输入 Stdio 配置",
+    "invalid_json": "请输入有效的 JSON 格式"
   }
 }

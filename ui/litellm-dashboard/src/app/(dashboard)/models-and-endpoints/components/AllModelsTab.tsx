@@ -14,6 +14,7 @@ import { useDebouncedCallback } from "@tanstack/react-pacer/debouncer";
 import { ColumnFiltersState, OnChangeFn, PaginationState, SortingState } from "@tanstack/react-table";
 import { Info } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useModelsInfo } from "../../hooks/models/useModels";
 import { transformModelData } from "../utils/modelDataTransformer";
@@ -47,6 +48,7 @@ const AllModelsTab = ({
   setSelectedModelId,
   setSelectedTeamId,
 }: AllModelsTabProps) => {
+  const { t } = useTranslation(["models", "common"]);
   const { data: modelCostMapData, isLoading: isLoadingModelCostMap } = useModelCostMap();
   const { accessToken, userId, userRole } = useAuthorized();
   const { data: teams, isLoading: isLoadingTeams } = useTeams();
@@ -314,28 +316,28 @@ const AllModelsTab = ({
 
       <DeleteResourceModal
         isOpen={!!deleteModalModelId}
-        title="Delete Model"
-        alertMessage="This action cannot be undone."
-        message="Are you sure you want to delete this model?"
-        resourceInformationTitle="Model Information"
+        title={t("models:delete_model", "Delete Model")}
+        alertMessage={t("common:cannot_be_undone", "This action cannot be undone.")}
+        message={t("models:delete_model_confirm_dialog", "Are you sure you want to delete this model?")}
+        resourceInformationTitle={t("models:model_information", "Model Information")}
         resourceInformation={
           modelToDelete
             ? [
                 {
-                  label: "Model Name",
-                  value: modelToDelete.model_name || "Not Set",
+                  label: t("models:model_name", "Model Name"),
+                  value: modelToDelete.model_name || t("models:not_set", "Not Set"),
                 },
                 {
-                  label: "LiteLLM Model Name",
-                  value: modelToDelete.litellm_model_name || "Not Set",
+                  label: t("models:litellm_model_name", "LiteLLM Model Name"),
+                  value: modelToDelete.litellm_model_name || t("models:not_set", "Not Set"),
                 },
                 {
-                  label: "Provider",
-                  value: modelToDelete.provider || "Not Set",
+                  label: t("models:provider", "Provider"),
+                  value: modelToDelete.provider || t("models:not_set", "Not Set"),
                 },
                 {
-                  label: "Created By",
-                  value: modelToDelete.model_info?.created_by || "Not Set",
+                  label: t("models:created_by", "Created By"),
+                  value: modelToDelete.model_info?.created_by || t("models:not_set", "Not Set"),
                 },
               ]
             : []

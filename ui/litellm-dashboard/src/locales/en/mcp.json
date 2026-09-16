@@ -375,7 +375,8 @@
     "how_toolsets_work": "How toolsets work",
     "how_toolsets_work_desc": "Create a toolset, assign it to a key via API Keys → Edit Key → MCP Servers, then point your MCP client at the toolset URL. The client only sees the tools you picked.",
     "client_config_label": "Claude Code / Cursor config",
-    "copy": "copy"
+    "copy": "copy",
+    "open_actions": "Open toolset actions"
   },
   "card": {
     "actions": "Server actions",
@@ -542,5 +543,50 @@
     "header_filter_example": "Example: 10→3",
     "header_tools_info": "x-litellm-semantic-filter-tools: CSV of selected tool names",
     "header_tools_example": "Example: wikipedia-fetch,github-search,slack-post"
+  },
+  "advanced_auth": {
+    "id_jag_leg1_label": "Org Token Endpoint (leg 1)",
+    "id_jag_leg1_tooltip": "Your IdP org authorization server's token endpoint. LiteLLM exchanges the user's identity assertion here for an ID-JAG assertion.",
+    "id_jag_leg1_required": "The org token endpoint is required for ID-JAG",
+    "id_jag_leg2_label": "Resource Token Endpoint (leg 2)",
+    "id_jag_leg2_tooltip": "The upstream resource authorization server's token endpoint. LiteLLM posts the ID-JAG assertion here as an RFC 7523 jwt-bearer grant to get the access token the MCP server accepts.",
+    "id_jag_leg2_required": "The resource token endpoint is required for ID-JAG",
+    "client_id_label": "Client ID",
+    "client_id_tooltip": "OAuth2 client ID LiteLLM authenticates as on both legs.",
+    "client_id_required": "Client ID is required for ID-JAG",
+    "client_secret_label": "Client Secret",
+    "client_secret_tooltip": "Authenticates LiteLLM as the OAuth client via client_secret_post. Leave blank when using a private key instead; a private key takes precedence over this secret.",
+    "client_private_key_label": "Client Private Key (PEM)",
+    "client_private_key_tooltip": "PEM private key signing the RFC 7523 private_key_jwt client assertion. Okta Cross App Access normally requires this. When set it takes precedence over the client secret.",
+    "private_key_id_label": "Private Key ID (optional)",
+    "private_key_id_tooltip": "The kid advertised in the client assertion JWT header, so the IdP can select the right registered key.",
+    "signing_alg_label": "Client Assertion Signing Algorithm (optional)",
+    "signing_alg_tooltip": "Algorithm signing the client assertion JWT. Defaults to RS256.",
+    "token_exchange_profile_label": "Profile",
+    "token_exchange_profile_tooltip": "Token-exchange wire dialect. RFC 8693 is the standard token-exchange grant. Microsoft Entra OBO uses Entra's On-Behalf-Of dialect (the RFC 7523 jwt-bearer grant with requested_token_use=on_behalf_of) and carries the target resource in a scope like api://<app-id>/.default.",
+    "token_exchange_profile_rfc8693": "RFC 8693 (standard)",
+    "token_exchange_profile_entra": "Microsoft Entra OBO",
+    "token_exchange_endpoint_label": "Token Exchange Endpoint (optional)",
+    "token_exchange_endpoint_tooltip": "RFC 8693 token endpoint. The proxy exchanges the user's incoming token here for a scoped token used to call the upstream MCP server. Leave blank to auto-discover it from the upstream's protected-resource metadata (RFC 9728 then RFC 8414).",
+    "token_exchange_client_id_required": "Client ID is required for token exchange",
+    "token_exchange_client_secret_required": "Client Secret is required for token exchange",
+    "token_exchange_audience_label": "Audience (optional)",
+    "token_exchange_audience_tooltip": "Target audience for the exchanged token (RFC 8693 audience). Identifies the upstream MCP server the token is for.",
+    "token_exchange_subject_token_type_label": "Subject Token Type (optional)",
+    "token_exchange_subject_token_type_tooltip": "Type of the user's incoming token (RFC 8693 subject_token_type). Defaults to urn:ietf:params:oauth:token-type:access_token.",
+    "token_exchange_scopes_label": "Scopes (optional)",
+    "token_exchange_scopes_label_required": "Scopes",
+    "token_exchange_scopes_tooltip_entra": "Microsoft Entra OBO carries the target resource in the scope, so at least one is required (e.g. api://<app-id>/.default).",
+    "token_exchange_scopes_tooltip_rfc": "Optional scopes to request during the token exchange.",
+    "token_exchange_entra_scope_required": "Microsoft Entra OBO requires a scope, e.g. api://<app-id>/.default",
+    "token_exchange_add_scopes": "Add scopes",
+    "token_header_label": "Token Header (optional)",
+    "token_header_tooltip": "Which upstream header carries the token LiteLLM resolves for this server. Leave blank to send it as 'Authorization: Bearer <token>', which is the default and what most servers expect. Set a header name when the upstream expects it elsewhere, for example an API gateway that terminates its own credential on 'esb-oauth' while a separate Authorization from Static Headers passes through to the server behind it."
+  },
+  "stdio": {
+    "label": "Stdio Configuration (JSON)",
+    "tooltip": "Paste your stdio MCP server configuration in JSON format. You can use the full mcpServers structure from config.yaml or just the inner server configuration.",
+    "required": "Please enter stdio configuration",
+    "invalid_json": "Please enter valid JSON"
   }
 }

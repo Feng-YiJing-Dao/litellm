@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { CircleHelp, Info } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/shared/Alert";
 import { fetchAvailableModels, ModelGroup } from "@/components/llm_calls/fetch_models";
@@ -33,6 +34,7 @@ const labelWithHint = (label: string, hint: string): React.ReactNode => (
 const asText = (value: unknown): string => (typeof value === "string" ? value : "");
 
 const S3VectorsConfig: React.FC<S3VectorsConfigProps> = ({ accessToken, providerParams, onParamsChange }) => {
+  const { t } = useTranslation(["tools", "common"]);
   const [embeddingModels, setEmbeddingModels] = useState<ModelGroup[]>([]);
   const [isLoadingModels, setIsLoadingModels] = useState(false);
 
@@ -74,14 +76,29 @@ const S3VectorsConfig: React.FC<S3VectorsConfigProps> = ({ accessToken, provider
     <TooltipProvider>
       <Alert variant="info" className="mb-4">
         <Info />
-        <AlertTitle>AWS S3 Vectors Setup</AlertTitle>
+        <AlertTitle>{t("tools:vector_stores.s3_vectors.setup_title", "AWS S3 Vectors Setup")}</AlertTitle>
         <AlertDescription>
           <div>
-            <p>AWS S3 Vectors allows you to store and query vector embeddings directly in S3:</p>
+            <p>
+              {t(
+                "tools:vector_stores.s3_vectors.setup_desc",
+                "AWS S3 Vectors allows you to store and query vector embeddings directly in S3:"
+              )}
+            </p>
             <ul style={{ marginLeft: "16px", marginTop: "8px" }}>
               <li>Vector buckets and indexes will be automatically created if they don&apos;t exist</li>
-              <li>Vector dimensions are auto-detected from your selected embedding model</li>
-              <li>Ensure your AWS credentials have permissions for S3 Vectors operations</li>
+              <li>
+                {t(
+                  "tools:vector_stores.s3_vectors.point_dimensions",
+                  "Vector dimensions are auto-detected from your selected embedding model"
+                )}
+              </li>
+              <li>
+                {t(
+                  "tools:vector_stores.s3_vectors.point_permissions",
+                  "Ensure your AWS credentials have permissions for S3 Vectors operations"
+                )}
+              </li>
               <li>
                 Learn more:{" "}
                 <a

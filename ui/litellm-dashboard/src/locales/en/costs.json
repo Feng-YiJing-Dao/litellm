@@ -15,7 +15,14 @@
     "savings_by_driver": "Savings by driver",
     "spend_by_tool": "Spend by tool",
     "total_by_tool": "Total by tool",
-    "daily_spend_by_tool": "Daily spend by tool"
+    "daily_spend_by_tool": "Daily spend by tool",
+    "spend_bucketed_utc": "Spend is bucketed by UTC day",
+    "per_day": "Per day",
+    "running_total_saved": "Running total saved",
+    "saved_per_day": "Saved per day",
+    "saved_interval": "Saved {{interval}}",
+    "spend_by_tool_desc": "Spend on requests that invoked each tool (MCP and client-side tools); declaring a tool without invoking it does not count. A request that invoked multiple tools counts its full spend toward each, so this attributes rather than partitions spend.",
+    "no_tool_usage": "No tool usage in this range."
   },
   "tracking": {
     "title": "Cost Tracking Settings",
@@ -103,5 +110,46 @@
     "cumulative": "Cumulative",
     "loading": "Loading savings...",
     "empty": "No usage recorded for this key in this range."
+  },
+  "compression": {
+    "title": "Headroom prompt compression",
+    "description": "Headroom is a native LiteLLM guardrail that compresses your prompts before they reach the model, so you pay for fewer input tokens. The tokens it removes are priced and shown on the Usage tab as compression savings.",
+    "setup_docs": "Headroom setup docs",
+    "empty": "No prompt compression guardrails configured yet. Add one below to start saving on input tokens",
+    "always_on": "Always on",
+    "opt_in": "Opt-in",
+    "add_title": "Add Headroom compression guardrail",
+    "api_base_label": "Headroom API base",
+    "api_base_hint": "Base URL of your Headroom compression service (LiteLLM calls its /v1/compress endpoint)",
+    "api_base_desc": "The URL where your Headroom compression service is hosted",
+    "default_on_label": "Apply to all requests",
+    "enterprise_notice": "Applying compression to all requests is available to all users. Enabling it selectively per key or team is a LiteLLM Enterprise feature. Get a trial key",
+    "save_guardrail": "Save guardrail",
+    "created_success": "Compression guardrail created",
+    "create_failed": "Failed to create compression guardrail",
+    "add_guardrail": "Add guardrail",
+    "load_failed": "Failed to load compression guardrails",
+    "name_required": "Name is required",
+    "api_base_required": "API base is required"
+  },
+  "cache_leakage": {
+    "title": "Cache leakage by {{dimension}}",
+    "desc": "{{subject}} sending large volumes of uncached input with a low cache hit rate are likely missing prompt caching. Potential savings is approximate: uncached input priced at what your cached traffic nets per cached token, after cache-write premiums.",
+    "by_key": "By virtual key",
+    "by_model": "By model",
+    "uncached_tokens": "Uncached input tokens",
+    "uncached_tokens_info": "Input tokens you sent in this range that weren't served from or written to the cache",
+    "hit_rate": "Cache hit rate",
+    "hit_rate_info": "Share of your input tokens that were served from the cache",
+    "dimension_model": "model",
+    "dimension_key": "virtual key",
+    "subject_models": "Models",
+    "subject_keys": "Keys",
+    "col_model": "Model",
+    "col_key": "Key",
+    "potential_savings": "Potential savings",
+    "potential_savings_info": "About how much you'd save if this uncached input used prompt caching. Estimated as uncached input tokens times what your cached traffic already nets per cached token (realized cache savings, after write premiums, ÷ cache read and write tokens). Blank when caching is not currently saving anything overall.",
+    "no_usage": "No {{noun}} usage in this range.",
+    "still_loading": "Data is still loading; rows and totals will update as the rest of the range arrives."
   }
 }

@@ -226,7 +226,16 @@
     "will_be_created": "{{count}} guardrail(s) will be created",
     "select_at_least_one": "Select at least one guardrail to create, or click \"Use Template\" to proceed without creating new guardrails.",
     "create_and_use": "Create {{count}} Guardrail(s) & Use Template",
-    "use_template": "Use Template"
+    "use_template": "Use Template",
+    "included_guardrails": "Included Guardrails",
+    "desc": "Pre-configured policy templates you can quickly adopt and customize.",
+    "no_matching": "No templates match the selected filters.",
+    "description": "Start with a pre-configured policy template to quickly set up guardrails for your organization.",
+    "use_ai_btn": "Use AI to find templates",
+    "clear_all": "Clear all",
+    "showing_count": "Showing {{count}} of {{total}} templates",
+    "clear_filters": "Clear all filters",
+    "fetch_failed": "Failed to fetch policy templates"
   },
   "info": {
     "not_found": "Policy not found",
@@ -234,6 +243,18 @@
     "none": "None",
     "pipeline_flow": "Pipeline Flow",
     "guardrails_applied": "Guardrails Applied",
-    "target_models": "Target Models"
+    "target_models": "Target Models",
+    "policy_id": "Policy ID",
+    "updated_at": "Updated At",
+    "guardrails_config": "Guardrails Configuration",
+    "resolved_guardrails": "Resolved Guardrails",
+    "resolved_guardrails_desc": "Final guardrails that will be applied (including inheritance):",
+    "guardrails_to_add": "Guardrails to Add",
+    "guardrails_to_remove": "Guardrails to Remove",
+    "go_back": "Go Back",
+    "back_to_policies": "Back to Policies",
+    "edit_policy": "Edit Policy",
+    "conditions": "Conditions",
+    "no_model_condition": "No model condition (applies to all models)"
   }
 }

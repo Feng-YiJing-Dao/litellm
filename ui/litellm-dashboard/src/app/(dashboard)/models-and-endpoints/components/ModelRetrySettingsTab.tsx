@@ -1,5 +1,6 @@
 import { LoaderCircle } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,9 +53,10 @@ const ModelRetrySettingsTab = ({
   handleSaveRetrySettings,
   isSaving = false,
 }: ModelRetrySettingsTabProps) => {
+  const { t } = useTranslation("models");
   const isGlobalScope = selectedModelGroup === "global";
   const scopeItems = [
-    { value: "global", label: "Global Default" },
+    { value: "global", label: t("models:retry_settings.global_scope", "Global Default") },
     ...availableModelGroups.map((group) => ({ value: group, label: group })),
   ];
 
@@ -85,7 +87,7 @@ const ModelRetrySettingsTab = ({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Label htmlFor="retry-policy-scope">Retry Policy Scope:</Label>
+        <Label htmlFor="retry-policy-scope">{t("models:retry_settings.scope_label", "Retry Policy Scope:")}</Label>
         <div className="w-48">
           <Select
             items={scopeItems}
@@ -108,16 +110,18 @@ const ModelRetrySettingsTab = ({
 
       {isGlobalScope ? (
         <div>
-          <h2 className="text-lg font-semibold">Global Retry Policy</h2>
+          <h2 className="text-lg font-semibold">{t("models:retry_settings.global_title", "Global Retry Policy")}</h2>
           <p className="text-sm text-muted-foreground">
-            Default retry settings applied to all model groups unless overridden
+            {t("models:retry_settings.global_desc", "Default retry settings applied to all model groups unless overridden")}
           </p>
         </div>
       ) : (
         <div>
-          <h2 className="text-lg font-semibold">Retry Policy for {selectedModelGroup}</h2>
+          <h2 className="text-lg font-semibold">
+            {t("models:retry_settings.model_title", { modelGroup: selectedModelGroup, defaultValue: `Retry Policy for ${selectedModelGroup}` })}
+          </h2>
           <p className="text-sm text-muted-foreground">
-            Model-specific retry settings. Falls back to global defaults if not set.
+            {t("models:retry_settings.model_desc", "Model-specific retry settings. Falls back to global defaults if not set.")}
           </p>
         </div>
       )}
@@ -131,16 +135,18 @@ const ModelRetrySettingsTab = ({
             return (
               <tr key={retryPolicyKey} className="flex items-center justify-between gap-4 border-b py-2 last:border-0">
                 <td className="text-sm">
-                  <span>{exceptionType}</span>
+                  <span>{exceptionType === "All other errors" ? t("models:retry_settings.all_other_errors", "All other errors") : exceptionType}</span>
                   {!isGlobalScope && (
-                    <span className="ml-2 text-xs text-muted-foreground">(Global: {inheritedValue})</span>
+                    <span className="ml-2 text-xs text-muted-foreground">
+                      {t("models:retry_settings.global_inherited", { value: inheritedValue, defaultValue: `(Global: ${inheritedValue})` })}
+                    </span>
                   )}
                 </td>
                 <td className="flex items-center gap-2">
                   <Input
                     className="w-28"
                     type="number"
-                    aria-label={`${exceptionType} retry count`}
+                    aria-label={t("models:retry_settings.retry_count_aria", { exceptionType, defaultValue: `${exceptionType} retry count` })}
                     min={0}
                     step={1}
                     value={isGlobalScope ? inheritedValue : hasOverride ? override : ""}
@@ -149,7 +155,7 @@ const ModelRetrySettingsTab = ({
                   />
                   {!isGlobalScope && hasOverride && (
                     <Button variant="ghost" size="xs" onClick={() => setModelOverride(retryPolicyKey, null)}>
-                      Reset
+                      {t("models:retry_settings.reset_btn", "Reset")}
                     </Button>
                   )}
                 </td>
@@ -160,7 +166,7 @@ const ModelRetrySettingsTab = ({
       </table>
       <Button onClick={handleSaveRetrySettings} disabled={isSaving}>
         {isSaving && <LoaderCircle className="animate-spin" />}
-        Save
+        {t("models:retry_settings.save_btn", "Save")}
       </Button>
     </div>
   );

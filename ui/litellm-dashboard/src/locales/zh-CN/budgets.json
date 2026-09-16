@@ -89,5 +89,6 @@
     "monthly": "每月",
     "yearly": "每年",
     "not_set": "未设置"
-  }
+  },
+  "max_budget": "最大预算"
 }

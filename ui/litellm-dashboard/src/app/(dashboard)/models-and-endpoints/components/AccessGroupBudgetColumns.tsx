@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/cva.config";
+import i18n from "@/locales";
 import { ModelAccessGroup } from "@/app/(dashboard)/hooks/modelAccessGroups/useModelAccessGroups";
 
 const budgetDecimals = (maxBudget: number | null | undefined): number =>
@@ -92,8 +93,10 @@ export const getAccessGroupBudgetColumns = ({
   {
     id: "access_group",
     accessorKey: "access_group",
-    meta: { title: "Access Group" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Access Group" />,
+    meta: { title: i18n.t("models:access_group_budgets.access_group", "Access Group") },
+    header: ({ column }) => (
+      <DataTableSortHeader column={column} title={i18n.t("models:access_group_budgets.access_group", "Access Group")} />
+    ),
     size: 220,
     enableSorting: true,
     cell: ({ row }) => (
@@ -122,8 +125,10 @@ export const getAccessGroupBudgetColumns = ({
   {
     id: "spend",
     accessorKey: "spend",
-    meta: { title: "Shared Spend" },
-    header: ({ column }) => <DataTableSortHeader column={column} title="Shared Spend" />,
+    meta: { title: i18n.t("models:access_group_budgets.shared_spend", "Shared Spend") },
+    header: ({ column }) => (
+      <DataTableSortHeader column={column} title={i18n.t("models:access_group_budgets.shared_spend", "Shared Spend")} />
+    ),
     size: 180,
     enableSorting: true,
     cell: ({ row }) => (

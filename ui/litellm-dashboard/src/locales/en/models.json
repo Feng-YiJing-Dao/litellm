@@ -811,7 +811,30 @@
     "view_full_error": "View full error details",
     "no_errors": "No errors",
     "never_checked": "Never checked",
-    "never_succeeded": "Never succeeded"
+    "never_succeeded": "Never succeeded",
+    "title": "Model Health Status",
+    "desc": "Run health checks on individual models to verify they are working correctly",
+    "clear_selection": "Clear Selection",
+    "run_selected": "Run Selected Checks",
+    "run_all": "Run All Checks",
+    "error_modal_title": "Health Check Error - {{modelName}}",
+    "error_details_title": "Error Details",
+    "error_modal_desc": "Details returned by the model health check.",
+    "error_label": "Error:",
+    "full_error_details_label": "Full Error Details:",
+    "close_btn": "Close",
+    "success_modal_title": "Health Check Response - {{modelName}}",
+    "response_details_title": "Response Details",
+    "success_modal_desc": "Response returned by the successful model health check.",
+    "status_label": "Status:",
+    "health_check_passed": "Health check passed successfully",
+    "response_details_label": "Response Details:",
+    "status_healthy": "healthy",
+    "status_unhealthy": "unhealthy",
+    "status_checking": "checking",
+    "status_none": "none",
+    "status_unknown": "unknown",
+    "none_sentinel": "None"
   },
   "passthrough": {
     "title": "Pass Through Endpoints",
@@ -1084,5 +1107,36 @@
     "custom_technical_keywords_desc": "Optional: Add terms to the built-in list to improve classification accuracy on the technical dimension. (e.g., udp, kafka, terraform).",
     "custom_technical_keywords_placeholder": "Type a keyword and press Enter",
     "custom_technical_keywords_empty": "Type to add a keyword"
-  }
+  },
+  "retry_settings": {
+    "scope_label": "Retry Policy Scope:",
+    "global_scope": "Global Default",
+    "global_title": "Global Retry Policy",
+    "global_desc": "Default retry settings applied to all model groups unless overridden",
+    "model_title": "Retry Policy for {{modelGroup}}",
+    "model_desc": "Model-specific retry settings. Falls back to global defaults if not set.",
+    "global_inherited": "(Global: {{value}})",
+    "retry_count_aria": "{{exceptionType}} retry count",
+    "reset_btn": "Reset",
+    "save_btn": "Save",
+    "saving": "Saving...",
+    "all_other_errors": "All other errors",
+    "save_success": "Retry settings saved successfully",
+    "save_error": "Failed to save retry settings"
+  },
+  "access_group_budgets": {
+    "no_access_groups": "No model access groups yet",
+    "clear_budget": "Clear Budget",
+    "clear_budget_confirm": "Are you sure you want to clear this access group's budget? The recorded shared spend is cleared with it, and the group's models stay available.",
+    "access_group": "Access Group",
+    "shared_spend": "Shared Spend",
+    "all_proxy_models": "all-proxy-models (All models)"
+  },
+  "price_management": {
+    "title": "Price Data Management",
+    "desc": "Manage model pricing data and configure automatic reload schedules",
+    "reload_btn": "Reload Price Data"
+  },
+  "delete_model_confirm_dialog": "Are you sure you want to delete this model?",
+  "current_team_badge": "Current team"
 }

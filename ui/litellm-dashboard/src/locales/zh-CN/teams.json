@@ -257,5 +257,49 @@
   "team_member_rpm_limit_placeholder": "该成员在团队内的每分钟请求数上限",
   "allowed_models": "允许的模型",
   "allowed_models_member_desc": "此成员在该团队内可访问的模型。留空则继承所有团队模型。",
-  "allowed_models_member_placeholder": "留空以继承所有团队模型"
+  "allowed_models_member_placeholder": "留空以继承所有团队模型",
+  "permissions_settings": {
+    "mcp_settings": "MCP 设置",
+    "mcp_settings_desc": "选择此团队可以访问的 MCP 服务器或访问组",
+    "agent_settings": "智能体设置",
+    "agent_settings_desc": "选择此团队可以访问的智能体",
+    "search_tool_settings": "检索工具设置",
+    "search_tool_settings_desc": "选择此团队可以访问的检索工具",
+    "skill_settings": "技能设置",
+    "logging_settings": "日志设置",
+    "router_settings": "路由设置",
+    "secret_manager_settings": "密钥管理器设置",
+    "secret_manager_hint": "以 JSON 对象形式输入密钥管理器配置。",
+    "secret_manager_premium_hint": "高级功能 - 升级后可管理密钥管理器配置。",
+    "team_member_settings": "团队成员设置",
+    "mcp_servers_and_groups": "MCP 服务器 / 访问组",
+    "agents_and_groups": "Agent / 访问组",
+    "team_member_settings_desc": "成员加入此团队时应用的默认设置。每个成员均可单独覆盖。",
+    "default_model_access": "默认模型权限",
+    "default_budget_usd": "默认预算 (美元)",
+    "default_budget_duration": "默认预算重置周期",
+    "default_key_duration": "默认密钥有效期 (例如：1d, 1mo)",
+    "default_tpm_limit": "默认 TPM 限制",
+    "default_rpm_limit": "默认 RPM 限制",
+    "model_aliases": "模型别名",
+    "model_aliases_desc": "为模型创建自定义别名，供团队成员在 API 调用中使用。这允许您为特定模型创建快捷方式。"
+  },
+  "deleted_teams": {
+    "enterprise_alert_title": "即将于企业版推出",
+    "enterprise_alert_desc": "已删除团队审计正从测试阶段升级进入我们的企业审计与合规套件。",
+    "no_deleted_teams": "未找到已删除的团队",
+    "no_deleted_teams_desc": "从此代理中删除的团队将显示在此处。",
+    "loading": "正在加载已删除团队…",
+    "columns": {
+      "team_name": "团队名称",
+      "team_id": "团队 ID",
+      "created": "创建时间",
+      "spend": "支出 (USD)",
+      "budget": "预算 (USD)",
+      "models": "模型",
+      "organization": "组织",
+      "deleted_at": "删除时间",
+      "deleted_by": "删除者"
+    }
+  }
 }

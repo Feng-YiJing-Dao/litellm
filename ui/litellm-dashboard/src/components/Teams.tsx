@@ -930,11 +930,11 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                         <FormField
                           control={form.control}
                           name="secret_manager_settings"
-                          label="Secret Manager Settings"
+                          label={t("teams:permissions_settings.secret_manager_settings", { defaultValue: "Secret Manager Settings" })}
                           description={
                             premiumUser
-                              ? "Enter secret manager configuration as a JSON object."
-                              : "Premium feature - Upgrade to manage secret manager settings."
+                              ? t("teams:permissions_settings.secret_manager_hint", { defaultValue: "Enter secret manager configuration as a JSON object." })
+                              : t("teams:permissions_settings.secret_manager_premium_hint", { defaultValue: "Premium feature - Upgrade to manage secret manager settings." })
                           }
                         >
                           {({ ref, value, ...field }) => (
@@ -1096,7 +1096,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                     className="mt-8 mb-8 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>MCP Settings</b>
+                      <b>{t("teams:permissions_settings.mcp_settings", { defaultValue: "MCP Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1140,7 +1140,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                     className="mt-8 mb-8 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Agent Settings</b>
+                      <b>{t("teams:permissions_settings.agent_settings", { defaultValue: "Agent Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1172,7 +1172,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                     className="mt-8 mb-8 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Search Tool Settings</b>
+                      <b>{t("teams:permissions_settings.search_tool_settings", { defaultValue: "Search Tool Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1204,7 +1204,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                     className="mt-8 mb-8 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Skill Settings</b>
+                      <b>{t("teams:permissions_settings.skill_settings", { defaultValue: "Skill Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1232,7 +1232,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
 
                   <Collapsible className="mt-8 mb-8 overflow-hidden rounded-lg border">
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Logging Settings</b>
+                      <b>{t("teams:permissions_settings.logging_settings", { defaultValue: "Logging Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1251,7 +1251,7 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
                     className="mt-8 mb-8 overflow-hidden rounded-lg border"
                   >
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Router Settings</b>
+                      <b>{t("teams:permissions_settings.router_settings", { defaultValue: "Router Settings" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
@@ -1273,14 +1273,13 @@ const Teams: React.FC<TeamProps> = ({ accessToken, userID, userRole, premiumUser
 
                   <Collapsible className="mt-8 mb-8 overflow-hidden rounded-lg border">
                     <CollapsibleTrigger className="group/section flex w-full items-center justify-between px-4 py-3 text-left">
-                      <b>Model Aliases</b>
+                      <b>{t("teams:permissions_settings.model_aliases", { defaultValue: "Model Aliases" })}</b>
                       <ChevronDown className="size-5 shrink-0 text-muted-foreground transition-transform group-data-[panel-open]/section:rotate-180" />
                     </CollapsibleTrigger>
                     <CollapsibleContent className="px-4 pb-3">
                       <div className="mt-4">
                         <p className="mb-4 block text-sm text-muted-foreground">
-                          Create custom aliases for models that can be used by team members in API calls. This allows
-                          you to create shortcuts for specific models.
+                          {t("teams:permissions_settings.model_aliases_desc", { defaultValue: "Create custom aliases for models that can be used by team members in API calls. This allows you to create shortcuts for specific models." })}
                         </p>
                         <ModelAliasManager
                           accessToken={accessToken || ""}

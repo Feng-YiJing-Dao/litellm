@@ -45,6 +45,7 @@
   "all": "All",
   "never": "Never",
   "name": "Name",
+  "here": "here",
   "description": "Description",
   "created_at": "Created At",
   "updated_at": "Updated At",
@@ -484,5 +485,15 @@
   "optional": "Optional",
   "learn_more": "Learn More",
   "click_to_upload": "Click to Upload",
-  "or": "OR"
+  "or": "OR",
+  "cannot_be_undone": "This action cannot be undone.",
+  "download_csv": "Download CSV",
+  "requests": "Requests",
+  "successful": "Successful",
+  "failed": "Failed",
+  "tokens": "Tokens",
+  "model": "Model",
+  "user": "User",
+  "spend": "Spend",
+  "spend_usd": "Spend (USD)"
 }
